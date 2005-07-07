@@ -10,6 +10,7 @@
 * Nr. |  Datum     |   Autor   | Änderungsgrund
 * -------------------------------------------------------------------
 * 001 | 26.04.2005 |    BNK    | Erstellung
+* 002 | 07.07.2005 |    BNK    | Viele Verbesserungen
 * -------------------------------------------------------------------
 *
 * @author D-AfID 5.1 Matthias S. Benkmann
@@ -32,7 +33,6 @@ import com.sun.star.lang.XComponent;
 import com.sun.star.lang.XMultiComponentFactory;
 import com.sun.star.lang.XMultiServiceFactory;
 import com.sun.star.script.browse.BrowseNodeFactoryViewTypes;
-import com.sun.star.script.browse.XBrowseNode;
 import com.sun.star.script.browse.XBrowseNodeFactory;
 import com.sun.star.script.provider.XScriptProvider;
 import com.sun.star.script.provider.XScriptProviderFactory;
