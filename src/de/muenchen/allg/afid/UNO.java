@@ -91,7 +91,7 @@ public class UNO {
 	{
 		XComponentContext xLocalContext = Bootstrap.createInitialComponentContext(null);
 		XMultiComponentFactory xLocalFactory = xLocalContext.getServiceManager();
-		XUnoUrlResolver xUrlResolver = (XUnoUrlResolver)UnoRuntime.queryInterface(XUnoUrlResolver.class,xLocalFactory.createInstanceWithContext("com.sun.star.bridge.UnoUrlResolver",xLocalContext));
+		XUnoUrlResolver xUrlResolver = UNO.XUnoUrlResolver(xLocalFactory.createInstanceWithContext("com.sun.star.bridge.UnoUrlResolver",xLocalContext));
 		init(xUrlResolver.resolve(connectionString));
 	}
 	
@@ -133,6 +133,7 @@ public class UNO {
 		masterScriptProvider = masterProviderFac.createScriptProvider(defaultContext);
 	}
 	
+	
 	/**
 	 * Läd ein Dokument und setzt im Erfolgsfall {@link #compo} auf das geöffnete Dokument.
 	 * @param URL die URL des zu ladenden Dokuments, z.B. "file:///C:/temp/footest.odt"
@@ -149,7 +150,7 @@ public class UNO {
 																								boolean asTemplate, boolean allowMacros)
 	throws com.sun.star.io.IOException, com.sun.star.lang.IllegalArgumentException
 	{
-		XComponentLoader loader = (XComponentLoader)UnoRuntime.queryInterface(XComponentLoader.class, desktop);
+		XComponentLoader loader = UNO.XComponentLoader(desktop);
 		PropertyValue[] arguments = new PropertyValue[2];
 		arguments[0] = new PropertyValue();
 		arguments[0].Name = "MacroExecutionMode";
@@ -175,7 +176,7 @@ public class UNO {
 	{
 		Object ret = null;
 		try {
-			XPropertySet props = (XPropertySet)UnoRuntime.queryInterface(XPropertySet.class, o);
+			XPropertySet props = UNO.XPropertySet(o);
 			if (props == null) return null;
 			ret = props.getPropertyValue(propName);
 		} catch (UnknownPropertyException e) {
@@ -186,4 +187,29 @@ public class UNO {
 		}
 		return ret;
 	}
+	
+	/** Holt {@link XUnoUrlResolver} Interface von o.*/
+	public static XUnoUrlResolver XUnoUrlResolver(Object o)
+	{
+		return (XUnoUrlResolver)UnoRuntime.queryInterface(XUnoUrlResolver.class,o);
+	}
+	
+	/** Holt {@link XPropertySet} Interface von o.*/
+	public static XPropertySet XPropertySet(Object o)
+	{
+		return (XPropertySet)UnoRuntime.queryInterface(XPropertySet.class,o);
+	}
+	
+	/** Holt {@link XComponentLoader} Interface von o.*/
+	public static XComponentLoader XComponentLoader(Object o)
+	{
+		return (XComponentLoader)UnoRuntime.queryInterface(XComponentLoader.class,o);
+	}
+
+	/** Holt {@link XBrowseNodeFactory} Interface von o.*/
+	public static XBrowseNodeFactory XBrowseNodeFactory(Object o)
+	{
+		return (XBrowseNodeFactory)UnoRuntime.queryInterface(XBrowseNodeFactory.class,o);
+	}
+
 }

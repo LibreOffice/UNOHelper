@@ -24,7 +24,6 @@ import java.util.Vector;
 
 import com.sun.star.script.browse.XBrowseNode;
 import com.sun.star.uno.UnoRuntime;
-import com.sun.star.uno.XInterface;
 
 /**
  * @author bnk
