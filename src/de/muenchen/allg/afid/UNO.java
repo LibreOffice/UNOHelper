@@ -28,16 +28,23 @@ import com.sun.star.document.MacroExecMode;
 import com.sun.star.frame.FrameSearchFlag;
 import com.sun.star.frame.XComponentLoader;
 import com.sun.star.frame.XDesktop;
+import com.sun.star.frame.XDispatchProvider;
+import com.sun.star.frame.XModel;
+import com.sun.star.frame.XStorable;
 import com.sun.star.lang.WrappedTargetException;
 import com.sun.star.lang.XComponent;
 import com.sun.star.lang.XMultiComponentFactory;
 import com.sun.star.lang.XMultiServiceFactory;
+import com.sun.star.lang.XSingleServiceFactory;
 import com.sun.star.script.browse.BrowseNodeFactoryViewTypes;
 import com.sun.star.script.browse.XBrowseNodeFactory;
 import com.sun.star.script.provider.XScriptProvider;
 import com.sun.star.script.provider.XScriptProviderFactory;
+import com.sun.star.text.XTextDocument;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
+import com.sun.star.uno.XNamingService;
+import com.sun.star.util.XURLTransformer;
 
 /**
  * Hilfsklasse zur leichteren Verwendung der UNO API.
@@ -188,6 +195,76 @@ public class UNO {
 		return ret;
 	}
 	
+	/**
+	 * Setzt das Property propName des Objekts o auf den Wert propVal und liefert
+	 * den neuen Wert zurück. Falls o kein XPropertySet implementiert, oder
+	 * das Property propName nicht gelesen werden kann (z.B. weil o diese
+	 * Property nicht besitzt), so wird null zurückgeliefert.
+	 * Zu beachten ist, dass es möglich ist, dass der zurückgelieferte Wert
+	 * nicht propVal und auch nicht null ist. Dies geschieht insbesondere,
+	 * wenn ein Event Handler sein Veto gegen die Änderung eingelegt hat.
+	 * @param o das Objekt, dessen Property zu ändern ist.
+	 * @param propName der Name des zu ändernden Properties.
+	 * @param propVal der neue Wert.
+	 * @return der Wert des Propertys nach der (versuchten) Änderung oder null,
+	 *         falls der Wert des Propertys nicht mal lesbar ist.
+	 * @author bnk
+	 */
+	public static Object setProperty(Object o, String propName, Object propVal)
+	{
+		Object ret = null;
+		try {
+			XPropertySet props = UNO.XPropertySet(o);
+			if (props == null) return null;
+			try{
+				props.setPropertyValue(propName, propVal);
+			} catch(Exception x){}
+			ret = props.getPropertyValue(propName);
+		} catch (UnknownPropertyException e) {
+		  return null;
+		} catch (WrappedTargetException e) {
+				e.printStackTrace();
+				System.exit(0);
+		}
+		return ret;
+	}
+
+	
+	/**
+	 * Erzeugt einen Dienst im Haupt-Servicemanager mit dem DefaultContext.
+	 * @param serviceName Name des zu erzeugenden Dienstes
+	 * @return ein Objekt, das den Dienst anbietet, oder null falls Fehler.
+	 * @author bnk
+	 */
+	public static Object createUNOService(String serviceName)
+	{
+		try{
+		  return xMCF.createInstanceWithContext(serviceName, defaultContext);
+		}catch(Exception x)
+		{
+			return null;
+		}
+	}
+
+	/** Holt {@link XSingleServiceFactory} Interface von o.*/
+	public static XSingleServiceFactory XSingleServiceFactory(Object o)
+	{
+		return (XSingleServiceFactory)UnoRuntime.queryInterface(XSingleServiceFactory.class,o);
+	}
+
+	/** Holt {@link XStorable} Interface von o.*/
+	public static XStorable XStorable(Object o)
+	{
+		return (XStorable)UnoRuntime.queryInterface(XStorable.class,o);
+	}
+
+	/** Holt {@link XNamingService} Interface von o.*/
+	public static XNamingService XNamingService(Object o)
+	{
+		return (XNamingService)UnoRuntime.queryInterface(XNamingService.class,o);
+	}
+
+	
 	/** Holt {@link XUnoUrlResolver} Interface von o.*/
 	public static XUnoUrlResolver XUnoUrlResolver(Object o)
 	{
@@ -199,6 +276,33 @@ public class UNO {
 	{
 		return (XPropertySet)UnoRuntime.queryInterface(XPropertySet.class,o);
 	}
+
+	/** Holt {@link XModel} Interface von o.*/
+	public static XModel XModel(Object o)
+	{
+		return (XModel)UnoRuntime.queryInterface(XModel.class,o);
+	}
+
+	/** Holt {@link XTextDocument} Interface von o.*/
+	public static XTextDocument XTextDocument(Object o)
+	{
+		return (XTextDocument)UnoRuntime.queryInterface(XTextDocument.class,o);
+	}
+
+	
+	/** Holt {@link XDispatchProvider} Interface von o.*/
+	public static XDispatchProvider XDispatchProvider(Object o)
+	{
+		return (XDispatchProvider)UnoRuntime.queryInterface(XDispatchProvider.class,o);
+	}
+
+	
+	/** Holt {@link XURLTransformer} Interface von o.*/
+	public static XURLTransformer XURLTransformer(Object o)
+	{
+		return (XURLTransformer)UnoRuntime.queryInterface(XURLTransformer.class,o);
+	}
+
 	
 	/** Holt {@link XComponentLoader} Interface von o.*/
 	public static XComponentLoader XComponentLoader(Object o)
