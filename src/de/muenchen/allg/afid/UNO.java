@@ -40,10 +40,12 @@ import com.sun.star.script.browse.BrowseNodeFactoryViewTypes;
 import com.sun.star.script.browse.XBrowseNodeFactory;
 import com.sun.star.script.provider.XScriptProvider;
 import com.sun.star.script.provider.XScriptProviderFactory;
+import com.sun.star.sdb.XDocumentDataSource;
 import com.sun.star.text.XTextDocument;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 import com.sun.star.uno.XNamingService;
+import com.sun.star.util.XModifiable;
 import com.sun.star.util.XURLTransformer;
 
 /**
@@ -64,6 +66,14 @@ public class UNO {
 	 * Das "DefaultContext" Property des Haupt-ServiceManagers. 
 	 */
 	public static XComponentContext defaultContext;
+	/**
+	 * Der globale com.sun.star.sdb.DatabaseContext.
+	 */
+	public static XNamingService dbContext;
+	/**
+	 * Ein com.sun.star.util.URLTransformer.
+	 */
+	public static XURLTransformer urlTransformer;
 	/**
 	 * Der Desktop.
 	 */
@@ -138,6 +148,9 @@ public class UNO {
 		XScriptProviderFactory masterProviderFac = (XScriptProviderFactory) UnoRuntime.queryInterface(XScriptProviderFactory.class,
 				defaultContext.getValueByName("/singletons/com.sun.star.script.provider.theMasterScriptProviderFactory"));
 		masterScriptProvider = masterProviderFac.createScriptProvider(defaultContext);
+		
+		dbContext = UNO.XNamingService(UNO.createUNOService("com.sun.star.sdb.DatabaseContext"));
+		urlTransformer = UNO.XURLTransformer(UNO.createUNOService("com.sun.star.util.URLTransformer"));
 	}
 	
 	
@@ -258,6 +271,20 @@ public class UNO {
 		return (XStorable)UnoRuntime.queryInterface(XStorable.class,o);
 	}
 
+	/** Holt {@link XModifiable} Interface von o.*/
+	public static XModifiable XModifiable(Object o)
+	{
+		return (XModifiable)UnoRuntime.queryInterface(XModifiable.class,o);
+	}
+
+	
+	/** Holt {@link XDocumentDataSource} Interface von o.*/
+	public static XDocumentDataSource XDocumentDataSource(Object o)
+	{
+		return (XDocumentDataSource)UnoRuntime.queryInterface(XDocumentDataSource.class,o);
+	}
+
+	
 	/** Holt {@link XNamingService} Interface von o.*/
 	public static XNamingService XNamingService(Object o)
 	{
