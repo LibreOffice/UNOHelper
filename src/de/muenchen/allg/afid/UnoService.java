@@ -26,12 +26,15 @@ import com.sun.star.beans.XPropertySetInfo;
 import com.sun.star.bridge.XUnoUrlResolver;
 import com.sun.star.container.XEnumeration;
 import com.sun.star.container.XEnumerationAccess;
+import com.sun.star.drawing.XShape;
 import com.sun.star.frame.XComponentLoader;
 import com.sun.star.frame.XDesktop;
 import com.sun.star.lang.XMultiComponentFactory;
+import com.sun.star.lang.XMultiServiceFactory;
 import com.sun.star.lang.XServiceInfo;
 import com.sun.star.lang.XTypeProvider;
 import com.sun.star.text.XText;
+import com.sun.star.text.XTextContent;
 import com.sun.star.text.XTextDocument;
 import com.sun.star.text.XTextField;
 import com.sun.star.text.XTextRange;
@@ -433,6 +436,10 @@ public class UnoService {
 		return (XMultiComponentFactory) queryInterface(XMultiComponentFactory.class);
 	}
 
+	public XMultiServiceFactory xMultiServiceFactory() {
+		return (XMultiServiceFactory) queryInterface(XMultiServiceFactory.class);
+	}
+
 	public XUnoUrlResolver xUnoUrlResolver() {
 		return (XUnoUrlResolver) queryInterface(XUnoUrlResolver.class);
 	}
@@ -463,6 +470,14 @@ public class UnoService {
 
 	public XTextField xTextField() {
 		return (XTextField) queryInterface(XTextField.class);
+	}
+
+	public XTextContent xTextContent() {
+		return (XTextContent) queryInterface(XTextContent.class);
+	}
+
+	public XShape xShape() {
+		return (XShape) queryInterface(XShape.class);
 	}
 
 	//... add wrapper-methods for your own interfaces here...
