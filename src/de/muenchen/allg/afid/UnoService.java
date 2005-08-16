@@ -10,7 +10,10 @@
  * vorliegende Kopie der Software im vollen Umfang uneingeschränkt ganz oder 
  * in Auszügen zu benutzen, zu verändern und weiterzugeben.
  * 
-* Änderungshistorie:
+ * 
+* Änderungshistorie der Landeshauptstadt München:
+* Alle Änderungen (c) Landeshauptstadt München, alle Rechte vorbehalten
+* 
 * Nr. |  Datum     |   Autor   | Änderungsgrund
 * -------------------------------------------------------------------
 * 001 | 26.04.2005 |    BNK    | getSimpleName() durch getName() 
