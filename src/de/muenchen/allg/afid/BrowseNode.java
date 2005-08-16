@@ -10,9 +10,10 @@
 * Nr. |  Datum     |   Autor   | Änderungsgrund
 * -------------------------------------------------------------------
 * 001 | 07.07.2005 |    BNK    | Erstellung
+* 002 | 16.08.2005 |    BNK    | korrekte Dienststellenbezeichnung
 * -------------------------------------------------------------------
 *
-* @author D-HAIII 5.1 Matthias S. Benkmann
+* @author D-III-ITD 5.1 Matthias S. Benkmann
 * @version 1.0
 * 
 */

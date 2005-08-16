@@ -11,9 +11,10 @@
 * -------------------------------------------------------------------
 * 001 | 26.04.2005 |    BNK    | Erstellung
 * 002 | 07.07.2005 |    BNK    | Viele Verbesserungen
+* 003 | 16.08.2005 |    BNK    | korrekte Dienststellenbezeichnung
 * -------------------------------------------------------------------
 *
-* @author D-AfID 5.1 Matthias S. Benkmann
+* @author D-III-ITD 5.1 Matthias S. Benkmann
 * @version 1.0
 * 
  * */
@@ -101,7 +102,7 @@ public class UNO {
 	 * @param connectionString z.B. "uno:socket,host=localhost,port=8100;urp;StarOffice.ServiceManager"
 	 * @throws Exception falls was schief geht.
 	 * @see init()
-	 * @author Matthias Benkmann (D-HAIII 5.1)
+	 * @author Matthias Benkmann (D-III-ITD 5.1)
 	 */
 	public static void init(String connectionString)
 	throws Exception
@@ -116,7 +117,7 @@ public class UNO {
 	 * Stellt die Verbindung mit OpenOffice her. Die Verbindungsparameter werden
 	 * automagisch ermittelt.
 	 * @throws Exception falls was schief geht.
-	 * @author Matthias Benkmann (D-HAIII 5.1)
+	 * @author Matthias Benkmann (D-III-ITD 5.1)
 	 */
 	public static void init()
 	throws Exception
@@ -128,7 +129,7 @@ public class UNO {
 	 * Initialisiert die statischen Felder dieser Klasse.
 	 * @param remoteServiceManager der Haupt-ServiceManager.
 	 * @throws Exception falls was schief geht.
-	 * @author Matthias Benkmann (D-HAIII 5.1)
+	 * @author Matthias Benkmann (D-III-ITD 5.1)
 	 */
 	protected static void init(Object remoteServiceManager)
 	throws Exception
@@ -164,7 +165,7 @@ public class UNO {
 	 * @return das geöffnete Dokument
 	 * @throws com.sun.star.io.IOException
 	 * @throws com.sun.star.lang.IllegalArgumentException
-	 * @author Matthias Benkmann (D-HAIII 5.1)
+	 * @author Matthias Benkmann (D-III-ITD 5.1)
 	 */
 	public static XComponent loadComponentFromURL(String URL, 
 																								boolean asTemplate, boolean allowMacros)
