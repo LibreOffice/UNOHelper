@@ -9,6 +9,13 @@
  * Der Autor berechtigt die Landeshauptstadt München, darüber hinaus, die hier 
  * vorliegende Kopie der Software im vollen Umfang uneingeschränkt ganz oder 
  * in Auszügen zu benutzen, zu verändern und weiterzugeben.
+ * 
+* Änderungshistorie:
+* Nr. |  Datum     |   Autor   | Änderungsgrund
+* -------------------------------------------------------------------
+* 001 | 26.04.2005 |    BNK    | getSimpleName() durch getName() 
+*                              | ersetzt wg. Java 1.4 Kompatibilität 
+* -------------------------------------------------------------------
  */
 
 package de.muenchen.allg.afid;
@@ -189,7 +196,7 @@ public class UnoService {
 					.getProperties();
 			for (int i = 0; i < props.length; i++) {
 				str += "  " + props[i].Name + " - "
-						+ props[i].Type.getZClass().getSimpleName() + "\n";
+						+ props[i].Type.getZClass().getName() + "\n";
 			}
 		} else {
 			str = "none";
@@ -240,9 +247,9 @@ public class UnoService {
 						if (k != 0) {
 							str += ", ";
 						}
-						str += par[k].getSimpleName();
+						str += par[k].getName();
 					}
-					str += ") - " + m.getReturnType().getSimpleName() + "\n";
+					str += ") - " + m.getReturnType().getName() + "\n";
 
 				}
 			}
