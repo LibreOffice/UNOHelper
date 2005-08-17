@@ -65,7 +65,7 @@ import com.sun.star.util.XCloseable;
  * The wrapper provides convenience-methods to certain aspects of uno-services
  * like getter and setter for property-values.
  * 
- * The wrapper also increases tranzperency when working with uno-objects. It
+ * The wrapper also increases transparency when working with uno-objects. It
  * provides methods to inspect uno-services at runtime and print information
  * about supported-services, implemented interfaces, properties and methods. It
  * makes Uno-Programming in java similar to OOo-Basic programming using tools
