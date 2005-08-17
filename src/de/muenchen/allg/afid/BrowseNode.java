@@ -1,8 +1,8 @@
 /*
- * Hilfen für die Arbeit mit XBrowseNodes
+ * Hilfen für die Arbeit mit BrowseNodes
 * Dateiname: BrowseNode.java
 * Projekt  : n/a
-* Funktion : Hilfen für die Arbeit mit XBrowseNodes
+* Funktion : Hilfen für die Arbeit mit BrowseNodes
 * 
 * Copyright: Landeshauptstadt München
 *
@@ -11,6 +11,7 @@
 * -------------------------------------------------------------------
 * 001 | 07.07.2005 |    BNK    | Erstellung
 * 002 | 16.08.2005 |    BNK    | korrekte Dienststellenbezeichnung
+* 003 | 17.08.2005 |    BNK    | bessere Kommentare
 * -------------------------------------------------------------------
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -27,27 +28,54 @@ import com.sun.star.script.browse.XBrowseNode;
 import com.sun.star.uno.UnoRuntime;
 
 /**
+ * Diese Klasse vereinfacht die Arbeit mit Objekten, die den Dienst BrowseNode
+ * unterstützen. Diese sind vor allem
+ * nützlich beim Durchsuchen des Baumes aller installierten Skripts.
  * @author bnk
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
  */
 public class BrowseNode 
 {
 	private XBrowseNode node;
 	public BrowseNode(XBrowseNode node) {this.node = node;}
 	
+	/**
+	 * Gibt die URL des Makros zurück, wie sie für den Aufruf über 
+	 * das Skripting-Framework benötigt wird. Nicht zu verwechseln mit "macro:" URLs!
+	 * @author bnk
+	 */
 	public String URL() {return (String)UNO.getProperty(node, "URI");}
+	
+	/**
+	 * Liefert das ungewrappte Objekt für die direkte Übergabe an UNO-Funktionen.
+	 * @author bnk
+	 */
 	public XBrowseNode unwrap() {return node;}
+	
+	/**
+	 * Liefert den Namen des Knoten.
+	 * @author bnk
+	 */
 	public String getName() {return node.getName(); }
+	
+	/**
+	 * Liefert den Typ des Knoten. Im Zusammenhang mit Makros sind die möglichen 
+	 * Werte aus der Konstantengruppe {@link com.sun.star.script.browse.BrowseNodeTypes}.
+	 * @author bnk
+	 */
 	public short getType() {return node.getType();}
+	
+	/**
+	 * Abkürzung für queryInterface(). 
+	 * @param c spezifiziert das Interface das gequeryt werden soll.
+	 * @author bnk
+	 */
 	public Object as(Class c) 
 	{
 		return UnoRuntime.queryInterface(c, node);
 	}
 	
-	/** The Iterator returns the node and all descendants as 
-	 * {@link BrowseNode} objects.*/
+	/** Dieser Iterator liefert den Knoten und alle Abkömmlinge als 
+	 * {@link BrowseNode}s.*/
 	public Iterator iterator() {return new ChildIterator(node);};
 	
 	protected static class ChildIterator implements Iterator 

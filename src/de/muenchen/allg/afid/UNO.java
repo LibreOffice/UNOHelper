@@ -92,7 +92,7 @@ public class UNO {
 	public static BrowseNode scriptRoot;
 	
 	/**
-	 * The master script provider.
+	 * Der Haupt-ScriptProvider.
 	 */
 	public static XScriptProvider masterScriptProvider;
 	
