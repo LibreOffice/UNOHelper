@@ -7,11 +7,14 @@
 * Copyright: Landeshauptstadt München
 *
 * Änderungshistorie:
-* Nr. |  Datum     |   Autor   | Änderungsgrund
+* Nr. |  Datum     | Autor | Änderungsgrund
 * -------------------------------------------------------------------
-* 001 | 26.04.2005 |    BNK    | Erstellung
-* 002 | 07.07.2005 |    BNK    | Viele Verbesserungen
-* 003 | 16.08.2005 |    BNK    | korrekte Dienststellenbezeichnung
+* 001 | 26.04.2005 | BNK   | Erstellung
+* 002 | 07.07.2005 | BNK   | Viele Verbesserungen
+* 003 | 16.08.2005 | BNK   | korrekte Dienststellenbezeichnung
+* 004 | 17.08.2005 | BNK   | +executeMacro()
+* 005 | 17.08.2005 | BNK   | +Internal-Klasse für interne Methoden
+* 006 | 17.08.2005 | BNK   | +findBrowseNodeTreeLeaf()
 * -------------------------------------------------------------------
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -38,11 +41,15 @@ import com.sun.star.lang.XMultiComponentFactory;
 import com.sun.star.lang.XMultiServiceFactory;
 import com.sun.star.lang.XSingleServiceFactory;
 import com.sun.star.script.browse.BrowseNodeFactoryViewTypes;
+import com.sun.star.script.browse.XBrowseNode;
 import com.sun.star.script.browse.XBrowseNodeFactory;
+import com.sun.star.script.provider.XScript;
 import com.sun.star.script.provider.XScriptProvider;
 import com.sun.star.script.provider.XScriptProviderFactory;
+import com.sun.star.script.provider.XScriptProviderSupplier;
 import com.sun.star.sdb.XDocumentDataSource;
 import com.sun.star.text.XTextDocument;
+import com.sun.star.uno.RuntimeException;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 import com.sun.star.uno.XNamingService;
@@ -186,6 +193,102 @@ public class UNO {
     if (lc != null) compo = lc;
 		return lc; 
 	}
+	
+	/**
+	 * Ruft ein Makro auf unter expliziter Angabe der Komponente, die es zur Verfügung
+	 * stellt.
+	 * 
+	 * @param scriptProviderOrSupplier ist ein Objekt, das entweder {@link XScriptProvider} oder
+	 *              {@link XScriptProviderSupplier} implementiert. Dies kann z.B. ein TextDocument sein.
+	 *              Soll einfach nur ein Skript aus dem gesamten Skript-Baum ausgeführt werden,
+	 *              kann die Funktion {@link #executeGlobalMacro(String, Object[])} verwendet werden, 
+	 *              die diesen Parameter nicht erfordert.
+	 * @param macroName ist der Name des Makros. Der Name kann optional durch "." abgetrennte
+	 *              Bezeichner für Bibliotheken/Module vorangestellt haben. Es sind also sowohl
+	 *              "Foo" als auch "Module1.Foo" und "Standard.Module1.Foo" erlaubt.
+	 *              Wenn kein passendes Makro gefunden wird, wird zuerst versucht, 
+	 *              case-insensitive danach zu suchen. Falls dabei ebenfalls kein Makro
+	 *              gefunden wird, wird eine {@link IllegalArgumentException} geworfen.
+	 * @param args die Argumente, die dem Makro übergeben werden sollen.
+	 * @throws RuntimeException wenn entweder kein passendes Makro gefunden wurde, oder
+	 *              scriptProviderOrSupplier weder {@link XScriptProvider} noch
+	 *              {@link XScriptProviderSupplier} implementiert.
+	 * @return den Rückgabewert des Makros.
+	 * @author Matthias Benkmann (D-III-ITD 5.1)
+	 */
+	public static Object executeMacro(Object scriptProviderOrSupplier, String macroName, Object[] args)
+	{
+		XScriptProvider provider = (XScriptProvider)UnoRuntime.queryInterface(XScriptProvider.class, scriptProviderOrSupplier);
+		if (provider == null)
+		{
+			XScriptProviderSupplier supp = (XScriptProviderSupplier)UnoRuntime.queryInterface(XScriptProviderSupplier.class, scriptProviderOrSupplier);
+			if (supp == null) throw new RuntimeException("Übergebenes Objekt ist weder XScriptProvider noch XScriptProviderSupplier");
+			provider = supp.getScriptProvider();
+		}
+		
+		XBrowseNode root = (XBrowseNode)UnoRuntime.queryInterface(XBrowseNode.class, provider);
+		return Internal.executeMacroInternal(macroName, args, provider, root);
+	}
+	
+	/**
+	 * Ruft ein globales Makro auf (d,h, eines, das nicht in einem Dokument
+	 * gespeichert ist).
+	 * 
+	 * @param macroName ist der Name des Makros. Der Name kann optional durch "." abgetrennte
+	 *              Bezeichner für Bibliotheken/Module vorangestellt haben. Es sind also sowohl
+	 *              "Foo" als auch "Module1.Foo" und "Standard.Module1.Foo" erlaubt.
+	 *              Wenn kein passendes Makro gefunden wird, wird zuerst versucht, 
+	 *              case-insensitive danach zu suchen. Falls dabei ebenfalls kein Makro
+	 *              gefunden wird, wird eine {@link IllegalArgumentException} geworfen.
+	 * @param args die Argumente, die dem Makro übergeben werden sollen.
+	 * @throws RuntimeException wenn kein passendes Makro gefunden wurde.
+	 * @return den Rückgabewert des Makros.
+	 * @author Matthias Benkmann (D-III-ITD 5.1)
+	 */
+	public static Object executeGlobalMacro(String macroName, Object[] args)
+	{
+	  return Internal.executeMacroInternal(macroName, args, masterScriptProvider, scriptRoot.unwrap());
+	}
+
+		
+	/**
+	 * Durchsucht einen {@link XBrowseNode} Baum nach einem Blatt, dessen Name mit der
+	 * Zeichefolge nameToFind endet. 
+	 * @param xBrowseNode Wurzel des zu durchsuchenden Baums.
+	 * @param prefix wird dem Namen jedes Knoten vorangestellt. Dies wird verwendet, wenn 
+	 *          xBrowseNode nicht die Wurzel ist.
+	 * @param nameToFind  das zu suchende Namenssuffix.
+	 * @param caseSensitive falls true, so wird Gross-/Kleinschreibung berücksichtigt bei der 
+	 *         Suche.
+	 * @return den gefundenen Knoten oder null falls keiner gefunden.
+	 * @author Matthias Benkmann (D-III-ITD 5.1)
+	 */
+	public static XBrowseNode findBrowseNodeTreeLeaf(XBrowseNode xBrowseNode, String prefix, String nameToFind, boolean caseSensitive)
+	{
+		String name = xBrowseNode.getName();
+		if (!prefix.equals(""))	name = prefix + "." + name; 
+		
+		if (!caseSensitive) 
+		{ 
+			name = name.toLowerCase(); 
+			nameToFind = nameToFind.toLowerCase(); 
+		}
+		
+		if (xBrowseNode.hasChildNodes())
+		{
+			XBrowseNode[] child = xBrowseNode.getChildNodes();
+			for (int i = 0; i < child.length; ++i)
+			{
+				XBrowseNode o = findBrowseNodeTreeLeaf(child[i], name, nameToFind, caseSensitive);
+				if (o != null) return o;
+			}
+		}
+		else
+			if (name.endsWith(nameToFind)) return xBrowseNode;
+		
+		return null;
+	}
+
 	
 	/**
 	 * Liefert den Wert von Property propName des Objekts o zurück.
@@ -344,4 +447,47 @@ public class UNO {
 		return (XBrowseNodeFactory)UnoRuntime.queryInterface(XBrowseNodeFactory.class,o);
 	}
 
+  /**
+   * Interne Funktionen
+   */
+	private static class Internal
+	{
+
+    /**
+     * @author bnk
+     */
+    private static Object executeMacroInternal(String macroName, Object[] args, XScriptProvider provider, XBrowseNode root)
+    {
+      Object oScript = UNO.findBrowseNodeTreeLeaf(root, "", "." + macroName, true);
+    	if (oScript == null)
+    		oScript = UNO.findBrowseNodeTreeLeaf(root, "", "." + macroName, false);
+    	if (oScript == null)
+    		oScript = UNO.findBrowseNodeTreeLeaf(root, "", macroName, true);
+    	if (oScript == null)
+    		oScript = UNO.findBrowseNodeTreeLeaf(root, "", macroName, false);
+    	
+    	XScript script;
+    	
+    	try{
+    		XPropertySet props = (XPropertySet)UnoRuntime.queryInterface(XPropertySet.class, oScript);
+    		String uri = (String)props.getPropertyValue("URI");
+    		script = provider.getScript(uri);
+    	}
+    	catch(Exception x)
+    	{
+    		throw new RuntimeException("Objekt "+macroName+" nicht gefunden oder ist kein Skript");
+    	}
+    	
+    	short[][] aOutParamIndex = new short[][]{new short[0]};
+    	Object[][] aOutParam = new Object[][]{new Object[0]};
+    	try{
+    		Object retval = script.invoke(args, aOutParamIndex, aOutParam);
+    		return retval;
+    	} catch(Exception x)
+    	{
+    		x.printStackTrace();
+    		throw new RuntimeException("Fehler bei invoke() von Makro "+macroName);
+    	}
+    }
+	}
 }
