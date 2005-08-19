@@ -16,6 +16,7 @@
 * 005 | 17.08.2005 | BNK   | +Internal-Klasse für interne Methoden
 * 006 | 17.08.2005 | BNK   | +findBrowseNodeTreeLeaf()
 * 007 | 19.08.2005 | BNK   | init(Object) => public, weil nützlich
+* 008 | 19.08.2005 | BNK   | +XPrintable()
 * -------------------------------------------------------------------
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -56,6 +57,7 @@ import com.sun.star.uno.XComponentContext;
 import com.sun.star.uno.XNamingService;
 import com.sun.star.util.XModifiable;
 import com.sun.star.util.XURLTransformer;
+import com.sun.star.view.XPrintable;
 
 /**
  * Hilfsklasse zur leichteren Verwendung der UNO API.
@@ -416,6 +418,13 @@ public class UNO {
 		return (XModel)UnoRuntime.queryInterface(XModel.class,o);
 	}
 
+	/** Holt {@link XPrintable} Interface von o.*/
+	public static XPrintable XPrintable(Object o)
+	{
+		return (XPrintable)UnoRuntime.queryInterface(XPrintable.class,o);
+	}
+
+	
 	/** Holt {@link XTextDocument} Interface von o.*/
 	public static XTextDocument XTextDocument(Object o)
 	{
