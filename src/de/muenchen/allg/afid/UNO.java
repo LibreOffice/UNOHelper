@@ -15,6 +15,7 @@
 * 004 | 17.08.2005 | BNK   | +executeMacro()
 * 005 | 17.08.2005 | BNK   | +Internal-Klasse für interne Methoden
 * 006 | 17.08.2005 | BNK   | +findBrowseNodeTreeLeaf()
+* 007 | 19.08.2005 | BNK   | init(Object) => public, weil nützlich
 * -------------------------------------------------------------------
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -133,12 +134,13 @@ public class UNO {
 	}
 	
 	/**
-	 * Initialisiert die statischen Felder dieser Klasse.
+	 * Initialisiert die statischen Felder dieser Klasse ausgehend für eine
+	 * existierende Verbindung.
 	 * @param remoteServiceManager der Haupt-ServiceManager.
 	 * @throws Exception falls was schief geht.
 	 * @author Matthias Benkmann (D-III-ITD 5.1)
 	 */
-	protected static void init(Object remoteServiceManager)
+	public static void init(Object remoteServiceManager)
 	throws Exception
 	{
 		xMCF = (XMultiComponentFactory)UnoRuntime.queryInterface(XMultiComponentFactory.class, remoteServiceManager);
