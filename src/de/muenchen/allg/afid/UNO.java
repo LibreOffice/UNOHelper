@@ -22,6 +22,7 @@
 * 011 | 19.08.2005 | BNK   | +XSpreadsheetDocument()
 * 012 | 19.08.2005 | BNK   | +XIndexAccess()
 * 013 | 19.08.2005 | BNK   | +XCellRange()
+* 014 | 22.08.2005 | BNK   | +XText()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -59,6 +60,7 @@ import com.sun.star.script.provider.XScriptProviderSupplier;
 import com.sun.star.sdb.XDocumentDataSource;
 import com.sun.star.sheet.XSpreadsheetDocument;
 import com.sun.star.table.XCellRange;
+import com.sun.star.text.XText;
 import com.sun.star.text.XTextContent;
 import com.sun.star.text.XTextDocument;
 import com.sun.star.uno.RuntimeException;
@@ -444,6 +446,12 @@ public class UNO {
 	public static XModel XModel(Object o)
 	{
 		return (XModel)UnoRuntime.queryInterface(XModel.class,o);
+	}
+	
+	/** Holt {@link XText} Interface von o.*/
+	public static XText XText(Object o)
+	{
+		return (XText)UnoRuntime.queryInterface(XText.class,o);
 	}
 	
 	/** Holt {@link XSpreadsheetDocument} Interface von o.*/
