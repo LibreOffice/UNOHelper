@@ -7,8 +7,7 @@
 * Copyright: Landeshauptstadt München
 *
 * Änderungshistorie:
-* Datum     | Wer | Änderungsgrund
-* -------------------------------------------------------------------
+* Datum      | Wer | Änderungsgrund
 * 26.04.2005 | BNK | Erstellung
 * 07.07.2005 | BNK | Viele Verbesserungen
 * 16.08.2005 | BNK | korrekte Dienststellenbezeichnung
@@ -23,6 +22,9 @@
 * 19.08.2005 | BNK | +XIndexAccess()
 * 19.08.2005 | BNK | +XCellRange()
 * 22.08.2005 | BNK | +XText()
+* 22.08.2005 | PIT | +XNamed() 
+* 22.08.2005 | PIT | +XTextContent()  
+* 22.08.2005 | PIT | +XBookmarksSupplier()   
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -58,6 +60,7 @@ import com.sun.star.script.provider.XScriptProvider;
 import com.sun.star.script.provider.XScriptProviderFactory;
 import com.sun.star.script.provider.XScriptProviderSupplier;
 import com.sun.star.sdb.XDocumentDataSource;
+import com.sun.star.text.XBookmarksSupplier;
 import com.sun.star.sheet.XSpreadsheetDocument;
 import com.sun.star.table.XCellRange;
 import com.sun.star.text.XText;
@@ -504,6 +507,12 @@ public class UNO {
 	{
 		return (XBrowseNodeFactory)UnoRuntime.queryInterface(XBrowseNodeFactory.class,o);
 	}
+	
+	/** Holt {@link XBookmarksSupplier} Interface von o.*/
+	public static XBookmarksSupplier XBookmarksSupplier(Object o)
+	{
+		return (XBookmarksSupplier)UnoRuntime.queryInterface(XBookmarksSupplier.class,o);
+	}	
 
   /**
    * Interne Funktionen
