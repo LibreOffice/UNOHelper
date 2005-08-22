@@ -8,6 +8,7 @@
 *
 * Änderungshistorie:
 * Datum      | Wer | Änderungsgrund
+* -------------------------------------------------------------------
 * 26.04.2005 | BNK | Erstellung
 * 07.07.2005 | BNK | Viele Verbesserungen
 * 16.08.2005 | BNK | korrekte Dienststellenbezeichnung
