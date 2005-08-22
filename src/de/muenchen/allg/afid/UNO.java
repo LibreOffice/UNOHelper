@@ -28,6 +28,7 @@
 * 22.08.2005 | PIT | +XBookmarksSupplier()   
 * 22.08.2005 | BNK | +XColumnRowRange()
 * 22.08.2005 | BNK | +XTableColumns()
+* 22.08.2005 | BNK | +XSpreadsheet()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -64,6 +65,7 @@ import com.sun.star.script.provider.XScriptProviderFactory;
 import com.sun.star.script.provider.XScriptProviderSupplier;
 import com.sun.star.sdb.XDocumentDataSource;
 import com.sun.star.text.XBookmarksSupplier;
+import com.sun.star.sheet.XSpreadsheet;
 import com.sun.star.sheet.XSpreadsheetDocument;
 import com.sun.star.table.XCellRange;
 import com.sun.star.table.XColumnRowRange;
@@ -467,6 +469,12 @@ public class UNO {
 	public static XModel XModel(Object o)
 	{
 		return (XModel)UnoRuntime.queryInterface(XModel.class,o);
+	}
+	
+	/** Holt {@link XSpreadsheet} Interface von o.*/
+	public static XSpreadsheet XSpreadsheet(Object o)
+	{
+		return (XSpreadsheet)UnoRuntime.queryInterface(XSpreadsheet.class,o);
 	}
 	
 	/** Holt {@link XText} Interface von o.*/
