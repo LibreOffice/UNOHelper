@@ -19,12 +19,15 @@
 * 008 | 19.08.2005 | BNK   | +XPrintable()
 * 009 | 22.08.2005 | PIT   | +XNamed() 
 * 010 | 22.08.2005 | PIT   | +XTextContent()  
-* -------------------------------------------------------------------
+* 011 | 19.08.2005 | BNK   | +XSpreadsheetDocument()
+* 012 | 19.08.2005 | BNK   | +XIndexAccess()
+* 013 | 19.08.2005 | BNK   | +XCellRange()
+* ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
 * @version 1.0
 * 
- * */
+* */
 package de.muenchen.allg.afid;
 
 import com.sun.star.beans.PropertyValue;
@@ -32,6 +35,7 @@ import com.sun.star.beans.UnknownPropertyException;
 import com.sun.star.beans.XPropertySet;
 import com.sun.star.bridge.XUnoUrlResolver;
 import com.sun.star.comp.helper.Bootstrap;
+import com.sun.star.container.XIndexAccess;
 import com.sun.star.container.XNamed;
 import com.sun.star.document.MacroExecMode;
 import com.sun.star.frame.FrameSearchFlag;
@@ -53,6 +57,8 @@ import com.sun.star.script.provider.XScriptProvider;
 import com.sun.star.script.provider.XScriptProviderFactory;
 import com.sun.star.script.provider.XScriptProviderSupplier;
 import com.sun.star.sdb.XDocumentDataSource;
+import com.sun.star.sheet.XSpreadsheetDocument;
+import com.sun.star.table.XCellRange;
 import com.sun.star.text.XTextContent;
 import com.sun.star.text.XTextDocument;
 import com.sun.star.uno.RuntimeException;
@@ -382,6 +388,18 @@ public class UNO {
 	{
 		return (XStorable)UnoRuntime.queryInterface(XStorable.class,o);
 	}
+	
+	/** Holt {@link XIndexAccess} Interface von o.*/
+	public static XIndexAccess XIndexAccess(Object o)
+	{
+		return (XIndexAccess)UnoRuntime.queryInterface(XIndexAccess.class,o);
+	}
+	
+	/** Holt {@link XCellRange} Interface von o.*/
+	public static XCellRange XCellRange(Object o)
+	{
+		return (XCellRange)UnoRuntime.queryInterface(XCellRange.class,o);
+	}
 
 	/** Holt {@link XModifiable} Interface von o.*/
 	public static XModifiable XModifiable(Object o)
@@ -427,6 +445,12 @@ public class UNO {
 	{
 		return (XModel)UnoRuntime.queryInterface(XModel.class,o);
 	}
+	
+	/** Holt {@link XSpreadsheetDocument} Interface von o.*/
+	public static XSpreadsheetDocument XSpreadsheetDocument(Object o)
+	{
+		return (XSpreadsheetDocument)UnoRuntime.queryInterface(XSpreadsheetDocument.class,o);
+	}
 
 	/** Holt {@link XPrintable} Interface von o.*/
 	public static XPrintable XPrintable(Object o)
@@ -434,7 +458,6 @@ public class UNO {
 		return (XPrintable)UnoRuntime.queryInterface(XPrintable.class,o);
 	}
 
-	
 	/** Holt {@link XTextDocument} Interface von o.*/
 	public static XTextDocument XTextDocument(Object o)
 	{
