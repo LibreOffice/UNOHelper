@@ -17,6 +17,8 @@
 * 006 | 17.08.2005 | BNK   | +findBrowseNodeTreeLeaf()
 * 007 | 19.08.2005 | BNK   | init(Object) => public, weil nützlich
 * 008 | 19.08.2005 | BNK   | +XPrintable()
+* 009 | 22.08.2005 | PIT   | +XNamed() 
+* 010 | 22.08.2005 | PIT   | +XTextContent()  
 * -------------------------------------------------------------------
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -30,6 +32,7 @@ import com.sun.star.beans.UnknownPropertyException;
 import com.sun.star.beans.XPropertySet;
 import com.sun.star.bridge.XUnoUrlResolver;
 import com.sun.star.comp.helper.Bootstrap;
+import com.sun.star.container.XNamed;
 import com.sun.star.document.MacroExecMode;
 import com.sun.star.frame.FrameSearchFlag;
 import com.sun.star.frame.XComponentLoader;
@@ -50,6 +53,7 @@ import com.sun.star.script.provider.XScriptProvider;
 import com.sun.star.script.provider.XScriptProviderFactory;
 import com.sun.star.script.provider.XScriptProviderSupplier;
 import com.sun.star.sdb.XDocumentDataSource;
+import com.sun.star.text.XTextContent;
 import com.sun.star.text.XTextDocument;
 import com.sun.star.uno.RuntimeException;
 import com.sun.star.uno.UnoRuntime;
@@ -398,6 +402,12 @@ public class UNO {
 	{
 		return (XNamingService)UnoRuntime.queryInterface(XNamingService.class,o);
 	}
+	
+	/** Holt {@link XNamed} Interface von o.*/
+	public static XNamed XNamed(Object o)
+	{
+		return (XNamed)UnoRuntime.queryInterface(XNamed.class,o);
+	}	
 
 	
 	/** Holt {@link XUnoUrlResolver} Interface von o.*/
@@ -430,6 +440,12 @@ public class UNO {
 	{
 		return (XTextDocument)UnoRuntime.queryInterface(XTextDocument.class,o);
 	}
+	
+	/** Holt {@link XTextContent} Interface von o.*/
+	public static XTextContent XTextContent(Object o)
+	{
+		return (XTextContent)UnoRuntime.queryInterface(XTextContent.class,o);
+	}	
 
 	
 	/** Holt {@link XDispatchProvider} Interface von o.*/
