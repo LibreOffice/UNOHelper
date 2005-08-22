@@ -7,22 +7,22 @@
 * Copyright: Landeshauptstadt München
 *
 * Änderungshistorie:
-* Nr. |  Datum     | Autor | Änderungsgrund
+* Nr. |  Datum     | Wer | Änderungsgrund
 * -------------------------------------------------------------------
-* 001 | 26.04.2005 | BNK   | Erstellung
-* 002 | 07.07.2005 | BNK   | Viele Verbesserungen
-* 003 | 16.08.2005 | BNK   | korrekte Dienststellenbezeichnung
-* 004 | 17.08.2005 | BNK   | +executeMacro()
-* 005 | 17.08.2005 | BNK   | +Internal-Klasse für interne Methoden
-* 006 | 17.08.2005 | BNK   | +findBrowseNodeTreeLeaf()
-* 007 | 19.08.2005 | BNK   | init(Object) => public, weil nützlich
-* 008 | 19.08.2005 | BNK   | +XPrintable()
-* 009 | 22.08.2005 | PIT   | +XNamed() 
-* 010 | 22.08.2005 | PIT   | +XTextContent()  
-* 011 | 19.08.2005 | BNK   | +XSpreadsheetDocument()
-* 012 | 19.08.2005 | BNK   | +XIndexAccess()
-* 013 | 19.08.2005 | BNK   | +XCellRange()
-* 014 | 22.08.2005 | BNK   | +XText()
+* 001 | 26.04.2005 | BNK | Erstellung
+* 002 | 07.07.2005 | BNK | Viele Verbesserungen
+* 003 | 16.08.2005 | BNK | korrekte Dienststellenbezeichnung
+* 004 | 17.08.2005 | BNK | +executeMacro()
+* 005 | 17.08.2005 | BNK | +Internal-Klasse für interne Methoden
+* 006 | 17.08.2005 | BNK | +findBrowseNodeTreeLeaf()
+* 007 | 19.08.2005 | BNK | init(Object) => public, weil nützlich
+* 008 | 19.08.2005 | BNK | +XPrintable()
+* 009 | 22.08.2005 | PIT | +XNamed() 
+* 010 | 22.08.2005 | PIT | +XTextContent()  
+* 011 | 19.08.2005 | BNK | +XSpreadsheetDocument()
+* 012 | 19.08.2005 | BNK | +XIndexAccess()
+* 013 | 19.08.2005 | BNK | +XCellRange()
+* 014 | 22.08.2005 | BNK | +XText()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
