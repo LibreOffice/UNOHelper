@@ -26,6 +26,8 @@
 * 22.08.2005 | PIT | +XNamed() 
 * 22.08.2005 | PIT | +XTextContent()  
 * 22.08.2005 | PIT | +XBookmarksSupplier()   
+* 22.08.2005 | BNK | +XColumnRowRange()
+* 22.08.2005 | BNK | +XTableColumns()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -64,6 +66,8 @@ import com.sun.star.sdb.XDocumentDataSource;
 import com.sun.star.text.XBookmarksSupplier;
 import com.sun.star.sheet.XSpreadsheetDocument;
 import com.sun.star.table.XCellRange;
+import com.sun.star.table.XColumnRowRange;
+import com.sun.star.table.XTableColumns;
 import com.sun.star.text.XText;
 import com.sun.star.text.XTextContent;
 import com.sun.star.text.XTextDocument;
@@ -393,6 +397,19 @@ public class UNO {
 	public static XStorable XStorable(Object o)
 	{
 		return (XStorable)UnoRuntime.queryInterface(XStorable.class,o);
+	}
+	
+ 	/** Holt {@link XTableColumns} Interface von o.*/
+	public static XTableColumns XTableColumns(Object o)
+	{
+		return (XTableColumns)UnoRuntime.queryInterface(XTableColumns.class,o);
+	}
+
+	
+	/** Holt {@link XColumnRowRange} Interface von o.*/
+	public static XColumnRowRange XColumnRowRange(Object o)
+	{
+		return (XColumnRowRange)UnoRuntime.queryInterface(XColumnRowRange.class,o);
 	}
 	
 	/** Holt {@link XIndexAccess} Interface von o.*/
