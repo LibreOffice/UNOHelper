@@ -7,11 +7,12 @@
 * Copyright: Landeshauptstadt München
 *
 * Änderungshistorie:
-* Nr. |  Datum     |   Autor   | Änderungsgrund
+*  Datum     | Wer | Änderungsgrund
 * -------------------------------------------------------------------
-* 001 | 07.07.2005 |    BNK    | Erstellung
-* 002 | 16.08.2005 |    BNK    | korrekte Dienststellenbezeichnung
-* 003 | 17.08.2005 |    BNK    | bessere Kommentare
+* 07.07.2005 | BNK | Erstellung
+* 16.08.2005 | BNK | korrekte Dienststellenbezeichnung
+* 17.08.2005 | BNK | bessere Kommentare
+* 31.08.2005 | BNK | +children(), um nur Kinder durchzuiterieren
 * -------------------------------------------------------------------
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -76,15 +77,21 @@ public class BrowseNode
 	
 	/** Dieser Iterator liefert den Knoten und alle Abkömmlinge als 
 	 * {@link BrowseNode}s.*/
-	public Iterator iterator() {return new ChildIterator(node);};
+	public Iterator iterator() {return new ChildIterator(node, false);};
+	
+	/** Dieser Iterator liefert alle Kinder des Knoten als {@link BrowseNode}s.*/
+	public Iterator children() {return new ChildIterator(node, true);};
 	
 	protected static class ChildIterator implements Iterator 
 	{
-		private Vector toVisit = new Vector();
+		private boolean childrenOnly;
+	  private Vector toVisit = new Vector();
 		
-		public ChildIterator(XBrowseNode root)
+		public ChildIterator(XBrowseNode root, boolean childrenOnly)
 		{
-			toVisit.add(root);
+			this.childrenOnly = childrenOnly;
+		  toVisit.add(root);
+		  if (childrenOnly) expandLast();
 		}
 		
 		/** @throws UnsupportedOperationException*/
@@ -95,7 +102,11 @@ public class BrowseNode
 		public Object next() throws NoSuchElementException
 		{
 			XBrowseNode retval = (XBrowseNode)toVisit.lastElement(); 
-			expandLast();
+			if (childrenOnly)
+			  toVisit.remove(toVisit.size()-1);
+			else
+			  expandLast();
+			
 			return new BrowseNode(retval); 
 		}
 		
