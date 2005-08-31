@@ -30,6 +30,15 @@
 * 22.08.2005 | BNK | +XTableColumns()
 * 22.08.2005 | BNK | +XSpreadsheet()
 * 24.08.2005 | BNK | +XCellRangeData()
+* 26.08.2005 | BNK | +XBrowseNode()
+* 31.08.2005 | BNK | +XScriptProvider()
+*                  | +findBrowseNodeTreeLeafAndScriptProvider()
+*                  | executeMacro() bekommt location Argument (diese nicht
+*                  | rückwärtskompatible Änderung war leider notwendig, weil die
+*                  | alte Version einfach broken war und nicht innerhalb des
+*                  | dokumentierten Verhaltens gefixt werden konnte.
+*                  | executeGlobalMacro() durchsucht nur noch globale Makros
+* 31.08.2005 | BNK | +executeMacro(macroName, args, location)
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -37,6 +46,8 @@
 * 
 * */
 package de.muenchen.allg.afid;
+
+import java.util.Iterator;
 
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.beans.UnknownPropertyException;
@@ -238,13 +249,19 @@ public class UNO {
 	 *              case-insensitive danach zu suchen. Falls dabei ebenfalls kein Makro
 	 *              gefunden wird, wird eine {@link IllegalArgumentException} geworfen.
 	 * @param args die Argumente, die dem Makro übergeben werden sollen.
+	 * @param location eine Liste aller erlaubten locations ("application", "share", "document")
+	 *        für das Makro. Bei der Suche wird zuerst ein case-sensitive Match in
+	 *        allen gelisteten locations gesucht, bevor die case-insenstive Suche
+	 *        versucht wird. Durch Verwendung der exakten Gross-/Kleinschreibung
+	 *        des Makros und korrekte Ordnung der location Liste lässt sich also
+	 *        immer das richtige Makro selektieren.
 	 * @throws RuntimeException wenn entweder kein passendes Makro gefunden wurde, oder
 	 *              scriptProviderOrSupplier weder {@link XScriptProvider} noch
 	 *              {@link XScriptProviderSupplier} implementiert.
 	 * @return den Rückgabewert des Makros.
 	 * @author Matthias Benkmann (D-III-ITD 5.1)
 	 */
-	public static Object executeMacro(Object scriptProviderOrSupplier, String macroName, Object[] args)
+	public static Object executeMacro(Object scriptProviderOrSupplier, String macroName, Object[] args, String[] location)
 	{
 		XScriptProvider provider = (XScriptProvider)UnoRuntime.queryInterface(XScriptProvider.class, scriptProviderOrSupplier);
 		if (provider == null)
@@ -255,12 +272,13 @@ public class UNO {
 		}
 		
 		XBrowseNode root = (XBrowseNode)UnoRuntime.queryInterface(XBrowseNode.class, provider);
-		return Internal.executeMacroInternal(macroName, args, provider, root);
+		return Internal.executeMacroInternal(macroName, args, provider, root, location);
 	}
 	
 	/**
 	 * Ruft ein globales Makro auf (d,h, eines, das nicht in einem Dokument
-	 * gespeichert ist).
+	 * gespeichert ist). Im Falle gleichnamiger Makros hat ein Makro mit
+	 * location=application Vorrang vor einem mit location=share.
 	 * 
 	 * @param macroName ist der Name des Makros. Der Name kann optional durch "." abgetrennte
 	 *              Bezeichner für Bibliotheken/Module vorangestellt haben. Es sind also sowohl
@@ -275,48 +293,101 @@ public class UNO {
 	 */
 	public static Object executeGlobalMacro(String macroName, Object[] args)
 	{
-	  return Internal.executeMacroInternal(macroName, args, masterScriptProvider, scriptRoot.unwrap());
+	  final String[] userAndShare = new String[]{"application", "share"};
+	  return Internal.executeMacroInternal(macroName, args, null, scriptRoot.unwrap(), userAndShare);
 	}
 
-		
+	/**
+	 * Ruft ein Makro aus dem gesamten Makro-Baum auf.
+	 * 
+	 * @param macroName ist der Name des Makros. Der Name kann optional durch "." abgetrennte
+	 *              Bezeichner für Bibliotheken/Module vorangestellt haben. Es sind also sowohl
+	 *              "Foo" als auch "Module1.Foo" und "Standard.Module1.Foo" erlaubt.
+	 *              Wenn kein passendes Makro gefunden wird, wird zuerst versucht, 
+	 *              case-insensitive danach zu suchen. Falls dabei ebenfalls kein Makro
+	 *              gefunden wird, wird eine {@link IllegalArgumentException} geworfen.
+	 * @param args die Argumente, die dem Makro übergeben werden sollen.
+	 * @param location eine Liste aller erlaubten locations ("application", "share", "document")
+	 *        für das Makro. Bei der Suche wird zuerst ein case-sensitive Match in
+	 *        allen gelisteten locations gesucht, bevor die case-insenstive Suche
+	 *        versucht wird. Durch Verwendung der exakten Gross-/Kleinschreibung
+	 *        des Makros und korrekte Ordnung der location Liste lässt sich also
+	 *        immer das richtige Makro selektieren.
+	 * @throws RuntimeException wenn kein passendes Makro gefunden wurde.
+	 * @return den Rückgabewert des Makros.
+	 * @author Matthias Benkmann (D-III-ITD 5.1)
+	 */
+	public static Object executeMacro(String macroName, Object[] args, String[] location)
+	{
+	  return Internal.executeMacroInternal(macroName, args, null, scriptRoot.unwrap(), location);
+	}
+
+	
+	public static class XBrowseNodeAndXScriptProvider
+	{
+	  public XBrowseNode XBrowseNode = null;
+	  public XScriptProvider XScriptProvider = null;
+	  public XBrowseNodeAndXScriptProvider(){};
+	  public XBrowseNodeAndXScriptProvider(XBrowseNode xBrowseNode, XScriptProvider xScriptProvider){this.XBrowseNode = xBrowseNode; this.XScriptProvider = xScriptProvider;};
+	}
+	
 	/**
 	 * Durchsucht einen {@link XBrowseNode} Baum nach einem Blatt, dessen Name mit der
-	 * Zeichefolge nameToFind endet. 
-	 * @param xBrowseNode Wurzel des zu durchsuchenden Baums.
-	 * @param prefix wird dem Namen jedes Knoten vorangestellt. Dies wird verwendet, wenn 
-	 *          xBrowseNode nicht die Wurzel ist.
-	 * @param nameToFind  das zu suchende Namenssuffix.
-	 * @param caseSensitive falls true, so wird Gross-/Kleinschreibung berücksichtigt bei der 
-	 *         Suche.
+	 * Zeichefolge nameToFind endet. Siehe {@link #findBrowseNodeTreeLeafAndScriptProvider(XBrowseNode, String, String, boolean, String)}. 
 	 * @return den gefundenen Knoten oder null falls keiner gefunden.
 	 * @author Matthias Benkmann (D-III-ITD 5.1)
 	 */
 	public static XBrowseNode findBrowseNodeTreeLeaf(XBrowseNode xBrowseNode, String prefix, String nameToFind, boolean caseSensitive)
 	{
-		String name = xBrowseNode.getName();
-		if (!prefix.equals(""))	name = prefix + "." + name; 
+	  XBrowseNodeAndXScriptProvider x = findBrowseNodeTreeLeafAndScriptProvider(xBrowseNode, prefix, nameToFind, caseSensitive);
+	  return x.XBrowseNode;
+	}
 		
-		if (!caseSensitive) 
-		{ 
-			name = name.toLowerCase(); 
-			nameToFind = nameToFind.toLowerCase(); 
-		}
-		
-		if (xBrowseNode.hasChildNodes())
-		{
-			XBrowseNode[] child = xBrowseNode.getChildNodes();
-			for (int i = 0; i < child.length; ++i)
-			{
-				XBrowseNode o = findBrowseNodeTreeLeaf(child[i], name, nameToFind, caseSensitive);
-				if (o != null) return o;
-			}
-		}
-		else
-			if (name.endsWith(nameToFind)) return xBrowseNode;
-		
-		return null;
+	/**
+	 * Durchsucht einen {@link XBrowseNode} Baum nach einem Blatt, dessen Name mit der
+	 * Zeichefolge nameToFind endet. Siehe {@link #findBrowseNodeTreeLeafAndScriptProvider(XBrowseNode, String, String, boolean, String)}. 
+	 * @return den gefundenen Knoten, sowie den nächsten Vorfahren, der XScriptProvider
+	 * implementiert (oder den Knoten selbst, falls dieser XScriptProvider implementiert). 
+	 * Falls kein entsprechender Knoten oder Vorfahre gefunden wurde,
+	 * wird der entsprechende Wert als null geliefert.
+	 * @author Matthias Benkmann (D-III-ITD 5.1)
+	 */
+	public static XBrowseNodeAndXScriptProvider findBrowseNodeTreeLeafAndScriptProvider(XBrowseNode xBrowseNode, String prefix, String nameToFind, boolean caseSensitive)
+	{
+	  return findBrowseNodeTreeLeafAndScriptProvider(xBrowseNode, prefix, nameToFind, caseSensitive, null);	
 	}
 
+ /**
+  * Durchsucht einen {@link XBrowseNode} Baum nach einem Blatt, dessen Name mit der
+  * Zeichefolge nameToFind endet. Siehe {@link #findBrowseNodeTreeLeafAndScriptProvider(XBrowseNode, String, String, boolean, String)}. 
+	* @param xBrowseNode Wurzel des zu durchsuchenden Baums.
+	* @param prefix wird dem Namen jedes Knoten vorangestellt. Dies wird verwendet, wenn 
+	*          xBrowseNode nicht die Wurzel ist.
+	* @param nameToFind  das zu suchende Namenssuffix.
+	* @param caseSensitive falls true, so wird Gross-/Kleinschreibung berücksichtigt bei der 
+	*         Suche.
+  * @param Falls location nicht null ist, gelten nur Knoten als Treffer,
+  *        die ein "URI" Property haben, das eine location enthält die
+  *        einem String in der <code>location</code> Liste entspricht.
+	*        Typischerweise werden für <code>location</code> "application" 
+	*        oder "share" übergeben.
+	* @return den gefundenen Knoten, sowie den nächsten Vorfahren, der XScriptProvider
+	* implementiert. Falls kein entsprechender Knoten oder Vorfahre gefunden wurde,
+	* wird der entsprechende Wert als null geliefert.
+	* @author Matthias Benkmann (D-III-ITD 5.1)
+	*/
+	public static XBrowseNodeAndXScriptProvider findBrowseNodeTreeLeafAndScriptProvider(XBrowseNode xBrowseNode, String prefix, String nameToFind, boolean caseSensitive, String[] location)
+	{ //T
+		final String[] noLoc = new String[]{null};
+		if (location == null) location = noLoc;
+		for (int i = 0; i < location.length; ++i)
+		{
+	    XBrowseNodeAndXScriptProvider o = Internal.findBrowseNodeTreeLeafAndScriptProvider(new BrowseNode(xBrowseNode), prefix, nameToFind, caseSensitive, location[i], null);
+	    if (o.XBrowseNode != null) return o;
+		}
+		
+		return new XBrowseNodeAndXScriptProvider(null,null);
+	}
 	
 	/**
 	 * Liefert den Wert von Property propName des Objekts o zurück.
@@ -403,6 +474,12 @@ public class UNO {
 		return (XStorable)UnoRuntime.queryInterface(XStorable.class,o);
 	}
 	
+	/** Holt {@link XBrowseNode} Interface von o.*/
+	public static XBrowseNode XBrowseNode(Object o)
+	{
+		return (XBrowseNode)UnoRuntime.queryInterface(XBrowseNode.class,o);
+	}
+	
 	/** Holt {@link XCellRangeData} Interface von o.*/
 	public static XCellRangeData XCellRangeData(Object o)
 	{
@@ -477,6 +554,12 @@ public class UNO {
 	public static XModel XModel(Object o)
 	{
 		return (XModel)UnoRuntime.queryInterface(XModel.class,o);
+	}
+	
+	/** Holt {@link XScriptProvider} Interface von o.*/
+	public static XScriptProvider XScriptProvider(Object o)
+	{
+		return (XScriptProvider)UnoRuntime.queryInterface(XScriptProvider.class,o);
 	}
 	
 	/** Holt {@link XSpreadsheet} Interface von o.*/
@@ -554,24 +637,77 @@ public class UNO {
 	private static class Internal
 	{
 
-    /**
+	  /**
+	   * siehe {@link UNO#findBrowseNodeTreeLeafAndScriptProvider(XBrowseNode, String, String, boolean, String, XScriptProvider)}
+	   * @param xScriptProvider der zuletzt gesehene xScriptProvider 
+	   * @author bnk
+	   */
+	  public static XBrowseNodeAndXScriptProvider findBrowseNodeTreeLeafAndScriptProvider(BrowseNode node, String prefix, String nameToFind, boolean caseSensitive, String location, XScriptProvider xScriptProvider)
+		{ //T
+	    String name = node.getName();
+			if (!prefix.equals(""))	name = prefix + "." + name; 
+			
+			if (!caseSensitive) 
+			{ 
+				name = name.toLowerCase(); 
+				nameToFind = nameToFind.toLowerCase(); 
+			}
+			
+			XScriptProvider xsc = (XScriptProvider)node.as(XScriptProvider.class);
+			if (xsc != null) xScriptProvider = xsc;
+			
+			Iterator iter = node.children();
+			
+			if (name.endsWith(nameToFind) && !iter.hasNext() && checkLocation(node.unwrap(), location)) 
+			  return new XBrowseNodeAndXScriptProvider(node.unwrap(), xScriptProvider);
+						
+			while (iter.hasNext())
+			{
+				BrowseNode child = (BrowseNode)iter.next();
+				
+				XBrowseNodeAndXScriptProvider o = findBrowseNodeTreeLeafAndScriptProvider(child, name, nameToFind, caseSensitive, location, xScriptProvider);
+        if (o.XBrowseNode != null) return o;
+			}
+			
+			return new XBrowseNodeAndXScriptProvider(null, null);
+		}
+
+	  /**
+	   * @author bnk
+	   */
+	  private static boolean checkLocation(XBrowseNode node, String location)
+	  {
+	    if (location == null) return true;
+	    String uri = (String)UNO.getProperty(node, "URI");
+	    if (uri == null) return false;
+	    if (uri.indexOf("?location="+location) >= 0 ||
+	        uri.indexOf("&location="+location) >= 0) return true;
+	    return false;
+	  }
+	  
+    /** 
+     * Wenn <code>provider = null</code>, so wird versucht, 
+     * einen passenden Provider zu finden.  
      * @author bnk
      */
-    private static Object executeMacroInternal(String macroName, Object[] args, XScriptProvider provider, XBrowseNode root)
+    private static Object executeMacroInternal(String macroName, Object[] args, XScriptProvider provider, XBrowseNode root, String[] location)
     {
-      Object oScript = UNO.findBrowseNodeTreeLeaf(root, "", "." + macroName, true);
-    	if (oScript == null)
-    		oScript = UNO.findBrowseNodeTreeLeaf(root, "", "." + macroName, false);
-    	if (oScript == null)
-    		oScript = UNO.findBrowseNodeTreeLeaf(root, "", macroName, true);
-    	if (oScript == null)
-    		oScript = UNO.findBrowseNodeTreeLeaf(root, "", macroName, false);
+      XBrowseNodeAndXScriptProvider o = null;
+      
+      o = UNO.findBrowseNodeTreeLeafAndScriptProvider(root, "", "." + macroName, true, location);
+      if (o.XBrowseNode == null)
+        o = UNO.findBrowseNodeTreeLeafAndScriptProvider(root, "", "." + macroName, false, location);
+      if (o.XBrowseNode == null)
+        o = UNO.findBrowseNodeTreeLeafAndScriptProvider(root, "", macroName, true, location);
+      if (o.XBrowseNode == null)
+        o = UNO.findBrowseNodeTreeLeafAndScriptProvider(root, "", macroName, false, location);
     	
-    	XScript script;
+      if (provider == null) provider = o.XScriptProvider;
+    	
+      XScript script;
     	
     	try{
-    		XPropertySet props = (XPropertySet)UnoRuntime.queryInterface(XPropertySet.class, oScript);
-    		String uri = (String)props.getPropertyValue("URI");
+    	  String uri = (String)UNO.getProperty(o.XBrowseNode, "URI");
     		script = provider.getScript(uri);
     	}
     	catch(Exception x)
