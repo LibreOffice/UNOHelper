@@ -39,6 +39,7 @@
 *                  | dokumentierten Verhaltens gefixt werden konnte.
 *                  | executeGlobalMacro() durchsucht nur noch globale Makros
 * 31.08.2005 | BNK | +executeMacro(macroName, args, location)
+* 05.09.2005 | BNK | +XEventBroadcaster()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -57,6 +58,7 @@ import com.sun.star.comp.helper.Bootstrap;
 import com.sun.star.container.XIndexAccess;
 import com.sun.star.container.XNamed;
 import com.sun.star.document.MacroExecMode;
+import com.sun.star.document.XEventBroadcaster;
 import com.sun.star.frame.FrameSearchFlag;
 import com.sun.star.frame.XComponentLoader;
 import com.sun.star.frame.XDesktop;
@@ -472,6 +474,12 @@ public class UNO {
 	public static XStorable XStorable(Object o)
 	{
 		return (XStorable)UnoRuntime.queryInterface(XStorable.class,o);
+	}
+	
+	/** Holt {@link XEventBroadcaster} Interface von o.*/
+	public static XEventBroadcaster XEventBroadcaster(Object o)
+	{
+		return (XEventBroadcaster)UnoRuntime.queryInterface(XEventBroadcaster.class,o);
 	}
 	
 	/** Holt {@link XBrowseNode} Interface von o.*/
