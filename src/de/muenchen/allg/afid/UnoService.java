@@ -23,10 +23,11 @@
  * Änderungshistorie der Landeshauptstadt München:
  * Alle Änderungen (c) Landeshauptstadt München, alle Rechte vorbehalten
  * 
- * Nr. |  Datum     |   Autor   | Änderungsgrund
+ * Datum      | Wer | Änderungsgrund
  * -------------------------------------------------------------------
- * 001 | 26.04.2005 |    BNK    | getSimpleName() durch getName() 
- *     |            |           | ersetzt wg. Java 1.4 Kompatibilität 
+ * 26.04.2005 | BNK | getSimpleName() durch getName() 
+ *            |     | ersetzt wg. Java 1.4 Kompatibilität
+ * 05.09.2005 | BNK | getImplememtationName() -> getImplementationName() 
  * -------------------------------------------------------------------
  */
 
@@ -137,7 +138,7 @@ public class UnoService {
 	 * @return the implementationName of this unoService-object of the String
 	 *         "noneUnoService" if the object is not a proper UnoService.
 	 */
-	public String getImplememtationName() {
+	public String getImplementationName() {
 		if (this.xServiceInfo() != null) {
 			return this.xServiceInfo().getImplementationName();
 		} else {
