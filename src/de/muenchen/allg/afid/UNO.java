@@ -40,6 +40,7 @@
 *                  | executeGlobalMacro() durchsucht nur noch globale Makros
 * 31.08.2005 | BNK | +executeMacro(macroName, args, location)
 * 05.09.2005 | BNK | +XEventBroadcaster()
+* 05.09.2005 | BNK | +XComponent()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -474,6 +475,12 @@ public class UNO {
 	public static XStorable XStorable(Object o)
 	{
 		return (XStorable)UnoRuntime.queryInterface(XStorable.class,o);
+	}
+	
+	/** Holt {@link XComponent} Interface von o.*/
+	public static XComponent XComponent(Object o)
+	{
+		return (XComponent)UnoRuntime.queryInterface(XComponent.class,o);
 	}
 	
 	/** Holt {@link XEventBroadcaster} Interface von o.*/
