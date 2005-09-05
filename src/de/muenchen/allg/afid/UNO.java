@@ -42,6 +42,7 @@
 * 05.09.2005 | BNK | +XEventBroadcaster()
 * 05.09.2005 | BNK | +XComponent()
 * 05.09.2005 | BNK | +XTextFieldsSupplier()
+* 05.09.2005 | BNK | +XModifyBroadcaster()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -96,6 +97,7 @@ import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 import com.sun.star.uno.XNamingService;
 import com.sun.star.util.XModifiable;
+import com.sun.star.util.XModifyBroadcaster;
 import com.sun.star.util.XURLTransformer;
 import com.sun.star.view.XPrintable;
 
@@ -577,6 +579,12 @@ public class UNO {
 	public static XModel XModel(Object o)
 	{
 		return (XModel)UnoRuntime.queryInterface(XModel.class,o);
+	}
+	
+	/** Holt {@link XModifyBroadcaster} Interface von o.*/
+	public static XModifyBroadcaster XModifyBroadcaster(Object o)
+	{
+		return (XModifyBroadcaster)UnoRuntime.queryInterface(XModifyBroadcaster.class,o);
 	}
 	
 	/** Holt {@link XScriptProvider} Interface von o.*/
