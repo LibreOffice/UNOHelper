@@ -41,6 +41,7 @@
 * 31.08.2005 | BNK | +executeMacro(macroName, args, location)
 * 05.09.2005 | BNK | +XEventBroadcaster()
 * 05.09.2005 | BNK | +XComponent()
+* 05.09.2005 | BNK | +XTextFieldsSupplier()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -89,6 +90,7 @@ import com.sun.star.table.XTableColumns;
 import com.sun.star.text.XText;
 import com.sun.star.text.XTextContent;
 import com.sun.star.text.XTextDocument;
+import com.sun.star.text.XTextFieldsSupplier;
 import com.sun.star.uno.RuntimeException;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
@@ -475,6 +477,12 @@ public class UNO {
 	public static XStorable XStorable(Object o)
 	{
 		return (XStorable)UnoRuntime.queryInterface(XStorable.class,o);
+	}
+	
+	/** Holt {@link XTextFieldsSupplier} Interface von o.*/
+	public static XTextFieldsSupplier XTextFieldsSupplier(Object o)
+	{
+		return (XTextFieldsSupplier)UnoRuntime.queryInterface(XTextFieldsSupplier.class,o);
 	}
 	
 	/** Holt {@link XComponent} Interface von o.*/
