@@ -48,6 +48,7 @@
 * 06.09.2005 | SIE | +XDesktop()
 * 06.09.2005 | SIE | +XChangesBatch()
 * 06.09.2005 | SIE | +XNameAccess()
+* 06.09.2005 | BNK | TOD0 Optimierung von findBrowseNode.. hinzugefügt
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -713,6 +714,13 @@ public class UNO {
 	   */
 	  public static XBrowseNodeAndXScriptProvider findBrowseNodeTreeLeafAndScriptProvider(BrowseNode node, String prefix, String nameToFind, boolean caseSensitive, String location, XScriptProvider xScriptProvider)
 		{ //T
+	    /* TODO Mögliche Optimierung, um Geschwindigkeit zu steigern:
+	     * Statt Tiefensuche eine Breitensuche unter Bevorzugung von Ästen mit
+	     * der Eigenschaft, dass ein Suffix des Astbezeichners, das mit einem 
+	     * Punkt beginnt ein Prefix ist des zu suchenden Bezeichners.
+	     * Dadurch sollten Anfragen, die einen möglichst präzisen Pfad liefern
+	     * (inklusive Bibliothek und Modul) wesentlich schneller werden.
+	     */
 	    String name = node.getName();
 			if (!prefix.equals(""))	name = prefix + "." + name; 
 			
