@@ -43,6 +43,11 @@
 * 05.09.2005 | BNK | +XComponent()
 * 05.09.2005 | BNK | +XTextFieldsSupplier()
 * 05.09.2005 | BNK | +XModifyBroadcaster()
+* 06.09.2005 | SIE | +XNameContainer()
+* 06.09.2005 | SIE | +XMultiServiceFactory()
+* 06.09.2005 | SIE | +XDesktop()
+* 06.09.2005 | SIE | +XChangesBatch()
+* 06.09.2005 | SIE | +XNameAccess()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -59,6 +64,8 @@ import com.sun.star.beans.XPropertySet;
 import com.sun.star.bridge.XUnoUrlResolver;
 import com.sun.star.comp.helper.Bootstrap;
 import com.sun.star.container.XIndexAccess;
+import com.sun.star.container.XNameAccess;
+import com.sun.star.container.XNameContainer;
 import com.sun.star.container.XNamed;
 import com.sun.star.document.MacroExecMode;
 import com.sun.star.document.XEventBroadcaster;
@@ -96,6 +103,7 @@ import com.sun.star.uno.RuntimeException;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 import com.sun.star.uno.XNamingService;
+import com.sun.star.util.XChangesBatch;
 import com.sun.star.util.XModifiable;
 import com.sun.star.util.XModifyBroadcaster;
 import com.sun.star.util.XURLTransformer;
@@ -662,6 +670,36 @@ public class UNO {
 		return (XBookmarksSupplier)UnoRuntime.queryInterface(XBookmarksSupplier.class,o);
 	}	
 
+	/** Holt {@link XNameContainer} Interface von o.*/
+	public static XNameContainer XNameContainer(Object o)
+	{
+		return (XNameContainer)UnoRuntime.queryInterface(XNameContainer.class,o);
+	}	
+	
+	/** Holt {@link XMultiServiceFactory} Interface von o.*/
+	public static XMultiServiceFactory XMultiServiceFactory(Object o)
+	{
+		return (XMultiServiceFactory)UnoRuntime.queryInterface(XMultiServiceFactory.class,o);
+	}	
+	
+	/** Holt {@link XDesktop} Interface von o.*/
+	public static XDesktop XDesktop(Object o)
+	{
+		return (XDesktop)UnoRuntime.queryInterface(XDesktop.class,o);
+	}	
+	
+	/** Holt {@link XChangesBatch} Interface von o.*/
+	public static XChangesBatch XChangesBatch(Object o)
+	{
+		return (XChangesBatch)UnoRuntime.queryInterface(XChangesBatch.class,o);
+	}	
+	
+	/** Holt {@link XNameAccess} Interface von o.*/
+	public static XNameAccess xNameAccess(Object o)
+	{
+		return (XNameAccess)UnoRuntime.queryInterface(XNameAccess.class,o);
+	}	
+	
   /**
    * Interne Funktionen
    */
