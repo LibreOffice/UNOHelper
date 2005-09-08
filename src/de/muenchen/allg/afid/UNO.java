@@ -4,18 +4,18 @@
 * Projekt  : n/a
 * Funktion : Hilfsklasse zur leichteren Verwendung der UNO API.
 * 
-* Copyright: Landeshauptstadt München
+* Copyright: Landeshauptstadt Mï¿½nchen
 *
-* Änderungshistorie:
-* Datum      | Wer | Änderungsgrund
+* ï¿½nderungshistorie:
+* Datum      | Wer | ï¿½nderungsgrund
 * -------------------------------------------------------------------
 * 26.04.2005 | BNK | Erstellung
 * 07.07.2005 | BNK | Viele Verbesserungen
 * 16.08.2005 | BNK | korrekte Dienststellenbezeichnung
 * 17.08.2005 | BNK | +executeMacro()
-* 17.08.2005 | BNK | +Internal-Klasse für interne Methoden
+* 17.08.2005 | BNK | +Internal-Klasse fï¿½r interne Methoden
 * 17.08.2005 | BNK | +findBrowseNodeTreeLeaf()
-* 19.08.2005 | BNK | init(Object) => public, weil nützlich
+* 19.08.2005 | BNK | init(Object) => public, weil nï¿½tzlich
 * 19.08.2005 | BNK | +XPrintable()
 * 22.08.2005 | PIT | +XNamed() 
 * 22.08.2005 | PIT | +XTextContent()  
@@ -34,7 +34,7 @@
 * 31.08.2005 | BNK | +XScriptProvider()
 *                  | +findBrowseNodeTreeLeafAndScriptProvider()
 *                  | executeMacro() bekommt location Argument (diese nicht
-*                  | rückwärtskompatible Änderung war leider notwendig, weil die
+*                  | rï¿½ckwï¿½rtskompatible ï¿½nderung war leider notwendig, weil die
 *                  | alte Version einfach broken war und nicht innerhalb des
 *                  | dokumentierten Verhaltens gefixt werden konnte.
 *                  | executeGlobalMacro() durchsucht nur noch globale Makros
@@ -48,7 +48,8 @@
 * 06.09.2005 | SIE | +XDesktop()
 * 06.09.2005 | SIE | +XChangesBatch()
 * 06.09.2005 | SIE | +XNameAccess()
-* 06.09.2005 | BNK | TOD0 Optimierung von findBrowseNode.. hinzugefügt
+* 06.09.2005 | BNK | TOD0 Optimierung von findBrowseNode.. hinzugefï¿½gt
+* 08.09.2005 | LUT | +XFilePicker()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -100,6 +101,7 @@ import com.sun.star.text.XText;
 import com.sun.star.text.XTextContent;
 import com.sun.star.text.XTextDocument;
 import com.sun.star.text.XTextFieldsSupplier;
+import com.sun.star.ui.dialogs.XFilePicker;
 import com.sun.star.uno.RuntimeException;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
@@ -141,9 +143,9 @@ public class UNO {
 	 */
 	public static XDesktop desktop;
 	/**
-	 * Komponenten-spezifische Methoden arbeiten defaultmässig mit dieser
-	 * Komponente. Wird von manchen Methoden geändert, ist aber ansonsten der
-	 * Kontroller des Programmierers überlassen. 
+	 * Komponenten-spezifische Methoden arbeiten defaultmï¿½ssig mit dieser
+	 * Komponente. Wird von manchen Methoden geï¿½ndert, ist aber ansonsten der
+	 * Kontroller des Programmierers ï¿½berlassen. 
 	 */
 	public static XComponent compo;
 	
@@ -187,7 +189,7 @@ public class UNO {
 	}
 	
 	/**
-	 * Initialisiert die statischen Felder dieser Klasse ausgehend für eine
+	 * Initialisiert die statischen Felder dieser Klasse ausgehend fï¿½r eine
 	 * existierende Verbindung.
 	 * @param remoteServiceManager der Haupt-ServiceManager.
 	 * @throws Exception falls was schief geht.
@@ -218,13 +220,13 @@ public class UNO {
 	
 	
 	/**
-	 * Läd ein Dokument und setzt im Erfolgsfall {@link #compo} auf das geöffnete Dokument.
+	 * Lï¿½d ein Dokument und setzt im Erfolgsfall {@link #compo} auf das geï¿½ffnete Dokument.
 	 * @param URL die URL des zu ladenden Dokuments, z.B. "file:///C:/temp/footest.odt"
-	 *        oder "private:factory/swriter" (für ein leeres).
+	 *        oder "private:factory/swriter" (fï¿½r ein leeres).
 	 * @param asTemplate falls true wird das Dokument als Vorlage behandelt und ein neues
 	 *        unbenanntes Dokument erzeugt.
-	 * @param allowMacros  falls true wird die Ausführung von Makros freigeschaltet.
-	 * @return das geöffnete Dokument
+	 * @param allowMacros  falls true wird die Ausfï¿½hrung von Makros freigeschaltet.
+	 * @return das geï¿½ffnete Dokument
 	 * @throws com.sun.star.io.IOException
 	 * @throws com.sun.star.lang.IllegalArgumentException
 	 * @author Matthias Benkmann (D-III-ITD 5.1)
@@ -250,31 +252,31 @@ public class UNO {
 	}
 	
 	/**
-	 * Ruft ein Makro auf unter expliziter Angabe der Komponente, die es zur Verfügung
+	 * Ruft ein Makro auf unter expliziter Angabe der Komponente, die es zur Verfï¿½gung
 	 * stellt.
 	 * 
 	 * @param scriptProviderOrSupplier ist ein Objekt, das entweder {@link XScriptProvider} oder
 	 *              {@link XScriptProviderSupplier} implementiert. Dies kann z.B. ein TextDocument sein.
-	 *              Soll einfach nur ein Skript aus dem gesamten Skript-Baum ausgeführt werden,
+	 *              Soll einfach nur ein Skript aus dem gesamten Skript-Baum ausgefï¿½hrt werden,
 	 *              kann die Funktion {@link #executeGlobalMacro(String, Object[])} verwendet werden, 
 	 *              die diesen Parameter nicht erfordert.
 	 * @param macroName ist der Name des Makros. Der Name kann optional durch "." abgetrennte
-	 *              Bezeichner für Bibliotheken/Module vorangestellt haben. Es sind also sowohl
+	 *              Bezeichner fï¿½r Bibliotheken/Module vorangestellt haben. Es sind also sowohl
 	 *              "Foo" als auch "Module1.Foo" und "Standard.Module1.Foo" erlaubt.
 	 *              Wenn kein passendes Makro gefunden wird, wird zuerst versucht, 
 	 *              case-insensitive danach zu suchen. Falls dabei ebenfalls kein Makro
 	 *              gefunden wird, wird eine {@link IllegalArgumentException} geworfen.
-	 * @param args die Argumente, die dem Makro übergeben werden sollen.
+	 * @param args die Argumente, die dem Makro ï¿½bergeben werden sollen.
 	 * @param location eine Liste aller erlaubten locations ("application", "share", "document")
-	 *        für das Makro. Bei der Suche wird zuerst ein case-sensitive Match in
+	 *        fï¿½r das Makro. Bei der Suche wird zuerst ein case-sensitive Match in
 	 *        allen gelisteten locations gesucht, bevor die case-insenstive Suche
 	 *        versucht wird. Durch Verwendung der exakten Gross-/Kleinschreibung
-	 *        des Makros und korrekte Ordnung der location Liste lässt sich also
+	 *        des Makros und korrekte Ordnung der location Liste lï¿½sst sich also
 	 *        immer das richtige Makro selektieren.
 	 * @throws RuntimeException wenn entweder kein passendes Makro gefunden wurde, oder
 	 *              scriptProviderOrSupplier weder {@link XScriptProvider} noch
 	 *              {@link XScriptProviderSupplier} implementiert.
-	 * @return den Rückgabewert des Makros.
+	 * @return den Rï¿½ckgabewert des Makros.
 	 * @author Matthias Benkmann (D-III-ITD 5.1)
 	 */
 	public static Object executeMacro(Object scriptProviderOrSupplier, String macroName, Object[] args, String[] location)
@@ -283,7 +285,7 @@ public class UNO {
 		if (provider == null)
 		{
 			XScriptProviderSupplier supp = (XScriptProviderSupplier)UnoRuntime.queryInterface(XScriptProviderSupplier.class, scriptProviderOrSupplier);
-			if (supp == null) throw new RuntimeException("Übergebenes Objekt ist weder XScriptProvider noch XScriptProviderSupplier");
+			if (supp == null) throw new RuntimeException("ï¿½bergebenes Objekt ist weder XScriptProvider noch XScriptProviderSupplier");
 			provider = supp.getScriptProvider();
 		}
 		
@@ -297,14 +299,14 @@ public class UNO {
 	 * location=application Vorrang vor einem mit location=share.
 	 * 
 	 * @param macroName ist der Name des Makros. Der Name kann optional durch "." abgetrennte
-	 *              Bezeichner für Bibliotheken/Module vorangestellt haben. Es sind also sowohl
+	 *              Bezeichner fï¿½r Bibliotheken/Module vorangestellt haben. Es sind also sowohl
 	 *              "Foo" als auch "Module1.Foo" und "Standard.Module1.Foo" erlaubt.
 	 *              Wenn kein passendes Makro gefunden wird, wird zuerst versucht, 
 	 *              case-insensitive danach zu suchen. Falls dabei ebenfalls kein Makro
 	 *              gefunden wird, wird eine {@link IllegalArgumentException} geworfen.
-	 * @param args die Argumente, die dem Makro übergeben werden sollen.
+	 * @param args die Argumente, die dem Makro ï¿½bergeben werden sollen.
 	 * @throws RuntimeException wenn kein passendes Makro gefunden wurde.
-	 * @return den Rückgabewert des Makros.
+	 * @return den Rï¿½ckgabewert des Makros.
 	 * @author Matthias Benkmann (D-III-ITD 5.1)
 	 */
 	public static Object executeGlobalMacro(String macroName, Object[] args)
@@ -317,20 +319,20 @@ public class UNO {
 	 * Ruft ein Makro aus dem gesamten Makro-Baum auf.
 	 * 
 	 * @param macroName ist der Name des Makros. Der Name kann optional durch "." abgetrennte
-	 *              Bezeichner für Bibliotheken/Module vorangestellt haben. Es sind also sowohl
+	 *              Bezeichner fï¿½r Bibliotheken/Module vorangestellt haben. Es sind also sowohl
 	 *              "Foo" als auch "Module1.Foo" und "Standard.Module1.Foo" erlaubt.
 	 *              Wenn kein passendes Makro gefunden wird, wird zuerst versucht, 
 	 *              case-insensitive danach zu suchen. Falls dabei ebenfalls kein Makro
 	 *              gefunden wird, wird eine {@link IllegalArgumentException} geworfen.
-	 * @param args die Argumente, die dem Makro übergeben werden sollen.
+	 * @param args die Argumente, die dem Makro ï¿½bergeben werden sollen.
 	 * @param location eine Liste aller erlaubten locations ("application", "share", "document")
-	 *        für das Makro. Bei der Suche wird zuerst ein case-sensitive Match in
+	 *        fï¿½r das Makro. Bei der Suche wird zuerst ein case-sensitive Match in
 	 *        allen gelisteten locations gesucht, bevor die case-insenstive Suche
 	 *        versucht wird. Durch Verwendung der exakten Gross-/Kleinschreibung
-	 *        des Makros und korrekte Ordnung der location Liste lässt sich also
+	 *        des Makros und korrekte Ordnung der location Liste lï¿½sst sich also
 	 *        immer das richtige Makro selektieren.
 	 * @throws RuntimeException wenn kein passendes Makro gefunden wurde.
-	 * @return den Rückgabewert des Makros.
+	 * @return den Rï¿½ckgabewert des Makros.
 	 * @author Matthias Benkmann (D-III-ITD 5.1)
 	 */
 	public static Object executeMacro(String macroName, Object[] args, String[] location)
@@ -362,7 +364,7 @@ public class UNO {
 	/**
 	 * Durchsucht einen {@link XBrowseNode} Baum nach einem Blatt, dessen Name mit der
 	 * Zeichefolge nameToFind endet. Siehe {@link #findBrowseNodeTreeLeafAndScriptProvider(XBrowseNode, String, String, boolean, String)}. 
-	 * @return den gefundenen Knoten, sowie den nächsten Vorfahren, der XScriptProvider
+	 * @return den gefundenen Knoten, sowie den nï¿½chsten Vorfahren, der XScriptProvider
 	 * implementiert (oder den Knoten selbst, falls dieser XScriptProvider implementiert). 
 	 * Falls kein entsprechender Knoten oder Vorfahre gefunden wurde,
 	 * wird der entsprechende Wert als null geliefert.
@@ -380,14 +382,14 @@ public class UNO {
 	* @param prefix wird dem Namen jedes Knoten vorangestellt. Dies wird verwendet, wenn 
 	*          xBrowseNode nicht die Wurzel ist.
 	* @param nameToFind  das zu suchende Namenssuffix.
-	* @param caseSensitive falls true, so wird Gross-/Kleinschreibung berücksichtigt bei der 
+	* @param caseSensitive falls true, so wird Gross-/Kleinschreibung berï¿½cksichtigt bei der 
 	*         Suche.
   * @param Falls location nicht null ist, gelten nur Knoten als Treffer,
-  *        die ein "URI" Property haben, das eine location enthält die
+  *        die ein "URI" Property haben, das eine location enthï¿½lt die
   *        einem String in der <code>location</code> Liste entspricht.
-	*        Typischerweise werden für <code>location</code> "application" 
-	*        oder "share" übergeben.
-	* @return den gefundenen Knoten, sowie den nächsten Vorfahren, der XScriptProvider
+	*        Typischerweise werden fï¿½r <code>location</code> "application" 
+	*        oder "share" ï¿½bergeben.
+	* @return den gefundenen Knoten, sowie den nï¿½chsten Vorfahren, der XScriptProvider
 	* implementiert. Falls kein entsprechender Knoten oder Vorfahre gefunden wurde,
 	* wird der entsprechende Wert als null geliefert.
 	* @author Matthias Benkmann (D-III-ITD 5.1)
@@ -406,7 +408,7 @@ public class UNO {
 	}
 	
 	/**
-	 * Liefert den Wert von Property propName des Objekts o zurück.
+	 * Liefert den Wert von Property propName des Objekts o zurï¿½ck.
 	 * @return den Wert des Propertys oder <code>null</code>, falls o
 	 * entweder nicht das XPropertySet Interface implementiert, oder kein
 	 * Property names propName hat.
@@ -429,16 +431,16 @@ public class UNO {
 	
 	/**
 	 * Setzt das Property propName des Objekts o auf den Wert propVal und liefert
-	 * den neuen Wert zurück. Falls o kein XPropertySet implementiert, oder
+	 * den neuen Wert zurï¿½ck. Falls o kein XPropertySet implementiert, oder
 	 * das Property propName nicht gelesen werden kann (z.B. weil o diese
-	 * Property nicht besitzt), so wird null zurückgeliefert.
-	 * Zu beachten ist, dass es möglich ist, dass der zurückgelieferte Wert
+	 * Property nicht besitzt), so wird null zurï¿½ckgeliefert.
+	 * Zu beachten ist, dass es mï¿½glich ist, dass der zurï¿½ckgelieferte Wert
 	 * nicht propVal und auch nicht null ist. Dies geschieht insbesondere,
-	 * wenn ein Event Handler sein Veto gegen die Änderung eingelegt hat.
-	 * @param o das Objekt, dessen Property zu ändern ist.
-	 * @param propName der Name des zu ändernden Properties.
+	 * wenn ein Event Handler sein Veto gegen die ï¿½nderung eingelegt hat.
+	 * @param o das Objekt, dessen Property zu ï¿½ndern ist.
+	 * @param propName der Name des zu ï¿½ndernden Properties.
 	 * @param propVal der neue Wert.
-	 * @return der Wert des Propertys nach der (versuchten) Änderung oder null,
+	 * @return der Wert des Propertys nach der (versuchten) ï¿½nderung oder null,
 	 *         falls der Wert des Propertys nicht mal lesbar ist.
 	 * @author bnk
 	 */
@@ -700,6 +702,12 @@ public class UNO {
 	{
 		return (XNameAccess)UnoRuntime.queryInterface(XNameAccess.class,o);
 	}	
+
+	/** Holt {@link XFilePicker} Interface von o.*/
+	public static XFilePicker xFilePicker(Object o)
+	{
+		return (XFilePicker)UnoRuntime.queryInterface(XFilePicker.class,o);
+	}	
 	
   /**
    * Interne Funktionen
@@ -714,11 +722,11 @@ public class UNO {
 	   */
 	  public static XBrowseNodeAndXScriptProvider findBrowseNodeTreeLeafAndScriptProvider(BrowseNode node, String prefix, String nameToFind, boolean caseSensitive, String location, XScriptProvider xScriptProvider)
 		{ //T
-	    /* TODO Mögliche Optimierung, um Geschwindigkeit zu steigern:
-	     * Statt Tiefensuche eine Breitensuche unter Bevorzugung von Ästen mit
+	    /* TODO Mï¿½gliche Optimierung, um Geschwindigkeit zu steigern:
+	     * Statt Tiefensuche eine Breitensuche unter Bevorzugung von ï¿½sten mit
 	     * der Eigenschaft, dass ein Suffix des Astbezeichners, das mit einem 
 	     * Punkt beginnt ein Prefix ist des zu suchenden Bezeichners.
-	     * Dadurch sollten Anfragen, die einen möglichst präzisen Pfad liefern
+	     * Dadurch sollten Anfragen, die einen mï¿½glichst prï¿½zisen Pfad liefern
 	     * (inklusive Bibliothek und Modul) wesentlich schneller werden.
 	     */
 	    String name = node.getName();
