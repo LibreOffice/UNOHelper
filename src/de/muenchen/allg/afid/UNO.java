@@ -47,9 +47,11 @@
 * 06.09.2005 | SIE | +XMultiServiceFactory()
 * 06.09.2005 | SIE | +XDesktop()
 * 06.09.2005 | SIE | +XChangesBatch()
-* 06.09.2005 | SIE | +XNameAccess()
+* 06.09.2005 | SIE | +xNameAccess()
 * 06.09.2005 | BNK | TOD0 Optimierung von findBrowseNode.. hinzugef�gt
-* 08.09.2005 | LUT | +XFilePicker()
+* 08.09.2005 | LUT | +xFilePicker()
+* 09.09.2005 | LUT | xFilePicker() --> XFilePicker()
+*                    xNameAccess() --> XNameAccess()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -698,17 +700,18 @@ public class UNO {
 	}	
 	
 	/** Holt {@link XNameAccess} Interface von o.*/
-	public static XNameAccess xNameAccess(Object o)
+	public static XNameAccess XNameAccess(Object o)
 	{
 		return (XNameAccess)UnoRuntime.queryInterface(XNameAccess.class,o);
 	}	
 
 	/** Holt {@link XFilePicker} Interface von o.*/
-	public static XFilePicker xFilePicker(Object o)
+	public static XFilePicker XFilePicker(Object o)
 	{
 		return (XFilePicker)UnoRuntime.queryInterface(XFilePicker.class,o);
 	}	
 	
+	// ACHTUNG: Interface-Methoden fangen hier mit einem grossen X an!
   /**
    * Interne Funktionen
    */
