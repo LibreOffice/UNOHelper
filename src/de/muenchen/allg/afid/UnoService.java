@@ -1,5 +1,5 @@
 /*
- * Ein einfacher Wrapper für uno-services.
+ * Ein einfacher Wrapper fï¿½r uno-services.
  * Copyright (C) 2005 Christoph Lutz
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,14 +20,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. 
  * 
- * Änderungshistorie der Landeshauptstadt München:
- * Alle Änderungen (c) Landeshauptstadt München, alle Rechte vorbehalten
+ * ï¿½nderungshistorie der Landeshauptstadt Mï¿½nchen:
+ * Alle ï¿½nderungen (c) Landeshauptstadt Mï¿½nchen, alle Rechte vorbehalten
  * 
- * Datum      | Wer | Änderungsgrund
+ * Datum      | Wer | ï¿½nderungsgrund
  * -------------------------------------------------------------------
  * 26.04.2005 | BNK | getSimpleName() durch getName() 
- *            |     | ersetzt wg. Java 1.4 Kompatibilität
+ *            |     | ersetzt wg. Java 1.4 Kompatibilitï¿½t
  * 05.09.2005 | BNK | getImplememtationName() -> getImplementationName() 
+ * 09.09.2005 | LUT | +xFilePicker()
+ * 09.09.2005 | LUT | BUGFIX: getSortedMethodsIterator holt die Methoden
+ *                    jetzt mit getMethods statt mit getDeclaredMethods  
  * -------------------------------------------------------------------
  */
 
@@ -58,6 +61,7 @@ import com.sun.star.text.XTextContent;
 import com.sun.star.text.XTextDocument;
 import com.sun.star.text.XTextField;
 import com.sun.star.text.XTextRange;
+import com.sun.star.ui.dialogs.XFilePicker;
 import com.sun.star.uno.Type;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
@@ -294,7 +298,7 @@ public class UnoService {
 	 */
 	private Iterator getSortedMethodsIterator(Type type) {
 		Iterator methodsIterator = getSortedArrayIterator(type.getZClass()
-				.getDeclaredMethods(), new Comparator() {
+				.getMethods(), new Comparator() {
 			public int compare(Object arg0, Object arg1) {
 				return ((Method) arg0).getName().compareTo(
 						((Method) arg1).getName());
@@ -325,6 +329,7 @@ public class UnoService {
 				});
 		return i;
 	}
+	
 
 	/**
 	 * This generic method sorts an array comparing its elements using a
@@ -498,6 +503,10 @@ public class UnoService {
 
 	public XShape xShape() {
 		return (XShape) queryInterface(XShape.class);
+	}
+
+	public XFilePicker xFilePicker() {
+		return (XFilePicker) queryInterface(XFilePicker.class);
 	}
 
 	//... add wrapper-methods for your own interfaces here...
