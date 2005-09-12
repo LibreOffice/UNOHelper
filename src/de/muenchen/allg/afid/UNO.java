@@ -4,18 +4,18 @@
 * Projekt  : n/a
 * Funktion : Hilfsklasse zur leichteren Verwendung der UNO API.
 * 
-* Copyright: Landeshauptstadt Mï¿½nchen
+* Copyright: Landeshauptstadt München
 *
-* ï¿½nderungshistorie:
-* Datum      | Wer | ï¿½nderungsgrund
+* Änderungshistorie:
+* Datum      | Wer | Änderungsgrund
 * -------------------------------------------------------------------
 * 26.04.2005 | BNK | Erstellung
 * 07.07.2005 | BNK | Viele Verbesserungen
 * 16.08.2005 | BNK | korrekte Dienststellenbezeichnung
 * 17.08.2005 | BNK | +executeMacro()
-* 17.08.2005 | BNK | +Internal-Klasse fï¿½r interne Methoden
+* 17.08.2005 | BNK | +Internal-Klasse für interne Methoden
 * 17.08.2005 | BNK | +findBrowseNodeTreeLeaf()
-* 19.08.2005 | BNK | init(Object) => public, weil nï¿½tzlich
+* 19.08.2005 | BNK | init(Object) => public, weil nützlich
 * 19.08.2005 | BNK | +XPrintable()
 * 22.08.2005 | PIT | +XNamed() 
 * 22.08.2005 | PIT | +XTextContent()  
@@ -34,7 +34,7 @@
 * 31.08.2005 | BNK | +XScriptProvider()
 *                  | +findBrowseNodeTreeLeafAndScriptProvider()
 *                  | executeMacro() bekommt location Argument (diese nicht
-*                  | rï¿½ckwï¿½rtskompatible ï¿½nderung war leider notwendig, weil die
+*                  | rückwärtskompatible Änderung war leider notwendig, weil die
 *                  | alte Version einfach broken war und nicht innerhalb des
 *                  | dokumentierten Verhaltens gefixt werden konnte.
 *                  | executeGlobalMacro() durchsucht nur noch globale Makros
@@ -48,7 +48,7 @@
 * 06.09.2005 | SIE | +XDesktop()
 * 06.09.2005 | SIE | +XChangesBatch()
 * 06.09.2005 | SIE | +xNameAccess()
-* 06.09.2005 | BNK | TOD0 Optimierung von findBrowseNode.. hinzugefï¿½gt
+* 06.09.2005 | BNK | TOD0 Optimierung von findBrowseNode.. hinzugefügt
 * 08.09.2005 | LUT | +xFilePicker()
 * 09.09.2005 | LUT | xFilePicker() --> XFilePicker()
 *                    xNameAccess() --> XNameAccess()
@@ -731,6 +731,25 @@ public class UNO {
 	     * Punkt beginnt ein Prefix ist des zu suchenden Bezeichners.
 	     * Dadurch sollten Anfragen, die einen mï¿½glichst prï¿½zisen Pfad liefern
 	     * (inklusive Bibliothek und Modul) wesentlich schneller werden.
+	     * Weitere Optimierung: Gleichzeitige Suche nach case-sensitive und
+	     * case-insensitive ermöglichen. Am besten findBrowseNodeTreeLeafe...
+	     * schreiben das eine Liste aller Trefferstellen mit allen moeglichen
+	     * locations und schreibungen liefert. Parameter gibt an, ob zuerst
+	     * nach location oder zuerst nach schreibweise sortiert werden soll.
+	     * Ebenfalls Optimierung fuer execMacro: dem Suchpfad immer einen "."
+	     * voranstellen (falls noch keiner da ist) 
+	     * und auch and findBrowseNode... als prefix ein "." 
+	     * uebergeben, damit auch absolute Pfade funktionieren.
+	     * Weitere Idee. Man kann davon ausgehen, dass CONTAINER und SCRIPTs
+	     * nicht auf der selben Ebene des Baumes auftauchen. wenn man also 
+	     * einen Knoten des Typs SCRIPT erreicht hat, dann kann man durch einen
+	     * Vergleich aller Komponenten vor dem letzten Punkt im Suchnamen mit
+	     * dem CONTAINER-Pfad feststellen, ob man überhaupt diesen CONTAINER
+	     * weiter durchsuchen muss oder gleich eine Ebene hoeher gehen kann.
+	     * ACHTUNG: Testen, dass beim Aufruf durch JavaComm wirklich zuerst
+	     * im Dokument, dann in My Macros und dann erst in OpenOffice.org Makros
+	     * gesucht wird. (Als Default primäres Sortierkriterium der Ergebnisse
+	     * sollte schreibweise sein sein, siehe doku von execMacro().) 
 	     */
 	    String name = node.getName();
 			if (!prefix.equals(""))	name = prefix + "." + name; 
