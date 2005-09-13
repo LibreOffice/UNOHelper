@@ -13,6 +13,7 @@
 * 16.08.2005 | BNK | korrekte Dienststellenbezeichnung
 * 17.08.2005 | BNK | bessere Kommentare
 * 31.08.2005 | BNK | +children(), um nur Kinder durchzuiterieren
+* 13.09.2005 | BNK | besserer Kommentar zu URL()
 * -------------------------------------------------------------------
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -42,6 +43,7 @@ public class BrowseNode
 	/**
 	 * Gibt die URL des Makros zurück, wie sie für den Aufruf über 
 	 * das Skripting-Framework benötigt wird. Nicht zu verwechseln mit "macro:" URLs!
+	 * Falls dieses Property nicht existiert, wird null geliefert.
 	 * @author bnk
 	 */
 	public String URL() {return (String)UNO.getProperty(node, "URI");}
