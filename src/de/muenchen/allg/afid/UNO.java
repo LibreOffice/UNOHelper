@@ -52,6 +52,7 @@
 * 08.09.2005 | LUT | +xFilePicker()
 * 09.09.2005 | LUT | xFilePicker() --> XFilePicker()
 *                    xNameAccess() --> XNameAccess()
+* 13.09.2005 | LUT | +XToolkit()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -62,6 +63,7 @@ package de.muenchen.allg.afid;
 
 import java.util.Iterator;
 
+import com.sun.star.awt.XToolkit;
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.beans.UnknownPropertyException;
 import com.sun.star.beans.XPropertySet;
@@ -709,6 +711,12 @@ public class UNO {
 	public static XFilePicker XFilePicker(Object o)
 	{
 		return (XFilePicker)UnoRuntime.queryInterface(XFilePicker.class,o);
+	}	
+
+	/** Holt {@link XToolkit} Interface von o.*/
+	public static XToolkit XToolkit(Object o)
+	{
+		return (XToolkit)UnoRuntime.queryInterface(XToolkit.class,o);
 	}	
 	
 	// ACHTUNG: Interface-Methoden fangen hier mit einem grossen X an!
