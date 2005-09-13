@@ -53,6 +53,9 @@
 * 09.09.2005 | LUT | xFilePicker() --> XFilePicker()
 *                    xNameAccess() --> XNameAccess()
 * 13.09.2005 | LUT | +XToolkit()
+* 13.09.2005 | LUT | +XWindow()
+*                    +XWindowPeer()
+*                    +XToolbarController()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -64,6 +67,8 @@ package de.muenchen.allg.afid;
 import java.util.Iterator;
 
 import com.sun.star.awt.XToolkit;
+import com.sun.star.awt.XWindow;
+import com.sun.star.awt.XWindowPeer;
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.beans.UnknownPropertyException;
 import com.sun.star.beans.XPropertySet;
@@ -81,6 +86,7 @@ import com.sun.star.frame.XDesktop;
 import com.sun.star.frame.XDispatchProvider;
 import com.sun.star.frame.XModel;
 import com.sun.star.frame.XStorable;
+import com.sun.star.frame.XToolbarController;
 import com.sun.star.lang.WrappedTargetException;
 import com.sun.star.lang.XComponent;
 import com.sun.star.lang.XMultiComponentFactory;
@@ -719,6 +725,24 @@ public class UNO {
 		return (XToolkit)UnoRuntime.queryInterface(XToolkit.class,o);
 	}	
 	
+	/** Holt {@link XWindow} Interface von o.*/
+	public static XWindow XWindow(Object o)
+	{
+		return (XWindow)UnoRuntime.queryInterface(XWindow.class,o);
+	}	
+	
+	/** Holt {@link XToolkit} Interface von o.*/
+	public static XWindowPeer XWindowPeer(Object o)
+	{
+		return (XWindowPeer)UnoRuntime.queryInterface(XWindowPeer.class,o);
+	}	
+	
+	/** Holt {@link XToolbarController} Interface von o.*/
+	public static XToolbarController XToolbarController(Object o)
+	{
+		return (XToolbarController)UnoRuntime.queryInterface(XToolbarController.class,o);
+	}	
+
 	// ACHTUNG: Interface-Methoden fangen hier mit einem grossen X an!
   /**
    * Interne Funktionen
