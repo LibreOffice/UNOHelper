@@ -1,5 +1,5 @@
 /*
- * Ein einfacher Wrapper fï¿½r uno-services.
+ * Ein einfacher Wrapper für uno-services.
  * Copyright (C) 2005 Christoph Lutz
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,17 +20,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. 
  * 
- * ï¿½nderungshistorie der Landeshauptstadt Mï¿½nchen:
- * Alle ï¿½nderungen (c) Landeshauptstadt Mï¿½nchen, alle Rechte vorbehalten
+ * Änderungshistorie der Landeshauptstadt München:
+ * Alle Änderungen (c) Landeshauptstadt München, alle Rechte vorbehalten
  * 
- * Datum      | Wer | ï¿½nderungsgrund
+ * Datum      | Wer | Anderungsgrund
  * -------------------------------------------------------------------
  * 26.04.2005 | BNK | getSimpleName() durch getName() 
- *            |     | ersetzt wg. Java 1.4 Kompatibilitï¿½t
+ *            |     | ersetzt wg. Java 1.4 Kompatibilität
  * 05.09.2005 | BNK | getImplememtationName() -> getImplementationName() 
  * 09.09.2005 | LUT | +xFilePicker()
  * 09.09.2005 | LUT | BUGFIX: getSortedMethodsIterator holt die Methoden
  *                    jetzt mit getMethods statt mit getDeclaredMethods  
+ * 13.09.2005 | LUT | +xFrame()
+ * 19.09.2005 | LUT | +xToolkit()
+ *                    +xExtendedToolkit()
+ * 20.09.2005 | LUT | BUGFIX: introspection wirft NullPointerExceptions in
+ *                    getSortedTypesIterator, getSortedServiceIterator,
+ *                    getImplementationName                                     
  * -------------------------------------------------------------------
  */
 
@@ -43,6 +49,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeSet;
 
+import com.sun.star.awt.XExtendedToolkit;
+import com.sun.star.awt.XToolkit;
 import com.sun.star.beans.Property;
 import com.sun.star.beans.XPropertySet;
 import com.sun.star.beans.XPropertySetInfo;
@@ -52,6 +60,7 @@ import com.sun.star.container.XEnumerationAccess;
 import com.sun.star.drawing.XShape;
 import com.sun.star.frame.XComponentLoader;
 import com.sun.star.frame.XDesktop;
+import com.sun.star.frame.XFrame;
 import com.sun.star.lang.XMultiComponentFactory;
 import com.sun.star.lang.XMultiServiceFactory;
 import com.sun.star.lang.XServiceInfo;
@@ -146,7 +155,7 @@ public class UnoService {
 		if (this.xServiceInfo() != null) {
 			return this.xServiceInfo().getImplementationName();
 		} else {
-			return "noneUnoService";
+			return "none";
 		}
 	}
 
@@ -159,16 +168,19 @@ public class UnoService {
 	 * @return a string containing all the inspection information.
 	 */
 	public String features() {
-		String str = "";
-		str += "------------------------------------------\n";
-		str += "ImplementationName: "
-				+ this.xServiceInfo().getImplementationName() + "\n\n";
+		if (unoObject != null) {
+			String str = "";
+			str += "------------------------------------------\n";
+			str += "ImplementationName: " + getImplementationName() + "\n\n";
 
-		str += dbg_Services();
-		str += dbg_SupportedInterfaces();
-		str += dbg_Properties();
-		str += dbg_SupportedInterfacesAndMethods();
-		return str;
+			str += dbg_Services();
+			str += dbg_SupportedInterfaces();
+			str += dbg_Properties();
+			str += dbg_SupportedInterfacesAndMethods();
+			return str;
+		} else {
+			return "null";
+		}
 	}
 
 	/**
@@ -177,6 +189,13 @@ public class UnoService {
 	 */
 	public void printFeatures() {
 		System.out.println(features());
+	}
+
+	/**
+	 * This method shows the features of a service in a MsgBox.
+	 */
+	public void msgboxFeatures() {
+		MsgBox.simple("Xray: " + getImplementationName(), features());
 	}
 
 	/**
@@ -216,7 +235,7 @@ public class UnoService {
 						+ props[i].Type.getZClass().getName() + "\n";
 			}
 		} else {
-			str = "none";
+			str += "none\n";
 		}
 		return str + "\n";
 	}
@@ -280,16 +299,32 @@ public class UnoService {
 	 * This method returns an Iterator to a sorted list of supported services.
 	 */
 	private Iterator getSortedServiceIterator() {
-		return getSortedArrayIterator(this.xServiceInfo()
-				.getSupportedServiceNames(), new Comparator() {
-			public int compare(Object arg0, Object arg1) {
-				return ((String) arg0).compareTo((String) arg1);
-			}
+		if (this.xServiceInfo() != null) {
+			return getSortedArrayIterator(this.xServiceInfo()
+					.getSupportedServiceNames(), new Comparator() {
+				public int compare(Object arg0, Object arg1) {
+					return ((String) arg0).compareTo((String) arg1);
+				}
 
-			public boolean equals(Object obj) {
-				return this == obj;
-			}
-		});
+				public boolean equals(Object obj) {
+					return this == obj;
+				}
+			});
+		} else {
+			return new Iterator() {
+
+				public void remove() {
+				}
+
+				public Object next() {
+					return null;
+				}
+
+				public boolean hasNext() {
+					return false;
+				}
+			};
+		}
 	}
 
 	/**
@@ -316,20 +351,34 @@ public class UnoService {
 	 * interface-types.
 	 */
 	private Iterator getSortedTypesIterator() {
-		Iterator i = getSortedArrayIterator(this.xTypeProvider().getTypes(),
-				new Comparator() {
-					public int compare(Object arg0, Object arg1) {
-						return ((Type) arg0).getTypeName().compareTo(
-								((Type) arg1).getTypeName());
-					}
+		if (this.xTypeProvider() != null) {
+			return getSortedArrayIterator(this.xTypeProvider().getTypes(),
+					new Comparator() {
+						public int compare(Object arg0, Object arg1) {
+							return ((Type) arg0).getTypeName().compareTo(
+									((Type) arg1).getTypeName());
+						}
 
-					public boolean equals(Object obj) {
-						return this == obj;
-					}
-				});
-		return i;
+						public boolean equals(Object obj) {
+							return this == obj;
+						}
+					});
+		} else {
+			return new Iterator() {
+
+				public void remove() {
+				}
+
+				public Object next() {
+					return null;
+				}
+
+				public boolean hasNext() {
+					return false;
+				}
+			};
+		}
 	}
-	
 
 	/**
 	 * This generic method sorts an array comparing its elements using a
@@ -509,6 +558,18 @@ public class UnoService {
 		return (XFilePicker) queryInterface(XFilePicker.class);
 	}
 
-	//... add wrapper-methods for your own interfaces here...
+	public XFrame xFrame() {
+		return (XFrame) queryInterface(XFrame.class);
+	}
+
+	public XToolkit xToolkit() {
+		return (XToolkit) queryInterface(XToolkit.class);
+	}
+
+	public XExtendedToolkit xExtendedToolkit() {
+		return (XExtendedToolkit) queryInterface(XExtendedToolkit.class);
+	}
+
+	// ... add wrapper-methods for your own interfaces here...
 
 }
