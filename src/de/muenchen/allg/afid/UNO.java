@@ -316,12 +316,9 @@ public class UNO {
 		XBrowseNode root = (XBrowseNode)UnoRuntime.queryInterface(XBrowseNode.class, provider);
 		/*
 		 * Wir übergeben NICHT provider als drittes Argument, sondern lassen
-		 * Internal.executeMacroInternal den provider selbst bestimmen. Auf diese
-		 * Weise vermeiden wir hoffentlich das Problem, das dadurch entsteht, dass
-		 * zumindest in Version 1.9.125 Module mit gleichem Namen in verschiedener
-		 * Gross/Kleinschrift in den URLs gleich dargestellt werden, wodurch keine
-		 * Unterscheidung mehr zwischen 2 Makros in verschiedenen Modulen besteht,
-		 * wenn die Modulname sich nur in Gross-/Kleinschrift unterscheiden.
+		 * Internal.executeMacroInternal den provider selbst bestimmen.
+		 * Das hat keinen besonderen Grund. Es erscheint einfach nur etwas
+		 * robuster, den "nächstgelegenen" ScriptProvider zu verwenden.
 		 */
 		return Internal.executeMacroInternal(macroName, args, null, root, location);
 	}
