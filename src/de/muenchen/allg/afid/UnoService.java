@@ -36,7 +36,29 @@
  *                    +xExtendedToolkit()
  * 20.09.2005 | LUT | BUGFIX: introspection wirft NullPointerExceptions in
  *                    getSortedTypesIterator, getSortedServiceIterator,
- *                    getImplementationName                                     
+ *                    getImplementationName
+ * 20.09.2005 | LUT | + xWindow()        
+ *                    + xWindowPeer()  
+ *                    + xComboBox()     
+ *                    + xModel()
+ *                    + xLayoutManager()
+ *                    + xModuleUIConfigurationManagerSupplier()
+ *                    + xModuleUIConfigurationManager()
+ *                    + create()
+ *                    + createWithContext()
+ * 30.09.2005 | LUT | + xIndexAccess()
+ *                    + xIndexContainer()
+ *                    +	xElementAccess()
+ *                    +	xDockableWindow()
+ *                    +	xListBox()
+ *                    +	xVclWindowPeer()
+ *                    +	xTextComponent()
+ *                    + xModuleManager()
+ *                    +	xUIElementSettings()
+ *                    +	xConfigManager()
+ *                    +	xStringSubstitution()
+ *                    +	xSimpleRegistry()
+ *                    +	xRegistryKey()
  * -------------------------------------------------------------------
  */
 
@@ -49,33 +71,56 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeSet;
 
+import com.sun.star.awt.XComboBox;
+import com.sun.star.awt.XDockableWindow;
 import com.sun.star.awt.XExtendedToolkit;
+import com.sun.star.awt.XListBox;
+import com.sun.star.awt.XTextComponent;
 import com.sun.star.awt.XToolkit;
+import com.sun.star.awt.XVclWindowPeer;
+import com.sun.star.awt.XWindow;
+import com.sun.star.awt.XWindowPeer;
 import com.sun.star.beans.Property;
 import com.sun.star.beans.XPropertySet;
 import com.sun.star.beans.XPropertySetInfo;
 import com.sun.star.bridge.XUnoUrlResolver;
+import com.sun.star.container.XElementAccess;
 import com.sun.star.container.XEnumeration;
 import com.sun.star.container.XEnumerationAccess;
+import com.sun.star.container.XIndexAccess;
+import com.sun.star.container.XIndexContainer;
 import com.sun.star.drawing.XShape;
 import com.sun.star.frame.XComponentLoader;
+import com.sun.star.frame.XConfigManager;
 import com.sun.star.frame.XDesktop;
 import com.sun.star.frame.XFrame;
+import com.sun.star.frame.XLayoutManager;
+import com.sun.star.frame.XModel;
+import com.sun.star.frame.XModuleManager;
 import com.sun.star.lang.XMultiComponentFactory;
 import com.sun.star.lang.XMultiServiceFactory;
 import com.sun.star.lang.XServiceInfo;
 import com.sun.star.lang.XTypeProvider;
+import com.sun.star.registry.XRegistryKey;
+import com.sun.star.registry.XSimpleRegistry;
 import com.sun.star.text.XText;
 import com.sun.star.text.XTextContent;
 import com.sun.star.text.XTextDocument;
 import com.sun.star.text.XTextField;
 import com.sun.star.text.XTextRange;
+import com.sun.star.ui.XModuleUIConfigurationManager;
+import com.sun.star.ui.XModuleUIConfigurationManagerSupplier;
+import com.sun.star.ui.XUIConfigurationManager;
+import com.sun.star.ui.XUIConfigurationManagerSupplier;
+import com.sun.star.ui.XUIElementSettings;
 import com.sun.star.ui.dialogs.XFilePicker;
+import com.sun.star.uno.Exception;
 import com.sun.star.uno.Type;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 import com.sun.star.uno.XInterface;
 import com.sun.star.util.XCloseable;
+import com.sun.star.util.XStringSubstitution;
 
 /**
  * The class UnoService is a wrapper for UnoService-Objects provided by the
@@ -468,6 +513,42 @@ public class UnoService {
 		return unoObject.toString();
 	}
 
+	/**
+	 * This method creates and returns a new UnoService using the
+	 * xMultiServiceFactory of the current unoObject.
+	 * 
+	 * @param name
+	 *            the name of the required service
+	 * @return The new created UnoService. If the service does not exist or the
+	 *         unoObject doesn't support xMultiServiceFactory, the result is a
+	 *         new UnoObject(null).
+	 * @throws Exception
+	 */
+	public UnoService create(String name) throws Exception {
+		if (this.xMultiServiceFactory() != null) {
+			return new UnoService(this.xMultiServiceFactory().createInstance(
+					name));
+		} else {
+			return new UnoService(null);
+		}
+	}
+
+	/**
+	 * This method creates a new UnoService with a specified context.
+	 * 
+	 * @param name
+	 *            the name of the required service.
+	 * @param ctx
+	 *            the context of the new service.
+	 * @return the new UnoService.
+	 * @throws Exception
+	 */
+	public static UnoService createWithContext(String name,
+			XComponentContext ctx) throws Exception {
+		return new UnoService(ctx.getServiceManager()
+				.createInstanceWithContext(name, ctx));
+	}
+
 	/***************************************************************************
 	 * Interface-Access
 	 * 
@@ -568,6 +649,86 @@ public class UnoService {
 
 	public XExtendedToolkit xExtendedToolkit() {
 		return (XExtendedToolkit) queryInterface(XExtendedToolkit.class);
+	}
+
+	public XWindow xWindow() {
+		return (XWindow) queryInterface(XWindow.class);
+	}
+
+	public XWindowPeer xWindowPeer() {
+		return (XWindowPeer) queryInterface(XWindowPeer.class);
+	}
+
+	public XComboBox xComboBox() {
+		return (XComboBox) queryInterface(XComboBox.class);
+	}
+
+	public XModel xModel() {
+		return (XModel) queryInterface(XModel.class);
+	}
+
+	public XLayoutManager xLayoutManager() {
+		return (XLayoutManager) queryInterface(XLayoutManager.class);
+	}
+
+	public XModuleUIConfigurationManagerSupplier xModuleUIConfigurationManagerSupplier() {
+		return (XModuleUIConfigurationManagerSupplier) queryInterface(XModuleUIConfigurationManagerSupplier.class);
+	}
+
+	public XUIConfigurationManager xUIConfigurationManager() {
+		return (XUIConfigurationManager) queryInterface(XUIConfigurationManager.class);
+	}
+
+	public XIndexAccess xIndexAccess() {
+		return (XIndexAccess) queryInterface(XIndexAccess.class);
+	}
+
+	public XIndexContainer xIndexContainer() {
+		return (XIndexContainer) queryInterface(XIndexContainer.class);
+	}
+
+	public XElementAccess xElementAccess() {
+		return (XElementAccess) queryInterface(XElementAccess.class);
+	}
+
+	public XDockableWindow xDockableWindow() {
+		return (XDockableWindow) queryInterface(XDockableWindow.class);
+	}
+
+	public XListBox xListBox() {
+		return (XListBox) queryInterface(XListBox.class);
+	}
+
+	public XVclWindowPeer xVclWindowPeer() {
+		return (XVclWindowPeer) queryInterface(XVclWindowPeer.class);
+	}
+
+	public XTextComponent xTextComponent() {
+		return (XTextComponent) queryInterface(XTextComponent.class);
+	}
+
+	public XModuleManager xModuleManager() {
+		return (XModuleManager) queryInterface(XModuleManager.class);
+	}
+
+	public XUIElementSettings xUIElementSettings() {
+		return (XUIElementSettings) queryInterface(XUIElementSettings.class);
+	}
+
+	public XConfigManager xConfigManager() {
+		return (XConfigManager) queryInterface(XConfigManager.class);
+	}
+
+	public XStringSubstitution xStringSubstitution() {
+		return (XStringSubstitution) queryInterface(XStringSubstitution.class);
+	}
+
+	public XSimpleRegistry xSimpleRegistry() {
+		return (XSimpleRegistry) queryInterface(XSimpleRegistry.class);
+	}
+
+	public XRegistryKey xRegistryKey() {
+		return (XRegistryKey) queryInterface(XRegistryKey.class);
 	}
 
 	// ... add wrapper-methods for your own interfaces here...
