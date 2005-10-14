@@ -59,6 +59,7 @@
  *                    +	xStringSubstitution()
  *                    +	xSimpleRegistry()
  *                    +	xRegistryKey()
+ * 14.10.2005 | LUT | + xBookmarkSupplier()                  
  * -------------------------------------------------------------------
  */
 
@@ -103,6 +104,7 @@ import com.sun.star.lang.XServiceInfo;
 import com.sun.star.lang.XTypeProvider;
 import com.sun.star.registry.XRegistryKey;
 import com.sun.star.registry.XSimpleRegistry;
+import com.sun.star.text.XBookmarksSupplier;
 import com.sun.star.text.XText;
 import com.sun.star.text.XTextContent;
 import com.sun.star.text.XTextDocument;
@@ -727,6 +729,10 @@ public class UnoService {
 
 	public XRegistryKey xRegistryKey() {
 		return (XRegistryKey) queryInterface(XRegistryKey.class);
+	}
+
+	public XBookmarksSupplier xBookmarksSupplier() {
+		return (XBookmarksSupplier) queryInterface(XBookmarksSupplier.class);
 	}
 
 	// ... add wrapper-methods for your own interfaces here...
