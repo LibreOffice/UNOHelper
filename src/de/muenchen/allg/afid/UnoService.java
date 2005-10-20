@@ -64,7 +64,9 @@
  *                    + xDocumentInsertable()                
  *                    + xTextCursor()
  * 18.10.2005 | LUT | + xURLTransformer()
- *                    + xTextRangeCompare()                
+ *                    + xTextRangeCompare()
+ * 20.10.2005 | LUT | + xTextFieldSupplier()
+ *                    + xEventBroadcaster()                
  * -------------------------------------------------------------------
  */
 
@@ -97,6 +99,7 @@ import com.sun.star.container.XIndexAccess;
 import com.sun.star.container.XIndexContainer;
 import com.sun.star.container.XNamed;
 import com.sun.star.document.XDocumentInsertable;
+import com.sun.star.document.XEventBroadcaster;
 import com.sun.star.drawing.XShape;
 import com.sun.star.frame.XComponentLoader;
 import com.sun.star.frame.XConfigManager;
@@ -117,6 +120,7 @@ import com.sun.star.text.XTextContent;
 import com.sun.star.text.XTextCursor;
 import com.sun.star.text.XTextDocument;
 import com.sun.star.text.XTextField;
+import com.sun.star.text.XTextFieldsSupplier;
 import com.sun.star.text.XTextRange;
 import com.sun.star.text.XTextRangeCompare;
 import com.sun.star.ui.XModuleUIConfigurationManagerSupplier;
@@ -763,6 +767,14 @@ public class UnoService {
 
     public XTextRangeCompare xTextRangeCompare() {
         return (XTextRangeCompare) queryInterface(XTextRangeCompare.class);
+    }
+
+    public XTextFieldsSupplier xTextFieldsSupplier() {
+        return (XTextFieldsSupplier) queryInterface(XTextFieldsSupplier.class);
+    }
+
+    public XEventBroadcaster xEventBroadcaster() {
+        return (XEventBroadcaster) queryInterface(XEventBroadcaster.class);
     }
 
     // ... add wrapper-methods for your own interfaces here...
