@@ -66,7 +66,13 @@
  * 18.10.2005 | LUT | + xURLTransformer()
  *                    + xTextRangeCompare()
  * 20.10.2005 | LUT | + xTextFieldSupplier()
- *                    + xEventBroadcaster()                
+ *                    + xEventBroadcaster()
+ * 02.11.2005 | LUT | + xComponent()
+ * 04.11.2005 | LUT | + xDevice()           
+ * 08.11.2005 | LUT | + xDocumentInfoSupplier()           
+ *                    + xNameAccess()
+ *                    + createWithArguments()
+ * 14.11.2005 | LUT | + xModifiable()           
  * -------------------------------------------------------------------
  */
 
@@ -80,6 +86,7 @@ import java.util.Map;
 import java.util.TreeSet;
 
 import com.sun.star.awt.XComboBox;
+import com.sun.star.awt.XDevice;
 import com.sun.star.awt.XDockableWindow;
 import com.sun.star.awt.XExtendedToolkit;
 import com.sun.star.awt.XListBox;
@@ -97,17 +104,21 @@ import com.sun.star.container.XEnumeration;
 import com.sun.star.container.XEnumerationAccess;
 import com.sun.star.container.XIndexAccess;
 import com.sun.star.container.XIndexContainer;
+import com.sun.star.container.XNameAccess;
 import com.sun.star.container.XNamed;
+import com.sun.star.document.XDocumentInfoSupplier;
 import com.sun.star.document.XDocumentInsertable;
 import com.sun.star.document.XEventBroadcaster;
 import com.sun.star.drawing.XShape;
 import com.sun.star.frame.XComponentLoader;
 import com.sun.star.frame.XConfigManager;
 import com.sun.star.frame.XDesktop;
+import com.sun.star.frame.XDispatch;
 import com.sun.star.frame.XFrame;
 import com.sun.star.frame.XLayoutManager;
 import com.sun.star.frame.XModel;
 import com.sun.star.frame.XModuleManager;
+import com.sun.star.lang.XComponent;
 import com.sun.star.lang.XMultiComponentFactory;
 import com.sun.star.lang.XMultiServiceFactory;
 import com.sun.star.lang.XServiceInfo;
@@ -133,6 +144,7 @@ import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 import com.sun.star.uno.XInterface;
 import com.sun.star.util.XCloseable;
+import com.sun.star.util.XModifiable;
 import com.sun.star.util.XStringSubstitution;
 import com.sun.star.util.XURLTransformer;
 
@@ -548,6 +560,28 @@ public class UnoService {
     }
 
     /**
+     * This method creates a new UnoService with arguments using the
+     * xMultiServiceFactory of the current unoObject.
+     * 
+     * @param name
+     *            the name of the required service
+     * @param args
+     *            the used arguments as a array of PropertyValues
+     * @return The new created UnoService. If the service does not exist or the
+     *         unoObject doesn't support xMultiServiceFactory, the result is a
+     *         new UnoObject(null).
+     * @throws Exception
+     */
+    public UnoService create(String name, Object[] args) throws Exception {
+        if (this.xMultiServiceFactory() != null) {
+            return new UnoService(this
+                .xMultiServiceFactory().createInstanceWithArguments(name, args));
+        } else {
+            return new UnoService(null);
+        }
+    }
+
+    /**
      * This method creates a new UnoService with a specified context.
      * 
      * @param name
@@ -775,6 +809,30 @@ public class UnoService {
 
     public XEventBroadcaster xEventBroadcaster() {
         return (XEventBroadcaster) queryInterface(XEventBroadcaster.class);
+    }
+
+    public XComponent xComponent() {
+        return (XComponent) queryInterface(XComponent.class);
+    }
+
+    public XDevice xDevice() {
+        return (XDevice) queryInterface(XDevice.class);
+    }
+
+    public XDispatch xDispatch() {
+        return (XDispatch) queryInterface(XDispatch.class);
+    }
+
+    public XDocumentInfoSupplier xDocumentInfoSupplier() {
+        return (XDocumentInfoSupplier) queryInterface(XDocumentInfoSupplier.class);
+    }
+
+    public XNameAccess xNameAccess() {
+        return (XNameAccess) queryInterface(XNameAccess.class);
+    }
+
+    public XModifiable xModifiable() {
+        return (XModifiable) queryInterface(XModifiable.class);
     }
 
     // ... add wrapper-methods for your own interfaces here...
