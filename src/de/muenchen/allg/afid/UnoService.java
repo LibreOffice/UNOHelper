@@ -80,9 +80,7 @@ package de.muenchen.allg.afid;
 
 import java.lang.reflect.Method;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.TreeSet;
 
 import com.sun.star.awt.XComboBox;
@@ -122,6 +120,7 @@ import com.sun.star.lang.XComponent;
 import com.sun.star.lang.XMultiComponentFactory;
 import com.sun.star.lang.XMultiServiceFactory;
 import com.sun.star.lang.XServiceInfo;
+import com.sun.star.lang.XSingleComponentFactory;
 import com.sun.star.lang.XTypeProvider;
 import com.sun.star.registry.XRegistryKey;
 import com.sun.star.registry.XSimpleRegistry;
@@ -136,6 +135,8 @@ import com.sun.star.text.XTextRange;
 import com.sun.star.text.XTextRangeCompare;
 import com.sun.star.ui.XModuleUIConfigurationManagerSupplier;
 import com.sun.star.ui.XUIConfigurationManager;
+import com.sun.star.ui.XUIConfigurationPersistence;
+import com.sun.star.ui.XUIElementFactory;
 import com.sun.star.ui.XUIElementSettings;
 import com.sun.star.ui.dialogs.XFilePicker;
 import com.sun.star.uno.Exception;
@@ -175,7 +176,7 @@ public class UnoService {
      * This map contains all at least one time required interface-instances of
      * this uno-service.
      */
-    private Map interfaceMap;
+    //private Map interfaceMap;
 
     /**
      * The constructor creates a new wrapperclass for a given uno-service
@@ -186,7 +187,7 @@ public class UnoService {
      */
     public UnoService(Object unoObject) {
         this.unoObject = unoObject;
-        interfaceMap = new HashMap();
+        //interfaceMap = new HashMap();
     }
 
     /**
@@ -204,12 +205,12 @@ public class UnoService {
      *         <code>null</null>.
      */
     public Object queryInterface(Class ifClass) {
-        if (!interfaceMap.containsKey(ifClass)) {
-            Object ifInstance = UnoRuntime.queryInterface(
+//        if (!interfaceMap.containsKey(ifClass)) {
+            return UnoRuntime.queryInterface(
                 ifClass, this.unoObject);
-            interfaceMap.put(ifClass, ifInstance);
-        }
-        return interfaceMap.get(ifClass);
+//            interfaceMap.put(ifClass, ifInstance);
+//        }
+//        return interfaceMap.get(ifClass);
     }
 
     /***************************************************************************
@@ -833,6 +834,18 @@ public class UnoService {
 
     public XModifiable xModifiable() {
         return (XModifiable) queryInterface(XModifiable.class);
+    }
+
+    public XUIElementFactory xUIElementFactory() {
+        return (XUIElementFactory) queryInterface(XUIElementFactory.class);
+    }
+
+    public XSingleComponentFactory xSingleComponentFactory() {
+        return (XSingleComponentFactory) queryInterface(XSingleComponentFactory.class);
+    }
+
+    public XUIConfigurationPersistence xUIConfigurationPersistence() {
+        return (XUIConfigurationPersistence) queryInterface(XUIConfigurationPersistence.class);
     }
 
     // ... add wrapper-methods for your own interfaces here...

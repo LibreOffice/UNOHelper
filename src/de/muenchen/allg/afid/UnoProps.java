@@ -172,7 +172,7 @@ public class UnoProps {
      *         Properties mit dem Namen name kapselt.
      * @throws UnknownPropertyException
      */
-    public UnoService getUnoServiceByPropertyValue(String name)
+    public UnoService getPropertyValueAsUnoService(String name)
             throws UnknownPropertyException {
         return new UnoService(getPropertyValue(name));
     }
@@ -185,8 +185,24 @@ public class UnoProps {
      *         zurück.
      * @throws UnknownPropertyException
      */
-    public String getStringByPropertyValue(String name)
+    public String getPropertyValueAsString(String name)
             throws UnknownPropertyException {
         return getPropertyValue(name).toString();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+        String str = "UnoProps[ ";
+        for (int i = 0; i < props.length; i++) {
+            if (i != 0)
+                str += ", ";
+            str += props[i].Name + "=>\"" + props[i].Value + "\"";
+        }
+        str += " ]";
+        return str;
     }
 }
