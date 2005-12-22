@@ -94,15 +94,19 @@ import com.sun.star.awt.XVclWindowPeer;
 import com.sun.star.awt.XWindow;
 import com.sun.star.awt.XWindowPeer;
 import com.sun.star.beans.Property;
+import com.sun.star.beans.XHierarchicalPropertySet;
+import com.sun.star.beans.XMultiPropertySet;
 import com.sun.star.beans.XPropertySet;
 import com.sun.star.beans.XPropertySetInfo;
 import com.sun.star.bridge.XUnoUrlResolver;
 import com.sun.star.container.XElementAccess;
 import com.sun.star.container.XEnumeration;
 import com.sun.star.container.XEnumerationAccess;
+import com.sun.star.container.XHierarchicalName;
 import com.sun.star.container.XIndexAccess;
 import com.sun.star.container.XIndexContainer;
 import com.sun.star.container.XNameAccess;
+import com.sun.star.container.XNameContainer;
 import com.sun.star.container.XNamed;
 import com.sun.star.document.XDocumentInfoSupplier;
 import com.sun.star.document.XDocumentInsertable;
@@ -114,6 +118,7 @@ import com.sun.star.frame.XDesktop;
 import com.sun.star.frame.XDispatch;
 import com.sun.star.frame.XFrame;
 import com.sun.star.frame.XLayoutManager;
+import com.sun.star.frame.XLayoutManagerEventBroadcaster;
 import com.sun.star.frame.XModel;
 import com.sun.star.frame.XModuleManager;
 import com.sun.star.lang.XComponent;
@@ -121,6 +126,7 @@ import com.sun.star.lang.XMultiComponentFactory;
 import com.sun.star.lang.XMultiServiceFactory;
 import com.sun.star.lang.XServiceInfo;
 import com.sun.star.lang.XSingleComponentFactory;
+import com.sun.star.lang.XSingleServiceFactory;
 import com.sun.star.lang.XTypeProvider;
 import com.sun.star.registry.XRegistryKey;
 import com.sun.star.registry.XSimpleRegistry;
@@ -135,6 +141,7 @@ import com.sun.star.text.XTextRange;
 import com.sun.star.text.XTextRangeCompare;
 import com.sun.star.ui.XModuleUIConfigurationManagerSupplier;
 import com.sun.star.ui.XUIConfigurationManager;
+import com.sun.star.ui.XUIConfigurationManagerSupplier;
 import com.sun.star.ui.XUIConfigurationPersistence;
 import com.sun.star.ui.XUIElementFactory;
 import com.sun.star.ui.XUIElementSettings;
@@ -144,6 +151,7 @@ import com.sun.star.uno.Type;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 import com.sun.star.uno.XInterface;
+import com.sun.star.util.XChangesBatch;
 import com.sun.star.util.XCloseable;
 import com.sun.star.util.XModifiable;
 import com.sun.star.util.XStringSubstitution;
@@ -176,8 +184,7 @@ public class UnoService {
      * This map contains all at least one time required interface-instances of
      * this uno-service.
      */
-    //private Map interfaceMap;
-
+    // private Map interfaceMap;
     /**
      * The constructor creates a new wrapperclass for a given uno-service
      * object.
@@ -187,7 +194,7 @@ public class UnoService {
      */
     public UnoService(Object unoObject) {
         this.unoObject = unoObject;
-        //interfaceMap = new HashMap();
+        // interfaceMap = new HashMap();
     }
 
     /**
@@ -205,12 +212,11 @@ public class UnoService {
      *         <code>null</null>.
      */
     public Object queryInterface(Class ifClass) {
-//        if (!interfaceMap.containsKey(ifClass)) {
-            return UnoRuntime.queryInterface(
-                ifClass, this.unoObject);
-//            interfaceMap.put(ifClass, ifInstance);
-//        }
-//        return interfaceMap.get(ifClass);
+        // if (!interfaceMap.containsKey(ifClass)) {
+        return UnoRuntime.queryInterface(ifClass, this.unoObject);
+        // interfaceMap.put(ifClass, ifInstance);
+        // }
+        // return interfaceMap.get(ifClass);
     }
 
     /***************************************************************************
@@ -846,6 +852,38 @@ public class UnoService {
 
     public XUIConfigurationPersistence xUIConfigurationPersistence() {
         return (XUIConfigurationPersistence) queryInterface(XUIConfigurationPersistence.class);
+    }
+
+    public XHierarchicalName xHierarchicalName() {
+        return (XHierarchicalName) queryInterface(XHierarchicalName.class);
+    }
+
+    public XHierarchicalPropertySet xHierarchicalPropertySet() {
+        return (XHierarchicalPropertySet) queryInterface(XHierarchicalPropertySet.class);
+    }
+
+    public XMultiPropertySet xMultiPropertySet() {
+        return (XMultiPropertySet) queryInterface(XMultiPropertySet.class);
+    }
+
+    public XSingleServiceFactory xSingleServiceFactory() {
+        return (XSingleServiceFactory) queryInterface(XSingleServiceFactory.class);
+    }
+
+    public XNameContainer xNameContainer() {
+        return (XNameContainer) queryInterface(XNameContainer.class);
+    }
+
+    public XChangesBatch xChangesBatch() {
+        return (XChangesBatch) queryInterface(XChangesBatch.class);
+    }
+
+    public XUIConfigurationManagerSupplier xUIConfigurationManagerSupplier() {
+        return (XUIConfigurationManagerSupplier) queryInterface(XUIConfigurationManagerSupplier.class);
+    }
+
+    public XLayoutManagerEventBroadcaster xLayoutManagerEventBroadcaster() {
+        return (XLayoutManagerEventBroadcaster) queryInterface(XLayoutManagerEventBroadcaster.class);
     }
 
     // ... add wrapper-methods for your own interfaces here...
