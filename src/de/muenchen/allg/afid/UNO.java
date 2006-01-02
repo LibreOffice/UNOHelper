@@ -61,6 +61,7 @@
 * 13.09.2005 | BNK | +Internal.findBrowseNodeTreeLeavesAndScriptProviders()
 *            |     | UNO.findBrowseNode... geändert zur Verwdg. der obigen Fkt.
 * 14.09.2005 | BNK | Bugs gefixt
+* 02.01.2005 | BNK | +XEnumerationAccess()
 * 
 * ------------------------------------------------------------------- 
 *
@@ -84,6 +85,7 @@ import com.sun.star.beans.UnknownPropertyException;
 import com.sun.star.beans.XPropertySet;
 import com.sun.star.bridge.XUnoUrlResolver;
 import com.sun.star.comp.helper.Bootstrap;
+import com.sun.star.container.XEnumerationAccess;
 import com.sun.star.container.XIndexAccess;
 import com.sun.star.container.XNameAccess;
 import com.sun.star.container.XNameContainer;
@@ -679,6 +681,13 @@ public class UNO {
 	{
 		return (XText)UnoRuntime.queryInterface(XText.class,o);
 	}
+    
+    /** Holt {@link XEnumerationAccess} Interface von o.*/
+    public static XEnumerationAccess XEnumerationAccess(Object o)
+    {
+        return (XEnumerationAccess)UnoRuntime.queryInterface(XEnumerationAccess.class,o);
+    }
+
 	
 	/** Holt {@link XSpreadsheetDocument} Interface von o.*/
 	public static XSpreadsheetDocument XSpreadsheetDocument(Object o)
