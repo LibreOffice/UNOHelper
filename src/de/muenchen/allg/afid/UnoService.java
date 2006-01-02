@@ -72,7 +72,9 @@
  * 08.11.2005 | LUT | + xDocumentInfoSupplier()           
  *                    + xNameAccess()
  *                    + createWithArguments()
- * 14.11.2005 | LUT | + xModifiable()           
+ * 14.11.2005 | LUT | + xModifiable()        
+ * 02.01.2006 | BNK | dbg_Services() und dbg_Properties() public
+ *                  | dbg_Properties() gibt Werte der Properties aus   
  * -------------------------------------------------------------------
  */
 
@@ -282,7 +284,7 @@ public class UnoService {
      * 
      * @return a string containig the inspection-information.
      */
-    private String dbg_Services() {
+    public String dbg_Services() {
         String str = "Supported UNO-Services: ";
         if (this.xServiceInfo() != null) {
             str += "\n";
@@ -302,15 +304,27 @@ public class UnoService {
      * 
      * @return a string containig the inspection-information.
      */
-    private String dbg_Properties() {
+    public String dbg_Properties() {
         String str = "Supported Properties: ";
         if (this.xPropertySet() != null) {
             str += "\n";
             Property[] props = this
                 .xPropertySet().getPropertySetInfo().getProperties();
             for (int i = 0; i < props.length; i++) {
-                str += "  " + props[i].Name + " - "
-                        + props[i].Type.getZClass().getName() + "\n";
+                String name = props[i].Name;
+                str += "  " + name + " - "
+                        + props[i].Type.getZClass().getName();
+                try{
+                  if (name.equals("Bookmark"))
+                  {
+                    UnoService bookmark = this.getPropertyValue(name);
+                    str += "  (Bookmark '"+bookmark.xNamed().getName()+"')";
+                  }
+                  else
+                    str += "  (" + this.getPropertyValue(props[i].Name).toString() + ")";
+                }
+                catch (java.lang.Exception x){}
+                str += "\n";
             }
         } else {
             str += "none\n";
