@@ -63,6 +63,7 @@
 * 14.09.2005 | BNK | Bugs gefixt
 * 02.01.2005 | BNK | +XEnumerationAccess()
 * 31.01.2006 | BNK | +XViewSettingsSupplier()
+* 31.01.2006 | BNK | +XWindow2()
 * 
 * ------------------------------------------------------------------- 
 *
@@ -80,6 +81,7 @@ import java.util.Vector;
 
 import com.sun.star.awt.XToolkit;
 import com.sun.star.awt.XWindow;
+import com.sun.star.awt.XWindow2;
 import com.sun.star.awt.XWindowPeer;
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.beans.UnknownPropertyException;
@@ -566,6 +568,12 @@ public class UNO {
 	{
 		return (XStorable)UnoRuntime.queryInterface(XStorable.class,o);
 	}
+    
+    /** Holt {@link XWindow2} Interface von o.*/
+    public static XWindow2 XWindow2(Object o)
+    {
+        return (XWindow2)UnoRuntime.queryInterface(XWindow2.class,o);
+    }
 	
 	/** Holt {@link XTextFieldsSupplier} Interface von o.*/
 	public static XTextFieldsSupplier XTextFieldsSupplier(Object o)
