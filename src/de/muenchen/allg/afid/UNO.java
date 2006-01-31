@@ -62,6 +62,7 @@
 *            |     | UNO.findBrowseNode... geändert zur Verwdg. der obigen Fkt.
 * 14.09.2005 | BNK | Bugs gefixt
 * 02.01.2005 | BNK | +XEnumerationAccess()
+* 31.01.2006 | BNK | +XViewSettingsSupplier()
 * 
 * ------------------------------------------------------------------- 
 *
@@ -134,6 +135,7 @@ import com.sun.star.util.XModifiable;
 import com.sun.star.util.XModifyBroadcaster;
 import com.sun.star.util.XURLTransformer;
 import com.sun.star.view.XPrintable;
+import com.sun.star.view.XViewSettingsSupplier;
 
 /**
  * Hilfsklasse zur leichteren Verwendung der UNO API.
@@ -552,6 +554,13 @@ public class UNO {
 		return (XSingleServiceFactory)UnoRuntime.queryInterface(XSingleServiceFactory.class,o);
 	}
 
+    /** Holt {@link XViewSettingsSupplier} Interface von o.*/
+    public static XViewSettingsSupplier XViewSettingsSupplier(Object o)
+    {
+        return (XViewSettingsSupplier)UnoRuntime.queryInterface(XViewSettingsSupplier.class,o);
+    }
+    
+    
 	/** Holt {@link XStorable} Interface von o.*/
 	public static XStorable XStorable(Object o)
 	{
