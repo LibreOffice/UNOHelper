@@ -64,7 +64,7 @@
 * 02.01.2005 | BNK | +XEnumerationAccess()
 * 31.01.2006 | BNK | +XViewSettingsSupplier()
 * 31.01.2006 | BNK | +XWindow2()
-* 
+* 01.02.2006 | BNK | +XMultiPropertySet()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -85,6 +85,7 @@ import com.sun.star.awt.XWindow2;
 import com.sun.star.awt.XWindowPeer;
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.beans.UnknownPropertyException;
+import com.sun.star.beans.XMultiPropertySet;
 import com.sun.star.beans.XPropertySet;
 import com.sun.star.bridge.XUnoUrlResolver;
 import com.sun.star.comp.helper.Bootstrap;
@@ -663,6 +664,12 @@ public class UNO {
 		return (XUnoUrlResolver)UnoRuntime.queryInterface(XUnoUrlResolver.class,o);
 	}
 	
+    /** Holt {@link XMultiPropertySet} Interface von o.*/
+    public static XMultiPropertySet XMultiPropertySet(Object o)
+    {
+        return (XMultiPropertySet)UnoRuntime.queryInterface(XMultiPropertySet.class,o);
+    }
+    
 	/** Holt {@link XPropertySet} Interface von o.*/
 	public static XPropertySet XPropertySet(Object o)
 	{
