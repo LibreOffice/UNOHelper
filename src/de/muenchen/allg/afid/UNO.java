@@ -65,6 +65,7 @@
 * 31.01.2006 | BNK | +XViewSettingsSupplier()
 * 31.01.2006 | BNK | +XWindow2()
 * 01.02.2006 | BNK | +XMultiPropertySet()
+*                  | +XLayoutManager()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -100,6 +101,7 @@ import com.sun.star.frame.FrameSearchFlag;
 import com.sun.star.frame.XComponentLoader;
 import com.sun.star.frame.XDesktop;
 import com.sun.star.frame.XDispatchProvider;
+import com.sun.star.frame.XLayoutManager;
 import com.sun.star.frame.XModel;
 import com.sun.star.frame.XStorable;
 import com.sun.star.frame.XToolbarController;
@@ -705,6 +707,12 @@ public class UNO {
 	{
 		return (XText)UnoRuntime.queryInterface(XText.class,o);
 	}
+    
+    /** Holt {@link XLayoutManager} Interface von o.*/
+    public static XLayoutManager XLayoutManager(Object o)
+    {
+        return (XLayoutManager)UnoRuntime.queryInterface(XLayoutManager.class,o);
+    }
     
     /** Holt {@link XEnumerationAccess} Interface von o.*/
     public static XEnumerationAccess XEnumerationAccess(Object o)
