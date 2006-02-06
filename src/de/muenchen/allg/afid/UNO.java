@@ -66,6 +66,8 @@
 * 31.01.2006 | BNK | +XWindow2()
 * 01.02.2006 | BNK | +XMultiPropertySet()
 *                  | +XLayoutManager()
+*                  | +XCloseable()
+*                  | +XTopWindow()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -81,6 +83,7 @@ import java.util.ListIterator;
 import java.util.Vector;
 
 import com.sun.star.awt.XToolkit;
+import com.sun.star.awt.XTopWindow;
 import com.sun.star.awt.XWindow;
 import com.sun.star.awt.XWindow2;
 import com.sun.star.awt.XWindowPeer;
@@ -136,6 +139,7 @@ import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 import com.sun.star.uno.XNamingService;
 import com.sun.star.util.XChangesBatch;
+import com.sun.star.util.XCloseable;
 import com.sun.star.util.XModifiable;
 import com.sun.star.util.XModifyBroadcaster;
 import com.sun.star.util.XURLTransformer;
@@ -571,6 +575,19 @@ public class UNO {
 	{
 		return (XStorable)UnoRuntime.queryInterface(XStorable.class,o);
 	}
+    
+
+    /** Holt {@link XTopWindow} Interface von o.*/
+    public static XTopWindow XTopWindow(Object o)
+    {
+        return (XTopWindow)UnoRuntime.queryInterface(XTopWindow.class,o);
+    }
+    
+    /** Holt {@link XCloseable} Interface von o.*/
+    public static XCloseable XCloseable(Object o)
+    {
+        return (XCloseable)UnoRuntime.queryInterface(XCloseable.class,o);
+    }
     
     /** Holt {@link XWindow2} Interface von o.*/
     public static XWindow2 XWindow2(Object o)
