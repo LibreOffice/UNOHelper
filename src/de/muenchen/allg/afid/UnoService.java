@@ -133,6 +133,7 @@ import com.sun.star.lang.XTypeProvider;
 import com.sun.star.registry.XRegistryKey;
 import com.sun.star.registry.XSimpleRegistry;
 import com.sun.star.text.XBookmarksSupplier;
+import com.sun.star.text.XParagraphCursor;
 import com.sun.star.text.XText;
 import com.sun.star.text.XTextContent;
 import com.sun.star.text.XTextCursor;
@@ -314,16 +315,18 @@ public class UnoService {
                 String name = props[i].Name;
                 str += "  " + name + " - "
                         + props[i].Type.getZClass().getName();
-                try{
-                  if (name.equals("Bookmark"))
-                  {
-                    UnoService bookmark = this.getPropertyValue(name);
-                    str += "  (Bookmark '"+bookmark.xNamed().getName()+"')";
-                  }
-                  else
-                    str += "  (" + this.getPropertyValue(props[i].Name).toString() + ")";
+                try {
+                    if (name.equals("Bookmark")) {
+                        UnoService bookmark = this.getPropertyValue(name);
+                        str += "  (Bookmark '" + bookmark.xNamed().getName()
+                                + "')";
+                    } else
+                        str += "  ("
+                                + this
+                                    .getPropertyValue(props[i].Name).toString()
+                                + ")";
+                } catch (java.lang.Exception x) {
                 }
-                catch (java.lang.Exception x){}
                 str += "\n";
             }
         } else {
@@ -898,6 +901,10 @@ public class UnoService {
 
     public XLayoutManagerEventBroadcaster xLayoutManagerEventBroadcaster() {
         return (XLayoutManagerEventBroadcaster) queryInterface(XLayoutManagerEventBroadcaster.class);
+    }
+
+    public XParagraphCursor xParagraphCursor() {
+        return (XParagraphCursor) queryInterface(XParagraphCursor.class);
     }
 
     // ... add wrapper-methods for your own interfaces here...
