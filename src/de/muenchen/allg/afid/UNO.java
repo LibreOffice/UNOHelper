@@ -266,7 +266,7 @@ public class UNO {
 	 * @author Matthias Benkmann (D-III-ITD 5.1)
 	 */
 	public static XComponent loadComponentFromURL(String URL, 
-																								boolean asTemplate, boolean allowMacros)
+	    boolean asTemplate, boolean allowMacros)
 	throws com.sun.star.io.IOException, com.sun.star.lang.IllegalArgumentException
 	{
 		XComponentLoader loader = UNO.XComponentLoader(desktop);
