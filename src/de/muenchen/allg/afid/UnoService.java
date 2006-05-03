@@ -76,7 +76,8 @@
  * 02.01.2006 | BNK | dbg_Services() und dbg_Properties() public
  *                  | dbg_Properties() gibt Werte der Properties aus  
  * 03.05.2006 | LUT | + xTextViewCursorSupplier()
- *                    + xTextViewCursor
+ *                    + xTextViewCursor()
+ *                    + xDispatchHelper()
  * -------------------------------------------------------------------
  */
 
@@ -120,6 +121,7 @@ import com.sun.star.frame.XComponentLoader;
 import com.sun.star.frame.XConfigManager;
 import com.sun.star.frame.XDesktop;
 import com.sun.star.frame.XDispatch;
+import com.sun.star.frame.XDispatchHelper;
 import com.sun.star.frame.XFrame;
 import com.sun.star.frame.XLayoutManager;
 import com.sun.star.frame.XLayoutManagerEventBroadcaster;
@@ -917,6 +919,10 @@ public class UnoService {
 
     public XTextViewCursor xTextViewCursor() {
         return (XTextViewCursor) queryInterface(XTextViewCursor.class);
+    }
+
+    public XDispatchHelper xDispatchHelper() {
+        return (XDispatchHelper) queryInterface(XDispatchHelper.class);
     }
 
     // ... add wrapper-methods for your own interfaces here...
