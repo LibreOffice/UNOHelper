@@ -74,7 +74,9 @@
  *                    + createWithArguments()
  * 14.11.2005 | LUT | + xModifiable()        
  * 02.01.2006 | BNK | dbg_Services() und dbg_Properties() public
- *                  | dbg_Properties() gibt Werte der Properties aus   
+ *                  | dbg_Properties() gibt Werte der Properties aus  
+ * 03.05.2006 | LUT | + xTextViewCursorSupplier()
+ *                    + xTextViewCursor
  * -------------------------------------------------------------------
  */
 
@@ -142,6 +144,8 @@ import com.sun.star.text.XTextField;
 import com.sun.star.text.XTextFieldsSupplier;
 import com.sun.star.text.XTextRange;
 import com.sun.star.text.XTextRangeCompare;
+import com.sun.star.text.XTextViewCursor;
+import com.sun.star.text.XTextViewCursorSupplier;
 import com.sun.star.ui.XModuleUIConfigurationManagerSupplier;
 import com.sun.star.ui.XUIConfigurationManager;
 import com.sun.star.ui.XUIConfigurationManagerSupplier;
@@ -905,6 +909,14 @@ public class UnoService {
 
     public XParagraphCursor xParagraphCursor() {
         return (XParagraphCursor) queryInterface(XParagraphCursor.class);
+    }
+
+    public XTextViewCursorSupplier xTextViewCursorSupplier() {
+        return (XTextViewCursorSupplier) queryInterface(XTextViewCursorSupplier.class);
+    }
+
+    public XTextViewCursor xTextViewCursor() {
+        return (XTextViewCursor) queryInterface(XTextViewCursor.class);
     }
 
     // ... add wrapper-methods for your own interfaces here...
