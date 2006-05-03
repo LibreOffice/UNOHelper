@@ -78,6 +78,8 @@
  * 03.05.2006 | LUT | + xTextViewCursorSupplier()
  *                    + xTextViewCursor()
  *                    + xDispatchHelper()
+ *                    + xDispatchProvider()
+ *                    + xController()
  * -------------------------------------------------------------------
  */
 
@@ -123,6 +125,7 @@ import com.sun.star.frame.XController;
 import com.sun.star.frame.XDesktop;
 import com.sun.star.frame.XDispatch;
 import com.sun.star.frame.XDispatchHelper;
+import com.sun.star.frame.XDispatchProvider;
 import com.sun.star.frame.XFrame;
 import com.sun.star.frame.XLayoutManager;
 import com.sun.star.frame.XLayoutManagerEventBroadcaster;
@@ -924,6 +927,10 @@ public class UnoService {
 
     public XDispatchHelper xDispatchHelper() {
         return (XDispatchHelper) queryInterface(XDispatchHelper.class);
+    }
+
+    public XDispatchProvider xDispatchProvider() {
+        return (XDispatchProvider) queryInterface(XDispatchProvider.class);
     }
 
     public XController xController() {
