@@ -119,6 +119,7 @@ import com.sun.star.document.XEventBroadcaster;
 import com.sun.star.drawing.XShape;
 import com.sun.star.frame.XComponentLoader;
 import com.sun.star.frame.XConfigManager;
+import com.sun.star.frame.XController;
 import com.sun.star.frame.XDesktop;
 import com.sun.star.frame.XDispatch;
 import com.sun.star.frame.XDispatchHelper;
@@ -923,6 +924,10 @@ public class UnoService {
 
     public XDispatchHelper xDispatchHelper() {
         return (XDispatchHelper) queryInterface(XDispatchHelper.class);
+    }
+
+    public XController xController() {
+        return (XController) queryInterface(XController.class);
     }
 
     // ... add wrapper-methods for your own interfaces here...
