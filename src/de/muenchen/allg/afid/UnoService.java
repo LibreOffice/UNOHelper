@@ -74,12 +74,13 @@
  *                    + createWithArguments()
  * 14.11.2005 | LUT | + xModifiable()        
  * 02.01.2006 | BNK | dbg_Services() und dbg_Properties() public
- *                  | dbg_Properties() gibt Werte der Properties aus  
+ *                  | dbg_Properties() gibt Werte der Properties aus
  * 03.05.2006 | LUT | + xTextViewCursorSupplier()
  *                    + xTextViewCursor()
  *                    + xDispatchHelper()
  *                    + xDispatchProvider()
  *                    + xController()
+ * 18.05.2006 | LUT | + xUpdatable()   
  * -------------------------------------------------------------------
  */
 
@@ -169,6 +170,7 @@ import com.sun.star.util.XCloseable;
 import com.sun.star.util.XModifiable;
 import com.sun.star.util.XStringSubstitution;
 import com.sun.star.util.XURLTransformer;
+import com.sun.star.util.XUpdatable;
 
 /**
  * The class UnoService is a wrapper for UnoService-Objects provided by the
@@ -915,6 +917,10 @@ public class UnoService {
 
     public XParagraphCursor xParagraphCursor() {
         return (XParagraphCursor) queryInterface(XParagraphCursor.class);
+    }
+
+    public XUpdatable xUpdatable() {
+        return (XUpdatable) queryInterface(XUpdatable.class);
     }
 
     public XTextViewCursorSupplier xTextViewCursorSupplier() {
