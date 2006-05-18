@@ -80,7 +80,8 @@
  *                    + xDispatchHelper()
  *                    + xDispatchProvider()
  *                    + xController()
- * 18.05.2006 | LUT | + xUpdatable()   
+ * 18.05.2006 | LUT | + xUpdatable()
+ *                    + xTextFramesSupplier() 
  * -------------------------------------------------------------------
  */
 
@@ -149,6 +150,7 @@ import com.sun.star.text.XTextCursor;
 import com.sun.star.text.XTextDocument;
 import com.sun.star.text.XTextField;
 import com.sun.star.text.XTextFieldsSupplier;
+import com.sun.star.text.XTextFramesSupplier;
 import com.sun.star.text.XTextRange;
 import com.sun.star.text.XTextRangeCompare;
 import com.sun.star.text.XTextViewCursor;
@@ -941,6 +943,10 @@ public class UnoService {
 
     public XController xController() {
         return (XController) queryInterface(XController.class);
+    }
+
+    public XTextFramesSupplier xTextFramesSupplier() {
+        return (XTextFramesSupplier) queryInterface(XTextFramesSupplier.class);
     }
 
     // ... add wrapper-methods for your own interfaces here...
