@@ -68,6 +68,8 @@
 *                  | +XLayoutManager()
 *                  | +XCloseable()
 *                  | +XTopWindow()
+* 18.05.2006 | BNK | +XDocumentInsertable()
+*                  | +XTextField()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -99,6 +101,7 @@ import com.sun.star.container.XNameAccess;
 import com.sun.star.container.XNameContainer;
 import com.sun.star.container.XNamed;
 import com.sun.star.document.MacroExecMode;
+import com.sun.star.document.XDocumentInsertable;
 import com.sun.star.document.XEventBroadcaster;
 import com.sun.star.frame.FrameSearchFlag;
 import com.sun.star.frame.XComponentLoader;
@@ -132,6 +135,7 @@ import com.sun.star.table.XTableColumns;
 import com.sun.star.text.XText;
 import com.sun.star.text.XTextContent;
 import com.sun.star.text.XTextDocument;
+import com.sun.star.text.XTextField;
 import com.sun.star.text.XTextFieldsSupplier;
 import com.sun.star.ui.dialogs.XFilePicker;
 import com.sun.star.uno.RuntimeException;
@@ -700,6 +704,18 @@ public class UNO {
 	{
 		return (XModel)UnoRuntime.queryInterface(XModel.class,o);
 	}
+    
+    /** Holt {@link XTextField} Interface von o.*/
+    public static XTextField XTextField(Object o)
+    {
+        return (XTextField)UnoRuntime.queryInterface(XTextField.class,o);
+    }
+    
+    /** Holt {@link XDocumentInsertable} Interface von o.*/
+    public static XDocumentInsertable XDocumentInsertable(Object o)
+    {
+        return (XDocumentInsertable)UnoRuntime.queryInterface(XDocumentInsertable.class,o);
+    }
 	
 	/** Holt {@link XModifyBroadcaster} Interface von o.*/
 	public static XModifyBroadcaster XModifyBroadcaster(Object o)
