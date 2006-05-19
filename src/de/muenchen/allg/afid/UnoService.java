@@ -81,7 +81,8 @@
  *                    + xDispatchProvider()
  *                    + xController()
  * 18.05.2006 | LUT | + xUpdatable()
- *                    + xTextFramesSupplier() 
+ *                    + xTextFramesSupplier()
+ * 19.05.2006 | LUT | + xViewSettingsSupplier() 
  * -------------------------------------------------------------------
  */
 
@@ -173,6 +174,7 @@ import com.sun.star.util.XModifiable;
 import com.sun.star.util.XStringSubstitution;
 import com.sun.star.util.XURLTransformer;
 import com.sun.star.util.XUpdatable;
+import com.sun.star.view.XViewSettingsSupplier;
 
 /**
  * The class UnoService is a wrapper for UnoService-Objects provided by the
@@ -947,6 +949,10 @@ public class UnoService {
 
     public XTextFramesSupplier xTextFramesSupplier() {
         return (XTextFramesSupplier) queryInterface(XTextFramesSupplier.class);
+    }
+
+    public XViewSettingsSupplier xViewSettingsSupplier() {
+        return (XViewSettingsSupplier) queryInterface(XViewSettingsSupplier.class);
     }
 
     // ... add wrapper-methods for your own interfaces here...
