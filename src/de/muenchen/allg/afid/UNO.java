@@ -70,6 +70,8 @@
 *                  | +XTopWindow()
 * 18.05.2006 | BNK | +XDocumentInsertable()
 *                  | +XTextField()
+* 09.06.2006 | LUT | getPropertyValue und setPropertyValue dürfen nicht System.exit(0) aufrufen,
+*                    wenn eine WrappedTargetException auftrat!
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -502,10 +504,7 @@ public class UNO {
 			if (props == null) return null;
 			ret = props.getPropertyValue(propName);
 		} catch (UnknownPropertyException e) {
-		  return null;
 		} catch (WrappedTargetException e) {
-				e.printStackTrace();
-				System.exit(0);
 		}
 		return ret;
 	}
@@ -536,10 +535,7 @@ public class UNO {
 			} catch(Exception x){}
 			ret = props.getPropertyValue(propName);
 		} catch (UnknownPropertyException e) {
-		  return null;
 		} catch (WrappedTargetException e) {
-				e.printStackTrace();
-				System.exit(0);
 		}
 		return ret;
 	}
