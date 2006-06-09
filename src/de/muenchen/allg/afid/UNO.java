@@ -71,7 +71,7 @@
 * 18.05.2006 | BNK | +XDocumentInsertable()
 *                  | +XTextField()
 * 09.06.2006 | LUT | getPropertyValue und setPropertyValue dürfen nicht System.exit(0) aufrufen,
-*                    wenn eine WrappedTargetException auftrat!
+*                    wenn eine WrappedTargetException auftrat !
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
