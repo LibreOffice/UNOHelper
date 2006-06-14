@@ -74,6 +74,7 @@
 *                    wenn eine WrappedTargetException auftrat !
 * 14.06.2006 | LUT | +XServiceInfo()
 *                  | +supportsService(...)
+*                  | +XUpdatable(Object)
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -153,6 +154,7 @@ import com.sun.star.util.XCloseable;
 import com.sun.star.util.XModifiable;
 import com.sun.star.util.XModifyBroadcaster;
 import com.sun.star.util.XURLTransformer;
+import com.sun.star.util.XUpdatable;
 import com.sun.star.view.XPrintable;
 import com.sun.star.view.XViewSettingsSupplier;
 
@@ -900,6 +902,12 @@ public class UNO {
     public static XServiceInfo XServiceInfo(Object o)
     {
         return (XServiceInfo)UnoRuntime.queryInterface(XServiceInfo.class,o);
+    }   
+
+    /** Holt {@link XUpdatable} Interface von o.*/
+    public static XUpdatable XUpdatable(Object o)
+    {
+        return (XUpdatable)UnoRuntime.queryInterface(XUpdatable.class,o);
     }   
 
 	// ACHTUNG: Interface-Methoden fangen hier mit einem grossen X an!
