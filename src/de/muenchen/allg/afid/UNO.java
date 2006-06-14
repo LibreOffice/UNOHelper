@@ -72,6 +72,8 @@
 *                  | +XTextField()
 * 09.06.2006 | LUT | getPropertyValue und setPropertyValue dürfen nicht System.exit(0) aufrufen,
 *                    wenn eine WrappedTargetException auftrat !
+* 14.06.2006 | LUT | +XServiceInfo()
+*                  | +supportsService(...)
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -117,6 +119,7 @@ import com.sun.star.lang.WrappedTargetException;
 import com.sun.star.lang.XComponent;
 import com.sun.star.lang.XMultiComponentFactory;
 import com.sun.star.lang.XMultiServiceFactory;
+import com.sun.star.lang.XServiceInfo;
 import com.sun.star.lang.XSingleServiceFactory;
 import com.sun.star.script.browse.BrowseNodeFactoryViewTypes;
 import com.sun.star.script.browse.BrowseNodeTypes;
@@ -134,6 +137,7 @@ import com.sun.star.sheet.XSpreadsheetDocument;
 import com.sun.star.table.XCellRange;
 import com.sun.star.table.XColumnRowRange;
 import com.sun.star.table.XTableColumns;
+import com.sun.star.text.XParagraphCursor;
 import com.sun.star.text.XText;
 import com.sun.star.text.XTextContent;
 import com.sun.star.text.XTextDocument;
@@ -389,6 +393,25 @@ public class UNO {
 	  return Internal.executeMacroInternal(macroName, args, null, scriptRoot.unwrap(), location);
 	}
 
+	/**
+     * Diese Methode prüft, ob es sich bei dem übergebenen Objekt service um ein
+     * UNO-Service mit dem Namen serviceName handelt und liefert true zurück,
+     * wenn das Objekt das XServiceInfo-Interface und den gesuchten Service
+     * implementiert, ansonsten wird false zurückgegeben.
+     * 
+     * @param service
+     *            Das zu prüfende Service-Objekt
+     * @param serviceName
+     *            der voll-qualifizierte Service-Name des services.
+     * @return true, wenn das Objekt das XServiceInfo-Interface und den
+     *         gesuchten Service implementiert, ansonsten false.
+     * @author Christoph Lutz (D-III-ITD 5.1)
+     */
+    public static boolean supportsService(Object service, String serviceName) {
+        if (UNO.XServiceInfo(service) != null)
+            return UNO.XServiceInfo(service).supportsService(serviceName);
+        return false;
+    }
 	
 	public static class XBrowseNodeAndXScriptProvider
 	{
@@ -861,11 +884,23 @@ public class UNO {
 		return (XWindowPeer)UnoRuntime.queryInterface(XWindowPeer.class,o);
 	}	
 	
-	/** Holt {@link XToolbarController} Interface von o.*/
-	public static XToolbarController XToolbarController(Object o)
-	{
-		return (XToolbarController)UnoRuntime.queryInterface(XToolbarController.class,o);
-	}	
+    /** Holt {@link XToolbarController} Interface von o.*/
+    public static XToolbarController XToolbarController(Object o)
+    {
+        return (XToolbarController)UnoRuntime.queryInterface(XToolbarController.class,o);
+    }   
+
+    /** Holt {@link com.sun.star.text.XParagraphCursor} Interface von o.*/
+    public static XParagraphCursor XParagraphCursor(Object o)
+    {
+        return (XParagraphCursor)UnoRuntime.queryInterface(XParagraphCursor.class,o);
+    }   
+
+    /** Holt {@link com.sun.star.lang.XServiceInf} Interface von o.*/
+    public static XServiceInfo XServiceInfo(Object o)
+    {
+        return (XServiceInfo)UnoRuntime.queryInterface(XServiceInfo.class,o);
+    }   
 
 	// ACHTUNG: Interface-Methoden fangen hier mit einem grossen X an!
   /**
