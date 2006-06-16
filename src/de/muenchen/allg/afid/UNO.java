@@ -75,6 +75,7 @@
 * 14.06.2006 | LUT | +XServiceInfo()
 *                  | +supportsService(...)
 *                  | +XUpdatable(Object)
+* 16.06.2006 | BNK | +XContentEnumerationAccess()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -100,6 +101,7 @@ import com.sun.star.beans.XMultiPropertySet;
 import com.sun.star.beans.XPropertySet;
 import com.sun.star.bridge.XUnoUrlResolver;
 import com.sun.star.comp.helper.Bootstrap;
+import com.sun.star.container.XContentEnumerationAccess;
 import com.sun.star.container.XEnumerationAccess;
 import com.sun.star.container.XIndexAccess;
 import com.sun.star.container.XNameAccess;
@@ -600,6 +602,12 @@ public class UNO {
 	{
 		return (XStorable)UnoRuntime.queryInterface(XStorable.class,o);
 	}
+    
+    /** Holt {@link XContentEnumerationAccess} Interface von o.*/
+    public static XContentEnumerationAccess XContentEnumerationAccess(Object o)
+    {
+        return (XContentEnumerationAccess)UnoRuntime.queryInterface(XContentEnumerationAccess.class,o);
+    }
     
 
     /** Holt {@link XTopWindow} Interface von o.*/
