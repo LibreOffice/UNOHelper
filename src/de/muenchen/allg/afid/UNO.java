@@ -74,8 +74,11 @@
 *                    wenn eine WrappedTargetException auftrat !
 * 14.06.2006 | LUT | +XServiceInfo()
 *                  | +supportsService(...)
-*                  | +XUpdatable(Object)
+*                  | +XUpdatable()
+*                  | +XTextViewCursorSupplier()
+*                  | +XDrawPageSupplier()
 * 16.06.2006 | BNK | +XContentEnumerationAccess()
+* 19.06.2006 | LUT | +XControlShape()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -110,6 +113,8 @@ import com.sun.star.container.XNamed;
 import com.sun.star.document.MacroExecMode;
 import com.sun.star.document.XDocumentInsertable;
 import com.sun.star.document.XEventBroadcaster;
+import com.sun.star.drawing.XControlShape;
+import com.sun.star.drawing.XDrawPageSupplier;
 import com.sun.star.frame.FrameSearchFlag;
 import com.sun.star.frame.XComponentLoader;
 import com.sun.star.frame.XDesktop;
@@ -133,19 +138,20 @@ import com.sun.star.script.provider.XScriptProvider;
 import com.sun.star.script.provider.XScriptProviderFactory;
 import com.sun.star.script.provider.XScriptProviderSupplier;
 import com.sun.star.sdb.XDocumentDataSource;
-import com.sun.star.text.XBookmarksSupplier;
 import com.sun.star.sheet.XCellRangeData;
 import com.sun.star.sheet.XSpreadsheet;
 import com.sun.star.sheet.XSpreadsheetDocument;
 import com.sun.star.table.XCellRange;
 import com.sun.star.table.XColumnRowRange;
 import com.sun.star.table.XTableColumns;
+import com.sun.star.text.XBookmarksSupplier;
 import com.sun.star.text.XParagraphCursor;
 import com.sun.star.text.XText;
 import com.sun.star.text.XTextContent;
 import com.sun.star.text.XTextDocument;
 import com.sun.star.text.XTextField;
 import com.sun.star.text.XTextFieldsSupplier;
+import com.sun.star.text.XTextViewCursorSupplier;
 import com.sun.star.ui.dialogs.XFilePicker;
 import com.sun.star.uno.RuntimeException;
 import com.sun.star.uno.UnoRuntime;
@@ -603,13 +609,6 @@ public class UNO {
 		return (XStorable)UnoRuntime.queryInterface(XStorable.class,o);
 	}
     
-    /** Holt {@link XContentEnumerationAccess} Interface von o.*/
-    public static XContentEnumerationAccess XContentEnumerationAccess(Object o)
-    {
-        return (XContentEnumerationAccess)UnoRuntime.queryInterface(XContentEnumerationAccess.class,o);
-    }
-    
-
     /** Holt {@link XTopWindow} Interface von o.*/
     public static XTopWindow XTopWindow(Object o)
     {
@@ -916,6 +915,30 @@ public class UNO {
     public static XUpdatable XUpdatable(Object o)
     {
         return (XUpdatable)UnoRuntime.queryInterface(XUpdatable.class,o);
+    }   
+
+    /** Holt {@link XTextViewCursorSupplier} Interface von o.*/
+    public static XTextViewCursorSupplier XTextViewCursorSupplier(Object o)
+    {
+        return (XTextViewCursorSupplier)UnoRuntime.queryInterface(XTextViewCursorSupplier.class,o);
+    }   
+
+    /** Holt {@link XDrawPageSupplier} Interface von o.*/
+    public static XDrawPageSupplier XDrawPageSupplier(Object o)
+    {
+        return (XDrawPageSupplier)UnoRuntime.queryInterface(XDrawPageSupplier.class,o);
+    }   
+
+    /** Holt {@link XContentEnumerationAccess} Interface von o.*/
+    public static XContentEnumerationAccess XContentEnumerationAccess(Object o)
+    {
+        return (XContentEnumerationAccess)UnoRuntime.queryInterface(XContentEnumerationAccess.class,o);
+    }   
+
+    /** Holt {@link XControlShape} Interface von o.*/
+    public static XControlShape XControlShape(Object o)
+    {
+        return (XControlShape)UnoRuntime.queryInterface(XControlShape.class,o);
     }   
 
 	// ACHTUNG: Interface-Methoden fangen hier mit einem grossen X an!
