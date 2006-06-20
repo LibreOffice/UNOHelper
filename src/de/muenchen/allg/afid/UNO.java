@@ -79,6 +79,7 @@
 *                  | +XDrawPageSupplier()
 * 16.06.2006 | BNK | +XContentEnumerationAccess()
 * 19.06.2006 | LUT | +XControlShape()
+* 20.06.2006 | LUT | +XTextRange()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -151,6 +152,7 @@ import com.sun.star.text.XTextContent;
 import com.sun.star.text.XTextDocument;
 import com.sun.star.text.XTextField;
 import com.sun.star.text.XTextFieldsSupplier;
+import com.sun.star.text.XTextRange;
 import com.sun.star.text.XTextViewCursorSupplier;
 import com.sun.star.ui.dialogs.XFilePicker;
 import com.sun.star.uno.RuntimeException;
@@ -939,6 +941,12 @@ public class UNO {
     public static XControlShape XControlShape(Object o)
     {
         return (XControlShape)UnoRuntime.queryInterface(XControlShape.class,o);
+    }   
+
+    /** Holt {@link XTextRange} Interface von o.*/
+    public static XTextRange XTextRange(Object o)
+    {
+        return (XTextRange)UnoRuntime.queryInterface(XTextRange.class,o);
     }   
 
 	// ACHTUNG: Interface-Methoden fangen hier mit einem grossen X an!
