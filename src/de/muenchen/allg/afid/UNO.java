@@ -80,6 +80,8 @@
 * 16.06.2006 | BNK | +XContentEnumerationAccess()
 * 19.06.2006 | LUT | +XControlShape()
 * 20.06.2006 | LUT | +XTextRange()
+* 29.06.2006 | LUT | +XDevice()
+* 10.07.2006 | LUT | +XFramesSupplier()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -94,6 +96,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
 
+import com.sun.star.awt.XDevice;
 import com.sun.star.awt.XToolkit;
 import com.sun.star.awt.XTopWindow;
 import com.sun.star.awt.XWindow;
@@ -120,6 +123,7 @@ import com.sun.star.frame.FrameSearchFlag;
 import com.sun.star.frame.XComponentLoader;
 import com.sun.star.frame.XDesktop;
 import com.sun.star.frame.XDispatchProvider;
+import com.sun.star.frame.XFramesSupplier;
 import com.sun.star.frame.XLayoutManager;
 import com.sun.star.frame.XModel;
 import com.sun.star.frame.XStorable;
@@ -949,7 +953,20 @@ public class UNO {
         return (XTextRange)UnoRuntime.queryInterface(XTextRange.class,o);
     }   
 
+    /** Holt {@link XDevice} Interface von o.*/
+    public static XDevice XDevice(Object o)
+    {
+        return (XDevice)UnoRuntime.queryInterface(XDevice.class,o);
+    }   
+
+    /** Holt {@link com.sun.star.frame.XFramesSupplier} Interface von o.*/
+    public static XFramesSupplier XFramesSupplier(Object o)
+    {
+        return (XFramesSupplier)UnoRuntime.queryInterface(XFramesSupplier.class,o);
+    }   
+
 	// ACHTUNG: Interface-Methoden fangen hier mit einem grossen X an!
+    
   /**
    * Interne Funktionen
    */
