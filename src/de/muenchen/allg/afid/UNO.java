@@ -82,6 +82,7 @@
 * 20.06.2006 | LUT | +XTextRange()
 * 29.06.2006 | LUT | +XDevice()
 * 10.07.2006 | LUT | +XFramesSupplier()
+* 28.07.2006 | BNK | +XInterface()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -162,6 +163,7 @@ import com.sun.star.ui.dialogs.XFilePicker;
 import com.sun.star.uno.RuntimeException;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
+import com.sun.star.uno.XInterface;
 import com.sun.star.uno.XNamingService;
 import com.sun.star.util.XChangesBatch;
 import com.sun.star.util.XCloseable;
@@ -825,6 +827,12 @@ public class UNO {
 	{
 		return (XURLTransformer)UnoRuntime.queryInterface(XURLTransformer.class,o);
 	}
+    
+    /** Holt {@link XInterface} Interface von o.*/
+    public static XInterface XInterface(Object o)
+    {
+        return (XInterface)UnoRuntime.queryInterface(XInterface.class,o);
+    }
 
 	
 	/** Holt {@link XComponentLoader} Interface von o.*/
