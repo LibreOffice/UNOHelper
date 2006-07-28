@@ -83,6 +83,7 @@
 * 29.06.2006 | LUT | +XDevice()
 * 10.07.2006 | LUT | +XFramesSupplier()
 * 28.07.2006 | BNK | +XInterface()
+* 28.07.2006 | BNK | +XTextTable()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -158,6 +159,7 @@ import com.sun.star.text.XTextDocument;
 import com.sun.star.text.XTextField;
 import com.sun.star.text.XTextFieldsSupplier;
 import com.sun.star.text.XTextRange;
+import com.sun.star.text.XTextTable;
 import com.sun.star.text.XTextViewCursorSupplier;
 import com.sun.star.ui.dialogs.XFilePicker;
 import com.sun.star.uno.RuntimeException;
@@ -776,6 +778,12 @@ public class UNO {
 	{
 		return (XText)UnoRuntime.queryInterface(XText.class,o);
 	}
+    
+    /** Holt {@link XTextTable} Interface von o.*/
+    public static XTextTable XTextTable(Object o)
+    {
+        return (XTextTable)UnoRuntime.queryInterface(XTextTable.class,o);
+    }
     
     /** Holt {@link XLayoutManager} Interface von o.*/
     public static XLayoutManager XLayoutManager(Object o)
