@@ -84,6 +84,7 @@
 * 10.07.2006 | LUT | +XFramesSupplier()
 * 28.07.2006 | BNK | +XInterface()
 * 28.07.2006 | BNK | +XTextTable()
+* 03.08.2006 | BNK | +XUserInputInterception()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -101,6 +102,7 @@ import java.util.Vector;
 import com.sun.star.awt.XDevice;
 import com.sun.star.awt.XToolkit;
 import com.sun.star.awt.XTopWindow;
+import com.sun.star.awt.XUserInputInterception;
 import com.sun.star.awt.XWindow;
 import com.sun.star.awt.XWindow2;
 import com.sun.star.awt.XWindowPeer;
@@ -692,6 +694,12 @@ public class UNO {
 		return (XCellRange)UnoRuntime.queryInterface(XCellRange.class,o);
 	}
 
+    /** Holt {@link XUserInputInterception} Interface von o.*/
+    public static XUserInputInterception XUserInputInterception(Object o)
+    {
+        return (XUserInputInterception)UnoRuntime.queryInterface(XUserInputInterception.class,o);
+    }
+    
 	/** Holt {@link XModifiable} Interface von o.*/
 	public static XModifiable XModifiable(Object o)
 	{
