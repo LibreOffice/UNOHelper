@@ -85,6 +85,8 @@
 * 28.07.2006 | BNK | +XInterface()
 * 28.07.2006 | BNK | +XTextTable()
 * 03.08.2006 | BNK | +XUserInputInterception()
+* 04.08.2006 | LUT | +XDocumentInfoSupplier()
+*                    +XDocumentInfo
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -119,6 +121,8 @@ import com.sun.star.container.XNameAccess;
 import com.sun.star.container.XNameContainer;
 import com.sun.star.container.XNamed;
 import com.sun.star.document.MacroExecMode;
+import com.sun.star.document.XDocumentInfo;
+import com.sun.star.document.XDocumentInfoSupplier;
 import com.sun.star.document.XDocumentInsertable;
 import com.sun.star.document.XEventBroadcaster;
 import com.sun.star.drawing.XControlShape;
@@ -987,6 +991,18 @@ public class UNO {
     public static XFramesSupplier XFramesSupplier(Object o)
     {
         return (XFramesSupplier)UnoRuntime.queryInterface(XFramesSupplier.class,o);
+    }   
+
+    /** Holt {@link XDocumentInfoSupplier} Interface von o.*/
+    public static XDocumentInfoSupplier XDocumentInfoSupplier(Object o)
+    {
+        return (XDocumentInfoSupplier)UnoRuntime.queryInterface(XDocumentInfoSupplier.class,o);
+    }   
+
+    /** Holt {@link com.sun.star.document.XDocumentInfo} Interface von o.*/
+    public static XDocumentInfo XDocumentInfo(Object o)
+    {
+        return (XDocumentInfo)UnoRuntime.queryInterface(XDocumentInfo.class,o);
     }   
 
 	// ACHTUNG: Interface-Methoden fangen hier mit einem grossen X an!
