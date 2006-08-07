@@ -87,6 +87,7 @@
 * 03.08.2006 | BNK | +XUserInputInterception()
 * 04.08.2006 | LUT | +XDocumentInfoSupplier()
 *                    +XDocumentInfo
+* 07.08.2006 | BNK | +XDependentTextField
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -158,6 +159,7 @@ import com.sun.star.table.XCellRange;
 import com.sun.star.table.XColumnRowRange;
 import com.sun.star.table.XTableColumns;
 import com.sun.star.text.XBookmarksSupplier;
+import com.sun.star.text.XDependentTextField;
 import com.sun.star.text.XParagraphCursor;
 import com.sun.star.text.XText;
 import com.sun.star.text.XTextContent;
@@ -795,6 +797,12 @@ public class UNO {
     public static XTextTable XTextTable(Object o)
     {
         return (XTextTable)UnoRuntime.queryInterface(XTextTable.class,o);
+    }
+    
+    /** Holt {@link XDependentTextField} Interface von o.*/
+    public static XDependentTextField XDependentTextField(Object o)
+    {
+        return (XDependentTextField)UnoRuntime.queryInterface(XDependentTextField.class,o);
     }
     
     /** Holt {@link XLayoutManager} Interface von o.*/
