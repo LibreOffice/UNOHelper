@@ -88,6 +88,7 @@
 * 04.08.2006 | LUT | +XDocumentInfoSupplier()
 *                    +XDocumentInfo
 * 07.08.2006 | BNK | +XDependentTextField
+*                  | +XShape
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -128,6 +129,7 @@ import com.sun.star.document.XDocumentInsertable;
 import com.sun.star.document.XEventBroadcaster;
 import com.sun.star.drawing.XControlShape;
 import com.sun.star.drawing.XDrawPageSupplier;
+import com.sun.star.drawing.XShape;
 import com.sun.star.frame.FrameSearchFlag;
 import com.sun.star.frame.XComponentLoader;
 import com.sun.star.frame.XDesktop;
@@ -626,6 +628,12 @@ public class UNO {
 	{
 		return (XStorable)UnoRuntime.queryInterface(XStorable.class,o);
 	}
+    
+    /** Holt {@link XShape} Interface von o.*/
+    public static XShape XShape(Object o)
+    {
+        return (XShape)UnoRuntime.queryInterface(XShape.class,o);
+    }
     
     /** Holt {@link XTopWindow} Interface von o.*/
     public static XTopWindow XTopWindow(Object o)
