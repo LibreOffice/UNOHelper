@@ -90,6 +90,7 @@
 * 07.08.2006 | BNK | +XDependentTextField
 *                  | +XShape
 *                  | +XTextFramesSupplier
+* 10.08.2006 |     | +XTextFrame
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -169,6 +170,7 @@ import com.sun.star.text.XTextContent;
 import com.sun.star.text.XTextDocument;
 import com.sun.star.text.XTextField;
 import com.sun.star.text.XTextFieldsSupplier;
+import com.sun.star.text.XTextFrame;
 import com.sun.star.text.XTextFramesSupplier;
 import com.sun.star.text.XTextRange;
 import com.sun.star.text.XTextTable;
@@ -659,6 +661,12 @@ public class UNO {
     public static XTextFramesSupplier XTextFramesSupplier(Object o)
     {
         return (XTextFramesSupplier)UnoRuntime.queryInterface(XTextFramesSupplier.class,o);
+    }
+    
+    /** Holt {@link XTextFrame} Interface von o.*/
+    public static XTextFrame XTextFrame(Object o)
+    {
+        return (XTextFrame)UnoRuntime.queryInterface(XTextFrame.class,o);
     }
     
 	/** Holt {@link XTextFieldsSupplier} Interface von o.*/
