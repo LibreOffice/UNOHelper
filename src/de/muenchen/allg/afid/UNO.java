@@ -90,7 +90,8 @@
 * 07.08.2006 | BNK | +XDependentTextField
 *                  | +XShape
 *                  | +XTextFramesSupplier
-* 10.08.2006 |     | +XTextFrame
+* 10.08.2006 | BNK | +XTextFrame
+* 21.08.2006 | BNK | +XSelectionSupplier
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -188,6 +189,7 @@ import com.sun.star.util.XModifyBroadcaster;
 import com.sun.star.util.XURLTransformer;
 import com.sun.star.util.XUpdatable;
 import com.sun.star.view.XPrintable;
+import com.sun.star.view.XSelectionSupplier;
 import com.sun.star.view.XViewSettingsSupplier;
 
 /**
@@ -879,6 +881,14 @@ public class UNO {
 	{
 		return (XURLTransformer)UnoRuntime.queryInterface(XURLTransformer.class,o);
 	}
+    
+    
+    /** Holt {@link XSelectionSupplier} Interface von o.*/
+    public static XSelectionSupplier XSelectionSupplier(Object o)
+    {
+        return (XSelectionSupplier)UnoRuntime.queryInterface(XSelectionSupplier.class,o);
+    }
+    
     
     /** Holt {@link XInterface} Interface von o.*/
     public static XInterface XInterface(Object o)
