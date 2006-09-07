@@ -16,7 +16,7 @@
 * 17.08.2005 | BNK | +Internal-Klasse für interne Methoden
 * 17.08.2005 | BNK | +findBrowseNodeTreeLeaf()
 * 19.08.2005 | BNK | init(Object) => public, weil nützlich
-* 19.08.2005 | BNK | +XPrintable()
+* 19.08.2005 | BNK | +XPrintable()    
 * 22.08.2005 | PIT | +XNamed() 
 * 22.08.2005 | PIT | +XTextContent()  
 * 19.08.2005 | BNK | +XSpreadsheetDocument()
@@ -92,6 +92,7 @@
 *                  | +XTextFramesSupplier
 * 10.08.2006 | BNK | +XTextFrame
 * 21.08.2006 | BNK | +XSelectionSupplier
+* 07.09.2006 | BNK | +XCell
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -160,6 +161,7 @@ import com.sun.star.sdb.XDocumentDataSource;
 import com.sun.star.sheet.XCellRangeData;
 import com.sun.star.sheet.XSpreadsheet;
 import com.sun.star.sheet.XSpreadsheetDocument;
+import com.sun.star.table.XCell;
 import com.sun.star.table.XCellRange;
 import com.sun.star.table.XColumnRowRange;
 import com.sun.star.table.XTableColumns;
@@ -700,6 +702,12 @@ public class UNO {
 	{
 		return (XCellRangeData)UnoRuntime.queryInterface(XCellRangeData.class,o);
 	}
+    
+    /** Holt {@link XCell} Interface von o.*/
+    public static XCell XCell(Object o)
+    {
+        return (XCell)UnoRuntime.queryInterface(XCell.class,o);
+    }
 	
  	/** Holt {@link XTableColumns} Interface von o.*/
 	public static XTableColumns XTableColumns(Object o)
