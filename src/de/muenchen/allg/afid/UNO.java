@@ -93,6 +93,8 @@
 * 10.08.2006 | BNK | +XTextFrame
 * 21.08.2006 | BNK | +XSelectionSupplier
 * 07.09.2006 | BNK | +XCell
+* 13.09.2006 | LUT | +XDispatchProviderInterception
+* 15.09.2006 | LUT | +XTextCursor
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -138,6 +140,7 @@ import com.sun.star.frame.FrameSearchFlag;
 import com.sun.star.frame.XComponentLoader;
 import com.sun.star.frame.XDesktop;
 import com.sun.star.frame.XDispatchProvider;
+import com.sun.star.frame.XDispatchProviderInterception;
 import com.sun.star.frame.XFramesSupplier;
 import com.sun.star.frame.XLayoutManager;
 import com.sun.star.frame.XModel;
@@ -170,6 +173,7 @@ import com.sun.star.text.XDependentTextField;
 import com.sun.star.text.XParagraphCursor;
 import com.sun.star.text.XText;
 import com.sun.star.text.XTextContent;
+import com.sun.star.text.XTextCursor;
 import com.sun.star.text.XTextDocument;
 import com.sun.star.text.XTextField;
 import com.sun.star.text.XTextFieldsSupplier;
@@ -1053,6 +1057,18 @@ public class UNO {
     public static XDocumentInfo XDocumentInfo(Object o)
     {
         return (XDocumentInfo)UnoRuntime.queryInterface(XDocumentInfo.class,o);
+    }   
+
+    /** Holt {@link XDispatchProviderInterception} Interface von o.*/
+    public static XDispatchProviderInterception XDispatchProviderInterception(Object o)
+    {
+        return (XDispatchProviderInterception)UnoRuntime.queryInterface(XDispatchProviderInterception.class,o);
+    }   
+
+    /** Holt {@link XTextCursor} Interface von o.*/
+    public static XTextCursor XTextCursor(Object o)
+    {
+        return (XTextCursor)UnoRuntime.queryInterface(XTextCursor.class,o);
     }   
 
 	// ACHTUNG: Interface-Methoden fangen hier mit einem grossen X an!
