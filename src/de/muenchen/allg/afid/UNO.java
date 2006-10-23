@@ -95,6 +95,7 @@
 * 07.09.2006 | BNK | +XCell
 * 13.09.2006 | LUT | +XDispatchProviderInterception
 * 15.09.2006 | LUT | +XTextCursor
+* 23.10.2006 | LUT | +XPageCursor
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -170,6 +171,7 @@ import com.sun.star.table.XColumnRowRange;
 import com.sun.star.table.XTableColumns;
 import com.sun.star.text.XBookmarksSupplier;
 import com.sun.star.text.XDependentTextField;
+import com.sun.star.text.XPageCursor;
 import com.sun.star.text.XParagraphCursor;
 import com.sun.star.text.XText;
 import com.sun.star.text.XTextContent;
@@ -1069,6 +1071,12 @@ public class UNO {
     public static XTextCursor XTextCursor(Object o)
     {
         return (XTextCursor)UnoRuntime.queryInterface(XTextCursor.class,o);
+    }   
+
+    /** Holt {@link com.sun.star.text.XPageCursor} Interface von o.*/
+    public static XPageCursor XPageCursor(Object o)
+    {
+        return (XPageCursor)UnoRuntime.queryInterface(XPageCursor.class,o);
     }   
 
 	// ACHTUNG: Interface-Methoden fangen hier mit einem grossen X an!
