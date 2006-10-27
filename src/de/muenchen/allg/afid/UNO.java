@@ -96,6 +96,7 @@
 * 13.09.2006 | LUT | +XDispatchProviderInterception
 * 15.09.2006 | LUT | +XTextCursor
 * 23.10.2006 | LUT | +XPageCursor
+* 27.10.2006 | LUT | +XNotifyingDispatch
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -145,6 +146,7 @@ import com.sun.star.frame.XDispatchProviderInterception;
 import com.sun.star.frame.XFramesSupplier;
 import com.sun.star.frame.XLayoutManager;
 import com.sun.star.frame.XModel;
+import com.sun.star.frame.XNotifyingDispatch;
 import com.sun.star.frame.XStorable;
 import com.sun.star.frame.XToolbarController;
 import com.sun.star.lang.WrappedTargetException;
@@ -1077,6 +1079,12 @@ public class UNO {
     public static XPageCursor XPageCursor(Object o)
     {
         return (XPageCursor)UnoRuntime.queryInterface(XPageCursor.class,o);
+    }   
+
+    /** Holt {@link XNotifyingDispatch} Interface von o.*/
+    public static XNotifyingDispatch XNotifyingDispatch(Object o)
+    {
+        return (XNotifyingDispatch)UnoRuntime.queryInterface(XNotifyingDispatch.class,o);
     }   
 
 	// ACHTUNG: Interface-Methoden fangen hier mit einem grossen X an!
