@@ -100,6 +100,7 @@
 * 30.10.2006 | LUT | +getParsedUNOUrl()
 * 30.10.2006 | BNK | +XDispatchHelper
 * 30.10.2006 | LUT | +XStyleFamiliesSupplier()
+* 30.10.2006 | LUT | +XStyle()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -171,6 +172,7 @@ import com.sun.star.sdb.XDocumentDataSource;
 import com.sun.star.sheet.XCellRangeData;
 import com.sun.star.sheet.XSpreadsheet;
 import com.sun.star.sheet.XSpreadsheetDocument;
+import com.sun.star.style.XStyle;
 import com.sun.star.style.XStyleFamiliesSupplier;
 import com.sun.star.table.XCell;
 import com.sun.star.table.XCellRange;
@@ -1102,6 +1104,12 @@ public class UNO {
     public static XStyleFamiliesSupplier XStyleFamiliesSupplier(Object o)
     {
         return (XStyleFamiliesSupplier)UnoRuntime.queryInterface(XStyleFamiliesSupplier.class,o);
+    }   
+
+    /** Holt {@link com.sun.star.style.XStyle} Interface von o.*/
+    public static XStyle XStyle(Object o)
+    {
+        return (XStyle)UnoRuntime.queryInterface(XStyle.class,o);
     }   
 
 	// ACHTUNG: Interface-Methoden fangen hier mit einem grossen X an!
