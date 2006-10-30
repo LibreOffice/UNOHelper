@@ -97,6 +97,7 @@
 * 15.09.2006 | LUT | +XTextCursor
 * 23.10.2006 | LUT | +XPageCursor
 * 27.10.2006 | LUT | +XNotifyingDispatch
+* 30.10.2006 | BNK | +XDispatchHelper
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -141,6 +142,7 @@ import com.sun.star.drawing.XShape;
 import com.sun.star.frame.FrameSearchFlag;
 import com.sun.star.frame.XComponentLoader;
 import com.sun.star.frame.XDesktop;
+import com.sun.star.frame.XDispatchHelper;
 import com.sun.star.frame.XDispatchProvider;
 import com.sun.star.frame.XDispatchProviderInterception;
 import com.sun.star.frame.XFramesSupplier;
@@ -890,6 +892,12 @@ public class UNO {
 	{
 		return (XDispatchProvider)UnoRuntime.queryInterface(XDispatchProvider.class,o);
 	}
+    
+    /** Holt {@link XDispatchHelper} Interface von o.*/
+    public static XDispatchHelper XDispatchHelper(Object o)
+    {
+        return (XDispatchHelper)UnoRuntime.queryInterface(XDispatchHelper.class,o);
+    }
 
 	
 	/** Holt {@link XURLTransformer} Interface von o.*/
