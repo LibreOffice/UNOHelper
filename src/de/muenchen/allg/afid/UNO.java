@@ -97,6 +97,7 @@
 * 15.09.2006 | LUT | +XTextCursor
 * 23.10.2006 | LUT | +XPageCursor
 * 27.10.2006 | LUT | +XNotifyingDispatch
+* 30.10.2006 | LUT | +getParsedUNOUrl()
 * 30.10.2006 | BNK | +XDispatchHelper
 * ------------------------------------------------------------------- 
 *
@@ -1362,4 +1363,20 @@ public class UNO {
     	}
     }
 	}
+	
+	/**
+	 * Liefert eine vorgeparste UNO-URL von urlStr.
+	 * 
+	 * @param urlStr
+	 * @return vorgeparste UNO-URL von urlStr.
+	 * @author christoph.lutz
+	 */
+	public static com.sun.star.util.URL getParsedUNOUrl(String urlStr)
+	{
+	  com.sun.star.util.URL[] unoURL = new com.sun.star.util.URL[] { new com.sun.star.util.URL() };
+      unoURL[0].Complete = urlStr;
+	  if (urlTransformer != null) urlTransformer.parseStrict(unoURL);
+
+      return unoURL[0];
+    }
 }
