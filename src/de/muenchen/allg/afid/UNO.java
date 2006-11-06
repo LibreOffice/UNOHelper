@@ -359,7 +359,7 @@ public class UNO {
      * Dispatcht url auf dem aktuellen Controll von doc.
      * @author Matthias Benkmann (D-III-ITD 5.1)
      */
-    public void dispatch(XTextDocument doc, String url)
+    public static void dispatch(XTextDocument doc, String url)
     {
       XDispatchProvider prov = UNO.XDispatchProvider(doc.getCurrentController().getFrame());
       dispatchHelper.executeDispatch(prov, url, "", FrameSearchFlag.SELF, new PropertyValue[]{});
