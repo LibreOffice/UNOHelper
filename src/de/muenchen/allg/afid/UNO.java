@@ -22,7 +22,8 @@
 * 19.08.2005 | BNK | +XSpreadsheetDocument()
 * 19.08.2005 | BNK | +XIndexAccess()
 * 19.08.2005 | BNK | +XCellRange()
-* 22.08.2005 | BNK | +XText()
+* 22.08.2005 | BNK | +XText()     * TODO Testen
+
 * 22.08.2005 | PIT | +XNamed() 
 * 22.08.2005 | PIT | +XTextContent()  
 * 22.08.2005 | PIT | +XBookmarksSupplier()   
@@ -101,6 +102,7 @@
 * 30.10.2006 | BNK | +XDispatchHelper
 * 30.10.2006 | LUT | +XStyleFamiliesSupplier()
 * 30.10.2006 | LUT | +XStyle()
+* 06.11.2006 | BNK | +dispatch(doc, url)
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -235,6 +237,10 @@ public class UNO {
 	 * Ein com.sun.star.util.URLTransformer.
 	 */
 	public static XURLTransformer urlTransformer;
+    /**
+     * Ein com.sun.star.frame.XDispatchHelper.
+     */
+    public static XDispatchHelper dispatchHelper;
 	/**
 	 * Der Desktop.
 	 */
@@ -313,6 +319,7 @@ public class UNO {
 		
 		dbContext = UNO.XNamingService(UNO.createUNOService("com.sun.star.sdb.DatabaseContext"));
 		urlTransformer = UNO.XURLTransformer(UNO.createUNOService("com.sun.star.util.URLTransformer"));
+        dispatchHelper = UNO.XDispatchHelper(UNO.createUNOService("com.sun.star.frame.DispatchHelper"));
 	}
 	
 	
@@ -348,6 +355,16 @@ public class UNO {
 		return lc; 
 	}
 	
+    /**
+     * Dispatcht url auf dem aktuellen Controll von doc.
+     * @author Matthias Benkmann (D-III-ITD 5.1)
+     */
+    public void dispatch(XTextDocument doc, String url)
+    {
+      XDispatchProvider prov = UNO.XDispatchProvider(doc.getCurrentController().getFrame());
+      dispatchHelper.executeDispatch(prov, url, "", FrameSearchFlag.SELF, new PropertyValue[]{});
+    }
+    
 	/**
 	 * Ruft ein Makro auf unter expliziter Angabe der Komponente, die es zur Verfügung
 	 * stellt.
