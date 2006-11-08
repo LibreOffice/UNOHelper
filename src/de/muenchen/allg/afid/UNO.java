@@ -103,6 +103,8 @@
 * 30.10.2006 | LUT | +XStyleFamiliesSupplier()
 * 30.10.2006 | LUT | +XStyle()
 * 06.11.2006 | BNK | +dispatch(doc, url)
+* 08.11.2006 | LUT | +getConfigurationAccess(nodepath)
+*                    +getConfigurationUpdateAccess(nodepath)
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -1412,4 +1414,82 @@ public class UNO {
 
       return unoURL[0];
     }
+	
+	/**
+	 * Liefert ein Service ConfigurationAccess mit dem der lesende Zugriff auf
+	 * die OOo-Configuration ab dem Knoten nodepath ermöglicht wird oder null,
+	 * wenn der Service nicht erzeugt werden kann.
+	 * 
+	 * @param nodepath
+	 *            Beschreibung des Knotens des Konfigurationsbaumes, der als
+	 *            neue Wurzel zurückgeliefert werden soll. Ein nodepath ist z.B.
+	 *            "/org.openoffice.Office.Writer/AutoFunction/Format/ByInput/ApplyNumbering"
+	 * @return ein ConfigurationUpdateAccess mit der Wurzel an dem Knoten
+	 *         nodepath oder null, falls der Service nicht erzeugt werden kann
+	 *         (wenn z.B. der Knoten nodepath nicht existiert).
+	 * @author christoph.lutz
+	 */
+	public static XNameAccess getConfigurationAccess(String nodepath) {
+		PropertyValue[] props = new PropertyValue[] { new PropertyValue() };
+		props[0].Name = "nodepath";
+		props[0].Value = nodepath;
+		Object confProv = getConfigurationProvider();
+		try {
+			return UNO.XNameAccess(UNO.XMultiServiceFactory(confProv)
+					.createInstanceWithArguments(
+							"com.sun.star.configuration.ConfigurationAccess",
+							props));
+		} catch (Exception e) {
+		}
+		return null;
+	}
+
+	/**
+	 * Liefert ein Service ConfigurationUpdateAccess mit dem der lesende und
+	 * schreibende Zugriff auf die OOo-Configuration ab dem Knoten nodepath
+	 * ermöglicht wird oder null wenn der Service nicht erzeugt werden kann.
+	 * 
+	 * @param nodepath
+	 *            Beschreibung des Knotens des Konfigurationsbaumes, der als
+	 *            neue Wurzel zurückgeliefert werden soll. Ein nodepath ist z.B.
+	 *            "/org.openoffice.Office.Writer/AutoFunction/Format/ByInput/ApplyNumbering"
+	 * @return ein ConfigurationUpdateAccess mit der Wurzel an dem Knoten
+	 *         nodepath oder null, falls der Service nicht erzeugt werden kann
+	 *         (wenn z.B. der Knoten nodepath nicht existiert).
+	 * @author christoph.lutz
+	 */
+	public static XChangesBatch getConfigurationUpdateAccess(String nodepath) {
+		PropertyValue[] props = new PropertyValue[] { new PropertyValue() };
+		props[0].Name = "nodepath";
+		props[0].Value = nodepath;
+		Object confProv = getConfigurationProvider();
+		try {
+			return UNO
+					.XChangesBatch(UNO
+							.XMultiServiceFactory(confProv)
+							.createInstanceWithArguments(
+									"com.sun.star.configuration.ConfigurationUpdateAccess",
+									props));
+		} catch (Exception e) {
+		}
+		return null;
+	}
+
+	/**
+	 * Enthält den configurationProvider, falls er bereits mit
+	 * getConfigurationProvider erzeugt wurde.
+	 */
+	private static Object configurationProvider;
+
+	/**
+	 * Liefert den configurationProvider, mit dem der Zugriff auf die
+	 * Konfiguration von OOo ermöglicht wird.
+	 * 
+	 * @return ein neuer configurationProvider
+	 */
+	private static Object getConfigurationProvider() {
+		if (configurationProvider == null)
+			configurationProvider = createUNOService("com.sun.star.configuration.ConfigurationProvider");
+		return configurationProvider;
+	}
 }
