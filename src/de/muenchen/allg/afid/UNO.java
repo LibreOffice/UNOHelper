@@ -107,6 +107,7 @@
 *                    +getConfigurationUpdateAccess(nodepath)
 * 01.12.2006 | LUT | +XTextRangeCompare
 *                    +XTextSection
+*                    +XTextSectionsSupplier
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -199,6 +200,7 @@ import com.sun.star.text.XTextFramesSupplier;
 import com.sun.star.text.XTextRange;
 import com.sun.star.text.XTextRangeCompare;
 import com.sun.star.text.XTextSection;
+import com.sun.star.text.XTextSectionsSupplier;
 import com.sun.star.text.XTextTable;
 import com.sun.star.text.XTextViewCursorSupplier;
 import com.sun.star.ui.dialogs.XFilePicker;
@@ -1145,6 +1147,12 @@ public class UNO {
     public static XTextSection XTextSection(Object o)
     {
         return (XTextSection)UnoRuntime.queryInterface(XTextSection.class,o);
+    }   
+
+    /** Holt {@link com.sun.star.text.XTextSectionSupplier} Interface von o.*/
+    public static XTextSectionsSupplier XTextSectionsSupplier(Object o)
+    {
+        return (XTextSectionsSupplier)UnoRuntime.queryInterface(XTextSectionsSupplier.class,o);
     }   
 
 	// ACHTUNG: Interface-Methoden fangen hier mit einem grossen X an!
