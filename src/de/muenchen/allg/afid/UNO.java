@@ -22,8 +22,7 @@
 * 19.08.2005 | BNK | +XSpreadsheetDocument()
 * 19.08.2005 | BNK | +XIndexAccess()
 * 19.08.2005 | BNK | +XCellRange()
-* 22.08.2005 | BNK | +XText()     * TODO Testen
-
+* 22.08.2005 | BNK | +XText()
 * 22.08.2005 | PIT | +XNamed() 
 * 22.08.2005 | PIT | +XTextContent()  
 * 22.08.2005 | PIT | +XBookmarksSupplier()   
