@@ -108,6 +108,7 @@
 * 01.12.2006 | LUT | +XTextRangeCompare
 *                    +XTextSection
 *                    +XTextSectionsSupplier
+* 18.12.2006 | BNK | +XModuleUIConfigurationManagerSupplier
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -203,6 +204,7 @@ import com.sun.star.text.XTextSection;
 import com.sun.star.text.XTextSectionsSupplier;
 import com.sun.star.text.XTextTable;
 import com.sun.star.text.XTextViewCursorSupplier;
+import com.sun.star.ui.XModuleUIConfigurationManagerSupplier;
 import com.sun.star.ui.dialogs.XFilePicker;
 import com.sun.star.uno.RuntimeException;
 import com.sun.star.uno.UnoRuntime;
@@ -861,11 +863,17 @@ public class UNO {
 		return (XSpreadsheet)UnoRuntime.queryInterface(XSpreadsheet.class,o);
 	}
 	
-	/** Holt {@link XText} Interface von o.*/
-	public static XText XText(Object o)
+	/** Holt {@link XModuleUIConfigurationManagerSupplier} Interface von o.*/
+	public static XModuleUIConfigurationManagerSupplier XModuleUIConfigurationManagerSupplier(Object o)
 	{
-		return (XText)UnoRuntime.queryInterface(XText.class,o);
+		return (XModuleUIConfigurationManagerSupplier)UnoRuntime.queryInterface(XModuleUIConfigurationManagerSupplier.class,o);
 	}
+    
+    /** Holt {@link XText} Interface von o.*/
+    public static XText XText(Object o)
+    {
+        return (XText)UnoRuntime.queryInterface(XText.class,o);
+    }
     
     /** Holt {@link XTextTable} Interface von o.*/
     public static XTextTable XTextTable(Object o)
