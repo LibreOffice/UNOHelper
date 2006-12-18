@@ -203,7 +203,9 @@ import com.sun.star.text.XTextSection;
 import com.sun.star.text.XTextSectionsSupplier;
 import com.sun.star.text.XTextTable;
 import com.sun.star.text.XTextViewCursorSupplier;
+import com.sun.star.ui.XAcceleratorConfiguration;
 import com.sun.star.ui.XModuleUIConfigurationManagerSupplier;
+import com.sun.star.ui.XUIConfigurationPersistence;
 import com.sun.star.ui.dialogs.XFilePicker;
 import com.sun.star.uno.RuntimeException;
 import com.sun.star.uno.UnoRuntime;
@@ -1161,6 +1163,18 @@ public class UNO {
     {
         return (XTextSectionsSupplier)UnoRuntime.queryInterface(XTextSectionsSupplier.class,o);
     }   
+    
+    /** Holt {@link com.sun.star.ui.XAcceleratorConfiguration} Interface von o.*/
+    public static XAcceleratorConfiguration XAcceleratorConfiguration(Object o)
+    {
+        return (XAcceleratorConfiguration)UnoRuntime.queryInterface(XAcceleratorConfiguration.class,o);
+    }
+    
+    /** Holt {@link com.sun.star.ui.XUIConfigurationPersistence} Interface von o.*/
+    public static XUIConfigurationPersistence XUIConfigurationPersistence(Object o)
+    {
+        return (XUIConfigurationPersistence)UnoRuntime.queryInterface(XUIConfigurationPersistence.class,o);
+    }  
 
 	// ACHTUNG: Interface-Methoden fangen hier mit einem grossen X an!
     
