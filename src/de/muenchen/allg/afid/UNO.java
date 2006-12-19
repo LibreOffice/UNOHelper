@@ -108,6 +108,9 @@
 *                    +XTextSection
 *                    +XTextSectionsSupplier
 * 18.12.2006 | BNK | +XModuleUIConfigurationManagerSupplier
+* 18.12.2006 | BAB | +XAcceleratorConfiguration
+* 				   | +XUIConfigurationPersistence	
+* 19.12.2006 | BAB | +getShortcutManager(component)
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -135,6 +138,7 @@ import com.sun.star.beans.XMultiPropertySet;
 import com.sun.star.beans.XPropertySet;
 import com.sun.star.bridge.XUnoUrlResolver;
 import com.sun.star.comp.helper.Bootstrap;
+import com.sun.star.container.NoSuchElementException;
 import com.sun.star.container.XContentEnumerationAccess;
 import com.sun.star.container.XEnumerationAccess;
 import com.sun.star.container.XIndexAccess;
@@ -205,6 +209,7 @@ import com.sun.star.text.XTextTable;
 import com.sun.star.text.XTextViewCursorSupplier;
 import com.sun.star.ui.XAcceleratorConfiguration;
 import com.sun.star.ui.XModuleUIConfigurationManagerSupplier;
+import com.sun.star.ui.XUIConfigurationManager;
 import com.sun.star.ui.XUIConfigurationPersistence;
 import com.sun.star.ui.dialogs.XFilePicker;
 import com.sun.star.uno.RuntimeException;
@@ -1536,5 +1541,38 @@ public class UNO {
 		if (configurationProvider == null)
 			configurationProvider = createUNOService("com.sun.star.configuration.ConfigurationProvider");
 		return configurationProvider;
+	}
+	
+    
+	/**
+	 * Liefert den shortcutManager zu der OOo Komponente component zurück.
+	 * 
+	 * @param component die OOo Komponente zu der der ShortcutManager geliefert werden soll z.B "com.sun.star.text.TextDocument"
+	 * @return der shortcutManager zur OOo Komponente component oder null falls kein shortcutManager erzeugt werden kann.
+	 * 
+	 */
+	public static XAcceleratorConfiguration getShortcutManager(String component) {
+		// XModuleUIConfigurationManagerSupplier moduleUICfgMgrSupplier
+		XModuleUIConfigurationManagerSupplier moduleUICfgMgrSupplier = UNO
+				.XModuleUIConfigurationManagerSupplier(UNO
+						.createUNOService("com.sun.star.ui.ModuleUIConfigurationManagerSupplier"));
+
+		if (moduleUICfgMgrSupplier == null)
+			return null;
+
+		// XCUIConfigurationManager moduleUICfgMgr
+		XUIConfigurationManager moduleUICfgMgr = null;
+
+		try {
+			moduleUICfgMgr = moduleUICfgMgrSupplier
+					.getUIConfigurationManager(component);
+		} catch (NoSuchElementException e) {
+			return null;
+		}
+
+		// XAcceleratorConfiguration xAcceleratorConfiguration
+		XAcceleratorConfiguration shortcutManager = UNO
+				.XAcceleratorConfiguration(moduleUICfgMgr.getShortCutManager());
+		return shortcutManager;
 	}
 }
