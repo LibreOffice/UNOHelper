@@ -108,6 +108,8 @@
 *                    +XTextSection
 *                    +XTextSectionsSupplier
 * 18.12.2006 | BNK | +XModuleUIConfigurationManagerSupplier
+* 20.12.2006 | BNK | +XDataSource()
+*                  | +XTablesSupplier()
 * 18.12.2006 | BAB | +XAcceleratorConfiguration
 * 				   | +XUIConfigurationPersistence	
 * 19.12.2006 | BAB | +getShortcutManager(component)
@@ -180,6 +182,8 @@ import com.sun.star.script.provider.XScriptProvider;
 import com.sun.star.script.provider.XScriptProviderFactory;
 import com.sun.star.script.provider.XScriptProviderSupplier;
 import com.sun.star.sdb.XDocumentDataSource;
+import com.sun.star.sdbc.XDataSource;
+import com.sun.star.sdbcx.XTablesSupplier;
 import com.sun.star.sheet.XCellRangeData;
 import com.sun.star.sheet.XSpreadsheet;
 import com.sun.star.sheet.XSpreadsheetDocument;
@@ -800,6 +804,18 @@ public class UNO {
 	{
 		return (XDocumentDataSource)UnoRuntime.queryInterface(XDocumentDataSource.class,o);
 	}
+    
+    /** Holt {@link XDataSource} Interface von o.*/
+    public static XDataSource XDataSource(Object o)
+    {
+        return (XDataSource)UnoRuntime.queryInterface(XDataSource.class,o);
+    }
+    
+    /** Holt {@link XTablesSupplier} Interface von o.*/
+    public static XTablesSupplier XTablesSupplier(Object o)
+    {
+        return (XTablesSupplier)UnoRuntime.queryInterface(XTablesSupplier.class,o);
+    }
 
 	
 	/** Holt {@link XNamingService} Interface von o.*/
