@@ -116,6 +116,7 @@
 *                  | +XColumnsSupplier()
 * 21.12.2006 | BNK | +XKeysSupplier()
 * 21.12.2006 | BNK | +XRow()
+*                  | +XColumnLocate()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -185,6 +186,7 @@ import com.sun.star.script.provider.XScriptProvider;
 import com.sun.star.script.provider.XScriptProviderFactory;
 import com.sun.star.script.provider.XScriptProviderSupplier;
 import com.sun.star.sdb.XDocumentDataSource;
+import com.sun.star.sdbc.XColumnLocate;
 import com.sun.star.sdbc.XDataSource;
 import com.sun.star.sdbc.XRow;
 import com.sun.star.sdbcx.XColumnsSupplier;
@@ -931,6 +933,13 @@ public class UNO {
     {
         return (XLayoutManager)UnoRuntime.queryInterface(XLayoutManager.class,o);
     }
+    
+    /** Holt {@link XColumnLocate} Interface von o.*/
+    public static XColumnLocate XColumnLocate(Object o)
+    {
+        return (XColumnLocate)UnoRuntime.queryInterface(XColumnLocate.class,o);
+    }
+    
     
     /** Holt {@link XEnumerationAccess} Interface von o.*/
     public static XEnumerationAccess XEnumerationAccess(Object o)
