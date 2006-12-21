@@ -115,6 +115,7 @@
 *                  | +XTablesSupplier()
 *                  | +XColumnsSupplier()
 * 21.12.2006 | BNK | +XKeysSupplier()
+* 21.12.2006 | BNK | +XRow()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -185,6 +186,7 @@ import com.sun.star.script.provider.XScriptProviderFactory;
 import com.sun.star.script.provider.XScriptProviderSupplier;
 import com.sun.star.sdb.XDocumentDataSource;
 import com.sun.star.sdbc.XDataSource;
+import com.sun.star.sdbc.XRow;
 import com.sun.star.sdbcx.XColumnsSupplier;
 import com.sun.star.sdbcx.XKeysSupplier;
 import com.sun.star.sdbcx.XTablesSupplier;
@@ -808,6 +810,11 @@ public class UNO {
 		return (XModifiable)UnoRuntime.queryInterface(XModifiable.class,o);
 	}
 
+    /** Holt {@link XRow} Interface von o.*/
+    public static XRow XRow(Object o)
+    {
+        return (XRow)UnoRuntime.queryInterface(XRow.class,o);
+    }
 	
 	/** Holt {@link XDocumentDataSource} Interface von o.*/
 	public static XDocumentDataSource XDocumentDataSource(Object o)
