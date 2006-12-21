@@ -108,11 +108,13 @@
 *                    +XTextSection
 *                    +XTextSectionsSupplier
 * 18.12.2006 | BNK | +XModuleUIConfigurationManagerSupplier
-* 20.12.2006 | BNK | +XDataSource()
-*                  | +XTablesSupplier()
 * 18.12.2006 | BAB | +XAcceleratorConfiguration
 * 				   | +XUIConfigurationPersistence	
 * 19.12.2006 | BAB | +getShortcutManager(component)
+* 20.12.2006 | BNK | +XDataSource()
+*                  | +XTablesSupplier()
+*                  | +XColumnsSupplier()
+* 21.12.2006 | BNK | +XKeysSupplier()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -183,6 +185,8 @@ import com.sun.star.script.provider.XScriptProviderFactory;
 import com.sun.star.script.provider.XScriptProviderSupplier;
 import com.sun.star.sdb.XDocumentDataSource;
 import com.sun.star.sdbc.XDataSource;
+import com.sun.star.sdbcx.XColumnsSupplier;
+import com.sun.star.sdbcx.XKeysSupplier;
 import com.sun.star.sdbcx.XTablesSupplier;
 import com.sun.star.sheet.XCellRangeData;
 import com.sun.star.sheet.XSpreadsheet;
@@ -760,6 +764,12 @@ public class UNO {
     {
         return (XCell)UnoRuntime.queryInterface(XCell.class,o);
     }
+    
+    /** Holt {@link XColumnsSupplier} Interface von o.*/
+    public static XColumnsSupplier XColumnsSupplier(Object o)
+    {
+        return (XColumnsSupplier)UnoRuntime.queryInterface(XColumnsSupplier.class,o);
+    }
 	
  	/** Holt {@link XTableColumns} Interface von o.*/
 	public static XTableColumns XTableColumns(Object o)
@@ -980,6 +990,11 @@ public class UNO {
         return (XInterface)UnoRuntime.queryInterface(XInterface.class,o);
     }
 
+    /** Holt {@link XKeysSupplier} Interface von o.*/
+    public static XKeysSupplier XKeysSupplier(Object o)
+    {
+        return (XKeysSupplier)UnoRuntime.queryInterface(XKeysSupplier.class,o);
+    }
 	
 	/** Holt {@link XComponentLoader} Interface von o.*/
 	public static XComponentLoader XComponentLoader(Object o)
