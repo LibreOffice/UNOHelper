@@ -139,7 +139,6 @@ import com.sun.star.awt.XWindow;
 import com.sun.star.awt.XWindow2;
 import com.sun.star.awt.XWindowPeer;
 import com.sun.star.beans.PropertyValue;
-import com.sun.star.beans.UnknownPropertyException;
 import com.sun.star.beans.XMultiPropertySet;
 import com.sun.star.beans.XPropertySet;
 import com.sun.star.bridge.XUnoUrlResolver;
@@ -171,7 +170,6 @@ import com.sun.star.frame.XModel;
 import com.sun.star.frame.XNotifyingDispatch;
 import com.sun.star.frame.XStorable;
 import com.sun.star.frame.XToolbarController;
-import com.sun.star.lang.WrappedTargetException;
 import com.sun.star.lang.XComponent;
 import com.sun.star.lang.XMultiComponentFactory;
 import com.sun.star.lang.XMultiServiceFactory;
@@ -615,7 +613,7 @@ public class UNO {
 	 * Liefert den Wert von Property propName des Objekts o zurück.
 	 * @return den Wert des Propertys oder <code>null</code>, falls o
 	 * entweder nicht das XPropertySet Interface implementiert, oder kein
-	 * Property names propName hat.
+	 * Property names propName hat oder ein sonstiger Fehler aufgetreten ist.
 	 */
 	public static Object getProperty(Object o, String propName)
 	{
@@ -624,8 +622,7 @@ public class UNO {
 			XPropertySet props = UNO.XPropertySet(o);
 			if (props == null) return null;
 			ret = props.getPropertyValue(propName);
-		} catch (UnknownPropertyException e) {
-		} catch (WrappedTargetException e) {
+		} catch (Exception e) {
 		}
 		return ret;
 	}
@@ -655,8 +652,7 @@ public class UNO {
 				props.setPropertyValue(propName, propVal);
 			} catch(Exception x){}
 			ret = props.getPropertyValue(propName);
-		} catch (UnknownPropertyException e) {
-		} catch (WrappedTargetException e) {
+		} catch (Exception e) {
 		}
 		return ret;
 	}
