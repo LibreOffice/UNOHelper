@@ -117,6 +117,7 @@
 * 21.12.2006 | BNK | +XKeysSupplier()
 * 21.12.2006 | BNK | +XRow()
 *                  | +XColumnLocate()
+* 11.01.2006 | BNK | +XCellRangesQuery()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -191,6 +192,7 @@ import com.sun.star.sdbcx.XColumnsSupplier;
 import com.sun.star.sdbcx.XKeysSupplier;
 import com.sun.star.sdbcx.XTablesSupplier;
 import com.sun.star.sheet.XCellRangeData;
+import com.sun.star.sheet.XCellRangesQuery;
 import com.sun.star.sheet.XSpreadsheet;
 import com.sun.star.sheet.XSpreadsheetDocument;
 import com.sun.star.style.XStyle;
@@ -812,6 +814,12 @@ public class UNO {
     public static XRow XRow(Object o)
     {
         return (XRow)UnoRuntime.queryInterface(XRow.class,o);
+    }
+    
+    /** Holt {@link XCellRangesQuery} Interface von o.*/
+    public static XCellRangesQuery XCellRangesQuery(Object o)
+    {
+        return (XCellRangesQuery)UnoRuntime.queryInterface(XCellRangesQuery.class,o);
     }
 	
 	/** Holt {@link XDocumentDataSource} Interface von o.*/
