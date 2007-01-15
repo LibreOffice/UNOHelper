@@ -118,6 +118,9 @@
 * 21.12.2006 | BNK | +XRow()
 *                  | +XColumnLocate()
 * 11.01.2006 | BNK | +XCellRangesQuery()
+* 15.01.2006 | LUT | +XUIConfigurationManager
+*                    +XModuleUIConfigurationManager
+*                    +XIndexContainer()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -148,6 +151,7 @@ import com.sun.star.container.NoSuchElementException;
 import com.sun.star.container.XContentEnumerationAccess;
 import com.sun.star.container.XEnumerationAccess;
 import com.sun.star.container.XIndexAccess;
+import com.sun.star.container.XIndexContainer;
 import com.sun.star.container.XNameAccess;
 import com.sun.star.container.XNameContainer;
 import com.sun.star.container.XNamed;
@@ -220,6 +224,7 @@ import com.sun.star.text.XTextSectionsSupplier;
 import com.sun.star.text.XTextTable;
 import com.sun.star.text.XTextViewCursorSupplier;
 import com.sun.star.ui.XAcceleratorConfiguration;
+import com.sun.star.ui.XModuleUIConfigurationManager;
 import com.sun.star.ui.XModuleUIConfigurationManagerSupplier;
 import com.sun.star.ui.XUIConfigurationManager;
 import com.sun.star.ui.XUIConfigurationPersistence;
@@ -1230,6 +1235,24 @@ public class UNO {
     public static XUIConfigurationPersistence XUIConfigurationPersistence(Object o)
     {
         return (XUIConfigurationPersistence)UnoRuntime.queryInterface(XUIConfigurationPersistence.class,o);
+    }  
+
+    /** Holt {@link com.sun.star.ui.XModuleUIConfigurationManager} Interface von o.*/
+    public static XModuleUIConfigurationManager XModuleUIConfigurationManager(Object o)
+    {
+        return (XModuleUIConfigurationManager)UnoRuntime.queryInterface(XModuleUIConfigurationManager.class,o);
+    }  
+
+    /** Holt {@link com.sun.star.ui.XUIConfigurationManager} Interface von o.*/
+    public static XUIConfigurationManager XUIConfigurationManager(Object o)
+    {
+        return (XUIConfigurationManager)UnoRuntime.queryInterface(XUIConfigurationManager.class,o);
+    }  
+
+    /** Holt {@link XIndexContainer} Interface von o.*/
+    public static XIndexContainer XIndexContainer(Object o)
+    {
+        return (XIndexContainer)UnoRuntime.queryInterface(XIndexContainer.class,o);
     }  
 
 	// ACHTUNG: Interface-Methoden fangen hier mit einem grossen X an!
