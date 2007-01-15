@@ -117,7 +117,8 @@
 * 21.12.2006 | BNK | +XKeysSupplier()
 * 21.12.2006 | BNK | +XRow()
 *                  | +XColumnLocate()
-* 11.01.2006 | BNK | +XCellRangesQuery()
+* 11.01.2007 | BNK | +XCellRangesQuery()
+* 15.01.2007 | BNK | +loadComponentFromURL() dem man die Makro-Behandlung besser sagen kann
 * 15.01.2006 | LUT | +XUIConfigurationManager
 *                    +XModuleUIConfigurationManager
 *                    +XIndexContainer()
@@ -355,6 +356,29 @@ public class UNO {
         dispatchHelper = UNO.XDispatchHelper(UNO.createUNOService("com.sun.star.frame.DispatchHelper"));
 	}
 	
+    /**
+     * Läd ein Dokument und setzt im Erfolgsfall {@link #compo} auf das geöffnete Dokument.
+     * @param URL die URL des zu ladenden Dokuments, z.B. "file:///C:/temp/footest.odt"
+     *        oder "private:factory/swriter" (für ein leeres).
+     * @param asTemplate falls true wird das Dokument als Vorlage behandelt und ein neues
+     *        unbenanntes Dokument erzeugt.
+     * @param allowMacros  falls true wird die Ausführung von Makros freigeschaltet.
+     * @return das geöffnete Dokument
+     * @throws com.sun.star.io.IOException
+     * @throws com.sun.star.lang.IllegalArgumentException
+     * @author Matthias Benkmann (D-III-ITD 5.1)
+     */
+    public static XComponent loadComponentFromURL(String URL, 
+        boolean asTemplate, boolean allowMacros)
+    throws com.sun.star.io.IOException, com.sun.star.lang.IllegalArgumentException
+    {
+      short allowMacrosShort;
+      if (allowMacros)
+        allowMacrosShort = MacroExecMode.ALWAYS_EXECUTE_NO_WARN;
+      else
+        allowMacrosShort = MacroExecMode.NEVER_EXECUTE;
+      return loadComponentFromURL(URL, asTemplate, allowMacrosShort);
+    }
 	
 	/**
 	 * Läd ein Dokument und setzt im Erfolgsfall {@link #compo} auf das geöffnete Dokument.
@@ -362,30 +386,27 @@ public class UNO {
 	 *        oder "private:factory/swriter" (für ein leeres).
 	 * @param asTemplate falls true wird das Dokument als Vorlage behandelt und ein neues
 	 *        unbenanntes Dokument erzeugt.
-	 * @param allowMacros  falls true wird die Ausführung von Makros freigeschaltet.
+	 * @param allowMacros eine der Konstanten aus {@link MacroExecMode}.
 	 * @return das geöffnete Dokument
 	 * @throws com.sun.star.io.IOException
 	 * @throws com.sun.star.lang.IllegalArgumentException
 	 * @author Matthias Benkmann (D-III-ITD 5.1)
 	 */
 	public static XComponent loadComponentFromURL(String URL, 
-	    boolean asTemplate, boolean allowMacros)
+	    boolean asTemplate, short allowMacros)
 	throws com.sun.star.io.IOException, com.sun.star.lang.IllegalArgumentException
 	{
-		XComponentLoader loader = UNO.XComponentLoader(desktop);
-		PropertyValue[] arguments = new PropertyValue[2];
-		arguments[0] = new PropertyValue();
-		arguments[0].Name = "MacroExecutionMode";
-		if (allowMacros)
-			arguments[0].Value = new Short(MacroExecMode.ALWAYS_EXECUTE_NO_WARN);
-		else
-			arguments[0].Value = new Short(MacroExecMode.NEVER_EXECUTE);
-		arguments[1] = new PropertyValue ();
-    arguments[1].Name = "AsTemplate";
-    arguments[1].Value = new Boolean(asTemplate);
-    XComponent lc = loader.loadComponentFromURL(URL, "_blank", FrameSearchFlag.CREATE, arguments);
-    if (lc != null) compo = lc;
-		return lc; 
+	  XComponentLoader loader = UNO.XComponentLoader(desktop);
+	  PropertyValue[] arguments = new PropertyValue[2];
+	  arguments[0] = new PropertyValue();
+	  arguments[0].Name = "MacroExecutionMode";
+	  arguments[0].Value = new Short(allowMacros);
+	  arguments[1] = new PropertyValue ();
+	  arguments[1].Name = "AsTemplate";
+	  arguments[1].Value = new Boolean(asTemplate);
+	  XComponent lc = loader.loadComponentFromURL(URL, "_blank", FrameSearchFlag.CREATE, arguments);
+	  if (lc != null) compo = lc;
+	  return lc; 
 	}
 	
     /**
