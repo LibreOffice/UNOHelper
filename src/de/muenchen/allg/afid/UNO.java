@@ -119,9 +119,10 @@
 *                  | +XColumnLocate()
 * 11.01.2007 | BNK | +XCellRangesQuery()
 * 15.01.2007 | BNK | +loadComponentFromURL() dem man die Makro-Behandlung besser sagen kann
-* 15.01.2006 | LUT | +XUIConfigurationManager
+* 15.01.2007 | LUT | +XUIConfigurationManager
 *                    +XModuleUIConfigurationManager
 *                    +XIndexContainer()
+* 29.01.2007 | LUT | +XFrame()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -170,6 +171,7 @@ import com.sun.star.frame.XDesktop;
 import com.sun.star.frame.XDispatchHelper;
 import com.sun.star.frame.XDispatchProvider;
 import com.sun.star.frame.XDispatchProviderInterception;
+import com.sun.star.frame.XFrame;
 import com.sun.star.frame.XFramesSupplier;
 import com.sun.star.frame.XLayoutManager;
 import com.sun.star.frame.XModel;
@@ -1274,6 +1276,12 @@ public class UNO {
     public static XIndexContainer XIndexContainer(Object o)
     {
         return (XIndexContainer)UnoRuntime.queryInterface(XIndexContainer.class,o);
+    }  
+
+    /** Holt {@link com.sun.star.frame.XFrame} Interface von o.*/
+    public static XFrame XFrame(Object o)
+    {
+        return (XFrame)UnoRuntime.queryInterface(XFrame.class,o);
     }  
 
 	// ACHTUNG: Interface-Methoden fangen hier mit einem grossen X an!
