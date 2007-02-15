@@ -123,6 +123,7 @@
 *                    +XModuleUIConfigurationManager
 *                    +XIndexContainer()
 * 29.01.2007 | LUT | +XFrame()
+* 15.02.2007 | BAB | +XTextColumns()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -213,6 +214,7 @@ import com.sun.star.text.XDependentTextField;
 import com.sun.star.text.XPageCursor;
 import com.sun.star.text.XParagraphCursor;
 import com.sun.star.text.XText;
+import com.sun.star.text.XTextColumns;
 import com.sun.star.text.XTextContent;
 import com.sun.star.text.XTextCursor;
 import com.sun.star.text.XTextDocument;
@@ -1282,6 +1284,12 @@ public class UNO {
     public static XFrame XFrame(Object o)
     {
         return (XFrame)UnoRuntime.queryInterface(XFrame.class,o);
+    }  
+    
+    /** Holt {@link com.sun.star.style.XTextColumns} Interface von o.*/
+    public static XTextColumns XTextColumns(Object o)
+    {
+        return (XTextColumns)UnoRuntime.queryInterface(XTextColumns.class,o);
     }  
 
 	// ACHTUNG: Interface-Methoden fangen hier mit einem grossen X an!
