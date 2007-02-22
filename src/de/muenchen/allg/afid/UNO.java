@@ -124,6 +124,7 @@
 *                    +XIndexContainer()
 * 29.01.2007 | LUT | +XFrame()
 * 15.02.2007 | BAB | +XTextColumns()
+* 22.02.2007 | BAB | +XStyleLoader()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -205,6 +206,7 @@ import com.sun.star.sheet.XSpreadsheet;
 import com.sun.star.sheet.XSpreadsheetDocument;
 import com.sun.star.style.XStyle;
 import com.sun.star.style.XStyleFamiliesSupplier;
+import com.sun.star.style.XStyleLoader;
 import com.sun.star.table.XCell;
 import com.sun.star.table.XCellRange;
 import com.sun.star.table.XColumnRowRange;
@@ -1290,7 +1292,13 @@ public class UNO {
     public static XTextColumns XTextColumns(Object o)
     {
         return (XTextColumns)UnoRuntime.queryInterface(XTextColumns.class,o);
-    }  
+    }
+    
+    /** Holt {@link com.sun.star.style.XStyleLoader} Interface von o.*/
+    public static XStyleLoader XStyleLoader(Object o)
+    {
+        return (XStyleLoader)UnoRuntime.queryInterface(XStyleLoader.class,o);
+    } 
 
 	// ACHTUNG: Interface-Methoden fangen hier mit einem grossen X an!
     
