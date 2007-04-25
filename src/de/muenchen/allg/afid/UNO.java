@@ -125,6 +125,8 @@
 * 29.01.2007 | LUT | +XFrame()
 * 15.02.2007 | BAB | +XTextColumns()
 * 22.02.2007 | BAB | +XStyleLoader()
+* 24.04.2007 | LUT | +XPropertyState()
+*                    +setPropertyToDefault(o, propName)
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -149,6 +151,7 @@ import com.sun.star.awt.XWindowPeer;
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.beans.XMultiPropertySet;
 import com.sun.star.beans.XPropertySet;
+import com.sun.star.beans.XPropertyState;
 import com.sun.star.bridge.XUnoUrlResolver;
 import com.sun.star.comp.helper.Bootstrap;
 import com.sun.star.container.NoSuchElementException;
@@ -691,6 +694,40 @@ public class UNO {
 		return ret;
 	}
 
+	/**
+	 * Setzt das Property propName auf den ursprünglichen Wert zurück, der als
+	 * Voreinstellung für das Objekt o hinterlegt ist und liefert den neuen Wert
+	 * zurück. Falls o kein XPropertyState implementiert, oder das Property
+	 * propName nicht gelesen werden kann (z.B. weil o diese Property nicht
+	 * besitzt), so wird null zurückgeliefert. Zu beachten ist, dass es möglich
+	 * ist, dass das Property nicht zurück gesetzt wird, wenn ein Event Handler
+	 * sein Veto gegen die Änderung einlegt.
+	 * 
+	 * @param o
+	 *            das Objekt, dessen Property zu ändern ist.
+	 * @param propName
+	 *            der Name des zu ändernden Properties.
+	 * @param propVal
+	 *            der neue Wert.
+	 * @return der Wert des Propertys nach der (versuchten) Änderung oder null,
+	 *         falls der Wert des Propertys nicht mal lesbar ist.
+	 * @author bnk
+	 */
+	public static Object setPropertyToDefault(Object o, String propName) {
+		Object ret = null;
+		try {
+			XPropertyState props = UNO.XPropertyState(o);
+			if (props == null)
+				return null;
+			try {
+				props.setPropertyToDefault(propName);
+			} catch (Exception x) {
+			}
+			ret = getProperty(props, propName);
+		} catch (Exception e) {
+		}
+		return ret;
+	}
 	
 	/**
 	 * Erzeugt einen Dienst im Haupt-Servicemanager mit dem DefaultContext.
@@ -1298,6 +1335,12 @@ public class UNO {
     public static XStyleLoader XStyleLoader(Object o)
     {
         return (XStyleLoader)UnoRuntime.queryInterface(XStyleLoader.class,o);
+    } 
+
+    /** Holt {@link XPropertyState} Interface von o.*/
+    public static XPropertyState XPropertyState(Object o)
+    {
+        return (XPropertyState)UnoRuntime.queryInterface(XPropertyState.class,o);
     } 
 
 	// ACHTUNG: Interface-Methoden fangen hier mit einem grossen X an!
