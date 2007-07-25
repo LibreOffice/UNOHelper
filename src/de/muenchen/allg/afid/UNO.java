@@ -127,6 +127,7 @@
 * 22.02.2007 | BAB | +XStyleLoader()
 * 24.04.2007 | LUT | +XPropertyState()
 *                    +setPropertyToDefault(o, propName)
+* 25.07.2007 | LUT | +XStringSubstitution()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -248,6 +249,7 @@ import com.sun.star.util.XChangesBatch;
 import com.sun.star.util.XCloseable;
 import com.sun.star.util.XModifiable;
 import com.sun.star.util.XModifyBroadcaster;
+import com.sun.star.util.XStringSubstitution;
 import com.sun.star.util.XURLTransformer;
 import com.sun.star.util.XUpdatable;
 import com.sun.star.view.XPrintable;
@@ -1341,6 +1343,12 @@ public class UNO {
     public static XPropertyState XPropertyState(Object o)
     {
         return (XPropertyState)UnoRuntime.queryInterface(XPropertyState.class,o);
+    } 
+
+    /** Holt {@link XStringSubstitution} Interface von o.*/
+    public static XStringSubstitution XStringSubstitution(Object o)
+    {
+        return (XStringSubstitution)UnoRuntime.queryInterface(XStringSubstitution.class,o);
     } 
 
 	// ACHTUNG: Interface-Methoden fangen hier mit einem grossen X an!
