@@ -128,6 +128,7 @@
 * 24.04.2007 | LUT | +XPropertyState()
 *                    +setPropertyToDefault(o, propName)
 * 25.07.2007 | LUT | +XStringSubstitution()
+* 19.09.2007 | BAB | +XRowSet()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -201,6 +202,7 @@ import com.sun.star.sdb.XDocumentDataSource;
 import com.sun.star.sdbc.XColumnLocate;
 import com.sun.star.sdbc.XDataSource;
 import com.sun.star.sdbc.XRow;
+import com.sun.star.sdbc.XRowSet;
 import com.sun.star.sdbcx.XColumnsSupplier;
 import com.sun.star.sdbcx.XKeysSupplier;
 import com.sun.star.sdbcx.XTablesSupplier;
@@ -1349,7 +1351,13 @@ public class UNO {
     public static XStringSubstitution XStringSubstitution(Object o)
     {
         return (XStringSubstitution)UnoRuntime.queryInterface(XStringSubstitution.class,o);
-    } 
+    }
+    
+    /** Holt {@link XRowSet} Interface von o.*/
+    public static XRowSet XRowSet(Object o)
+    {
+        return (XRowSet)UnoRuntime.queryInterface(XRowSet.class,o);
+    }
 
 	// ACHTUNG: Interface-Methoden fangen hier mit einem grossen X an!
     
