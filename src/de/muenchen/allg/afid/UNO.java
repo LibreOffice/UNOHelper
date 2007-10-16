@@ -129,6 +129,8 @@
 *                    +setPropertyToDefault(o, propName)
 * 25.07.2007 | LUT | +XStringSubstitution()
 * 19.09.2007 | BAB | +XRowSet()
+* 16.10.2007 | BNK | +XCloseBroadcaster()
+*                  | +XStorageBasedDocument()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -169,6 +171,7 @@ import com.sun.star.document.XDocumentInfo;
 import com.sun.star.document.XDocumentInfoSupplier;
 import com.sun.star.document.XDocumentInsertable;
 import com.sun.star.document.XEventBroadcaster;
+import com.sun.star.document.XStorageBasedDocument;
 import com.sun.star.drawing.XControlShape;
 import com.sun.star.drawing.XDrawPageSupplier;
 import com.sun.star.drawing.XShape;
@@ -248,6 +251,7 @@ import com.sun.star.uno.XComponentContext;
 import com.sun.star.uno.XInterface;
 import com.sun.star.uno.XNamingService;
 import com.sun.star.util.XChangesBatch;
+import com.sun.star.util.XCloseBroadcaster;
 import com.sun.star.util.XCloseable;
 import com.sun.star.util.XModifiable;
 import com.sun.star.util.XModifyBroadcaster;
@@ -784,6 +788,18 @@ public class UNO {
     public static XCloseable XCloseable(Object o)
     {
         return (XCloseable)UnoRuntime.queryInterface(XCloseable.class,o);
+    }
+    
+    /** Holt {@link XCloseBroadcaster} Interface von o.*/
+    public static XCloseBroadcaster XCloseBroadcaster(Object o)
+    {
+        return (XCloseBroadcaster)UnoRuntime.queryInterface(XCloseBroadcaster.class,o);
+    }
+    
+    /** Holt {@link XStorageBasedDocument} Interface von o.*/
+    public static XStorageBasedDocument XStorageBasedDocument(Object o)
+    {
+        return (XStorageBasedDocument)UnoRuntime.queryInterface(XStorageBasedDocument.class,o);
     }
     
     /** Holt {@link XWindow2} Interface von o.*/
