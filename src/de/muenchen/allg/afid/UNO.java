@@ -131,6 +131,7 @@
 * 19.09.2007 | BAB | +XRowSet()
 * 16.10.2007 | BNK | +XCloseBroadcaster()
 *                  | +XStorageBasedDocument()
+* 06.11.2007 | BNK | +XTextGraphicObjectsSupplier()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -233,6 +234,7 @@ import com.sun.star.text.XTextField;
 import com.sun.star.text.XTextFieldsSupplier;
 import com.sun.star.text.XTextFrame;
 import com.sun.star.text.XTextFramesSupplier;
+import com.sun.star.text.XTextGraphicObjectsSupplier;
 import com.sun.star.text.XTextRange;
 import com.sun.star.text.XTextRangeCompare;
 import com.sun.star.text.XTextSection;
@@ -812,6 +814,12 @@ public class UNO {
     public static XTextFramesSupplier XTextFramesSupplier(Object o)
     {
         return (XTextFramesSupplier)UnoRuntime.queryInterface(XTextFramesSupplier.class,o);
+    }
+    
+    /** Holt {@link XTextGraphicObjectsSupplier} Interface von o.*/
+    public static XTextGraphicObjectsSupplier XTextGraphicObjectsSupplier(Object o)
+    {
+        return (XTextGraphicObjectsSupplier)UnoRuntime.queryInterface(XTextGraphicObjectsSupplier.class,o);
     }
     
     /** Holt {@link XTextFrame} Interface von o.*/
