@@ -133,6 +133,7 @@
 *                  | +XStorageBasedDocument()
 * 06.11.2007 | BNK | +XTextGraphicObjectsSupplier()
 * 14.01.2008 | BNK | +XTextPortionAppend()
+* 16.01.2008 | BNK | +XTextContentAppend()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -229,6 +230,7 @@ import com.sun.star.text.XParagraphCursor;
 import com.sun.star.text.XText;
 import com.sun.star.text.XTextColumns;
 import com.sun.star.text.XTextContent;
+import com.sun.star.text.XTextContentAppend;
 import com.sun.star.text.XTextCursor;
 import com.sun.star.text.XTextDocument;
 import com.sun.star.text.XTextField;
@@ -780,6 +782,12 @@ public class UNO {
     public static XTextPortionAppend XTextPortionAppend(Object o)
     {
         return (XTextPortionAppend)UnoRuntime.queryInterface(XTextPortionAppend.class,o);
+    }
+    
+    /** Holt {@link XTextContentAppend} Interface von o.*/
+    public static XTextContentAppend XTextContentAppend(Object o)
+    {
+        return (XTextContentAppend)UnoRuntime.queryInterface(XTextContentAppend.class,o);
     }
     
     /** Holt {@link XShape} Interface von o.*/
