@@ -134,6 +134,9 @@
 * 06.11.2007 | BNK | +XTextGraphicObjectsSupplier()
 * 14.01.2008 | BNK | +XTextPortionAppend()
 * 16.01.2008 | BNK | +XTextContentAppend()
+* 17.01.2008 | BNK | +XAutoTextContainer()
+*                  | +XAutoTextGroup()
+*                  | +XAutoTextEntry()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -223,6 +226,9 @@ import com.sun.star.table.XCell;
 import com.sun.star.table.XCellRange;
 import com.sun.star.table.XColumnRowRange;
 import com.sun.star.table.XTableColumns;
+import com.sun.star.text.XAutoTextContainer;
+import com.sun.star.text.XAutoTextEntry;
+import com.sun.star.text.XAutoTextGroup;
 import com.sun.star.text.XBookmarksSupplier;
 import com.sun.star.text.XDependentTextField;
 import com.sun.star.text.XPageCursor;
@@ -777,6 +783,24 @@ public class UNO {
 	{
 		return (XStorable)UnoRuntime.queryInterface(XStorable.class,o);
 	}
+    
+    /** Holt {@link XAutoTextContainer} Interface von o.*/
+    public static XAutoTextContainer XAutoTextContainer(Object o)
+    {
+        return (XAutoTextContainer)UnoRuntime.queryInterface(XAutoTextContainer.class,o);
+    }
+    
+    /** Holt {@link XAutoTextGroup} Interface von o.*/
+    public static XAutoTextGroup XAutoTextGroup(Object o)
+    {
+        return (XAutoTextGroup)UnoRuntime.queryInterface(XAutoTextGroup.class,o);
+    }
+    
+    /** Holt {@link XAutoTextEntry} Interface von o.*/
+    public static XAutoTextEntry XAutoTextEntry(Object o)
+    {
+        return (XAutoTextEntry)UnoRuntime.queryInterface(XAutoTextEntry.class,o);
+    }
     
     /** Holt {@link XTextPortionAppend} Interface von o.*/
     public static XTextPortionAppend XTextPortionAppend(Object o)
