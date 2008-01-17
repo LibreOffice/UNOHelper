@@ -17,45 +17,24 @@
 */
 package de.muenchen.allg.ooo;
 
-import java.io.StringReader;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.Vector;
-import java.util.regex.Matcher;
 
-import com.sun.star.awt.XControlModel;
 import com.sun.star.beans.Property;
 import com.sun.star.beans.XPropertySet;
 import com.sun.star.beans.XPropertySetInfo;
-import com.sun.star.container.XEnumeration;
-import com.sun.star.container.XEnumerationAccess;
 import com.sun.star.container.XNameContainer;
-import com.sun.star.container.XNamed;
-import com.sun.star.drawing.XControlShape;
-import com.sun.star.lang.XServiceInfo;
-import com.sun.star.text.XDependentTextField;
+import com.sun.star.text.XAutoTextContainer;
+import com.sun.star.text.XAutoTextEntry;
+import com.sun.star.text.XAutoTextGroup;
 import com.sun.star.text.XText;
 import com.sun.star.text.XTextDocument;
 import com.sun.star.text.XTextRange;
-import com.sun.star.text.XTextTable;
 import com.sun.star.uno.UnoRuntime;
 
 import de.muenchen.allg.afid.UNO;
-import de.muenchen.allg.itd51.parser.ConfigThingy;
-import de.muenchen.allg.itd51.wollmux.Bookmark;
-import de.muenchen.allg.itd51.wollmux.Logger;
-import de.muenchen.allg.itd51.wollmux.former.DocumentTree.CheckboxNode;
-import de.muenchen.allg.itd51.wollmux.former.DocumentTree.ContainerNode;
-import de.muenchen.allg.itd51.wollmux.former.DocumentTree.DropdownNode;
-import de.muenchen.allg.itd51.wollmux.former.DocumentTree.GroupBookmarkNode;
-import de.muenchen.allg.itd51.wollmux.former.DocumentTree.InputNode;
-import de.muenchen.allg.itd51.wollmux.former.DocumentTree.InsertionBookmarkNode;
-import de.muenchen.allg.itd51.wollmux.former.DocumentTree.ParagraphNode;
-import de.muenchen.allg.itd51.wollmux.former.DocumentTree.TextRangeNode;
-import de.muenchen.allg.itd51.wollmux.former.insertion.InsertionModel;
 
 public class TextDocument
 {
@@ -88,19 +67,17 @@ public class TextDocument
       "GridDisplay", "GridMode", "GridColor", "GridLines", "GridBaseHeight",
       "GridRubyHeight", "GridRubyBelow", "GridPrint", "HeaderDynamicSpacing",
       "FooterDynamicSpacing", "BorderDistance", "FooterBorderDistance",
-      "HeaderBorderDistance" };
-  
-  /*
-   * Fehlen: TextColumns, UserDefinedAttributes, 
+      "HeaderBorderDistance" }; /* Fehlen: TextColumns, UserDefinedAttributes 
    * HeaderText, HeaderTextLeft, HeaderTextRight,  
    * FooterText, FooterTextLeft, FooterTextRight,
    * */
   
+  private static final String[] HEADER_FOOTER_PROP_NAMES = { "HeaderText", "HeaderTextLeft",
+    "HeaderTextRight", "FooterText", "FooterTextLeft", "FooterTextRight"};
   
   /**
    * Kopiert die Eigenschaften von PageStyle oldStyle auf einen PageStyle mit Namen 
-   * newName (der angelegt wird, wenn er noch nicht existiert). newName darf sich nicht auf
-   * den selben PageStyle beziehen. 
+   * newName (der angelegt wird, wenn er noch nicht existiert).
    * @param doc das Textdokument in dem der neue PageStyle angelegt werden soll. Der alte
    * PageStyle kann in einem beliebigen Dokument liegen.
    * @author Matthias Benkmann (D-III-ITD 5.1)
@@ -115,6 +92,7 @@ public class TextDocument
     if (pageStyles.hasByName(newName))
     {
       newStyle = UNO.XPropertySet(pageStyles.getByName(newName));
+      if (UnoRuntime.areSame(oldStyle, newStyle)) return;
     }
     else
     {
@@ -137,102 +115,60 @@ public class TextDocument
         }
       }
     }
-  }
-  
-  /**
-   * Hängt den Inhalt von source an dest an.
-   * @param doc das Dokument in dem sich dest befindet. enu muss *nicht* in doc sein.
-   * @author Matthias Benkmann (D-III-ITD 5.1)
-   * TODO Testen
-   */
-  public static void appendXText2XText(XText source, XText dest, XTextDocument doc)
-  {
-    XEnumerationAccess enuAccess = UNO.XEnumerationAccess(source);
-    if (enuAccess == null) return;
-    XEnumeration enu = enuAccess.createEnumeration();
-    copyParagraphEnumeration(enu, dest, doc);
-  }
-  
-  /**
-   * Nimmt eine XEnumeration enu von Absätzen und TextTables und 
-   * hängt eine Kopie jedes Elements an dest an.
-   * @param doc das Dokument in dem dest liegt.
-   * @author Matthias Benkmann (D-III-ITD 5.1)
-   */
-  private static void copyParagraphEnumeration(XEnumeration enu, XText dest, XTextDocument doc)
-  {
-    XEnumerationAccess enuAccess;
-    while (enu.hasMoreElements())
+    
+    for (int i = 0; i < HEADER_FOOTER_PROP_NAMES.length; ++i)
     {
-      Object ele;
-      try{ ele = enu.nextElement(); } catch(Exception x){continue;}
-      enuAccess = UNO.XEnumerationAccess(ele);
-      if (enuAccess != null) //ist wohl ein SwXParagraph
+      XText val = null;
+      try{
+        val = null;
+        val = UNO.XText(oldStyle.getPropertyValue(HEADER_FOOTER_PROP_NAMES[i]));
+        if (val != null)
+        {
+          XText dest = UNO.XText(newStyle.getPropertyValue(HEADER_FOOTER_PROP_NAMES[i]));
+          copyXText2XTextRange(val, dest.createTextCursorByRange(dest));
+        }
+      }catch(Exception x)
       {
-        copyParagraph(enuAccess, dest, doc);
-      }
-      else //unterstützt nicht XEnumerationAccess, ist wohl SwXTextTable 
-      {
-        XTextTable table = UNO.XTextTable(ele);
-        if (table != null) copyTextTable(table, dest, doc);
+        if (val != null) //Nur dann Exception werfen, wenn überhaupt ein Property zu kopieren da ist
+        {
+          throw new Exception("Fehler beim Kopieren von Property \""+PAGE_STYLE_PROP_NAMES[i]+"\"", x);
+        }
       }
     }
   }
   
   /**
-   * Nimmt die Inhalte von paragraph und hängt sie an dest an.
-   * @param doc das Dokument in dem sich dest befindet. paragraph muss *nicht* in doc sein.
+   * Ersetzt dest durch den Inhalt von source.
    * @author Matthias Benkmann (D-III-ITD 5.1)
    * TODO Testen
+   * @throws Exception falls was schief geht 
    */
-  private static void copyParagraph(XEnumerationAccess paragraph, XText dest, XTextDocument doc)
+  public static void copyXText2XTextRange(XText source, XTextRange dest) throws Exception
   {
-    /*
-     * enumeriere alle TextPortions des Paragraphs
-     */
-    XEnumeration textPortionEnu = paragraph.createEnumeration();
-    while (textPortionEnu.hasMoreElements())
+    XAutoTextContainer autoTextContainer = UNO.XAutoTextContainer(UNO.createUNOService("com.sun.star.text.AutoTextContainer"));
+    int rand;
+    
+    XAutoTextGroup atgroup;
+    for (int i = 0; ; ++i)
     {
-      Object textPortion;
-      try{ textPortion = textPortionEnu.nextElement(); } catch(Exception x){continue;};
-      
-      String textPortionType = (String)UNO.getProperty(textPortion, "TextPortionType");
-      if (textPortionType.equals("Text"))
+      rand = (int)(Math.random()*100000);
+      try{
+        atgroup = autoTextContainer.insertNewByName("WollMuxTemp"+rand+"*1");
+        break;
+      }catch(Exception x)  
       {
-        appendTextPortionString(dest, textPortion);
-      } else if (textPortionType.equals("TextField"))
-      {
-        appendTextPortionString(dest, textPortion);
-      } else if (textPortionType.equals("TextContent"))
-      {
-        //derzeit nicht unterstützt (und ich weiß eh ned, was mit diesem Type geliefert wird)
-      } else if (textPortionType.equals("Footnote"))
-      {
-        appendTextPortionString(dest, textPortion);
-      } else if (textPortionType.equals("ControlCharacter"))
-      {
-        appendTextPortionString(dest, textPortion);
-      } else if (textPortionType.equals("ReferenceMark"))
-      {
-        // ReferenceMarks kopieren derzeit nicht unterstützt
-      } else if (textPortionType.equals("DocumentIndexMark"))
-      {
-        // derzeit nicht unterstützt
-      } else if (textPortionType.equals("Bookmark"))
-      {
-        //Bookmarks kopieren derzeit nicht unterstützt
-      } else if (textPortionType.equals("Redline"))
-      {
-        //derzeit nicht unterstützt
-      } else if (textPortionType.equals("Ruby"))
-      {
-        //derzeit nicht unterstützt
-      } else if (textPortionType.equals("Frame"))
-      {
-        // auch Checkboxen und vermutlich andere Shapes
-        // derzeit nicht unterstützt
+        if ( i >= 100) throw x;
       }
-      else continue; //Dies sollte nicht passieren, da oben alle dokumentierten Typen aufgeführt sind
+    }
+    
+    try{
+      XTextRange range = source.createTextCursorByRange(source);
+      XAutoTextEntry atentry = atgroup.insertNewByName("X","X",range);
+      dest.setString("");
+      atentry.applyTo(dest);
+    }
+    finally{
+      try{ autoTextContainer.removeByName("WollmuxTemp"+rand+"*1"); }catch(Exception y){};
     }
   }
   
