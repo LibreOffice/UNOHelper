@@ -36,9 +36,18 @@ import com.sun.star.uno.UnoRuntime;
 
 import de.muenchen.allg.afid.UNO;
 
+/**
+ * Hilfsfunktionen für die Arbeit mit OOo TextDokumenten
+ *
+ * @author Matthias Benkmann (D-III-ITD 5.1)
+ */
 public class TextDocument
 {
-  private static final String[] PAGE_STYLE_PROP_NAMES = { "FollowStyle",
+  /**
+   * Diese Properties werden in der hier gelisteten Reihenfolge über getProperty/setProperty
+   * Paare kopiert.
+   */
+  private static final String[] PAGE_STYLE_PROP_NAMES = { 
       "BackColor", "BackGraphicURL", "BackGraphicLocation",
       "BackGraphicFilter", "IsLandscape", "PageStyleLayout", "BackTransparent",
       "Size", "Width", "Height", "LeftMargin", "RightMargin", "TopMargin",
@@ -70,8 +79,13 @@ public class TextDocument
       "HeaderBorderDistance" }; /* Fehlen: TextColumns, UserDefinedAttributes 
    * HeaderText, HeaderTextLeft, HeaderTextRight,  
    * FooterText, FooterTextLeft, FooterTextRight,
+   * FollowStyle (weil es zu Absturz führt (siehe CrashCopyingPagestyle.java)
    * */
   
+  /**
+   * Diese Properties werden in der hier gelisteten Reihenfolge über 
+   * {@link #copyXText2XTextRange(XText, XTextRange)} kopiert.
+   */
   private static final String[] HEADER_FOOTER_PROP_NAMES = { "HeaderText", "HeaderTextLeft",
     "HeaderTextRight", "FooterText", "FooterTextLeft", "FooterTextRight"};
   
@@ -129,10 +143,7 @@ public class TextDocument
         }
       }catch(Exception x)
       {
-        if (val != null) //Nur dann Exception werfen, wenn überhaupt ein Property zu kopieren da ist
-        {
-          throw new Exception("Fehler beim Kopieren von Property \""+PAGE_STYLE_PROP_NAMES[i]+"\"", x);
-        }
+        throw new Exception("Fehler beim Kopieren von Property \""+HEADER_FOOTER_PROP_NAMES[i]+"\"", x);
       }
     }
   }
@@ -140,7 +151,7 @@ public class TextDocument
   /**
    * Ersetzt dest durch den Inhalt von source.
    * @author Matthias Benkmann (D-III-ITD 5.1)
-   * TODO Testen
+   * TESTED
    * @throws Exception falls was schief geht 
    */
   public static void copyXText2XTextRange(XText source, XTextRange dest) throws Exception
@@ -148,12 +159,14 @@ public class TextDocument
     XAutoTextContainer autoTextContainer = UNO.XAutoTextContainer(UNO.createUNOService("com.sun.star.text.AutoTextContainer"));
     int rand;
     
+    String groupName = null;
     XAutoTextGroup atgroup;
     for (int i = 0; ; ++i)
     {
       rand = (int)(Math.random()*100000);
       try{
-        atgroup = autoTextContainer.insertNewByName("WollMuxTemp"+rand+"*1");
+        groupName = "WollMuxTemp"+rand;
+        atgroup = autoTextContainer.insertNewByName(groupName+"*1");
         break;
       }catch(Exception x)  
       {
@@ -168,7 +181,7 @@ public class TextDocument
       atentry.applyTo(dest);
     }
     finally{
-      try{ autoTextContainer.removeByName("WollmuxTemp"+rand+"*1"); }catch(Exception y){};
+      try{ autoTextContainer.removeByName(groupName); } catch(Exception y) {};
     }
   }
   
