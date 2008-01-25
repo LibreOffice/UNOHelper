@@ -137,6 +137,8 @@
 * 17.01.2008 | BNK | +XAutoTextContainer()
 *                  | +XAutoTextGroup()
 *                  | +XAutoTextEntry()
+* 25.01.2008 | BNK | XTextContentAppend und XTextPortionAppend wieder entfernt
+*                  | weil von alten Versionen nicht unterstützt.
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -236,7 +238,6 @@ import com.sun.star.text.XParagraphCursor;
 import com.sun.star.text.XText;
 import com.sun.star.text.XTextColumns;
 import com.sun.star.text.XTextContent;
-import com.sun.star.text.XTextContentAppend;
 import com.sun.star.text.XTextCursor;
 import com.sun.star.text.XTextDocument;
 import com.sun.star.text.XTextField;
@@ -244,7 +245,6 @@ import com.sun.star.text.XTextFieldsSupplier;
 import com.sun.star.text.XTextFrame;
 import com.sun.star.text.XTextFramesSupplier;
 import com.sun.star.text.XTextGraphicObjectsSupplier;
-import com.sun.star.text.XTextPortionAppend;
 import com.sun.star.text.XTextRange;
 import com.sun.star.text.XTextRangeCompare;
 import com.sun.star.text.XTextSection;
@@ -800,18 +800,6 @@ public class UNO {
     public static XAutoTextEntry XAutoTextEntry(Object o)
     {
         return (XAutoTextEntry)UnoRuntime.queryInterface(XAutoTextEntry.class,o);
-    }
-    
-    /** Holt {@link XTextPortionAppend} Interface von o.*/
-    public static XTextPortionAppend XTextPortionAppend(Object o)
-    {
-        return (XTextPortionAppend)UnoRuntime.queryInterface(XTextPortionAppend.class,o);
-    }
-    
-    /** Holt {@link XTextContentAppend} Interface von o.*/
-    public static XTextContentAppend XTextContentAppend(Object o)
-    {
-        return (XTextContentAppend)UnoRuntime.queryInterface(XTextContentAppend.class,o);
     }
     
     /** Holt {@link XShape} Interface von o.*/
