@@ -9,6 +9,7 @@
 * Datum      | Wer | Änderungsgrund
 * -------------------------------------------------------------------
 * 19.12.2007 | BNK | Erstellung
+* 15.01.2008 | BNK | +copyDirectValueCharAttributes
 * -------------------------------------------------------------------
 *
 * @author Matthias Benkmann (D-III-ITD 5.1)
@@ -23,8 +24,10 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import com.sun.star.beans.Property;
+import com.sun.star.beans.PropertyState;
 import com.sun.star.beans.XPropertySet;
 import com.sun.star.beans.XPropertySetInfo;
+import com.sun.star.beans.XPropertyState;
 import com.sun.star.container.XNameContainer;
 import com.sun.star.text.XAutoTextContainer;
 import com.sun.star.text.XAutoTextEntry;
@@ -81,6 +84,26 @@ public class TextDocument
    * FooterText, FooterTextLeft, FooterTextRight,
    * FollowStyle (weil es zu Absturz führt (siehe CrashCopyingPagestyle.java)
    * */
+  
+  
+  private static final String[] CHAR_STYLE_PROP_NAMES = { "CharFontName","CharFontStyleName", 
+    "CharFontFamily", "CharFontCharSet", "CharFontPitch", "CharColor", "CharEscapement",
+    "CharHeight", "CharUnderline", "CharWeight", "CharPosture", "CharAutoKerning",
+    "CharBackColor", "CharBackTransparent", "CharCaseMap", "CharCrossedOut",
+    "CharFlash", "CharStrikeout", "CharWordMode", "CharKerning", "CharLocale",
+    "CharKeepTogether", "CharNoLineBreak", "CharShadowed", "CharFontType",
+    "CharStyleName", "CharContoured", "CharCombineIsOn", "CharCombinePrefix",
+    "CharCombineSuffix", "CharEmphasis", "CharRelief", "RubyText", "RubyAdjust",
+    "RubyCharStyleName", "RubyIsAbove", "CharRotation", "CharRotationIsFitToLine", 
+    "CharScaleWidth", "HyperLinkURL", "HyperLinkTarget", "HyperLinkName", "VisitedCharStyleName",
+    "UnvisitedCharStyleName", "CharEscapementHeight", "CharNoHyphenation", "CharUnderlineColor",
+    "CharUnderlineHasColor", "CharHidden", "CharHeightAsian", "CharWeightAsian",
+    "CharFontNameAsian", "CharFontStyleNameAsian", "CharFontFamilyAsian",
+    "CharFontCharSetAsian", "CharFontPitchAsian", "CharPostureAsian", "CharLocaleAsian",
+    "CharHeightComplex", "CharWeightComplex", "CharFontNameComplex", "CharFontStyleNameComplex",
+    "CharFontFamilyComplex", "CharFontCharSetComplex", "CharFontPitchComplex",
+    "CharPostureComplex", "CharLocaleComplex"
+    };/* Fehlen: TextUserDefinedAttributes */
   
   /**
    * Diese Properties werden in der hier gelisteten Reihenfolge über 
@@ -182,6 +205,26 @@ public class TextDocument
     }
     finally{
       try{ autoTextContainer.removeByName(groupName); } catch(Exception y) {};
+    }
+  }
+  
+  /**
+   * Kopiert alle Character Attributes, die den Zustand {@link com.sun.star.beans.PropertyState#DIRECT_VALUE}
+   * haben von from nach to. 
+   * @author Matthias Benkmann (D-III-ITD 5.1)
+   * TESTED
+   */
+  public static void copyDirectValueCharAttributes(XPropertyState from, XPropertySet to)
+  {
+    XPropertySet fromSet = UNO.XPropertySet(from);
+    for (int i = 0; i < CHAR_STYLE_PROP_NAMES.length; ++i)
+    {
+      try{
+        if (from.getPropertyState(CHAR_STYLE_PROP_NAMES[i]).equals(PropertyState.DIRECT_VALUE))
+        {
+          to.setPropertyValue(CHAR_STYLE_PROP_NAMES[i], fromSet.getPropertyValue(CHAR_STYLE_PROP_NAMES[i]));
+        }
+      }catch(Exception x){}
     }
   }
   
