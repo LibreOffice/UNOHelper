@@ -10,6 +10,7 @@
 * -------------------------------------------------------------------
 * 19.12.2007 | BNK | Erstellung
 * 15.01.2008 | BNK | +copyDirectValueCharAttributes
+* 29.01.2008 | BNK | +copySimpleProperties()
 * -------------------------------------------------------------------
 *
 * @author Matthias Benkmann (D-III-ITD 5.1)
@@ -18,6 +19,7 @@
 */
 package de.muenchen.allg.ooo;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.SortedSet;
@@ -35,6 +37,7 @@ import com.sun.star.text.XAutoTextGroup;
 import com.sun.star.text.XText;
 import com.sun.star.text.XTextDocument;
 import com.sun.star.text.XTextRange;
+import com.sun.star.uno.AnyConverter;
 import com.sun.star.uno.UnoRuntime;
 
 import de.muenchen.allg.afid.UNO;
@@ -226,6 +229,79 @@ public class TextDocument
         }
       }catch(Exception x){}
     }
+  }
+  
+  /**
+   * Kopiert alle Properties, die nicht komplexe Objekte (structs, interfaces, exceptions)
+   * oder Sequenzen von komplexen Objekten sind von in nach out. Sequenzen simpler Typen
+   * werden kopiert. 
+   * @author Matthias Benkmann (D-III-ITD 5.1)
+   * TESTED
+   */
+  public static void copySimpleProperties(XPropertySet in, XPropertySet out)
+  {
+    XPropertySetInfo propInfo = in.getPropertySetInfo();
+    Property[] props = propInfo.getProperties();
+    for (int i = 0; i < props.length; ++i)
+    {
+      Object prop;
+      try{
+        prop = in.getPropertyValue(props[i].Name);
+      } catch(Exception x)
+      {
+        continue;
+      }
+
+      /*
+       * Die eigentlich unnötig komplexe Aufteilung in 2
+       * try-catch-Blöcke habe ich nur gewählt, um isSimpleType nicht in einem
+       * try-catch-Block zu haben. Ich habe nämlich nicht alle Teilaspekte von
+       * isSimpleType() getestet (insbes. nicht die Behandlung von Sequenzen).
+       * Ich gehe davon aus, dass alles funktioniert, aber falls doch ein
+       * Fehler (sprich Exception) auftritt, dann will ich nicht, dass diese
+       * einfach von einem try-catch-Block ohne Logging abgewürgt wird.
+       */
+      if (isSimpleType(prop))
+      {
+        try{
+          out.setPropertyValue(props[i].Name, prop);
+        } catch(Exception x)
+        {
+          continue;
+        }
+      }
+    }
+  }
+
+  /**
+   * Liefert true gdw o nicht Exception, Struct oder Interface ist oder eine Sequenz, die
+   * sowas enthält.
+   * @author Matthias Benkmann (D-III-ITD 5.1)
+   */
+  private static boolean isSimpleType(Object o)
+  {
+    if (AnyConverter.isArray(o))
+    {
+      try{
+        Object arryConv = AnyConverter.toArray(o);
+        int len = Array.getLength(arryConv);
+        if (len == 0) return true;
+        return isSimpleType(Array.get(arryConv,0));
+      }catch(Exception x)
+      {
+        throw new RuntimeException("Dies dürfte nicht passieren.",x);
+      }
+    }
+    else if (AnyConverter.isEnum(o))
+    {
+      return true;
+    }
+    else if (AnyConverter.isObject(o))
+    {
+      return false;
+    }
+    
+    return true;
   }
   
   public static void main(String[] args) throws Exception
