@@ -11,6 +11,7 @@
 * 19.12.2007 | BNK | Erstellung
 * 15.01.2008 | BNK | +copyDirectValueCharAttributes
 * 29.01.2008 | BNK | +copySimpleProperties()
+* 29.01.2008 | BNK | +deleteParagraph
 * -------------------------------------------------------------------
 *
 * @author Matthias Benkmann (D-III-ITD 5.1)
@@ -30,14 +31,19 @@ import com.sun.star.beans.PropertyState;
 import com.sun.star.beans.XPropertySet;
 import com.sun.star.beans.XPropertySetInfo;
 import com.sun.star.beans.XPropertyState;
+import com.sun.star.container.NoSuchElementException;
+import com.sun.star.container.XEnumeration;
+import com.sun.star.container.XEnumerationAccess;
 import com.sun.star.container.XNameContainer;
 import com.sun.star.text.XAutoTextContainer;
 import com.sun.star.text.XAutoTextEntry;
 import com.sun.star.text.XAutoTextGroup;
 import com.sun.star.text.XText;
+import com.sun.star.text.XTextContent;
 import com.sun.star.text.XTextDocument;
 import com.sun.star.text.XTextRange;
 import com.sun.star.uno.AnyConverter;
+import java.lang.Exception;
 import com.sun.star.uno.UnoRuntime;
 
 import de.muenchen.allg.afid.UNO;
@@ -230,6 +236,52 @@ public class TextDocument
       }catch(Exception x){}
     }
   }
+  
+  /**
+   * Löscht den ganzen ersten Absatz an der Cursorposition textCursor.
+   */
+  public static void deleteParagraph(XTextRange range)
+  {
+    // Beim Löschen des Absatzes erzeugt OOo ein ungewolltes
+    // "Zombie"-Bookmark.
+    // Issue Siehe http://qa.openoffice.org/issues/show_bug.cgi?id=65247
+    
+    XTextContent paragraph = null;
+    
+    // Ersten Absatz des Bookmarks holen:
+    XEnumerationAccess access = UNO.XEnumerationAccess(range);
+    if (access != null)
+    {
+      XEnumeration xenum = access.createEnumeration();
+      if (xenum.hasMoreElements()) try
+      {
+        paragraph = UNO.XTextContent(xenum.nextElement());
+      }
+      catch (Exception e)
+      {
+        //sollte eigentlich nicht passieren können
+      }
+    }
+    if (paragraph == null) return;
+    
+    // Lösche den Paragraph
+    try
+    {
+      // Ist der Paragraph der einzige Paragraph des Textes, dann kann er mit
+      // removeTextContent nicht gelöscht werden. In diesme Fall wird hier
+      // wenigstens der Inhalt entfernt:
+      paragraph.getAnchor().setString("");
+      
+      // Paragraph löschen
+      range.getText().removeTextContent(paragraph);
+    }
+    catch (NoSuchElementException e)
+    {
+      //sollte eigentlich nicht passieren können
+    }
+  }
+
+
   
   /**
    * Kopiert alle Properties, die nicht komplexe Objekte (structs, interfaces, exceptions)
