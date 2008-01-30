@@ -12,6 +12,7 @@
 * 15.01.2008 | BNK | +copyDirectValueCharAttributes
 * 29.01.2008 | BNK | +copySimpleProperties()
 * 29.01.2008 | BNK | +deleteParagraph
+* 30.01.2008 | BNK | +disappearParagraph
 * -------------------------------------------------------------------
 *
 * @author Matthias Benkmann (D-III-ITD 5.1)
@@ -35,6 +36,8 @@ import com.sun.star.container.NoSuchElementException;
 import com.sun.star.container.XEnumeration;
 import com.sun.star.container.XEnumerationAccess;
 import com.sun.star.container.XNameContainer;
+import com.sun.star.style.LineSpacing;
+import com.sun.star.style.LineSpacingMode;
 import com.sun.star.text.XAutoTextContainer;
 import com.sun.star.text.XAutoTextEntry;
 import com.sun.star.text.XAutoTextGroup;
@@ -281,6 +284,34 @@ public class TextDocument
     }
   }
 
+  /**
+   * Lässt den ersten Absatz in der TextRange range verschwinden, ohne ihn zu löschen. 
+   * @author Matthias Benkmann (D-III-ITD 5.1)
+   * TESTED
+   */
+  public static void disappearParagraph(XTextRange range)
+  {
+    try{
+      XEnumerationAccess access = UNO.XEnumerationAccess(range);
+      XEnumeration xenum = access.createEnumeration();
+      XPropertySet props = UNO.XPropertySet(xenum.nextElement());
+      props.setPropertyValue("CharHeight", new Float(0.1));
+      props.setPropertyValue("CharHeightAsian", new Float(0.1));
+      props.setPropertyValue("CharHeightComplex", new Float(0.1));
+      props.setPropertyValue("CharHidden", Boolean.TRUE);
+      LineSpacing ls = new LineSpacing();
+      ls.Mode = LineSpacingMode.FIX;
+      ls.Height = 2; //Lieber nicht 0 nehmen. Vielleicht möchte jemand irgendwo dadurch dividieren
+      props.setPropertyValue("ParaLineSpacing", ls);
+      props.setPropertyValue("ParaTopMargin", new Integer(0));
+      props.setPropertyValue("ParaBottomMargin", new Integer(0));
+      props.setPropertyValue("ParaLineNumberCount", Boolean.FALSE);
+    }catch(Exception x)
+    {
+      //sollte nicht passieren
+      System.exit(0); //FIXME: War nur zum testen. Bitte entfernen!
+    }
+  }
 
   
   /**
