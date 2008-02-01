@@ -309,7 +309,6 @@ public class TextDocument
     }catch(Exception x)
     {
       //sollte nicht passieren
-      System.exit(0); //FIXME: War nur zum testen. Bitte entfernen!
     }
   }
 
