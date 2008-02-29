@@ -29,180 +29,185 @@ import com.sun.star.beans.UnknownPropertyException;
  */
 public class UnoProps {
 
-    private PropertyValue[] props;
+	private PropertyValue[] props;
 
-    /**
-     * Der Konstruktor erzeugt und kapselt ein leeres PropertyValue-Array.
-     */
-    public UnoProps() {
-        props = new PropertyValue[] {};
-    }
+	/**
+	 * Der Konstruktor erzeugt und kapselt ein leeres PropertyValue-Array.
+	 */
+	public UnoProps() {
+		props = new PropertyValue[] {};
+	}
 
-    /**
-     * Der Konstruktor erzeugt und kapselt ein neues PropertyValue-Array und
-     * belegt es sofort mit dem überbebenen Property.
-     * 
-     * @param name
-     * @param value
-     */
-    public UnoProps(String name, Object value) {
-        props = new PropertyValue[] {};
-        setPropertyValue(name, value);
-    }
+	/**
+	 * Der Konstruktor erzeugt und kapselt ein neues PropertyValue-Array und
+	 * belegt es sofort mit dem überbebenen Property.
+	 * 
+	 * @param name
+	 * @param value
+	 */
+	public UnoProps(String name, Object value) {
+		props = new PropertyValue[] {};
+		setPropertyValue(name, value);
+	}
 
-    /**
-     * Der Konstruktor erzeugt und kapselt ein neues PropertyValue-Array belegt
-     * es sofort mit den zwei übergebenen Properties.
-     * 
-     * @param name1
-     * @param value1
-     * @param name2
-     * @param value2
-     */
-    public UnoProps(String name1, Object value1, String name2, Object value2) {
-        props = new PropertyValue[] {};
-        setPropertyValue(name1, value1);
-        setPropertyValue(name2, value2);
-    }
+	/**
+	 * Der Konstruktor erzeugt und kapselt ein neues PropertyValue-Array belegt
+	 * es sofort mit den zwei übergebenen Properties.
+	 * 
+	 * @param name1
+	 * @param value1
+	 * @param name2
+	 * @param value2
+	 */
+	public UnoProps(String name1, Object value1, String name2, Object value2) {
+		props = new PropertyValue[] {};
+		setPropertyValue(name1, value1);
+		setPropertyValue(name2, value2);
+	}
 
-    /**
-     * Der Konstruktor kapselt ein bestehendes PropertyValue-Array props.
-     * 
-     * @param props
-     */
-    public UnoProps(PropertyValue[] props) {
-        if (props != null)
-            this.props = props;
-        else
-            props = new PropertyValue[] {};
-    }
+	/**
+	 * Der Konstruktor kapselt ein bestehendes PropertyValue-Array props.
+	 * 
+	 * @param props
+	 */
+	public UnoProps(PropertyValue[] props) {
+		if (props != null)
+			this.props = props;
+		else
+			this.props = new PropertyValue[] {};
+	}
 
-    /**
-     * Der Konstruktor kapselt ein bestehendes PropertyValue-Array, das in Form
-     * eines Objec-Arrays übergeben wird. Alle Elemente, die nicht vom Typ
-     * PropertyValue sind, werden ohne Fehlermeldung ignoriert.
-     * 
-     * @param props
-     */
-    public UnoProps(Object[] props) {
-        // Zähle Anzahl der PropertyValue-Einträge.
-        int count = 0;
-        for (int i = 0; i < props.length; i++) {
-            if (props[i] instanceof PropertyValue)
-                count++;
-        }
+	/**
+	 * Der Konstruktor kapselt ein bestehendes PropertyValue-Array, das in Form
+	 * eines Objec-Arrays übergeben wird. Alle Elemente, die nicht vom Typ
+	 * PropertyValue sind, werden ohne Fehlermeldung ignoriert.
+	 * 
+	 * @param props
+	 */
+	public UnoProps(Object[] props) {
+		if (props == null) {
+			this.props = new PropertyValue[] {};
+			return;
+		}
 
-        // Erzeuge neues PropertyValue[]:
-        this.props = new PropertyValue[count];
-        int x = 0;
-        for (int i = 0; i < props.length; i++) {
-            if (props[i] instanceof PropertyValue) {
-                this.props[x++] = (PropertyValue) props[i];
-            }
-        }
-    }
+		// Zähle Anzahl der PropertyValue-Einträge.
+		int count = 0;
+		for (int i = 0; i < props.length; i++) {
+			if (props[i] instanceof PropertyValue)
+				count++;
+		}
 
-    /**
-     * Liefert das zugehörige PropertyValue[] zurück.
-     * 
-     * @return
-     */
-    public PropertyValue[] getProps() {
-        return props;
-    }
+		// Erzeuge neues PropertyValue[]:
+		this.props = new PropertyValue[count];
+		int x = 0;
+		for (int i = 0; i < props.length; i++) {
+			if (props[i] instanceof PropertyValue) {
+				this.props[x++] = (PropertyValue) props[i];
+			}
+		}
+	}
 
-    /**
-     * Setzt den Wert value der Property mit dem Namen name. Ist das Property
-     * bereits definiert, so wird der bestehende Wert überschrieben. Ist das
-     * Property noch nicht definiert, so wird ein neuer Eintrag im
-     * PropertyValue-Array erzeugt.
-     * 
-     * @param name
-     *            der Name des Properties.
-     * @param value
-     *            der neue Wert des Properties.
-     * @return Liefert sich selbst zurück, um mehrere Properties in einer Kette
-     *         setzen zu können.
-     */
-    public UnoProps setPropertyValue(String name, Object value) {
-        // Suche nach dem Property erstelle gleich eine Kopie für später:
-        PropertyValue[] newProps = new PropertyValue[props.length + 1];
-        PropertyValue prop = null;
-        for (int i = 0; i < props.length; i++) {
-            if (props[i] != null && props[i].Name.equals(name))
-                prop = props[i];
-            newProps[i] = props[i];
-        }
+	/**
+	 * Liefert das zugehörige PropertyValue[] zurück.
+	 * 
+	 * @return
+	 */
+	public PropertyValue[] getProps() {
+		return props;
+	}
 
-        if (prop != null) {
-            // überschreibe den alten Wert:
-            prop.Value = value;
-        } else {
-            // erzeuge einen neuen Eintrag:
-            prop = new PropertyValue();
-            prop.Name = name;
-            prop.Value = value;
-            newProps[props.length] = prop;
-            props = newProps;
-        }
-        return this;
-    }
+	/**
+	 * Setzt den Wert value der Property mit dem Namen name. Ist das Property
+	 * bereits definiert, so wird der bestehende Wert überschrieben. Ist das
+	 * Property noch nicht definiert, so wird ein neuer Eintrag im
+	 * PropertyValue-Array erzeugt.
+	 * 
+	 * @param name
+	 *            der Name des Properties.
+	 * @param value
+	 *            der neue Wert des Properties.
+	 * @return Liefert sich selbst zurück, um mehrere Properties in einer Kette
+	 *         setzen zu können.
+	 */
+	public UnoProps setPropertyValue(String name, Object value) {
+		// Suche nach dem Property erstelle gleich eine Kopie für später:
+		PropertyValue[] newProps = new PropertyValue[props.length + 1];
+		PropertyValue prop = null;
+		for (int i = 0; i < props.length; i++) {
+			if (props[i] != null && props[i].Name.equals(name))
+				prop = props[i];
+			newProps[i] = props[i];
+		}
 
-    /**
-     * Liefert den Wert eines Properties mit dem Namen name zurück.
-     * 
-     * @param name
-     * @return den Wert des Properties.
-     * @throws UnknownPropertyException
-     */
-    public Object getPropertyValue(String name) throws UnknownPropertyException {
-        for (int i = 0; i < props.length; i++) {
-            if (props[i].Name.equals(name))
-                return props[i].Value;
-        }
-        throw new UnknownPropertyException(name);
-    }
+		if (prop != null) {
+			// überschreibe den alten Wert:
+			prop.Value = value;
+		} else {
+			// erzeuge einen neuen Eintrag:
+			prop = new PropertyValue();
+			prop.Name = name;
+			prop.Value = value;
+			newProps[props.length] = prop;
+			props = newProps;
+		}
+		return this;
+	}
 
-    /**
-     * Liefert ein UnoService-Objekt zurück, das den den Wert des Properties mit
-     * dem Namen name kapselt.
-     * 
-     * @param name
-     * @return Liefert ein UnoService-Objekt zurück, das den den Wert des
-     *         Properties mit dem Namen name kapselt.
-     * @throws UnknownPropertyException
-     */
-    public UnoService getPropertyValueAsUnoService(String name)
-            throws UnknownPropertyException {
-        return new UnoService(getPropertyValue(name));
-    }
+	/**
+	 * Liefert den Wert eines Properties mit dem Namen name zurück.
+	 * 
+	 * @param name
+	 * @return den Wert des Properties.
+	 * @throws UnknownPropertyException
+	 */
+	public Object getPropertyValue(String name) throws UnknownPropertyException {
+		for (int i = 0; i < props.length; i++) {
+			if (props[i].Name.equals(name))
+				return props[i].Value;
+		}
+		throw new UnknownPropertyException(name);
+	}
 
-    /**
-     * Liefert ein String mit dem Wert des Properties mit dem Namen name zurück.
-     * 
-     * @param name
-     * @return Liefert ein String mit dem Wert des Properties mit dem Namen name
-     *         zurück.
-     * @throws UnknownPropertyException
-     */
-    public String getPropertyValueAsString(String name)
-            throws UnknownPropertyException {
-        return getPropertyValue(name).toString();
-    }
+	/**
+	 * Liefert ein UnoService-Objekt zurück, das den den Wert des Properties mit
+	 * dem Namen name kapselt.
+	 * 
+	 * @param name
+	 * @return Liefert ein UnoService-Objekt zurück, das den den Wert des
+	 *         Properties mit dem Namen name kapselt.
+	 * @throws UnknownPropertyException
+	 */
+	public UnoService getPropertyValueAsUnoService(String name)
+			throws UnknownPropertyException {
+		return new UnoService(getPropertyValue(name));
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
-    public String toString() {
-        String str = "UnoProps[ ";
-        for (int i = 0; i < props.length; i++) {
-            if (i != 0)
-                str += ", ";
-            str += props[i].Name + "=>\"" + props[i].Value + "\"";
-        }
-        str += " ]";
-        return str;
-    }
+	/**
+	 * Liefert ein String mit dem Wert des Properties mit dem Namen name zurück.
+	 * 
+	 * @param name
+	 * @return Liefert ein String mit dem Wert des Properties mit dem Namen name
+	 *         zurück.
+	 * @throws UnknownPropertyException
+	 */
+	public String getPropertyValueAsString(String name)
+			throws UnknownPropertyException {
+		return getPropertyValue(name).toString();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		String str = "UnoProps[ ";
+		for (int i = 0; i < props.length; i++) {
+			if (i != 0)
+				str += ", ";
+			str += props[i].Name + "=>\"" + props[i].Value + "\"";
+		}
+		str += " ]";
+		return str;
+	}
 }
