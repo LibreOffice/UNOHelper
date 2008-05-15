@@ -21,7 +21,6 @@
  * SOFTWARE. 
  * 
  * Änderungshistorie der Landeshauptstadt München:
- * Alle Änderungen (c) Landeshauptstadt München, alle Rechte vorbehalten
  * 
  * Datum      | Wer | Anderungsgrund
  * -------------------------------------------------------------------
@@ -185,20 +184,20 @@ import com.sun.star.view.XViewSettingsSupplier;
 
 /**
  * The class UnoService is a wrapper for UnoService-Objects provided by the
- * OpenOffice.org API. The main aim of this wrapper is to make java-programs
- * more readable by avoiding the neccessity of UnoRuntime.queryInterface-calls.
- * The wrapper performs the queryInterface-calls and holds the corresponding
+ * OpenOffice.org API. The main aim of this wrapper is to make java-programs more
+ * readable by avoiding the neccessity of UnoRuntime.queryInterface-calls. The
+ * wrapper performs the queryInterface-calls and holds the corresponding
  * interface-instances. Temporary variables for singular interface-types are no
  * longer needed in your own java-programs.
  * 
- * The wrapper provides convenience-methods to certain aspects of uno-services
- * like getter and setter for property-values.
+ * The wrapper provides convenience-methods to certain aspects of uno-services like
+ * getter and setter for property-values.
  * 
- * The wrapper also increases transparency when working with uno-objects. It
- * provides methods to inspect uno-services at runtime and print information
- * about supported-services, implemented interfaces, properties and methods. It
- * makes Uno-Programming in java similar to OOo-Basic programming using tools
- * like the famous XRay-tool.
+ * The wrapper also increases transparency when working with uno-objects. It provides
+ * methods to inspect uno-services at runtime and print information about
+ * supported-services, implemented interfaces, properties and methods. It makes
+ * Uno-Programming in java similar to OOo-Basic programming using tools like the
+ * famous XRay-tool.
  */
 public class UnoService
 {
@@ -208,8 +207,8 @@ public class UnoService
   private final Object unoObject;
 
   /**
-   * This map contains all at least one time required interface-instances of
-   * this uno-service.
+   * This map contains all at least one time required interface-instances of this
+   * uno-service.
    */
   // private Map interfaceMap;
   /**
@@ -225,18 +224,17 @@ public class UnoService
   }
 
   /**
-   * This method returns the interface-instance of this UnoService for a
-   * specified interface-type. It performs a UnoRuntime.queryInterface call and
-   * caches the result interface-type. If the service doesn't implement the
-   * required interface, the method returns <code>null</code>. Use the
-   * construct <code>if (myUnoService.xAnInterface() != null) ...</code> to
-   * ensure the service really implements the interface.
+   * This method returns the interface-instance of this UnoService for a specified
+   * interface-type. It performs a UnoRuntime.queryInterface call and caches the
+   * result interface-type. If the service doesn't implement the required interface,
+   * the method returns <code>null</code>. Use the construct
+   * <code>if (myUnoService.xAnInterface() != null) ...</code> to ensure the
+   * service really implements the interface.
    * 
    * @param ifClass
    *          interface-type to query for.
    * @return The interface instance for this uno-service. If the service doesn't
-   *         implement the required interface, the method returns
-   *         <code>null</null>.
+   *         implement the required interface, the method returns <code>null</null>.
    */
   public Object queryInterface(Class ifClass)
   {
@@ -247,9 +245,9 @@ public class UnoService
     // return interfaceMap.get(ifClass);
   }
 
-  /*****************************************************************************
+  /**********************************************************************************
    * Methods to inspect the uno-service.
-   ****************************************************************************/
+   *********************************************************************************/
 
   /**
    * This method returns the implementationName of this unoService-object.
@@ -271,8 +269,8 @@ public class UnoService
 
   /**
    * This method provides information about supported services, implemented
-   * interfaces, supported properties and methods of this uno-service. The lists
-   * of services, implemented interfaces and methods are sorted in alphabetical
+   * interfaces, supported properties and methods of this uno-service. The lists of
+   * services, implemented interfaces and methods are sorted in alphabetical
    * ascending order.
    * 
    * @return a string containing all the inspection information.
@@ -315,8 +313,7 @@ public class UnoService
   }
 
   /**
-   * This method returns a sorted list of services supported by this
-   * uno-service.
+   * This method returns a sorted list of services supported by this uno-service.
    * 
    * @return a string containig the inspection-information.
    */
@@ -340,8 +337,7 @@ public class UnoService
   }
 
   /**
-   * This method returns a sorted list of properties supported by this
-   * uno-service.
+   * This method returns a sorted list of properties supported by this uno-service.
    * 
    * @return a string containig the inspection-information.
    */
@@ -351,8 +347,7 @@ public class UnoService
     if (this.xPropertySet() != null)
     {
       str += "\n";
-      Property[] props = this.xPropertySet().getPropertySetInfo()
-          .getProperties();
+      Property[] props = this.xPropertySet().getPropertySetInfo().getProperties();
       for (int i = 0; i < props.length; i++)
       {
         String name = props[i].Name;
@@ -365,12 +360,10 @@ public class UnoService
             str += "  (Bookmark '" + bookmark.xNamed().getName() + "')";
           }
           else
-            str += "  (" + this.getPropertyValue(props[i].Name).toString()
-                + ")";
+            str += "  (" + this.getPropertyValue(props[i].Name).toString() + ")";
         }
         catch (java.lang.Exception x)
-        {
-        }
+        {}
         str += "\n";
       }
     }
@@ -455,12 +448,53 @@ public class UnoService
   {
     if (this.xServiceInfo() != null)
     {
-      return getSortedArrayIterator(this.xServiceInfo()
-          .getSupportedServiceNames(), new Comparator()
+      return getSortedArrayIterator(this.xServiceInfo().getSupportedServiceNames(),
+        new Comparator()
+        {
+          public int compare(Object arg0, Object arg1)
+          {
+            return ((String) arg0).compareTo((String) arg1);
+          }
+
+          public boolean equals(Object obj)
+          {
+            return this == obj;
+          }
+        });
+    }
+    else
+    {
+      return new Iterator()
+      {
+
+        public void remove()
+        {}
+
+        public Object next()
+        {
+          return null;
+        }
+
+        public boolean hasNext()
+        {
+          return false;
+        }
+      };
+    }
+  }
+
+  /**
+   * This method returns an Iterator to a sorted list of methods supported by the
+   * specified interface-type.
+   */
+  private Iterator getSortedMethodsIterator(Type type)
+  {
+    Iterator methodsIterator =
+      getSortedArrayIterator(type.getZClass().getMethods(), new Comparator()
       {
         public int compare(Object arg0, Object arg1)
         {
-          return ((String) arg0).compareTo((String) arg1);
+          return ((Method) arg0).getName().compareTo(((Method) arg1).getName());
         }
 
         public boolean equals(Object obj)
@@ -468,73 +502,29 @@ public class UnoService
           return this == obj;
         }
       });
-    }
-    else
-    {
-      return new Iterator()
-      {
-
-        public void remove()
-        {
-        }
-
-        public Object next()
-        {
-          return null;
-        }
-
-        public boolean hasNext()
-        {
-          return false;
-        }
-      };
-    }
-  }
-
-  /**
-   * This method returns an Iterator to a sorted list of methods supported by
-   * the specified interface-type.
-   */
-  private Iterator getSortedMethodsIterator(Type type)
-  {
-    Iterator methodsIterator = getSortedArrayIterator(type.getZClass()
-        .getMethods(), new Comparator()
-    {
-      public int compare(Object arg0, Object arg1)
-      {
-        return ((Method) arg0).getName().compareTo(((Method) arg1).getName());
-      }
-
-      public boolean equals(Object obj)
-      {
-        return this == obj;
-      }
-    });
     return methodsIterator;
   }
 
   /**
-   * This method returns an Iterator to a sorted List of implemented
-   * interface-types.
+   * This method returns an Iterator to a sorted List of implemented interface-types.
    */
   private Iterator getSortedTypesIterator()
   {
     if (this.xTypeProvider() != null)
     {
       return getSortedArrayIterator(this.xTypeProvider().getTypes(),
-          new Comparator()
+        new Comparator()
+        {
+          public int compare(Object arg0, Object arg1)
           {
-            public int compare(Object arg0, Object arg1)
-            {
-              return ((Type) arg0).getTypeName().compareTo(
-                  ((Type) arg1).getTypeName());
-            }
+            return ((Type) arg0).getTypeName().compareTo(((Type) arg1).getTypeName());
+          }
 
-            public boolean equals(Object obj)
-            {
-              return this == obj;
-            }
-          });
+          public boolean equals(Object obj)
+          {
+            return this == obj;
+          }
+        });
     }
     else
     {
@@ -542,8 +532,7 @@ public class UnoService
       {
 
         public void remove()
-        {
-        }
+        {}
 
         public Object next()
         {
@@ -559,8 +548,8 @@ public class UnoService
   }
 
   /**
-   * This generic method sorts an array comparing its elements using a
-   * comperator. The method is needes by the methods getSortedServiceIterator(),
+   * This generic method sorts an array comparing its elements using a comperator.
+   * The method is needes by the methods getSortedServiceIterator(),
    * getSortedMethodsIterator(Type type) and getSortedTypesIterator(),
    */
   private Iterator getSortedArrayIterator(Object[] array, Comparator c)
@@ -573,13 +562,13 @@ public class UnoService
     return set.iterator();
   }
 
-  /*****************************************************************************
+  /**********************************************************************************
    * convenience-methods
-   ****************************************************************************/
+   *********************************************************************************/
 
   /**
-   * This method returns the property of the uno-service and wrappes the result
-   * in a new UnoService-object.
+   * This method returns the property of the uno-service and wrappes the result in a
+   * new UnoService-object.
    * 
    * @param p
    *          the name of the required property
@@ -659,8 +648,8 @@ public class UnoService
   }
 
   /**
-   * This method creates and returns a new UnoService using the
-   * xMultiServiceFactory of the current unoObject.
+   * This method creates and returns a new UnoService using the xMultiServiceFactory
+   * of the current unoObject.
    * 
    * @param name
    *          the name of the required service
@@ -698,8 +687,8 @@ public class UnoService
   {
     if (this.xMultiServiceFactory() != null)
     {
-      return new UnoService(this.xMultiServiceFactory()
-          .createInstanceWithArguments(name, args));
+      return new UnoService(this.xMultiServiceFactory().createInstanceWithArguments(
+        name, args));
     }
     else
     {
@@ -720,15 +709,15 @@ public class UnoService
   public static UnoService createWithContext(String name, XComponentContext ctx)
       throws Exception
   {
-    return new UnoService(ctx.getServiceManager().createInstanceWithContext(
-        name, ctx));
+    return new UnoService(ctx.getServiceManager().createInstanceWithContext(name,
+      ctx));
   }
 
-  /*****************************************************************************
+  /**********************************************************************************
    * Interface-Access
    * 
    * Extend this section if you need to access an interface not in this list.
-   ****************************************************************************/
+   *********************************************************************************/
 
   public XTextDocument xTextDocument()
   {
