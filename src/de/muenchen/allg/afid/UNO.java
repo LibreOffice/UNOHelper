@@ -152,6 +152,7 @@
 *                  | +XAutoTextEntry()
 * 25.01.2008 | BNK | XTextContentAppend und XTextPortionAppend wieder entfernt
 *                  | weil von alten Versionen nicht unterstützt.
+* 08.07.2008 | LUT | +loadComponentFromURL mit Parameter hidden hinzugefügt.
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -414,12 +415,37 @@ public class UNO {
         boolean asTemplate, boolean allowMacros)
     throws com.sun.star.io.IOException, com.sun.star.lang.IllegalArgumentException
     {
+      return loadComponentFromURL(URL, asTemplate, allowMacros, false);
+    }
+
+    /**
+	 * Läd ein Dokument abhängig von hidden sichtbar oder unsichtbar und setzt
+	 * im Erfolgsfall {@link #compo} auf das geöffnete Dokument.
+	 * 
+	 * @param URL
+	 *            die URL des zu ladenden Dokuments, z.B.
+	 *            "file:///C:/temp/footest.odt" oder "private:factory/swriter"
+	 *            (für ein leeres).
+	 * @param asTemplate
+	 *            falls true wird das Dokument als Vorlage behandelt und ein
+	 *            neues unbenanntes Dokument erzeugt.
+	 * @param allowMacros
+	 *            falls true wird die Ausführung von Makros freigeschaltet.
+	 * @return das geöffnete Dokument
+	 * @throws com.sun.star.io.IOException
+	 * @throws com.sun.star.lang.IllegalArgumentException
+	 * @author Christoph Lutz (D-III-ITD 5.1)
+	 */
+    public static XComponent loadComponentFromURL(String URL, 
+        boolean asTemplate, boolean allowMacros, boolean hidden)
+    throws com.sun.star.io.IOException, com.sun.star.lang.IllegalArgumentException
+    {
       short allowMacrosShort;
       if (allowMacros)
         allowMacrosShort = MacroExecMode.ALWAYS_EXECUTE_NO_WARN;
       else
         allowMacrosShort = MacroExecMode.NEVER_EXECUTE;
-      return loadComponentFromURL(URL, asTemplate, allowMacrosShort);
+      return loadComponentFromURL(URL, asTemplate, allowMacrosShort, hidden);
     }
 	
 	/**
@@ -438,14 +464,42 @@ public class UNO {
 	    boolean asTemplate, short allowMacros)
 	throws com.sun.star.io.IOException, com.sun.star.lang.IllegalArgumentException
 	{
+	  return loadComponentFromURL(URL, asTemplate, allowMacros, false);	   
+	}
+
+	/**
+	 * Läd ein Dokument abhängig von hidden sichtbar oder unsichtbar und setzt
+	 * im Erfolgsfall {@link #compo} auf das geöffnete Dokument.
+	 * 
+	 * @param URL
+	 *            die URL des zu ladenden Dokuments, z.B.
+	 *            "file:///C:/temp/footest.odt" oder "private:factory/swriter"
+	 *            (für ein leeres).
+	 * @param asTemplate
+	 *            falls true wird das Dokument als Vorlage behandelt und ein
+	 *            neues unbenanntes Dokument erzeugt.
+	 * @param allowMacros
+	 *            eine der Konstanten aus {@link MacroExecMode}.
+	 * @return das geöffnete Dokument
+	 * @throws com.sun.star.io.IOException
+	 * @throws com.sun.star.lang.IllegalArgumentException
+	 * @author Christoph Lutz (D-III-ITD 5.1)
+	 */
+	public static XComponent loadComponentFromURL(String URL, 
+	    boolean asTemplate, short allowMacros, boolean hidden)
+	throws com.sun.star.io.IOException, com.sun.star.lang.IllegalArgumentException
+	{
 	  XComponentLoader loader = UNO.XComponentLoader(desktop);
-	  PropertyValue[] arguments = new PropertyValue[2];
+	  PropertyValue[] arguments = new PropertyValue[3];
 	  arguments[0] = new PropertyValue();
 	  arguments[0].Name = "MacroExecutionMode";
 	  arguments[0].Value = new Short(allowMacros);
 	  arguments[1] = new PropertyValue ();
 	  arguments[1].Name = "AsTemplate";
 	  arguments[1].Value = new Boolean(asTemplate);
+	  arguments[2] = new PropertyValue ();
+	  arguments[2].Name = "Hidden";
+	  arguments[2].Value = new Boolean(hidden);
 	  XComponent lc = loader.loadComponentFromURL(URL, "_blank", FrameSearchFlag.CREATE, arguments);
 	  if (lc != null) compo = lc;
 	  return lc; 
