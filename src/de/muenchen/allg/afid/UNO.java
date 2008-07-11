@@ -153,6 +153,7 @@
 * 25.01.2008 | BNK | XTextContentAppend und XTextPortionAppend wieder entfernt
 *                  | weil von alten Versionen nicht unterstützt.
 * 08.07.2008 | LUT | +loadComponentFromURL mit Parameter hidden hinzugefügt.
+* 11.07.2008 | BNK | +XFolderPicker()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -271,6 +272,7 @@ import com.sun.star.ui.XModuleUIConfigurationManagerSupplier;
 import com.sun.star.ui.XUIConfigurationManager;
 import com.sun.star.ui.XUIConfigurationPersistence;
 import com.sun.star.ui.dialogs.XFilePicker;
+import com.sun.star.ui.dialogs.XFolderPicker;
 import com.sun.star.uno.RuntimeException;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
@@ -1260,6 +1262,12 @@ public class UNO {
 	public static XFilePicker XFilePicker(Object o)
 	{
 		return (XFilePicker)UnoRuntime.queryInterface(XFilePicker.class,o);
+	}	
+	
+	/** Holt {@link XFolderPicker} Interface von o.*/
+	public static XFolderPicker XFolderPicker(Object o)
+	{
+		return (XFolderPicker)UnoRuntime.queryInterface(XFolderPicker.class,o);
 	}	
 
 	/** Holt {@link XToolkit} Interface von o.*/
