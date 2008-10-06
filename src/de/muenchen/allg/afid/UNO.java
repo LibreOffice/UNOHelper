@@ -433,6 +433,8 @@ public class UNO {
 	 *            neues unbenanntes Dokument erzeugt.
 	 * @param allowMacros
 	 *            falls true wird die Ausführung von Makros freigeschaltet.
+	 * @param hidden 
+	 *            falls true wird das Dokument unsichtbar geöffnet
 	 * @return das geöffnete Dokument
 	 * @throws com.sun.star.io.IOException
 	 * @throws com.sun.star.lang.IllegalArgumentException
