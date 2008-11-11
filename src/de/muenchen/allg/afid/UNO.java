@@ -1569,31 +1569,49 @@ public class UNO {
 			   */
 			  if (node.getType() != BrowseNodeTypes.SCRIPT) return 0;
 			  
-			  /* Anzahl der nicht-matchenden Prefix-Komponenten gibt die Anzahl
-			   * der Ebenen an, die wir aufsteigen können, weil es dort keine
-			   * Treffer geben kann. 
-			   * Wir gehen maximal 2 Ebenen höher, weil der
-			   * Skriptbaum nicht alle Blätter auf der selben Höhe hat. 
-			   * 2 Ebenen höher entspricht dem Übergang zur nächsten Library.
-			   * Wir nehmen also an, dass innerhalb einer Library alle Skripts auf
-			   * der selben Höhe sind, aber bei verschiedenen Libraries die
-			   * Höhen unterschiedlich sein können.
-			   */
-			  int nMPC = nonMatchingPrefixComponents(prefixLC, nameToFindLC);
-			  if (nMPC > 2) nMPC = 2;
-			  if (nMPC > 0) return nMPC;
-		
-			  String nodeLocation = getLocation(node);
+			  /* Falls die location des aktuellen Knotens nicht in der erlaubten
+         * Liste ist, können wir gleich 2 Ebenen aufsteigen (d.h zur nächsten
+         * Library), weil wir davon ausgehen können, dass innerhalb
+         * einer Library alle Skripte die selbe Location haben.
+         */
+        String nodeLocation = getLocation(node);
+        if (location != null)
+        {
+          if (!stringInArray(nodeLocation, location)) return 2;
+        }
 			  
-			  if (location != null)
+			  /* 
+			   * Wenn das Präfix schon nicht zu nameToFind passt, dann hat es
+			   * keinen Sinn, alle Skripte des Moduls durchzuiterieren, weil keines davon passen
+			   * wird. Wir bestimmen, wieviele Rekursionsstufen wir verlassen können.
+			   * 0 => Präfix passt zur nameToFind
+			   * 1 => Wir versuchen das nächste Modul in der selben Library, d.h. letzte Präfix-Komponente
+			   *      passt nicht
+			   * 2 => Wir versuchen die nächste Library, d.h. die letzten 2 Präfix-Komponenten passen
+			   *      nicht. 
+			   * Mehr Ebenen zu verlassen erlauben wir nicht, da es möglich sein kann, dass in
+			   * verschiedenen Libraries sich die Skripte auf verschiedener Ebene befinden.
+			   * Im Prinzip ist schon die Annahme, dass sich innerhalb einer Library alle Skripte
+			   * auf der selben Ebene befinden etwas gewagt. Für Basic ist sie sicher richtig, aber
+			   * OOo erlaubt noch viele andere Skriptsprachen. Technisch gesehen müsste diese
+			   * Optimierung die Programmiersprache miteinbeziehen. Im Falle von Basic könnte man
+			   * vermutlich noch aggressiver sein. Im Falle anderer Sprachen müsste man wohl noch
+			   * konservativer sein.
+			   */
+			  int nMPC = 0;
+			  if (!prefixLC.isEmpty() && nameToFindLC.length >= 2 && 
+			      !prefixLC.get(prefixLC.size()-1).equals(nameToFindLC[nameToFindLC.length-2]))
 			  {
-			    /* Falls die location des aktuellen Knotens nicht in der erlaubten
-			     * Liste ist, können wir gleich 2 Ebenen aufsteigen (d.h zurück auf
-			     * Ebene über Library), weil wir davon ausgehen können, dass innerhalb
-			     * einer Library alle Skripte die selbe Location haben.
-			     */
-			    if (!stringInArray(nodeLocation, location)) return 2;
+			    nMPC = 1;
 			  }
+			  if (prefixLC.size() >= 2 && nameToFindLC.length >= 3 && 
+			      !prefixLC.get(prefixLC.size()-2).equals(nameToFindLC[nameToFindLC.length-3]))
+			  {
+			    // ACHTUNG! Hier wird nMPC immer auf 2 gesetzt, nicht inkrementiert.
+			    // Wenn der Libraryname nicht passt ist es egal, ob der Modulname übereinstimmt!
+			    nMPC = 2;
+			  }
+			  if (nMPC > 0) return nMPC;
 			  
 			  //If the name doesn't even match case-insensitive, try the next sibling. 
 			  if (!nameLC.equals(nameToFindLC[nameToFindLC.length - 1])) return 0;
@@ -1695,32 +1713,6 @@ public class UNO {
 	    int idx2 = url.indexOf('&',idx);
 	    if (idx2 < 0) idx2 = url.length();
       return url.substring(idx, idx2);
-    }
-
-    /**
-     * Vergleicht von hinten beginnend die Strings in prefix mit den
-     * Strings in nameToFind ohne sein letztes Element. Zurückgeliefert wird
-     * die Länge der längsten Folge von dabei betrachteten Strings, die mit
-     * einem gescheiterten Vergleich beginnt.
-     * @author bnk
-     */
-    private static int nonMatchingPrefixComponents(List prefix, String[] nameToFind)
-    { //T
-      int i = nameToFind.length - 2; //beginne von hinten beim vorletzten Element
-      int j = prefix.size()-1; //beginne von hinten beim letzten Element
-      boolean matching = true;
-      int count = 0;
-      while (i >= 0 && j >= 0)
-      {
-        if (!matching || !nameToFind[i].equals(prefix.get(j)))
-        {
-          matching = false;
-          ++count;
-        }
-        --i;
-        --j;
-      }
-      return count;
     }
 
     /** 
