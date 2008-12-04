@@ -154,6 +154,7 @@
 *                  | weil von alten Versionen nicht unterstützt.
 * 08.07.2008 | LUT | +loadComponentFromURL mit Parameter hidden hinzugefügt.
 * 11.07.2008 | BNK | +XFolderPicker()
+* 04.12.2008 | BNK | +XController()
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -200,6 +201,7 @@ import com.sun.star.drawing.XDrawPageSupplier;
 import com.sun.star.drawing.XShape;
 import com.sun.star.frame.FrameSearchFlag;
 import com.sun.star.frame.XComponentLoader;
+import com.sun.star.frame.XController;
 import com.sun.star.frame.XDesktop;
 import com.sun.star.frame.XDispatchHelper;
 import com.sun.star.frame.XDispatchProvider;
@@ -1073,6 +1075,12 @@ public class UNO {
 	{
 		return (XModel)UnoRuntime.queryInterface(XModel.class,o);
 	}
+	
+	/** Holt {@link XController} Interface von o.*/
+  public static XController XController(Object o)
+  {
+    return (XController)UnoRuntime.queryInterface(XController.class,o);
+  }
     
     /** Holt {@link XTextField} Interface von o.*/
     public static XTextField XTextField(Object o)
