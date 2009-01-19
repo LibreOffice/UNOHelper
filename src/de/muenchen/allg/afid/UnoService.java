@@ -97,6 +97,7 @@ import java.awt.event.ActionListener;
 import java.lang.reflect.Method;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.TreeSet;
 
 import com.sun.star.awt.XComboBox;
@@ -468,11 +469,13 @@ public class UnoService
       {
 
         public void remove()
-        {}
-
-        public Object next()
         {
-          return null;
+          throw new IllegalStateException();
+        }
+
+        public Object next() throws NoSuchElementException
+        {
+          throw new NoSuchElementException(); 
         }
 
         public boolean hasNext()
@@ -532,11 +535,13 @@ public class UnoService
       {
 
         public void remove()
-        {}
-
-        public Object next()
         {
-          return null;
+          throw new IllegalStateException();
+        }
+
+        public Object next() throws NoSuchElementException
+        {
+          throw new NoSuchElementException();
         }
 
         public boolean hasNext()
