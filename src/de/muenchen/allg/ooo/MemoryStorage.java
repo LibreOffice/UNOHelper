@@ -258,23 +258,28 @@ public class MemoryStorage {
 		 * @author Christoph Lutz (D-III-ITD-D101)
 		 */
 		public void createManifest() {
-			String manifest = "";
-			manifest += "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-			manifest += "<manifest:manifest xmlns:manifest=\"urn:oasis:names:tc:opendocument:xmlns:manifest:1.0\">\n";
+			StringBuilder manifest = new StringBuilder();
+			manifest.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+			manifest.append("<manifest:manifest xmlns:manifest=\"urn:oasis:names:tc:opendocument:xmlns:manifest:1.0\">\n");
 
 			if (mediaType != null)
-				manifest += "  <manifest:file-entry manifest:media-type=\""
-						+ mediaType + "\" manifest:full-path=\"/\"/>\n";
+			{
+				manifest.append("  <manifest:file-entry manifest:media-type=\"");
+			  manifest.append(mediaType); 
+			  manifest.append("\" manifest:full-path=\"/\"/>\n");
+			}
 
 			for (String name : mapNameToMediaType.keySet()) {
 				String mediaType = mapNameToMediaType.get(name);
-				manifest += "  <manifest:file-entry manifest:media-type=\""
-						+ mediaType + "\" manifest:full-path=\"" + name
-						+ "\"/>\n";
+				manifest.append("  <manifest:file-entry manifest:media-type=\"");
+				manifest.append(mediaType);
+				manifest.append("\" manifest:full-path=\"");
+				manifest.append(name);
+				manifest.append("\"/>\n");
 			}
 
-			manifest += "</manifest:manifest>";
-			mapNameToData.put("META-INF/manifest.xml", manifest.getBytes());
+			manifest.append("</manifest:manifest>");
+			mapNameToData.put("META-INF/manifest.xml", manifest.toString().getBytes());
 		}
 	}
 
