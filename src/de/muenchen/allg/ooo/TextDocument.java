@@ -59,7 +59,6 @@ import com.sun.star.text.XTextContent;
 import com.sun.star.text.XTextDocument;
 import com.sun.star.text.XTextRange;
 import com.sun.star.uno.AnyConverter;
-import java.lang.Exception;
 import com.sun.star.uno.UnoRuntime;
 
 import de.muenchen.allg.afid.UNO;
@@ -308,16 +307,16 @@ public class TextDocument
       XEnumerationAccess access = UNO.XEnumerationAccess(range);
       XEnumeration xenum = access.createEnumeration();
       XPropertySet props = UNO.XPropertySet(xenum.nextElement());
-      props.setPropertyValue("CharHeight", new Float(0.1));
-      props.setPropertyValue("CharHeightAsian", new Float(0.1));
-      props.setPropertyValue("CharHeightComplex", new Float(0.1));
+      props.setPropertyValue("CharHeight", Float.valueOf(0.1f));
+      props.setPropertyValue("CharHeightAsian", Float.valueOf(0.1f));
+      props.setPropertyValue("CharHeightComplex", Float.valueOf(0.1f));
       props.setPropertyValue("CharHidden", Boolean.TRUE);
       LineSpacing ls = new LineSpacing();
       ls.Mode = LineSpacingMode.FIX;
       ls.Height = 2; //Lieber nicht 0 nehmen. Vielleicht möchte jemand irgendwo dadurch dividieren
       props.setPropertyValue("ParaLineSpacing", ls);
-      props.setPropertyValue("ParaTopMargin", new Integer(0));
-      props.setPropertyValue("ParaBottomMargin", new Integer(0));
+      props.setPropertyValue("ParaTopMargin", Integer.valueOf(0));
+      props.setPropertyValue("ParaBottomMargin", Integer.valueOf(0));
       props.setPropertyValue("ParaLineNumberCount", Boolean.FALSE);
     }catch(Exception x)
     {

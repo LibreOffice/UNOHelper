@@ -133,11 +133,11 @@ public class MemoryStorage {
 	}
 
 	/**
-	 * Anwendungsfälle können logger hier nach belieben selbst mit eigenen
-	 * Implementierungen des Interfaces Logger setzen. Der hier gesetzte Logger
-	 * wird sofort verwendet.
+	 * Der Logger, auf den Meldungen ausgegeben werden, wenn er gesetzt ist.
+	 * Derzeit nicht besonders sinnvoll, da private. Es muss eine Accessor-Methode
+	 * eingeführt werden, um ihn zu setzen.
 	 */
-	public static Logger logger = null;
+	private static Logger logger = null;
 
 	/**
 	 * Gibt eine Logger-Meldung mit der Nachricht s auf dem Logger aus, wenn

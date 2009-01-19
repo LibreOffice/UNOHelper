@@ -198,9 +198,9 @@ public class ODFMerger {
 					if (name.endsWith("count")) {
 						Integer oldValue = counters.get(name);
 						if (oldValue == null)
-							oldValue = new Integer(0);
+							oldValue = Integer.valueOf(0);
 						try {
-							Integer newValue = new Integer(value);
+							Integer newValue = Integer.valueOf(value);
 							counters.put(name, oldValue + newValue);
 							if ("meta:page-count".equals(name))
 								pageCount = getPageCountConsiderFillerPages()
@@ -645,7 +645,7 @@ public class ODFMerger {
 						nStr = item.getFirstChild().getNodeValue();
 						int anchorPageNumber = 1;
 						try {
-							anchorPageNumber = new Integer(nStr);
+							anchorPageNumber = Integer.valueOf(nStr);
 						} catch (NumberFormatException e) {
 							e.printStackTrace();
 						}
