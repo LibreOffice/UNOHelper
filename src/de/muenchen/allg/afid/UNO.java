@@ -499,13 +499,13 @@ public class UNO {
 	  PropertyValue[] arguments = new PropertyValue[3];
 	  arguments[0] = new PropertyValue();
 	  arguments[0].Name = "MacroExecutionMode";
-	  arguments[0].Value = new Short(allowMacros);
+	  arguments[0].Value = Short.valueOf(allowMacros);
 	  arguments[1] = new PropertyValue ();
 	  arguments[1].Name = "AsTemplate";
-	  arguments[1].Value = new Boolean(asTemplate);
+	  arguments[1].Value = Boolean.valueOf(asTemplate);
 	  arguments[2] = new PropertyValue ();
 	  arguments[2].Name = "Hidden";
-	  arguments[2].Value = new Boolean(hidden);
+	  arguments[2].Value = Boolean.valueOf(hidden);
 	  XComponent lc = loader.loadComponentFromURL(URL, "_blank", FrameSearchFlag.CREATE, arguments);
 	  if (lc != null) compo = lc;
 	  return lc; 
