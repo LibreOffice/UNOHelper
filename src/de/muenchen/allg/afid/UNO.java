@@ -155,6 +155,7 @@
 * 08.07.2008 | LUT | +loadComponentFromURL mit Parameter hidden hinzugefügt.
 * 11.07.2008 | BNK | +XFolderPicker()
 * 04.12.2008 | BNK | +XController()
+* 09.06.2009 | LUT | +dispatchAndWait(...)
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -199,6 +200,7 @@ import com.sun.star.document.XStorageBasedDocument;
 import com.sun.star.drawing.XControlShape;
 import com.sun.star.drawing.XDrawPageSupplier;
 import com.sun.star.drawing.XShape;
+import com.sun.star.frame.DispatchResultEvent;
 import com.sun.star.frame.FrameSearchFlag;
 import com.sun.star.frame.XComponentLoader;
 import com.sun.star.frame.XController;
@@ -206,6 +208,7 @@ import com.sun.star.frame.XDesktop;
 import com.sun.star.frame.XDispatchHelper;
 import com.sun.star.frame.XDispatchProvider;
 import com.sun.star.frame.XDispatchProviderInterception;
+import com.sun.star.frame.XDispatchResultListener;
 import com.sun.star.frame.XFrame;
 import com.sun.star.frame.XFramesSupplier;
 import com.sun.star.frame.XLayoutManager;
@@ -213,6 +216,7 @@ import com.sun.star.frame.XModel;
 import com.sun.star.frame.XNotifyingDispatch;
 import com.sun.star.frame.XStorable;
 import com.sun.star.frame.XToolbarController;
+import com.sun.star.lang.EventObject;
 import com.sun.star.lang.XComponent;
 import com.sun.star.lang.XMultiComponentFactory;
 import com.sun.star.lang.XMultiServiceFactory;
@@ -280,6 +284,7 @@ import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 import com.sun.star.uno.XInterface;
 import com.sun.star.uno.XNamingService;
+import com.sun.star.util.URL;
 import com.sun.star.util.XChangesBatch;
 import com.sun.star.util.XCloseBroadcaster;
 import com.sun.star.util.XCloseable;
@@ -520,6 +525,70 @@ public class UNO {
       XDispatchProvider prov = UNO.XDispatchProvider(doc.getCurrentController().getFrame());
       dispatchHelper.executeDispatch(prov, url, "", FrameSearchFlag.SELF, new PropertyValue[]{});
     }
+
+    
+    /**
+     * Dispatcht url auf dem aktuellen Controll von doc mittels
+     * {@link XNotifyingDispatch}, wartet auf die Benachrichtigung, dass der Dispatch
+     * vollständig abgearbeitet ist, und liefert das {@link DispatchResultEvent} dieser
+     * Benachrichtigung zurück oder null, wenn zu url kein XNotifyingDispatch definiert
+     * ist oder der Dispatch mit disposing abgebrochen wurde.
+     * 
+     * @author Christoph Lutz (D-III-ITD-D101)
+     */
+    public static DispatchResultEvent dispatchAndWait(XTextDocument doc, String url)
+    {
+      if (doc == null) return null;
+
+      URL unoUrl = getParsedUNOUrl(url);
+
+      XDispatchProvider prov =
+        UNO.XDispatchProvider(doc.getCurrentController().getFrame());
+      if (prov == null) return null;
+
+      XNotifyingDispatch disp =
+        UNO.XNotifyingDispatch(prov.queryDispatch(unoUrl, "", FrameSearchFlag.SELF));
+      if (disp == null) return null;
+
+      final boolean[] lock = new boolean[] { true };
+      final DispatchResultEvent[] resultEvent = new DispatchResultEvent[] { null };
+
+      disp.dispatchWithNotification(unoUrl, new PropertyValue[] {},
+        new XDispatchResultListener()
+        {
+          public void disposing(EventObject arg0)
+          {
+            synchronized (lock)
+            {
+              lock[0] = false;
+              lock.notifyAll();
+            }
+          }
+
+          public void dispatchFinished(DispatchResultEvent arg0)
+          {
+            synchronized (lock)
+            {
+              resultEvent[0] = arg0;
+              lock[0] = false;
+              lock.notifyAll();
+            }
+          }
+        });
+
+      synchronized (lock)
+      {
+        while (lock[0])
+          try
+          {
+            lock.wait();
+          }
+          catch (InterruptedException e)
+          {}
+      }
+      return resultEvent[0];
+    }
+    
     
 	/**
 	 * Ruft ein Makro auf unter expliziter Angabe der Komponente, die es zur Verfügung
