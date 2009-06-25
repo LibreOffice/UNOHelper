@@ -156,6 +156,8 @@
 * 11.07.2008 | BNK | +XFolderPicker()
 * 04.12.2008 | BNK | +XController()
 * 09.06.2009 | LUT | +dispatchAndWait(...)
+* 25.06.2009 | LUT | +hideTextRange(...) zur korrekten Behandlung von Ein- 
+*                  |  Ausblendungen
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -1951,4 +1953,46 @@ public class UNO {
 				.XAcceleratorConfiguration(moduleUICfgMgr.getShortCutManager());
 		return shortcutManager;
 	}
+
+	
+  /**
+   * Wenn hide=true ist, so wird die Eigenschaft CharHidden für range auf true
+   * gesetzt und andernfalls der Standardwert (=false) für die Property CharHidden
+   * wieder hergestellt. Dadurch lässt sich der Text in range unsichtbar schalten
+   * bzw. wieder sichtbar schalten. Die Repräsentation von unsichtbar geschaltenen
+   * Stellen erfolgt in der Art, dass OOo für den unsichtbaren Textbereich ein neuen
+   * automatisch generierten Character-Style anlegt, der die Eigenschaften der bisher
+   * gesetzten Styles erbt und lediglich die Eigenschaft "Sichtbarkeit" auf
+   * unsichtbar setzt. Beim Aufheben einer unsichtbaren Stelle sorgt das Zurücksetzen
+   * auf den Standardwert dafür, dass der vorher angelegte automatische-Style wieder
+   * zurück genommen wird - so ist sichergestellt, dass das Aus- und Wiedereinblenden
+   * von Textbereichen keine Änderungen der bisher gesetzten Styles hervorruft.
+   * 
+   * @param range
+   *          Der Textbereich, der aus- bzw. eingeblendet werden soll.
+   * @param hide
+   *          hide=true blendet aus, hide=false blendet ein.
+   * 
+   * @author Christoph Lutz (D-III-ITD-D101)
+   */
+  public static void hideTextRange(XTextRange range, boolean hide)
+  {
+    if (hide == true)
+    {
+      UNO.setProperty(range, "CharHidden", Boolean.TRUE);
+      // Workaround für update Bug
+      // http://qa.openoffice.org/issues/show_bug.cgi?id=78896
+      UNO.setProperty(range, "CharHidden", Boolean.FALSE);
+      UNO.setProperty(range, "CharHidden", Boolean.TRUE);
+    }
+    else
+    {
+      // Workaround für (den anderen) update Bug
+      // http://qa.openoffice.org/issues/show_bug.cgi?id=103101
+      // Nur das Rücksetzen auf den Standardwert reicht nicht aus. Daher erfolgt vor
+      // dem Rücksetzen auf den Standardwert eine explizite Einblendung.
+      UNO.setProperty(range, "CharHidden", Boolean.FALSE);
+      UNO.setPropertyToDefault(range, "CharHidden");
+    }
+  }
 }
