@@ -79,46 +79,39 @@ public class UnoProps {
 	}
 
 	/**
-	 * Der Konstruktor kapselt ein bestehendes PropertyValue-Array props.
-	 * 
-	 * @param props
-	 */
-	public UnoProps(PropertyValue[] props) {
-		if (props != null)
-			this.props = props;
-		else
-			this.props = new PropertyValue[] {};
-	}
-
-	/**
 	 * Der Konstruktor kapselt ein bestehendes PropertyValue-Array, das in Form
 	 * eines Objec-Arrays übergeben wird. Alle Elemente, die nicht vom Typ
 	 * PropertyValue sind, werden ohne Fehlermeldung ignoriert.
 	 * 
 	 * @param props
 	 */
-	public UnoProps(Object[] props) {
-		if (props == null) {
-			this.props = new PropertyValue[] {};
-			return;
-		}
+  public UnoProps(Object[] props)
+  {
+    if (props == null)
+    {
+      this.props = new PropertyValue[] {};
+      return;
+    }
 
-		// Zähle Anzahl der PropertyValue-Einträge.
-		int count = 0;
-		for (int i = 0; i < props.length; i++) {
-			if (props[i] instanceof PropertyValue)
-				count++;
-		}
+    // Zähle Anzahl der PropertyValue-Einträge.
+    int count = 0;
+    for (int i = 0; i < props.length; i++)
+    {
+      if (props[i] instanceof PropertyValue) count++;
+    }
 
-		// Erzeuge neues PropertyValue[]:
-		this.props = new PropertyValue[count];
-		int x = 0;
-		for (int i = 0; i < props.length; i++) {
-			if (props[i] instanceof PropertyValue) {
-				this.props[x++] = (PropertyValue) props[i];
-			}
-		}
-	}
+    // Erzeuge neues PropertyValue[]:
+    this.props = new PropertyValue[count];
+    int x = 0;
+    for (int i = 0; i < props.length; i++)
+    {
+      if (props[i] instanceof PropertyValue)
+      {
+        PropertyValue pv = (PropertyValue) props[i];
+        this.props[x++] = new PropertyValue(pv.Name, pv.Handle, pv.Value, pv.State);
+      }
+    }
+  }
 
 	/**
 	 * Liefert das zugehörige PropertyValue[] zurück.
