@@ -1,9 +1,9 @@
 /*
 * Dateiname: TextDocument.java
 * Projekt  : UNOHelper
-* Funktion : Hilfsfunktionen für die Arbeit mit OOo TextDokumenten
+* Funktion : Hilfsfunktionen fÃ¼r die Arbeit mit OOo TextDokumenten
 * 
- * Copyright (c) 2008 Landeshauptstadt München
+ * Copyright (c) 2008 Landeshauptstadt MÃ¼nchen
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the European Union Public Licence (EUPL),
@@ -18,8 +18,8 @@
  * along with this program. If not, see
  * http://ec.europa.eu/idabc/en/document/7330
 *
-* Änderungshistorie:
-* Datum      | Wer | Änderungsgrund
+* Ã„nderungshistorie:
+* Datum      | Wer | Ã„nderungsgrund
 * -------------------------------------------------------------------
 * 19.12.2007 | BNK | Erstellung
 * 15.01.2008 | BNK | +copyDirectValueCharAttributes
@@ -64,14 +64,14 @@ import com.sun.star.uno.UnoRuntime;
 import de.muenchen.allg.afid.UNO;
 
 /**
- * Hilfsfunktionen für die Arbeit mit OOo TextDokumenten
+ * Hilfsfunktionen fÃ¼r die Arbeit mit OOo TextDokumenten
  *
  * @author Matthias Benkmann (D-III-ITD 5.1)
  */
 public class TextDocument
 {
   /**
-   * Diese Properties werden in der hier gelisteten Reihenfolge über getProperty/setProperty
+   * Diese Properties werden in der hier gelisteten Reihenfolge Ã¼ber getProperty/setProperty
    * Paare kopiert.
    */
   private static final String[] PAGE_STYLE_PROP_NAMES = { 
@@ -106,7 +106,7 @@ public class TextDocument
       "HeaderBorderDistance" }; /* Fehlen: TextColumns, UserDefinedAttributes 
    * HeaderText, HeaderTextLeft, HeaderTextRight,  
    * FooterText, FooterTextLeft, FooterTextRight,
-   * FollowStyle (weil es zu Absturz führt (siehe CrashCopyingPagestyle.java)
+   * FollowStyle (weil es zu Absturz fÃ¼hrt (siehe CrashCopyingPagestyle.java)
    * */
   
   
@@ -130,7 +130,7 @@ public class TextDocument
     };/* Fehlen: TextUserDefinedAttributes */
   
   /**
-   * Diese Properties werden in der hier gelisteten Reihenfolge über 
+   * Diese Properties werden in der hier gelisteten Reihenfolge Ã¼ber 
    * {@link #copyXText2XTextRange(XText, XTextRange)} kopiert.
    */
   private static final String[] HEADER_FOOTER_PROP_NAMES = { "HeaderText", "HeaderTextLeft",
@@ -170,7 +170,7 @@ public class TextDocument
         newStyle.setPropertyValue(PAGE_STYLE_PROP_NAMES[i], val);
       }catch(Exception x)
       {
-        if (val != null) //Nur dann Exception werfen, wenn überhaupt ein Property zu kopieren da ist
+        if (val != null) //Nur dann Exception werfen, wenn Ã¼berhaupt ein Property zu kopieren da ist
         {
           throw new Exception("Fehler beim Kopieren von Property \""+PAGE_STYLE_PROP_NAMES[i]+"\"", x);
         }
@@ -253,11 +253,11 @@ public class TextDocument
   }
   
   /**
-   * Löscht den ganzen ersten Absatz an der Cursorposition textCursor.
+   * LÃ¶scht den ganzen ersten Absatz an der Cursorposition textCursor.
    */
   public static void deleteParagraph(XTextRange range)
   {
-    // Beim Löschen des Absatzes erzeugt OOo ein ungewolltes
+    // Beim LÃ¶schen des Absatzes erzeugt OOo ein ungewolltes
     // "Zombie"-Bookmark.
     // Issue Siehe http://qa.openoffice.org/issues/show_bug.cgi?id=65247
     
@@ -274,30 +274,30 @@ public class TextDocument
       }
       catch (Exception e)
       {
-        //sollte eigentlich nicht passieren können
+        //sollte eigentlich nicht passieren kÃ¶nnen
       }
     }
     if (paragraph == null) return;
     
-    // Lösche den Paragraph
+    // LÃ¶sche den Paragraph
     try
     {
       // Ist der Paragraph der einzige Paragraph des Textes, dann kann er mit
-      // removeTextContent nicht gelöscht werden. In diesme Fall wird hier
+      // removeTextContent nicht gelÃ¶scht werden. In diesme Fall wird hier
       // wenigstens der Inhalt entfernt:
       paragraph.getAnchor().setString("");
       
-      // Paragraph löschen
+      // Paragraph lÃ¶schen
       range.getText().removeTextContent(paragraph);
     }
     catch (NoSuchElementException e)
     {
-      //sollte eigentlich nicht passieren können
+      //sollte eigentlich nicht passieren kÃ¶nnen
     }
   }
 
   /**
-   * Lässt den ersten Absatz in der TextRange range verschwinden, ohne ihn zu löschen. 
+   * LÃ¤sst den ersten Absatz in der TextRange range verschwinden, ohne ihn zu lÃ¶schen. 
    * @author Matthias Benkmann (D-III-ITD 5.1)
    * TESTED
    */
@@ -313,7 +313,7 @@ public class TextDocument
       props.setPropertyValue("CharHidden", Boolean.TRUE);
       LineSpacing ls = new LineSpacing();
       ls.Mode = LineSpacingMode.FIX;
-      ls.Height = 2; //Lieber nicht 0 nehmen. Vielleicht möchte jemand irgendwo dadurch dividieren
+      ls.Height = 2; //Lieber nicht 0 nehmen. Vielleicht mÃ¶chte jemand irgendwo dadurch dividieren
       props.setPropertyValue("ParaLineSpacing", ls);
       props.setPropertyValue("ParaTopMargin", Integer.valueOf(0));
       props.setPropertyValue("ParaBottomMargin", Integer.valueOf(0));
@@ -347,13 +347,13 @@ public class TextDocument
       }
 
       /*
-       * Die eigentlich unnötig komplexe Aufteilung in 2
-       * try-catch-Blöcke habe ich nur gewählt, um isSimpleType nicht in einem
-       * try-catch-Block zu haben. Ich habe nämlich nicht alle Teilaspekte von
+       * Die eigentlich unnÃ¶tig komplexe Aufteilung in 2
+       * try-catch-BlÃ¶cke habe ich nur gewÃ¤hlt, um isSimpleType nicht in einem
+       * try-catch-Block zu haben. Ich habe nÃ¤mlich nicht alle Teilaspekte von
        * isSimpleType() getestet (insbes. nicht die Behandlung von Sequenzen).
        * Ich gehe davon aus, dass alles funktioniert, aber falls doch ein
        * Fehler (sprich Exception) auftritt, dann will ich nicht, dass diese
-       * einfach von einem try-catch-Block ohne Logging abgewürgt wird.
+       * einfach von einem try-catch-Block ohne Logging abgewÃ¼rgt wird.
        */
       if (isSimpleType(prop))
       {
@@ -369,7 +369,7 @@ public class TextDocument
 
   /**
    * Liefert true gdw o nicht Exception, Struct oder Interface ist oder eine Sequenz, die
-   * sowas enthält.
+   * sowas enthÃ¤lt.
    * @author Matthias Benkmann (D-III-ITD 5.1)
    */
   private static boolean isSimpleType(Object o)
@@ -383,7 +383,7 @@ public class TextDocument
         return isSimpleType(Array.get(arryConv,0));
       }catch(Exception x)
       {
-        throw new RuntimeException("Dies dürfte nicht passieren.",x);
+        throw new RuntimeException("Dies dÃ¼rfte nicht passieren.",x);
       }
     }
     else if (AnyConverter.isEnum(o))

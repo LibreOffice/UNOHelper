@@ -3,7 +3,7 @@
  * Projekt  : UNOHelper
  * Funktion : Merged ODF-Dokumente in ein Ergebnisdokument zusammen.
  * 
- * Copyright (c) 2008 Landeshauptstadt München
+ * Copyright (c) 2008 Landeshauptstadt MÃ¼nchen
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the European Union Public Licence (EUPL),
@@ -18,8 +18,8 @@
  * along with this program. If not, see
  * http://ec.europa.eu/idabc/en/document/7330
  *
- * Änderungshistorie:
- * Datum      | Wer | Änderungsgrund
+ * Ã„nderungshistorie:
+ * Datum      | Wer | Ã„nderungsgrund
  * -------------------------------------------------------------------
  * 03.12.2007 | LUT | Erstellung
  * -------------------------------------------------------------------
@@ -66,9 +66,9 @@ import org.w3c.dom.NodeList;
  * mergenden Dokumente gleichartig sind, bzw. aus dem selben Ursprungsdokument
  * erzeugt wurden. Mit dieser Voraussetzung ist es nicht notwendig, bestimmte
  * Ressourcen (z.B. Bilder und manche Styles) aufzudoppeln - sie werden einfach
- * mehrfach verwendet. Der Merger ist also nicht für beliebige unterschiedliche
- * Dokumente geeignet, sollte aber z.B. für die Erzeugung von Gesamtdokumenten in
- * Rahmen eines WollMux-Komfortdrucks alle notwendigen Elemente übernehmen und ggf.
+ * mehrfach verwendet. Der Merger ist also nicht fÃ¼r beliebige unterschiedliche
+ * Dokumente geeignet, sollte aber z.B. fÃ¼r die Erzeugung von Gesamtdokumenten in
+ * Rahmen eines WollMux-Komfortdrucks alle notwendigen Elemente Ã¼bernehmen und ggf.
  * mit Fixup-Methoden anpassen.
  * 
  * @author Christoph Lutz (D-III-ITD-D101)
@@ -77,30 +77,30 @@ public class ODFMerger
 {
 
   /**
-   * Enthält den Merger mit der entsprechenden Merge-Logik für meta.xml
+   * EnthÃ¤lt den Merger mit der entsprechenden Merge-Logik fÃ¼r meta.xml
    */
   MetaMerger mm;
 
   /**
-   * Enthält den Merger mit der entsprechenden Merge-Logik für styles.xml
+   * EnthÃ¤lt den Merger mit der entsprechenden Merge-Logik fÃ¼r styles.xml
    */
   StylesMerger sm;
 
   /**
-   * Enthält den Merger mit der entsprechenden Merge-Logik für content.xml
+   * EnthÃ¤lt den Merger mit der entsprechenden Merge-Logik fÃ¼r content.xml
    */
   ContentMerger cm;
 
   /**
-   * Das zuerst hinzugefügte Dokument hat eine Sonderrolle, da es als Basis für das
+   * Das zuerst hinzugefÃ¼gte Dokument hat eine Sonderrolle, da es als Basis fÃ¼r das
    * Erbebnisdokument verwendet wird. Angepasst werden lediglich styles.xml,
    * content.xml und meta.xml. Alle anderen Ressourcen werden aus dem ersten
-   * hinzugefügten Storage übernommen.
+   * hinzugefÃ¼gten Storage Ã¼bernommen.
    */
   Storage firstStorage;
 
   /**
-   * Definiert ein Storage für ein ODF-Dokument.
+   * Definiert ein Storage fÃ¼r ein ODF-Dokument.
    * 
    * @author Christoph Lutz (D-III-ITD-D101)
    */
@@ -112,8 +112,8 @@ public class ODFMerger
   }
 
   /**
-   * Erzeugt einen neuen ODFMerger, in den später per add Dokumente in Form von
-   * Storages aufgenommen werden können.
+   * Erzeugt einen neuen ODFMerger, in den spÃ¤ter per add Dokumente in Form von
+   * Storages aufgenommen werden kÃ¶nnen.
    */
   public ODFMerger()
   {
@@ -123,7 +123,7 @@ public class ODFMerger
   }
 
   /**
-   * Fügt das Dokument in Form des Storages s zum Ergebnisdokument hinzu.
+   * FÃ¼gt das Dokument in Form des Storages s zum Ergebnisdokument hinzu.
    * 
    * @author Christoph Lutz (D-III-ITD-D101)
    */
@@ -146,8 +146,8 @@ public class ODFMerger
   }
 
   /**
-   * Liefert ein Storage zurück, das das Ergebnisdokument des bisherigen Merges
-   * repräsentiert.
+   * Liefert ein Storage zurÃ¼ck, das das Ergebnisdokument des bisherigen Merges
+   * reprÃ¤sentiert.
    * 
    * @author Christoph Lutz (D-III-ITD-D101)
    */
@@ -165,7 +165,7 @@ public class ODFMerger
   }
 
   /**
-   * Merged die Daten der meta.xml-Dateien, die in den mit add hinzugefügten Storages
+   * Merged die Daten der meta.xml-Dateien, die in den mit add hinzugefÃ¼gten Storages
    * vorhanden sind.
    * 
    * @author Christoph Lutz (D-III-ITD-D101)
@@ -237,13 +237,13 @@ public class ODFMerger
     public byte[] getResultData()
     {
       // TODO Die in counters und in pageCount gesammelten Werte auch
-      // tatsächlich in das Ergebnisdokument schreiben.
+      // tatsÃ¤chlich in das Ergebnisdokument schreiben.
       return super.getResultData();
     }
 
     /**
      * Liefert die aktuelle Seitenzahl des gemergten Dokuments mit bereits
-     * eingefügten bzw. noch einzufügenden Leerseiten damit das nächste Dokument auf
+     * eingefÃ¼gten bzw. noch einzufÃ¼genden Leerseiten damit das nÃ¤chste Dokument auf
      * einer ungeraden Seite starten kann.
      * 
      * @author Christoph Lutz (D-III-ITD-D101)
@@ -255,7 +255,7 @@ public class ODFMerger
   }
 
   /**
-   * Merged die Daten der styles.xml-Dateien, die in den mit add hinzugefügten
+   * Merged die Daten der styles.xml-Dateien, die in den mit add hinzugefÃ¼gten
    * Storages vorhanden sind.
    * 
    * @author Christoph Lutz (D-III-ITD-D101)
@@ -328,7 +328,7 @@ public class ODFMerger
   }
 
   /**
-   * Merged die Daten der content.xml-Dateien, die in den mit add hinzugefügten
+   * Merged die Daten der content.xml-Dateien, die in den mit add hinzugefÃ¼gten
    * Storages vorhanden sind.
    * 
    * @author Christoph Lutz (D-III-ITD-D101)
@@ -417,7 +417,7 @@ public class ODFMerger
           // - An der Seite verankerte Objekte stehen dabei in einem
           // Block am Anfang
           // - die restlichen Elemente werden jeweils hinten
-          // angehängt.
+          // angehÃ¤ngt.
           srcNode =
             getFirstChild(getFirstChild(doc.getFirstChild(), "office:body"),
               "office:text");
@@ -454,12 +454,12 @@ public class ODFMerger
     }
 
     /**
-     * Diese Methode liefert den Wert des Attributs style:master-page-name zurück,
-     * das im Style styleName oder in Styles, von denen styleName abhängig ist,
+     * Diese Methode liefert den Wert des Attributs style:master-page-name zurÃ¼ck,
+     * das im Style styleName oder in Styles, von denen styleName abhÃ¤ngig ist,
      * definiert ist; Gesucht wird im Abschnitt AutoStyles, dessen Knoten autoStyles
-     * als Übergabeparameter erwartet wird; Ist keine MasterPage für einen dieser
+     * als Ãœbergabeparameter erwartet wird; Ist keine MasterPage fÃ¼r einen dieser
      * Styles definiert oder ist der gesuchte Style selbst nicht definiert, so wird
-     * "Standard" zurück geliefert.
+     * "Standard" zurÃ¼ck geliefert.
      * 
      * @param autoStyles
      * @param styleName
@@ -493,23 +493,23 @@ public class ODFMerger
     /**
      * Erzeugt die Style-Definition eines Styles newParStyleName, der von
      * oldParStyleName erbt und einen Seitennumbruch an diesem Paragraphen
-     * verursacht, dessen Seitenzähler mit 1 initialisiert ist. Das Resultat in
+     * verursacht, dessen SeitenzÃ¤hler mit 1 initialisiert ist. Das Resultat in
      * XML-Syntax: <style:style style:name="$newParStyleName"
      * style:family="paragraph" style:parent-style-name="$oldParStyleName"
      * style:master-page-name="$oldMasterStyleName"><style:paragraph-properties
      * style:page-number="1"/></style:style>
      * 
      * @param doc
-     *          Das Dokument in das die Style-Definition später eingepflegt werden
+     *          Das Dokument in das die Style-Definition spÃ¤ter eingepflegt werden
      *          soll.
      * @param newParStyleName
      *          der Name der zu erzeugenden Style-Definition.
      * @param oldParStyleName
      *          der Name des Styles, von dem geerbt wird.
      * @param oldMasterPageStyleName
-     *          der Style-Name der MasterPage, die als Seitenvorlage für die neue
+     *          der Style-Name der MasterPage, die als Seitenvorlage fÃ¼r die neue
      *          Seite verwendet werden soll. Soll keine spezielle Seite gesetzt
-     *          werden, so sorgt die Übergabe von "Standard" für das gewünschte
+     *          werden, so sorgt die Ãœbergabe von "Standard" fÃ¼r das gewÃ¼nschte
      *          Ergebnis. Der Wert ist verpflichtend, da ohne ihn kein Seitenumbruch
      *          definiert ist.
      * 
@@ -541,12 +541,12 @@ public class ODFMerger
     }
 
     /**
-     * Wenn das übergebene Element node ein Attribut text:style-name definiert, so
+     * Wenn das Ã¼bergebene Element node ein Attribut text:style-name definiert, so
      * wird der Wert dieses Attributs neu mit newParStyleName belegt. Diese Methode
-     * dient üblicherweise dazu, den ersten Absatz eines Dokuments mit einer
+     * dient Ã¼blicherweise dazu, den ersten Absatz eines Dokuments mit einer
      * Absatzformatierung zu belegen, in der ein Seitenumbruch definiert ist. Auf
-     * diese Art wird der gewünschte Seitenumbruch vor jedes zu mergende Dokument
-     * eingefügt.
+     * diese Art wird der gewÃ¼nschte Seitenumbruch vor jedes zu mergende Dokument
+     * eingefÃ¼gt.
      * 
      * @author Christoph Lutz (D-III-ITD-D101)
      */
@@ -567,12 +567,12 @@ public class ODFMerger
     }
 
     /**
-     * Prüft, ob das übergebene Element (üblicherweise ein Text-Frame) an der Seite
+     * PrÃ¼ft, ob das Ã¼bergebene Element (Ã¼blicherweise ein Text-Frame) an der Seite
      * verankert ist. Hintergrund ist der, dass bei der Suche nach dem ersten
-     * Paragraph des Dokuments alle Text-Frames ignoriert werden müssen, die nicht
+     * Paragraph des Dokuments alle Text-Frames ignoriert werden mÃ¼ssen, die nicht
      * Teil des Haupttextteils des Dokuments sind. Der erste Paragraph des
-     * Haupttextteils wird benötigt, um den Seitenumbruch vor dem hinzumergen eines
-     * neuen Dokuments einzufügen.
+     * Haupttextteils wird benÃ¶tigt, um den Seitenumbruch vor dem hinzumergen eines
+     * neuen Dokuments einzufÃ¼gen.
      * 
      * @author Christoph Lutz (D-III-ITD-D101)
      */
@@ -589,11 +589,11 @@ public class ODFMerger
     }
 
     /**
-     * Im XML-Dokument müssen alle an der Seite verankerten Objekte in einem Block
-     * hintereinander aufgeführt sein, damit OOo sie korrekt darstellen kann (ich
-     * habe nicht geprüft, ob diese Anforderung aus der ODF-Spezifikation resultiert,
+     * Im XML-Dokument mÃ¼ssen alle an der Seite verankerten Objekte in einem Block
+     * hintereinander aufgefÃ¼hrt sein, damit OOo sie korrekt darstellen kann (ich
+     * habe nicht geprÃ¼ft, ob diese Anforderung aus der ODF-Spezifikation resultiert,
      * oder ob es sich hier um einen OOo-Bug handelt). Diese Methode liefert den
-     * Knoten des letzten Objekts, das an der Seite verankert ist, zurück oder null,
+     * Knoten des letzten Objekts, das an der Seite verankert ist, zurÃ¼ck oder null,
      * wenn kein an der Seite verankertes Objekt im Dokument gefunden wurde.
      * 
      * @param officeTextNode
@@ -618,8 +618,8 @@ public class ODFMerger
 
     /**
      * Sucht im Dokument node rekursiv nach dem ersten Text-Paragraphen. Bei diesem
-     * Paragraphen kann später der einzufügende Seitenumbruch angewendet werden.
-     * Dabei ist wichtig, dass der Paragraph im Haupttextteil liegt. So müssen z.B.
+     * Paragraphen kann spÃ¤ter der einzufÃ¼gende Seitenumbruch angewendet werden.
+     * Dabei ist wichtig, dass der Paragraph im Haupttextteil liegt. So mÃ¼ssen z.B.
      * Paragraphen in TextFrames, die an der Seite verankert sind, ignoriert werden.
      * Dies wird erreicht, in dem alle an der Seite verankerten Objekte gleich zu
      * Beginn ignoriert werden.
@@ -651,7 +651,7 @@ public class ODFMerger
     /**
      * Diese Fixup-Methode korrigiert rekursiv alle an der Seite verankeren Objekte
      * in dem der neue Seiten-Offset innerhalb des gemergten Dokuments offset zu der
-     * bereits gesetzten Startseite hinzugefügt wird.
+     * bereits gesetzten Startseite hinzugefÃ¼gt wird.
      * 
      * @param node
      *          Den Knoten eines Objekts. Ist dieses Objekt an der Seite verankert,
@@ -700,7 +700,7 @@ public class ODFMerger
   }
 
   /**
-   * Enthält gemeinsame Eigenschaften aller Merger.
+   * EnthÃ¤lt gemeinsame Eigenschaften aller Merger.
    * 
    * @author Christoph Lutz (D-III-ITD-D101)
    */
@@ -708,23 +708,23 @@ public class ODFMerger
   {
 
     /**
-     * Das Ergebnisdokument, das mit dem ersten hinzugefügten Dokument initialisiert
-     * wird und in dem später alle weiteren Dokumente zusammengemergt werden.
+     * Das Ergebnisdokument, das mit dem ersten hinzugefÃ¼gten Dokument initialisiert
+     * wird und in dem spÃ¤ter alle weiteren Dokumente zusammengemergt werden.
      */
     protected Document resultDoc = null;
 
     /**
-     * Enthält die Namen aller XML-Elemente, die im Ergebnisdokument nicht erwünscht
+     * EnthÃ¤lt die Namen aller XML-Elemente, die im Ergebnisdokument nicht erwÃ¼nscht
      * sind und durch ihre Kinder ersetzt werden sollen (falls Kinder vorhanden
-     * sind). Beispiel: Textfelder werden durch ihre Repräsentation ersetzt.
+     * sind). Beispiel: Textfelder werden durch ihre ReprÃ¤sentation ersetzt.
      */
     protected HashSet<String> toReplaceByChildNodeNames = null;
 
     /**
-     * Enthält die Namen aller Knoten, die im Ergebnisdokument nicht erwünscht sind
-     * und vollständig entfernt werden können. Z.B. Notizen oder Bookmarks. Damit
-     * wird das Ergebnisdokument etwas entschlankt und nicht benötigte Elemente
-     * müssen nicht unnötig angepasst (Fixups) werden.
+     * EnthÃ¤lt die Namen aller Knoten, die im Ergebnisdokument nicht erwÃ¼nscht sind
+     * und vollstÃ¤ndig entfernt werden kÃ¶nnen. Z.B. Notizen oder Bookmarks. Damit
+     * wird das Ergebnisdokument etwas entschlankt und nicht benÃ¶tigte Elemente
+     * mÃ¼ssen nicht unnÃ¶tig angepasst (Fixups) werden.
      */
     protected HashSet<String> toDeleteNodeNames = null;
 
@@ -736,8 +736,8 @@ public class ODFMerger
 
     /**
      * Sucht im Knoten parent nach Style-Definitionen und liefert die Namen aller
-     * gefundenen Style-Definitionen als Menge zurück. Als parent wird dabei
-     * üblicherweise ein Block text:auto-styles (aus content.xml) oder
+     * gefundenen Style-Definitionen als Menge zurÃ¼ck. Als parent wird dabei
+     * Ã¼blicherweise ein Block text:auto-styles (aus content.xml) oder
      * text:master-styles (aus styles.xml) erwartet.
      * 
      * @author Christoph Lutz (D-III-ITD-D101)
@@ -761,7 +761,7 @@ public class ODFMerger
     /**
      * Erzeugt den Namen eines neuen, garantiert unbenutzen Paragraph-Styles, der
      * bisher nicht in names vorhanden ist. Der Name von Paragraph-Styles ist
-     * übelicherweise wie "P<zahl>" aufgebaut.
+     * Ã¼belicherweise wie "P<zahl>" aufgebaut.
      * 
      * @param names
      *          Die Menge der bereits bekannten Paragraph-Styles
@@ -780,13 +780,13 @@ public class ODFMerger
 
     /**
      * Diese Methode entfernt rekursiv Knoten aus dem Dokument, wobei toDelete alle
-     * Elemente beschreibt, die komplett (mitsamt Kinder) gelöscht werden sollen und
+     * Elemente beschreibt, die komplett (mitsamt Kinder) gelÃ¶scht werden sollen und
      * toReplace alle Knoten beschreibt, die durch ihre Kinder ersetzt werden sollen.
      * 
      * @param node
      *          Der Knoten, ab dem rekursiv ersetzt werden soll.
      * @param toDelete
-     *          beschreibt die Namen von Elementen, die komplett gelöscht werden
+     *          beschreibt die Namen von Elementen, die komplett gelÃ¶scht werden
      *          sollen.
      * @param toReplace
      *          beschreibt die Namen von Elemente, die durch ihre Kinder ersetzt
@@ -822,13 +822,13 @@ public class ODFMerger
     }
 
     /**
-     * Fixup-Methode für Stylenamen, die rekursiv Namen von Styles in Attributen
+     * Fixup-Methode fÃ¼r Stylenamen, die rekursiv Namen von Styles in Attributen
      * anpasst; Dabei beschreibt stylesChangeMap die Zuordnung von alten Namen auf
      * neue Namen und attributesToAdjust die Liste der Attribute, die angepasst
      * werden sollen, wenn sie in einem Element gesetzt sine.
      * 
      * @param node
-     *          Ausgangsknoten für die rekursive Anpassung.
+     *          Ausgangsknoten fÃ¼r die rekursive Anpassung.
      * @param stylesChangeMap
      *          HashMap mit einer Zuordnung von alten Style-Namen auf die neu zu
      *          setzenden Style-Namen.
@@ -886,7 +886,7 @@ public class ODFMerger
     }
 
     /**
-     * Liefert das erste Kind von parent mit dem Elementnamen element zurück
+     * Liefert das erste Kind von parent mit dem Elementnamen element zurÃ¼ck
      * 
      * @author Christoph Lutz (D-III-ITD-D101)
      */
@@ -903,7 +903,7 @@ public class ODFMerger
     }
 
     /**
-     * Liefert parent.getFirstChild() zurück oder null, wenn parent selbst null ist.
+     * Liefert parent.getFirstChild() zurÃ¼ck oder null, wenn parent selbst null ist.
      * 
      * @author Christoph Lutz (D-III-ITD-D101)
      */
@@ -915,7 +915,7 @@ public class ODFMerger
 
     /**
      * Erzeugt eine simple Baumansicht des Knotens node und aller Unterknoten auf
-     * System.out für Debugzwecke.
+     * System.out fÃ¼r Debugzwecke.
      * 
      * @author Christoph Lutz (D-III-ITD-D101)
      */
@@ -929,7 +929,7 @@ public class ODFMerger
   }
 
   /**
-   * Repräsentiert ein Storage für ein normales gezipptes ODF-Dokument.
+   * ReprÃ¤sentiert ein Storage fÃ¼r ein normales gezipptes ODF-Dokument.
    * 
    * @author Christoph Lutz (D-III-ITD-D101)
    */
@@ -969,8 +969,8 @@ public class ODFMerger
   }
 
   /**
-   * Repräsentiert ein Storage, das Ressourcen von einem anderen Storage übernimmt,
-   * in dem jedoch einzelne Ressourcen verändert bzw. überschrieben werden können.
+   * ReprÃ¤sentiert ein Storage, das Ressourcen von einem anderen Storage Ã¼bernimmt,
+   * in dem jedoch einzelne Ressourcen verÃ¤ndert bzw. Ã¼berschrieben werden kÃ¶nnen.
    * 
    * @author Christoph Lutz (D-III-ITD-D101)
    */
@@ -1009,7 +1009,7 @@ public class ODFMerger
   }
 
   /**
-   * Erweitert ein Storage um die Fähigkeit, die enthaltenen Daten in ein gezipptes
+   * Erweitert ein Storage um die FÃ¤higkeit, die enthaltenen Daten in ein gezipptes
    * odf-File zu schreiben.
    * 
    * @author Christoph Lutz (D-III-ITD-D101)

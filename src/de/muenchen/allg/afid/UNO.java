@@ -4,7 +4,7 @@
 * Projekt  : n/a
 * Funktion : Hilfsklasse zur leichteren Verwendung der UNO API.
 * 
- * Copyright (c) 2008 Landeshauptstadt München
+ * Copyright (c) 2008 Landeshauptstadt MÃ¼nchen
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the European Union Public Licence (EUPL),
@@ -19,16 +19,16 @@
  * along with this program. If not, see
  * http://ec.europa.eu/idabc/en/document/7330
 *
-* Änderungshistorie:
-* Datum      | Wer | Änderungsgrund
+* Ã„nderungshistorie:
+* Datum      | Wer | Ã„nderungsgrund
 * -------------------------------------------------------------------
 * 26.04.2005 | BNK | Erstellung
 * 07.07.2005 | BNK | Viele Verbesserungen
 * 16.08.2005 | BNK | korrekte Dienststellenbezeichnung
 * 17.08.2005 | BNK | +executeMacro()
-* 17.08.2005 | BNK | +Internal-Klasse für interne Methoden
+* 17.08.2005 | BNK | +Internal-Klasse fÃ¼r interne Methoden
 * 17.08.2005 | BNK | +findBrowseNodeTreeLeaf()
-* 19.08.2005 | BNK | init(Object) => public, weil nützlich
+* 19.08.2005 | BNK | init(Object) => public, weil nÃ¼tzlich
 * 19.08.2005 | BNK | +XPrintable()    
 * 22.08.2005 | PIT | +XNamed() 
 * 22.08.2005 | PIT | +XTextContent()  
@@ -47,7 +47,7 @@
 * 31.08.2005 | BNK | +XScriptProvider()
 *                  | +findBrowseNodeTreeLeafAndScriptProvider()
 *                  | executeMacro() bekommt location Argument (diese nicht
-*                  | rückwärtskompatible Änderung war leider notwendig, weil die
+*                  | rÃ¼ckwÃ¤rtskompatible Ã„nderung war leider notwendig, weil die
 *                  | alte Version einfach broken war und nicht innerhalb des
 *                  | dokumentierten Verhaltens gefixt werden konnte.
 *                  | executeGlobalMacro() durchsucht nur noch globale Makros
@@ -61,7 +61,7 @@
 * 06.09.2005 | SIE | +XDesktop()
 * 06.09.2005 | SIE | +XChangesBatch()
 * 06.09.2005 | SIE | +xNameAccess()
-* 06.09.2005 | BNK | TOD0 Optimierung von findBrowseNode.. hinzugefügt
+* 06.09.2005 | BNK | TOD0 Optimierung von findBrowseNode.. hinzugefÃ¼gt
 * 08.09.2005 | LUT | +xFilePicker()
 * 09.09.2005 | LUT | xFilePicker() --> XFilePicker()
 *            |     | xNameAccess() --> XNameAccess()
@@ -69,10 +69,10 @@
 * 13.09.2005 | LUT | +XWindow()
 *                    +XWindowPeer()
 *                    +XToolbarController()
-* 13.09.2005 | BNK | findBrowseNode...() Doku geändert, so dass sie sagt, dass
-*            |     | nur Blätter vom Typ SCRIPT gesucht werden.
+* 13.09.2005 | BNK | findBrowseNode...() Doku geÃ¤ndert, so dass sie sagt, dass
+*            |     | nur BlÃ¤tter vom Typ SCRIPT gesucht werden.
 * 13.09.2005 | BNK | +Internal.findBrowseNodeTreeLeavesAndScriptProviders()
-*            |     | UNO.findBrowseNode... geändert zur Verwdg. der obigen Fkt.
+*            |     | UNO.findBrowseNode... geÃ¤ndert zur Verwdg. der obigen Fkt.
 * 14.09.2005 | BNK | Bugs gefixt
 * 02.01.2005 | BNK | +XEnumerationAccess()
 * 31.01.2006 | BNK | +XViewSettingsSupplier()
@@ -83,7 +83,7 @@
 *                  | +XTopWindow()
 * 18.05.2006 | BNK | +XDocumentInsertable()
 *                  | +XTextField()
-* 09.06.2006 | LUT | getPropertyValue und setPropertyValue dürfen nicht System.exit(0) aufrufen,
+* 09.06.2006 | LUT | getPropertyValue und setPropertyValue dÃ¼rfen nicht System.exit(0) aufrufen,
 *                    wenn eine WrappedTargetException auftrat !
 * 14.06.2006 | LUT | +XServiceInfo()
 *                  | +supportsService(...)
@@ -151,8 +151,8 @@
 *                  | +XAutoTextGroup()
 *                  | +XAutoTextEntry()
 * 25.01.2008 | BNK | XTextContentAppend und XTextPortionAppend wieder entfernt
-*                  | weil von alten Versionen nicht unterstützt.
-* 08.07.2008 | LUT | +loadComponentFromURL mit Parameter hidden hinzugefügt.
+*                  | weil von alten Versionen nicht unterstÃ¼tzt.
+* 08.07.2008 | LUT | +loadComponentFromURL mit Parameter hidden hinzugefÃ¼gt.
 * 11.07.2008 | BNK | +XFolderPicker()
 * 04.12.2008 | BNK | +XController()
 * 09.06.2009 | LUT | +dispatchAndWait(...)
@@ -336,9 +336,9 @@ public class UNO {
 	 */
 	public static XDesktop desktop;
 	/**
-	 * Komponenten-spezifische Methoden arbeiten defaultmässig mit dieser
-	 * Komponente. Wird von manchen Methoden geändert, ist aber ansonsten der
-	 * Kontroller des Programmierers überlassen. 
+	 * Komponenten-spezifische Methoden arbeiten defaultmÃ¤ssig mit dieser
+	 * Komponente. Wird von manchen Methoden geÃ¤ndert, ist aber ansonsten der
+	 * Kontroller des Programmierers Ã¼berlassen. 
 	 */
 	public static XComponent compo;
 	
@@ -382,7 +382,7 @@ public class UNO {
 	}
 	
 	/**
-	 * Initialisiert die statischen Felder dieser Klasse ausgehend für eine
+	 * Initialisiert die statischen Felder dieser Klasse ausgehend fÃ¼r eine
 	 * existierende Verbindung.
 	 * @param remoteServiceManager der Haupt-ServiceManager.
 	 * @throws Exception falls was schief geht.
@@ -413,13 +413,13 @@ public class UNO {
 	}
 	
     /**
-     * Läd ein Dokument und setzt im Erfolgsfall {@link #compo} auf das geöffnete Dokument.
+     * LÃ¤d ein Dokument und setzt im Erfolgsfall {@link #compo} auf das geÃ¶ffnete Dokument.
      * @param URL die URL des zu ladenden Dokuments, z.B. "file:///C:/temp/footest.odt"
-     *        oder "private:factory/swriter" (für ein leeres).
+     *        oder "private:factory/swriter" (fÃ¼r ein leeres).
      * @param asTemplate falls true wird das Dokument als Vorlage behandelt und ein neues
      *        unbenanntes Dokument erzeugt.
-     * @param allowMacros  falls true wird die Ausführung von Makros freigeschaltet.
-     * @return das geöffnete Dokument
+     * @param allowMacros  falls true wird die AusfÃ¼hrung von Makros freigeschaltet.
+     * @return das geÃ¶ffnete Dokument
      * @throws com.sun.star.io.IOException
      * @throws com.sun.star.lang.IllegalArgumentException
      * @author Matthias Benkmann (D-III-ITD 5.1)
@@ -432,21 +432,21 @@ public class UNO {
     }
 
     /**
-	 * Läd ein Dokument abhängig von hidden sichtbar oder unsichtbar und setzt
-	 * im Erfolgsfall {@link #compo} auf das geöffnete Dokument.
+	 * LÃ¤d ein Dokument abhÃ¤ngig von hidden sichtbar oder unsichtbar und setzt
+	 * im Erfolgsfall {@link #compo} auf das geÃ¶ffnete Dokument.
 	 * 
 	 * @param URL
 	 *            die URL des zu ladenden Dokuments, z.B.
 	 *            "file:///C:/temp/footest.odt" oder "private:factory/swriter"
-	 *            (für ein leeres).
+	 *            (fÃ¼r ein leeres).
 	 * @param asTemplate
 	 *            falls true wird das Dokument als Vorlage behandelt und ein
 	 *            neues unbenanntes Dokument erzeugt.
 	 * @param allowMacros
-	 *            falls true wird die Ausführung von Makros freigeschaltet.
+	 *            falls true wird die AusfÃ¼hrung von Makros freigeschaltet.
 	 * @param hidden 
-	 *            falls true wird das Dokument unsichtbar geöffnet
-	 * @return das geöffnete Dokument
+	 *            falls true wird das Dokument unsichtbar geÃ¶ffnet
+	 * @return das geÃ¶ffnete Dokument
 	 * @throws com.sun.star.io.IOException
 	 * @throws com.sun.star.lang.IllegalArgumentException
 	 * @author Christoph Lutz (D-III-ITD 5.1)
@@ -464,13 +464,13 @@ public class UNO {
     }
 	
 	/**
-	 * Läd ein Dokument und setzt im Erfolgsfall {@link #compo} auf das geöffnete Dokument.
+	 * LÃ¤d ein Dokument und setzt im Erfolgsfall {@link #compo} auf das geÃ¶ffnete Dokument.
 	 * @param URL die URL des zu ladenden Dokuments, z.B. "file:///C:/temp/footest.odt"
-	 *        oder "private:factory/swriter" (für ein leeres).
+	 *        oder "private:factory/swriter" (fÃ¼r ein leeres).
 	 * @param asTemplate falls true wird das Dokument als Vorlage behandelt und ein neues
 	 *        unbenanntes Dokument erzeugt.
 	 * @param allowMacros eine der Konstanten aus {@link MacroExecMode}.
-	 * @return das geöffnete Dokument
+	 * @return das geÃ¶ffnete Dokument
 	 * @throws com.sun.star.io.IOException
 	 * @throws com.sun.star.lang.IllegalArgumentException
 	 * @author Matthias Benkmann (D-III-ITD 5.1)
@@ -483,19 +483,19 @@ public class UNO {
 	}
 
 	/**
-	 * Läd ein Dokument abhängig von hidden sichtbar oder unsichtbar und setzt
-	 * im Erfolgsfall {@link #compo} auf das geöffnete Dokument.
+	 * LÃ¤d ein Dokument abhÃ¤ngig von hidden sichtbar oder unsichtbar und setzt
+	 * im Erfolgsfall {@link #compo} auf das geÃ¶ffnete Dokument.
 	 * 
 	 * @param URL
 	 *            die URL des zu ladenden Dokuments, z.B.
 	 *            "file:///C:/temp/footest.odt" oder "private:factory/swriter"
-	 *            (für ein leeres).
+	 *            (fÃ¼r ein leeres).
 	 * @param asTemplate
 	 *            falls true wird das Dokument als Vorlage behandelt und ein
 	 *            neues unbenanntes Dokument erzeugt.
 	 * @param allowMacros
 	 *            eine der Konstanten aus {@link MacroExecMode}.
-	 * @return das geöffnete Dokument
+	 * @return das geÃ¶ffnete Dokument
 	 * @throws com.sun.star.io.IOException
 	 * @throws com.sun.star.lang.IllegalArgumentException
 	 * @author Christoph Lutz (D-III-ITD 5.1)
@@ -534,8 +534,8 @@ public class UNO {
     /**
      * Dispatcht url auf dem aktuellen Controll von doc mittels
      * {@link XNotifyingDispatch}, wartet auf die Benachrichtigung, dass der Dispatch
-     * vollständig abgearbeitet ist, und liefert das {@link DispatchResultEvent} dieser
-     * Benachrichtigung zurück oder null, wenn zu url kein XNotifyingDispatch definiert
+     * vollstÃ¤ndig abgearbeitet ist, und liefert das {@link DispatchResultEvent} dieser
+     * Benachrichtigung zurÃ¼ck oder null, wenn zu url kein XNotifyingDispatch definiert
      * ist oder der Dispatch mit disposing abgebrochen wurde.
      * 
      * @author Christoph Lutz (D-III-ITD-D101)
@@ -595,34 +595,34 @@ public class UNO {
     
     
 	/**
-	 * Ruft ein Makro auf unter expliziter Angabe der Komponente, die es zur Verfügung
+	 * Ruft ein Makro auf unter expliziter Angabe der Komponente, die es zur VerfÃ¼gung
 	 * stellt.
 	 * 
 	 * @param scriptProviderOrSupplier ist ein Objekt, das entweder {@link XScriptProvider} oder
 	 *              {@link XScriptProviderSupplier} implementiert. Dies kann z.B. ein TextDocument sein.
-	 *              Soll einfach nur ein Skript aus dem gesamten Skript-Baum ausgeführt werden,
+	 *              Soll einfach nur ein Skript aus dem gesamten Skript-Baum ausgefÃ¼hrt werden,
 	 *              kann die Funktion {@link #executeGlobalMacro(String, Object[])} verwendet werden, 
 	 *              die diesen Parameter nicht erfordert.
-	 *              ACHTUNG! Es wird nicht zwangsweise der übergebene scriptProviderOrSupplier
-	 *              verwendet um das Skript auszuführen. Er stellt nur den Einstieg in
+	 *              ACHTUNG! Es wird nicht zwangsweise der Ã¼bergebene scriptProviderOrSupplier
+	 *              verwendet um das Skript auszufÃ¼hren. Er stellt nur den Einstieg in
 	 *              den Skript-Baum dar.
 	 * @param macroName ist der Name des Makros. Der Name kann optional durch "." abgetrennte
-	 *              Bezeichner für Bibliotheken/Module vorangestellt haben. Es sind also sowohl
+	 *              Bezeichner fÃ¼r Bibliotheken/Module vorangestellt haben. Es sind also sowohl
 	 *              "Foo" als auch "Module1.Foo" und "Standard.Module1.Foo" erlaubt.
 	 *              Wenn kein passendes Makro gefunden wird, wird zuerst versucht, 
 	 *              case-insensitive danach zu suchen. Falls dabei ebenfalls kein Makro
 	 *              gefunden wird, wird eine {@link RuntimeException} geworfen.
-	 * @param args die Argumente, die dem Makro übergeben werden sollen.
+	 * @param args die Argumente, die dem Makro Ã¼bergeben werden sollen.
 	 * @param location eine Liste aller erlaubten locations ("application", "share", "document")
-	 *        für das Makro. Bei der Suche wird zuerst ein case-sensitive Match in
+	 *        fÃ¼r das Makro. Bei der Suche wird zuerst ein case-sensitive Match in
 	 *        allen gelisteten locations gesucht, bevor die case-insensitive Suche
 	 *        versucht wird. Durch Verwendung der exakten Gross-/Kleinschreibung
-	 *        des Makros und korrekte Ordnung der location Liste lässt sich also
+	 *        des Makros und korrekte Ordnung der location Liste lÃ¤sst sich also
 	 *        immer das richtige Makro selektieren.
 	 * @throws RuntimeException wenn entweder kein passendes Makro gefunden wurde, oder
 	 *              scriptProviderOrSupplier weder {@link XScriptProvider} noch
 	 *              {@link XScriptProviderSupplier} implementiert.
-	 * @return den Rückgabewert des Makros.
+	 * @return den RÃ¼ckgabewert des Makros.
 	 * @author Matthias Benkmann (D-III-ITD 5.1)
 	 */
 	public static Object executeMacro(Object scriptProviderOrSupplier, String macroName, Object[] args, String[] location)
@@ -631,16 +631,16 @@ public class UNO {
 		if (provider == null)
 		{
 			XScriptProviderSupplier supp = (XScriptProviderSupplier)UnoRuntime.queryInterface(XScriptProviderSupplier.class, scriptProviderOrSupplier);
-			if (supp == null) throw new RuntimeException("Übergebenes Objekt ist weder XScriptProvider noch XScriptProviderSupplier");
+			if (supp == null) throw new RuntimeException("Ãœbergebenes Objekt ist weder XScriptProvider noch XScriptProviderSupplier");
 			provider = supp.getScriptProvider();
 		}
 		
 		XBrowseNode root = (XBrowseNode)UnoRuntime.queryInterface(XBrowseNode.class, provider);
 		/*
-		 * Wir übergeben NICHT provider als drittes Argument, sondern lassen
+		 * Wir Ã¼bergeben NICHT provider als drittes Argument, sondern lassen
 		 * Internal.executeMacroInternal den provider selbst bestimmen.
 		 * Das hat keinen besonderen Grund. Es erscheint einfach nur etwas
-		 * robuster, den "nächstgelegenen" ScriptProvider zu verwenden.
+		 * robuster, den "nÃ¤chstgelegenen" ScriptProvider zu verwenden.
 		 */
 		return Internal.executeMacroInternal(macroName, args, null, root, location);
 	}
@@ -651,14 +651,14 @@ public class UNO {
 	 * location=application Vorrang vor einem mit location=share.
 	 * 
 	 * @param macroName ist der Name des Makros. Der Name kann optional durch "." abgetrennte
-	 *              Bezeichner für Bibliotheken/Module vorangestellt haben. Es sind also sowohl
+	 *              Bezeichner fÃ¼r Bibliotheken/Module vorangestellt haben. Es sind also sowohl
 	 *              "Foo" als auch "Module1.Foo" und "Standard.Module1.Foo" erlaubt.
 	 *              Wenn kein passendes Makro gefunden wird, wird zuerst versucht, 
 	 *              case-insensitive danach zu suchen. Falls dabei ebenfalls kein Makro
 	 *              gefunden wird, wird eine {@link RuntimeException} geworfen.
-	 * @param args die Argumente, die dem Makro übergeben werden sollen.
+	 * @param args die Argumente, die dem Makro Ã¼bergeben werden sollen.
 	 * @throws RuntimeException wenn kein passendes Makro gefunden wurde.
-	 * @return den Rückgabewert des Makros.
+	 * @return den RÃ¼ckgabewert des Makros.
 	 * @author Matthias Benkmann (D-III-ITD 5.1)
 	 */
 	public static Object executeGlobalMacro(String macroName, Object[] args)
@@ -671,20 +671,20 @@ public class UNO {
 	 * Ruft ein Makro aus dem gesamten Makro-Baum auf.
 	 * 
 	 * @param macroName ist der Name des Makros. Der Name kann optional durch "." abgetrennte
-	 *              Bezeichner für Bibliotheken/Module vorangestellt haben. Es sind also sowohl
+	 *              Bezeichner fÃ¼r Bibliotheken/Module vorangestellt haben. Es sind also sowohl
 	 *              "Foo" als auch "Module1.Foo" und "Standard.Module1.Foo" erlaubt.
 	 *              Wenn kein passendes Makro gefunden wird, wird zuerst versucht, 
 	 *              case-insensitive danach zu suchen. Falls dabei ebenfalls kein Makro
 	 *              gefunden wird, wird eine {@link RuntimeException} geworfen.
-	 * @param args die Argumente, die dem Makro übergeben werden sollen.
+	 * @param args die Argumente, die dem Makro Ã¼bergeben werden sollen.
 	 * @param location eine Liste aller erlaubten locations ("application", "share", "document")
-	 *        für das Makro. Bei der Suche wird zuerst ein case-sensitive Match in
+	 *        fÃ¼r das Makro. Bei der Suche wird zuerst ein case-sensitive Match in
 	 *        allen gelisteten locations gesucht, bevor die case-insenstive Suche
 	 *        versucht wird. Durch Verwendung der exakten Gross-/Kleinschreibung
-	 *        des Makros und korrekte Ordnung der location Liste lässt sich also
+	 *        des Makros und korrekte Ordnung der location Liste lÃ¤sst sich also
 	 *        immer das richtige Makro selektieren.
 	 * @throws RuntimeException wenn kein passendes Makro gefunden wurde.
-	 * @return den Rückgabewert des Makros.
+	 * @return den RÃ¼ckgabewert des Makros.
 	 * @author Matthias Benkmann (D-III-ITD 5.1)
 	 */
 	public static Object executeMacro(String macroName, Object[] args, String[] location)
@@ -693,13 +693,13 @@ public class UNO {
 	}
 
 	/**
-     * Diese Methode prüft, ob es sich bei dem übergebenen Objekt service um ein
-     * UNO-Service mit dem Namen serviceName handelt und liefert true zurück,
+     * Diese Methode prÃ¼ft, ob es sich bei dem Ã¼bergebenen Objekt service um ein
+     * UNO-Service mit dem Namen serviceName handelt und liefert true zurÃ¼ck,
      * wenn das Objekt das XServiceInfo-Interface und den gesuchten Service
-     * implementiert, ansonsten wird false zurückgegeben.
+     * implementiert, ansonsten wird false zurÃ¼ckgegeben.
      * 
      * @param service
-     *            Das zu prüfende Service-Objekt
+     *            Das zu prÃ¼fende Service-Objekt
      * @param serviceName
      *            der voll-qualifizierte Service-Name des services.
      * @return true, wenn das Objekt das XServiceInfo-Interface und den
@@ -737,7 +737,7 @@ public class UNO {
 	 * Durchsucht einen {@link XBrowseNode} Baum nach einem Blatt vom Typ SCRIPT, dessen Name
 	 * nameToFind ist (kann durch "." abgetrennte Pfadangabe im Skript-Baum enthalten). 
 	 * Siehe {@link #findBrowseNodeTreeLeafAndScriptProvider(XBrowseNode, String, String, boolean, String)}. 
-	 * @return den gefundenen Knoten, sowie den nächsten Vorfahren, der XScriptProvider
+	 * @return den gefundenen Knoten, sowie den nÃ¤chsten Vorfahren, der XScriptProvider
 	 * implementiert (oder den Knoten selbst, falls dieser XScriptProvider implementiert). 
 	 * Falls kein entsprechender Knoten oder Vorfahre gefunden wurde,
 	 * wird der entsprechende Wert als null geliefert.
@@ -756,15 +756,15 @@ public class UNO {
 	* @param prefix wird dem Namen jedes Knoten vorangestellt. Dies wird verwendet, wenn 
 	*          xBrowseNode nicht die Wurzel ist.
 	* @param nameToFind  der zu suchende Name.
-	* @param caseSensitive falls true, so wird Gross-/Kleinschreibung berücksichtigt bei der 
+	* @param caseSensitive falls true, so wird Gross-/Kleinschreibung berÃ¼cksichtigt bei der 
 	*         Suche.
   * @param location Es gelten nur Knoten als Treffer,
-  *        die ein "URI" Property haben, das eine location enthält die
+  *        die ein "URI" Property haben, das eine location enthÃ¤lt die
   *        einem String in der <code>location</code> Liste entspricht.
-	*        Mögliche locations sind "document", "application" und "share".
+	*        MÃ¶gliche locations sind "document", "application" und "share".
 	*        Falls <code>location==null</code>, so wird {"document", "application", "share"}
 	*        angenommen.
-	* @return den gefundenen Knoten, sowie den nächsten Vorfahren, der XScriptProvider
+	* @return den gefundenen Knoten, sowie den nÃ¤chsten Vorfahren, der XScriptProvider
 	* implementiert. Falls kein entsprechender Knoten oder Vorfahre gefunden wurde,
 	* wird der entsprechende Wert als null geliefert.
 	* @author Matthias Benkmann (D-III-ITD 5.1)
@@ -813,7 +813,7 @@ public class UNO {
 	}
 	
 	/**
-	 * Liefert den Wert von Property propName des Objekts o zurück.
+	 * Liefert den Wert von Property propName des Objekts o zurÃ¼ck.
 	 * @return den Wert des Propertys oder <code>null</code>, falls o
 	 * entweder nicht das XPropertySet Interface implementiert, oder kein
 	 * Property names propName hat oder ein sonstiger Fehler aufgetreten ist.
@@ -832,16 +832,16 @@ public class UNO {
 	
 	/**
 	 * Setzt das Property propName des Objekts o auf den Wert propVal und liefert
-	 * den neuen Wert zurück. Falls o kein XPropertySet implementiert, oder
+	 * den neuen Wert zurÃ¼ck. Falls o kein XPropertySet implementiert, oder
 	 * das Property propName nicht gelesen werden kann (z.B. weil o diese
-	 * Property nicht besitzt), so wird null zurückgeliefert.
-	 * Zu beachten ist, dass es möglich ist, dass der zurückgelieferte Wert
+	 * Property nicht besitzt), so wird null zurÃ¼ckgeliefert.
+	 * Zu beachten ist, dass es mÃ¶glich ist, dass der zurÃ¼ckgelieferte Wert
 	 * nicht propVal und auch nicht null ist. Dies geschieht insbesondere,
-	 * wenn ein Event Handler sein Veto gegen die Änderung eingelegt hat.
-	 * @param o das Objekt, dessen Property zu ändern ist.
-	 * @param propName der Name des zu ändernden Properties.
+	 * wenn ein Event Handler sein Veto gegen die Ã„nderung eingelegt hat.
+	 * @param o das Objekt, dessen Property zu Ã¤ndern ist.
+	 * @param propName der Name des zu Ã¤ndernden Properties.
 	 * @param propVal der neue Wert.
-	 * @return der Wert des Propertys nach der (versuchten) Änderung oder null,
+	 * @return der Wert des Propertys nach der (versuchten) Ã„nderung oder null,
 	 *         falls der Wert des Propertys nicht mal lesbar ist.
 	 * @author bnk
 	 */
@@ -861,21 +861,21 @@ public class UNO {
 	}
 
 	/**
-	 * Setzt das Property propName auf den ursprünglichen Wert zurück, der als
-	 * Voreinstellung für das Objekt o hinterlegt ist und liefert den neuen Wert
-	 * zurück. Falls o kein XPropertyState implementiert, oder das Property
+	 * Setzt das Property propName auf den ursprÃ¼nglichen Wert zurÃ¼ck, der als
+	 * Voreinstellung fÃ¼r das Objekt o hinterlegt ist und liefert den neuen Wert
+	 * zurÃ¼ck. Falls o kein XPropertyState implementiert, oder das Property
 	 * propName nicht gelesen werden kann (z.B. weil o diese Property nicht
-	 * besitzt), so wird null zurückgeliefert. Zu beachten ist, dass es möglich
-	 * ist, dass das Property nicht zurück gesetzt wird, wenn ein Event Handler
-	 * sein Veto gegen die Änderung einlegt.
+	 * besitzt), so wird null zurÃ¼ckgeliefert. Zu beachten ist, dass es mÃ¶glich
+	 * ist, dass das Property nicht zurÃ¼ck gesetzt wird, wenn ein Event Handler
+	 * sein Veto gegen die Ã„nderung einlegt.
 	 * 
 	 * @param o
-	 *            das Objekt, dessen Property zu ändern ist.
+	 *            das Objekt, dessen Property zu Ã¤ndern ist.
 	 * @param propName
-	 *            der Name des zu ändernden Properties.
+	 *            der Name des zu Ã¤ndernden Properties.
 	 * @param propVal
 	 *            der neue Wert.
-	 * @return der Wert des Propertys nach der (versuchten) Änderung oder null,
+	 * @return der Wert des Propertys nach der (versuchten) Ã„nderung oder null,
 	 *         falls der Wert des Propertys nicht mal lesbar ist.
 	 * @author bnk
 	 */
@@ -1624,15 +1624,15 @@ public class UNO {
 	   *        zerlegt.
 	   * @param prefixLC wie prefix aber alles lowercase.
 	   * @param found Liste von {@link FindNode}s mit dem Ergebnis der Suche 
-	   *        (anfangs leere Liste übergeben).
+	   *        (anfangs leere Liste Ã¼bergeben).
 	   *        Die Sortierung ist so, dass zuerst alle case-sensitive Matches 
-	   *        (also exakte Matches) aufgeführt sind, sortiert gemäss location
-	   *        und dann alle case-insensitive Matches sortiert gemäss location.
+	   *        (also exakte Matches) aufgefÃ¼hrt sind, sortiert gemÃ¤ss location
+	   *        und dann alle case-insensitive Matches sortiert gemÃ¤ss location.
 	   *        Falls <code>location == null</code>, so wird nur nach case-sensitive
 	   *        und case-insenstive sortiert, innerhalb dieser Gruppen jedoch
 	   *        nicht mehr.
 	   * @return die Anzahl der Rekursionsstufen, die beendet werden sollen.
-	   *         Zum Beispiel heisst ein Rückgabewert von 1, dass die aufrufende
+	   *         Zum Beispiel heisst ein RÃ¼ckgabewert von 1, dass die aufrufende
 	   *         Funktion ein <code>return 0</code> machen soll.
 	   *         
 	   * @author bnk
@@ -1650,15 +1650,15 @@ public class UNO {
 			{
 			  /*
 			   * Falls der Knoten nicht vom Typ SCRIPT ist, interessiert er uns
-			   * nicht. Auch wenn wir davon ausgehen können, dass alle Geschwister
-			   * ebenfalls keine SCRIPTS sind, dürfen wir nicht mehrere Stufen nach
-			   * oben gehen, da die Geschwister CONTAINER sein können.
+			   * nicht. Auch wenn wir davon ausgehen kÃ¶nnen, dass alle Geschwister
+			   * ebenfalls keine SCRIPTS sind, dÃ¼rfen wir nicht mehrere Stufen nach
+			   * oben gehen, da die Geschwister CONTAINER sein kÃ¶nnen.
 			   */
 			  if (node.getType() != BrowseNodeTypes.SCRIPT) return 0;
 			  
 			  /* Falls die location des aktuellen Knotens nicht in der erlaubten
-         * Liste ist, können wir gleich 2 Ebenen aufsteigen (d.h zur nächsten
-         * Library), weil wir davon ausgehen können, dass innerhalb
+         * Liste ist, kÃ¶nnen wir gleich 2 Ebenen aufsteigen (d.h zur nÃ¤chsten
+         * Library), weil wir davon ausgehen kÃ¶nnen, dass innerhalb
          * einer Library alle Skripte die selbe Location haben.
          */
         String nodeLocation = getLocation(node);
@@ -1668,21 +1668,21 @@ public class UNO {
         }
 			  
 			  /* 
-			   * Wenn das Präfix schon nicht zu nameToFind passt, dann hat es
+			   * Wenn das PrÃ¤fix schon nicht zu nameToFind passt, dann hat es
 			   * keinen Sinn, alle Skripte des Moduls durchzuiterieren, weil keines davon passen
-			   * wird. Wir bestimmen, wieviele Rekursionsstufen wir verlassen können.
-			   * 0 => Präfix passt zur nameToFind
-			   * 1 => Wir versuchen das nächste Modul in der selben Library, d.h. letzte Präfix-Komponente
+			   * wird. Wir bestimmen, wieviele Rekursionsstufen wir verlassen kÃ¶nnen.
+			   * 0 => PrÃ¤fix passt zur nameToFind
+			   * 1 => Wir versuchen das nÃ¤chste Modul in der selben Library, d.h. letzte PrÃ¤fix-Komponente
 			   *      passt nicht
-			   * 2 => Wir versuchen die nächste Library, d.h. die letzten 2 Präfix-Komponenten passen
+			   * 2 => Wir versuchen die nÃ¤chste Library, d.h. die letzten 2 PrÃ¤fix-Komponenten passen
 			   *      nicht. 
-			   * Mehr Ebenen zu verlassen erlauben wir nicht, da es möglich sein kann, dass in
+			   * Mehr Ebenen zu verlassen erlauben wir nicht, da es mÃ¶glich sein kann, dass in
 			   * verschiedenen Libraries sich die Skripte auf verschiedener Ebene befinden.
 			   * Im Prinzip ist schon die Annahme, dass sich innerhalb einer Library alle Skripte
-			   * auf der selben Ebene befinden etwas gewagt. Für Basic ist sie sicher richtig, aber
-			   * OOo erlaubt noch viele andere Skriptsprachen. Technisch gesehen müsste diese
-			   * Optimierung die Programmiersprache miteinbeziehen. Im Falle von Basic könnte man
-			   * vermutlich noch aggressiver sein. Im Falle anderer Sprachen müsste man wohl noch
+			   * auf der selben Ebene befinden etwas gewagt. FÃ¼r Basic ist sie sicher richtig, aber
+			   * OOo erlaubt noch viele andere Skriptsprachen. Technisch gesehen mÃ¼sste diese
+			   * Optimierung die Programmiersprache miteinbeziehen. Im Falle von Basic kÃ¶nnte man
+			   * vermutlich noch aggressiver sein. Im Falle anderer Sprachen mÃ¼sste man wohl noch
 			   * konservativer sein.
 			   */
 			  int nMPC = 0;
@@ -1695,7 +1695,7 @@ public class UNO {
 			      !prefixLC.get(prefixLC.size()-2).equals(nameToFindLC[nameToFindLC.length-3]))
 			  {
 			    // ACHTUNG! Hier wird nMPC immer auf 2 gesetzt, nicht inkrementiert.
-			    // Wenn der Libraryname nicht passt ist es egal, ob der Modulname übereinstimmt!
+			    // Wenn der Libraryname nicht passt ist es egal, ob der Modulname Ã¼bereinstimmt!
 			    nMPC = 2;
 			  }
 			  if (nMPC > 0) return nMPC;
@@ -1710,7 +1710,7 @@ public class UNO {
 			  {
 			    if (!nameToFind[i].equals(prefix.get(j))) {isCaseCorrect = false; break;};
 			  }
-			  prefix.remove(prefix.size()-1); //wieder entfernen vor dem nächsten return
+			  prefix.remove(prefix.size()-1); //wieder entfernen vor dem nÃ¤chsten return
 			  
 			  FindNode findNode = new FindNode(node.unwrap(), xScriptProvider, nodeLocation, isCaseCorrect);
 			  ListIterator liter = found.listIterator();
@@ -1721,11 +1721,11 @@ public class UNO {
 			  }
 			  liter.add(findNode);
 			  
-			  /* ACHTUNG: Wir haben einen passenden Knoten gefunden. Nun könnten wir
+			  /* ACHTUNG: Wir haben einen passenden Knoten gefunden. Nun kÃ¶nnten wir
 			   * davon ausgehen, dass es im selben Modul keine weiteren Matches gibt
 			   * und return 1 machen als Optimierung. Bei BASIC Makros ist dies
 			   * auch korrekt, aber bei Makros in case-sensitiven Sprachen ist es
-			   * durchaus möglich, dass im selben Modul mehrere Matches 
+			   * durchaus mÃ¶glich, dass im selben Modul mehrere Matches 
 			   * (in unterschiedlicher Gross/Kleinschrift) sind.
 			   * Mehr als return 1 ist auch bei BASIC nicht drin, weil
 			   * auch BASIC bei Modul und Bibliotheksnamen case-sensitive ist.
@@ -1737,8 +1737,8 @@ public class UNO {
 			}
 			else // if iter.hasNext()
 			{
-			  /* ACHTUNG! Diese Änderungen müssen vor return
-			   * wieder Rückgängig gemacht werden
+			  /* ACHTUNG! Diese Ã„nderungen mÃ¼ssen vor return
+			   * wieder RÃ¼ckgÃ¤ngig gemacht werden
 			   */
 			  prefix.add(name);
 	      prefixLC.add(name.toLowerCase());
@@ -1775,8 +1775,8 @@ public class UNO {
     }
 
     /** Falls <code>node.URL() == null</code> oder die URL keinen "location="
-	   * Teil enthält, so wird "" geliefert, ansonsten der "location=" Teil ohne
-	   * das führende "location=". 
+	   * Teil enthÃ¤lt, so wird "" geliefert, ansonsten der "location=" Teil ohne
+	   * das fÃ¼hrende "location=". 
      * @author bnk
      */
     private static String getLocation(BrowseNode node)
@@ -1853,12 +1853,12 @@ public class UNO {
 	
 	/**
 	 * Liefert ein Service ConfigurationAccess mit dem der lesende Zugriff auf
-	 * die OOo-Configuration ab dem Knoten nodepath ermöglicht wird oder null,
+	 * die OOo-Configuration ab dem Knoten nodepath ermÃ¶glicht wird oder null,
 	 * wenn der Service nicht erzeugt werden kann.
 	 * 
 	 * @param nodepath
 	 *            Beschreibung des Knotens des Konfigurationsbaumes, der als
-	 *            neue Wurzel zurückgeliefert werden soll. Ein nodepath ist z.B.
+	 *            neue Wurzel zurÃ¼ckgeliefert werden soll. Ein nodepath ist z.B.
 	 *            "/org.openoffice.Office.Writer/AutoFunction/Format/ByInput/ApplyNumbering"
 	 * @return ein ConfigurationUpdateAccess mit der Wurzel an dem Knoten
 	 *         nodepath oder null, falls der Service nicht erzeugt werden kann
@@ -1883,11 +1883,11 @@ public class UNO {
 	/**
 	 * Liefert ein Service ConfigurationUpdateAccess mit dem der lesende und
 	 * schreibende Zugriff auf die OOo-Configuration ab dem Knoten nodepath
-	 * ermöglicht wird oder null wenn der Service nicht erzeugt werden kann.
+	 * ermÃ¶glicht wird oder null wenn der Service nicht erzeugt werden kann.
 	 * 
 	 * @param nodepath
 	 *            Beschreibung des Knotens des Konfigurationsbaumes, der als
-	 *            neue Wurzel zurückgeliefert werden soll. Ein nodepath ist z.B.
+	 *            neue Wurzel zurÃ¼ckgeliefert werden soll. Ein nodepath ist z.B.
 	 *            "/org.openoffice.Office.Writer/AutoFunction/Format/ByInput/ApplyNumbering"
 	 * @return ein ConfigurationUpdateAccess mit der Wurzel an dem Knoten
 	 *         nodepath oder null, falls der Service nicht erzeugt werden kann
@@ -1912,14 +1912,14 @@ public class UNO {
 	}
 
 	/**
-	 * Enthält den configurationProvider, falls er bereits mit
+	 * EnthÃ¤lt den configurationProvider, falls er bereits mit
 	 * getConfigurationProvider erzeugt wurde.
 	 */
 	private static Object configurationProvider;
 
 	/**
 	 * Liefert den configurationProvider, mit dem der Zugriff auf die
-	 * Konfiguration von OOo ermöglicht wird.
+	 * Konfiguration von OOo ermÃ¶glicht wird.
 	 * 
 	 * @return ein neuer configurationProvider
 	 */
@@ -1931,7 +1931,7 @@ public class UNO {
 	
     
 	/**
-	 * Liefert den shortcutManager zu der OOo Komponente component zurück.
+	 * Liefert den shortcutManager zu der OOo Komponente component zurÃ¼ck.
 	 * 
 	 * @param component die OOo Komponente zu der der ShortcutManager geliefert werden soll z.B "com.sun.star.text.TextDocument"
 	 * @return der shortcutManager zur OOo Komponente component oder null falls kein shortcutManager erzeugt werden kann.
@@ -1964,17 +1964,17 @@ public class UNO {
 
 	
   /**
-   * Wenn hide=true ist, so wird die Eigenschaft CharHidden für range auf true
-   * gesetzt und andernfalls der Standardwert (=false) für die Property CharHidden
-   * wieder hergestellt. Dadurch lässt sich der Text in range unsichtbar schalten
-   * bzw. wieder sichtbar schalten. Die Repräsentation von unsichtbar geschaltenen
-   * Stellen erfolgt in der Art, dass OOo für den unsichtbaren Textbereich ein neuen
+   * Wenn hide=true ist, so wird die Eigenschaft CharHidden fÃ¼r range auf true
+   * gesetzt und andernfalls der Standardwert (=false) fÃ¼r die Property CharHidden
+   * wieder hergestellt. Dadurch lÃ¤sst sich der Text in range unsichtbar schalten
+   * bzw. wieder sichtbar schalten. Die ReprÃ¤sentation von unsichtbar geschaltenen
+   * Stellen erfolgt in der Art, dass OOo fÃ¼r den unsichtbaren Textbereich ein neuen
    * automatisch generierten Character-Style anlegt, der die Eigenschaften der bisher
    * gesetzten Styles erbt und lediglich die Eigenschaft "Sichtbarkeit" auf
-   * unsichtbar setzt. Beim Aufheben einer unsichtbaren Stelle sorgt das Zurücksetzen
-   * auf den Standardwert dafür, dass der vorher angelegte automatische-Style wieder
-   * zurück genommen wird - so ist sichergestellt, dass das Aus- und Wiedereinblenden
-   * von Textbereichen keine Änderungen der bisher gesetzten Styles hervorruft.
+   * unsichtbar setzt. Beim Aufheben einer unsichtbaren Stelle sorgt das ZurÃ¼cksetzen
+   * auf den Standardwert dafÃ¼r, dass der vorher angelegte automatische-Style wieder
+   * zurÃ¼ck genommen wird - so ist sichergestellt, dass das Aus- und Wiedereinblenden
+   * von Textbereichen keine Ã„nderungen der bisher gesetzten Styles hervorruft.
    * 
    * @param range
    *          Der Textbereich, der aus- bzw. eingeblendet werden soll.
@@ -1988,17 +1988,17 @@ public class UNO {
     if (hide == true)
     {
       UNO.setProperty(range, "CharHidden", Boolean.TRUE);
-      // Workaround für update Bug
+      // Workaround fÃ¼r update Bug
       // http://qa.openoffice.org/issues/show_bug.cgi?id=78896
       UNO.setProperty(range, "CharHidden", Boolean.FALSE);
       UNO.setProperty(range, "CharHidden", Boolean.TRUE);
     }
     else
     {
-      // Workaround für (den anderen) update Bug
+      // Workaround fÃ¼r (den anderen) update Bug
       // http://qa.openoffice.org/issues/show_bug.cgi?id=103101
-      // Nur das Rücksetzen auf den Standardwert reicht nicht aus. Daher erfolgt vor
-      // dem Rücksetzen auf den Standardwert eine explizite Einblendung.
+      // Nur das RÃ¼cksetzen auf den Standardwert reicht nicht aus. Daher erfolgt vor
+      // dem RÃ¼cksetzen auf den Standardwert eine explizite Einblendung.
       UNO.setProperty(range, "CharHidden", Boolean.FALSE);
       UNO.setPropertyToDefault(range, "CharHidden");
     }

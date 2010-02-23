@@ -1,5 +1,5 @@
 /*
- * Ein einfacher Wrapper für uno-services.
+ * Ein einfacher Wrapper fÃ¼r uno-services.
  * Copyright (C) 2005 Christoph Lutz
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,12 +20,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. 
  * 
- * Änderungshistorie der Landeshauptstadt München:
+ * Ã„nderungshistorie der Landeshauptstadt MÃ¼nchen:
  * 
  * Datum      | Wer | Anderungsgrund
  * -------------------------------------------------------------------
  * 26.04.2005 | BNK | getSimpleName() durch getName() 
- *            |     | ersetzt wg. Java 1.4 Kompatibilität
+ *            |     | ersetzt wg. Java 1.4 KompatibilitÃ¤t
  * 05.09.2005 | BNK | getImplememtationName() -> getImplementationName() 
  * 09.09.2005 | LUT | +xFilePicker()
  * 09.09.2005 | LUT | BUGFIX: getSortedMethodsIterator holt die Methoden

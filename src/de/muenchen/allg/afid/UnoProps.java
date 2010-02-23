@@ -2,9 +2,9 @@
  * Dateiname: UnoProps.java
  * Projekt  : UNOHelper
  * Funktion : Erleichtert den Umgang mit PropertyValue-Arrays, die in der
- *            UNO-Schnittstelle häufig als Übergabeparameter verwendet werden.
+ *            UNO-Schnittstelle hÃ¤ufig als Ãœbergabeparameter verwendet werden.
  * 
- * Copyright (c) 2008 Landeshauptstadt München
+ * Copyright (c) 2008 Landeshauptstadt MÃ¼nchen
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the European Union Public Licence (EUPL),
@@ -19,8 +19,8 @@
  * along with this program. If not, see
  * http://ec.europa.eu/idabc/en/document/7330
  *
- * Änderungshistorie:
- * Datum      | Wer | Änderungsgrund
+ * Ã„nderungshistorie:
+ * Datum      | Wer | Ã„nderungsgrund
  * -------------------------------------------------------------------
  * 16.11.2005 | LUT | Erstellung
  * -------------------------------------------------------------------
@@ -36,7 +36,7 @@ import com.sun.star.beans.UnknownPropertyException;
 
 /**
  * Diese Klasse erleichtert den Umgang mit PropertyValue-Arrays, die in der
- * UNO-Schnittstelle häufig als Übergabeparameter verwendet werden.
+ * UNO-Schnittstelle hÃ¤ufig als Ãœbergabeparameter verwendet werden.
  * 
  * @author Christoph Lutz (D-III-ITD 5.1)
  */
@@ -53,7 +53,7 @@ public class UnoProps {
 
 	/**
 	 * Der Konstruktor erzeugt und kapselt ein neues PropertyValue-Array und
-	 * belegt es sofort mit dem überbebenen Property.
+	 * belegt es sofort mit dem Ã¼berbebenen Property.
 	 * 
 	 * @param name
 	 * @param value
@@ -65,7 +65,7 @@ public class UnoProps {
 
 	/**
 	 * Der Konstruktor erzeugt und kapselt ein neues PropertyValue-Array belegt
-	 * es sofort mit den zwei übergebenen Properties.
+	 * es sofort mit den zwei Ã¼bergebenen Properties.
 	 * 
 	 * @param name1
 	 * @param value1
@@ -80,7 +80,7 @@ public class UnoProps {
 
 	/**
 	 * Der Konstruktor kapselt ein bestehendes PropertyValue-Array, das in Form
-	 * eines Objec-Arrays übergeben wird. Alle Elemente, die nicht vom Typ
+	 * eines Objec-Arrays Ã¼bergeben wird. Alle Elemente, die nicht vom Typ
 	 * PropertyValue sind, werden ohne Fehlermeldung ignoriert.
 	 * 
 	 * @param props
@@ -93,7 +93,7 @@ public class UnoProps {
       return;
     }
 
-    // Zähle Anzahl der PropertyValue-Einträge.
+    // ZÃ¤hle Anzahl der PropertyValue-EintrÃ¤ge.
     int count = 0;
     for (int i = 0; i < props.length; i++)
     {
@@ -114,7 +114,7 @@ public class UnoProps {
   }
 
 	/**
-	 * Liefert das zugehörige PropertyValue[] zurück.
+	 * Liefert das zugehÃ¶rige PropertyValue[] zurÃ¼ck.
 	 * 
 	 * @return
 	 */
@@ -124,7 +124,7 @@ public class UnoProps {
 
 	/**
 	 * Setzt den Wert value der Property mit dem Namen name. Ist das Property
-	 * bereits definiert, so wird der bestehende Wert überschrieben. Ist das
+	 * bereits definiert, so wird der bestehende Wert Ã¼berschrieben. Ist das
 	 * Property noch nicht definiert, so wird ein neuer Eintrag im
 	 * PropertyValue-Array erzeugt.
 	 * 
@@ -132,11 +132,11 @@ public class UnoProps {
 	 *            der Name des Properties.
 	 * @param value
 	 *            der neue Wert des Properties.
-	 * @return Liefert sich selbst zurück, um mehrere Properties in einer Kette
-	 *         setzen zu können.
+	 * @return Liefert sich selbst zurÃ¼ck, um mehrere Properties in einer Kette
+	 *         setzen zu kÃ¶nnen.
 	 */
 	public UnoProps setPropertyValue(String name, Object value) {
-		// Suche nach dem Property erstelle gleich eine Kopie für später:
+		// Suche nach dem Property erstelle gleich eine Kopie fÃ¼r spÃ¤ter:
 		PropertyValue[] newProps = new PropertyValue[props.length + 1];
 		PropertyValue prop = null;
 		for (int i = 0; i < props.length; i++) {
@@ -146,7 +146,7 @@ public class UnoProps {
 		}
 
 		if (prop != null) {
-			// überschreibe den alten Wert:
+			// Ã¼berschreibe den alten Wert:
 			prop.Value = value;
 		} else {
 			// erzeuge einen neuen Eintrag:
@@ -160,7 +160,7 @@ public class UnoProps {
 	}
 
 	/**
-	 * Liefert den Wert eines Properties mit dem Namen name zurück.
+	 * Liefert den Wert eines Properties mit dem Namen name zurÃ¼ck.
 	 * 
 	 * @param name
 	 * @return den Wert des Properties.
@@ -175,11 +175,11 @@ public class UnoProps {
 	}
 
 	/**
-	 * Liefert ein UnoService-Objekt zurück, das den den Wert des Properties mit
+	 * Liefert ein UnoService-Objekt zurÃ¼ck, das den den Wert des Properties mit
 	 * dem Namen name kapselt.
 	 * 
 	 * @param name
-	 * @return Liefert ein UnoService-Objekt zurück, das den den Wert des
+	 * @return Liefert ein UnoService-Objekt zurÃ¼ck, das den den Wert des
 	 *         Properties mit dem Namen name kapselt.
 	 * @throws UnknownPropertyException
 	 */
@@ -189,11 +189,11 @@ public class UnoProps {
 	}
 
 	/**
-	 * Liefert ein String mit dem Wert des Properties mit dem Namen name zurück.
+	 * Liefert ein String mit dem Wert des Properties mit dem Namen name zurÃ¼ck.
 	 * 
 	 * @param name
 	 * @return Liefert ein String mit dem Wert des Properties mit dem Namen name
-	 *         zurück.
+	 *         zurÃ¼ck.
 	 * @throws UnknownPropertyException
 	 */
 	public String getPropertyValueAsString(String name)

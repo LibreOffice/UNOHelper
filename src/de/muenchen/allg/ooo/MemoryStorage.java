@@ -4,7 +4,7 @@
  * Funktion : Definiert einen UNO-Service Storage zum Speichern von
  *            Dokumenten in den Hauptspeicher. 
  * 
- * Copyright (c) 2008 Landeshauptstadt München
+ * Copyright (c) 2008 Landeshauptstadt MÃ¼nchen
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the European Union Public Licence (EUPL),
@@ -19,8 +19,8 @@
  * along with this program. If not, see
  * http://ec.europa.eu/idabc/en/document/7330
  *
- * Änderungshistorie:
- * Datum      | Wer | Änderungsgrund
+ * Ã„nderungshistorie:
+ * Datum      | Wer | Ã„nderungsgrund
  * -------------------------------------------------------------------
  * 04.12.2007 | LUT | Erstellung
  * -------------------------------------------------------------------
@@ -82,7 +82,7 @@ import de.muenchen.allg.afid.UNO;
  * Objekt erzeugt, das die Daten im Hauptspeicher verwaltet und aus Java-Sicht
  * besonders leicht weiter verarbeitet werden kann. Mit
  * {@link #createXStorage(de.muenchen.allg.ooo.MemoryStorage.ByteArrayStorage)} wird
- * ein entsprechender UNO-Service erzeugt, der für storeToStorage(...) geeignet ist.
+ * ein entsprechender UNO-Service erzeugt, der fÃ¼r storeToStorage(...) geeignet ist.
  * 
  * @author Christoph Lutz (D-III-ITD-D101)
  */
@@ -91,7 +91,7 @@ public class MemoryStorage
 
   /**
    * Diese Methode erzeugt einen ByteArrayStorage in dem Dokumente unkomprimiert und
-   * unverschlüsselt im Hauptspeicher abgelegt werden können.
+   * unverschlÃ¼sselt im Hauptspeicher abgelegt werden kÃ¶nnen.
    * 
    * @author Christoph Lutz (D-III-ITD-D101)
    */
@@ -106,13 +106,13 @@ public class MemoryStorage
    * 
    * Achtung: Der UNO-Service definiert viele Methoden, die jedoch in der Praxis
    * nicht alle relevant sind. Um toten Code zu vermeiden, und da die Spezifikation
-   * dieser Methoden in der UNO-API nicht aussagekräftig genug ist, wurden die
-   * unnötigen Methoden daher nicht implementiert. Das birgt aber auch das Risiko,
+   * dieser Methoden in der UNO-API nicht aussagekrÃ¤ftig genug ist, wurden die
+   * unnÃ¶tigen Methoden daher nicht implementiert. Das birgt aber auch das Risiko,
    * dass neue OOo-Versionen in Zukunft das Storage anders ansprechen und dabei nicht
-   * implementierte Methoden verwenden könnten. Als Hilfestellung bei der Fehlersuche
+   * implementierte Methoden verwenden kÃ¶nnten. Als Hilfestellung bei der Fehlersuche
    * dient hier das public-field {@link #logger}, in dem ein Logger hinterlegt
-   * werden kann und über den verwendete, aber nicht implementierte Methoden erkannt
-   * werden können.
+   * werden kann und Ã¼ber den verwendete, aber nicht implementierte Methoden erkannt
+   * werden kÃ¶nnen.
    * 
    * @author Christoph Lutz (D-III-ITD-D101)
    */
@@ -122,9 +122,9 @@ public class MemoryStorage
   }
 
   /**
-   * Logger-Interfaces für die Behandlung von Debug-Ausgaben dieser Klasse. Für
+   * Logger-Interfaces fÃ¼r die Behandlung von Debug-Ausgaben dieser Klasse. FÃ¼r
    * Debugging-Zwecke kann es sinnvoll und notwendig sein, einen eigenen Logger zu
-   * definieren und diesen über setLogger(MemoryStorage.Logger) zu setzen.
+   * definieren und diesen Ã¼ber setLogger(MemoryStorage.Logger) zu setzen.
    */
   public interface Logger
   {
@@ -161,7 +161,7 @@ public class MemoryStorage
 
   /**
    * NotYetImplemented: Gibt eine Logger-Meldung mit der Nachricht
-   * "NotYetImplemented: " + s für eine Methode aus, die derzeit nicht implementiert
+   * "NotYetImplemented: " + s fÃ¼r eine Methode aus, die derzeit nicht implementiert
    * ist.
    * 
    * @author Christoph Lutz (D-III-ITD-D101)
@@ -172,10 +172,10 @@ public class MemoryStorage
   }
 
   /**
-   * Diese Klasse definiert ein Storage, das benannte ByteArray-Datenblöcke aufnehmen
-   * kann. Das Storage enthält ausschließlich Elemente mit Daten und hält diese in
+   * Diese Klasse definiert ein Storage, das benannte ByteArray-DatenblÃ¶cke aufnehmen
+   * kann. Das Storage enthÃ¤lt ausschlieÃŸlich Elemente mit Daten und hÃ¤lt diese in
    * einer flachen Struktur ohne Hierarchie. Daher kennt es keine Verzeichnisse, die
-   * einzelnen Elemente können aber Namen mit "/" enthalten.
+   * einzelnen Elemente kÃ¶nnen aber Namen mit "/" enthalten.
    * 
    * @author Christoph Lutz (D-III-ITD-D101)
    */
@@ -196,7 +196,7 @@ public class MemoryStorage
     }
 
     /**
-     * Fügt das Element elementName mit den Daten data und dem MediaType mediaType in
+     * FÃ¼gt das Element elementName mit den Daten data und dem MediaType mediaType in
      * dieses Storage ein.
      * 
      * @author Christoph Lutz (D-III-ITD-D101)
@@ -208,7 +208,7 @@ public class MemoryStorage
     }
 
     /**
-     * Liefert die Anzahl Datenbytes des Elements elementName zurück.
+     * Liefert die Anzahl Datenbytes des Elements elementName zurÃ¼ck.
      * 
      * @author Christoph Lutz (D-III-ITD-D101)
      */
@@ -220,7 +220,7 @@ public class MemoryStorage
     }
 
     /**
-     * Liefert einen InputStream des Elements elementName zurück. Ist elementName
+     * Liefert einen InputStream des Elements elementName zurÃ¼ck. Ist elementName
      * nicht definiert, so wird eine java.util.NoSuchElementException geworfen.
      * 
      * @throws java.util.NoSuchElementException
@@ -238,8 +238,8 @@ public class MemoryStorage
     }
 
     /**
-     * Liefert die namen aller Einträge des Storage in einer alphabetisch sortierten
-     * Liste zurück.
+     * Liefert die namen aller EintrÃ¤ge des Storage in einer alphabetisch sortierten
+     * Liste zurÃ¼ck.
      * 
      * @author Christoph Lutz (D-III-ITD-D101)
      */
@@ -256,7 +256,7 @@ public class MemoryStorage
      * {@link #createManifest()} auch im Manifest manifestiert.
      * 
      * @param mediaType
-     *          Der mediaType für Textdokumente ist z.B.
+     *          Der mediaType fÃ¼r Textdokumente ist z.B.
      *          application/vnd.oasis.opendocument.text
      * 
      * @author Christoph Lutz (D-III-ITD-D101)
@@ -302,9 +302,9 @@ public class MemoryStorage
 
   /**
    * Diese Klasse implementiert den UNO-Service com::sun::star::embed::Storage. Viele
-   * Methoden müssen definiert sein, damit der Service Storage von der UNO-Bridge
+   * Methoden mÃ¼ssen definiert sein, damit der Service Storage von der UNO-Bridge
    * korrekt anerkannt wird und ohne Fehler verwendet werden kann. In der Praxis sind
-   * aber viele der definierten Methoden überflüssig. Sie werden daher auch hier
+   * aber viele der definierten Methoden Ã¼berflÃ¼ssig. Sie werden daher auch hier
    * nicht implementiert, sonder nur definiert. Normalerweise sollte dies keine
    * Probleme bereiten. Sollte es damit doch einmal Probleme geben, kann mit Hilfe
    * des Loggers erkannt werden, ob eine nicht implementierte Methode verwendet wurde
@@ -542,9 +542,9 @@ public class MemoryStorage
 
   /**
    * Diese Klasse implementiert den UNO-Service com::sun::star::embed::StorageStream.
-   * Viele Methoden müssen definiert sein, damit der Service StorageStream von der
+   * Viele Methoden mÃ¼ssen definiert sein, damit der Service StorageStream von der
    * UNO-Bridge korrekt anerkannt wird und ohne Fehler verwendet werden kann. In der
-   * Praxis sind aber einige der definierten Methoden überflüssig. Sie werden daher
+   * Praxis sind aber einige der definierten Methoden Ã¼berflÃ¼ssig. Sie werden daher
    * auch nicht implementiert, sonder nur definiert. Normalerweise sollte dies keine
    * Probleme bereiten. Sollte es damit doch einmal Probleme geben, kann mit Hilfe
    * des Loggers erkannt werden, ob eine nicht implementierte Methode verwendet wurde
@@ -731,8 +731,8 @@ public class MemoryStorage
 
   /**
    * Diese Klasse implementiert ein einfaches PropertySet basierend auf einer
-   * HashMap. Auch hier sind viele in der Praxis nicht benötigte Methoden nicht
-   * implementiert, können aber bei Bedarf implementiert werden.
+   * HashMap. Auch hier sind viele in der Praxis nicht benÃ¶tigte Methoden nicht
+   * implementiert, kÃ¶nnen aber bei Bedarf implementiert werden.
    * 
    * @author Christoph Lutz (D-III-ITD-D101)
    */
