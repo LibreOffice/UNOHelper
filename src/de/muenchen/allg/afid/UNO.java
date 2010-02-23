@@ -158,6 +158,7 @@
 * 09.06.2009 | LUT | +dispatchAndWait(...)
 * 25.06.2009 | LUT | +hideTextRange(...) zur korrekten Behandlung von Ein- 
 *                  |  Ausblendungen
+* 23.02.2010 | BNK | +XQueriesSupplier
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -233,6 +234,7 @@ import com.sun.star.script.provider.XScriptProvider;
 import com.sun.star.script.provider.XScriptProviderFactory;
 import com.sun.star.script.provider.XScriptProviderSupplier;
 import com.sun.star.sdb.XDocumentDataSource;
+import com.sun.star.sdb.XQueriesSupplier;
 import com.sun.star.sdbc.XColumnLocate;
 import com.sun.star.sdbc.XDataSource;
 import com.sun.star.sdbc.XRow;
@@ -1107,6 +1109,12 @@ public class UNO {
     public static XTablesSupplier XTablesSupplier(Object o)
     {
         return (XTablesSupplier)UnoRuntime.queryInterface(XTablesSupplier.class,o);
+    }
+    
+    /** Holt {@link XQueriesSupplier} Interface von o.*/
+    public static XQueriesSupplier XQueriesSupplier(Object o)
+    {
+        return (XQueriesSupplier)UnoRuntime.queryInterface(XQueriesSupplier.class,o);
     }
 
 	
