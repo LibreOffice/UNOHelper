@@ -26,6 +26,7 @@
 * 29.01.2008 | BNK | +copySimpleProperties()
 * 29.01.2008 | BNK | +deleteParagraph
 * 30.01.2008 | BNK | +disappearParagraph
+* 03.03.2010 | ERT | +getBookmarkNamesStartingWith
 * -------------------------------------------------------------------
 *
 * @author Matthias Benkmann (D-III-ITD 5.1)
@@ -36,6 +37,7 @@ package de.muenchen.allg.ooo;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -49,6 +51,8 @@ import com.sun.star.container.NoSuchElementException;
 import com.sun.star.container.XEnumeration;
 import com.sun.star.container.XEnumerationAccess;
 import com.sun.star.container.XNameContainer;
+import com.sun.star.container.XNamed;
+import com.sun.star.lang.WrappedTargetException;
 import com.sun.star.style.LineSpacing;
 import com.sun.star.style.LineSpacingMode;
 import com.sun.star.text.XAutoTextContainer;
@@ -56,6 +60,7 @@ import com.sun.star.text.XAutoTextEntry;
 import com.sun.star.text.XAutoTextGroup;
 import com.sun.star.text.XText;
 import com.sun.star.text.XTextContent;
+import com.sun.star.text.XTextCursor;
 import com.sun.star.text.XTextDocument;
 import com.sun.star.text.XTextRange;
 import com.sun.star.uno.AnyConverter;
@@ -492,6 +497,69 @@ public class TextDocument
    
     System.exit(0);
     
+  }
+  
+  /**
+   * Liefert die Namen aller Bookmarks, die in im Bereich range existieren und
+   * (case insesitive) mit dem Namen bookmarkName anfangen.
+   * 
+   * @param bookmarkName
+   * @param range
+   */
+  public static HashSet<String> getBookmarkNamesStartingWith(String bookmarkName,
+      XTextRange range)
+  {
+    // Hier findet eine iteration des über den XEnumerationAccess des ranges
+    // statt. Man könnte statt dessen auch über range-compare mit den bereits
+    // bestehenden Blöcken aus TextDocumentModel.get<blockname>Blocks()
+    // vergleichen...
+    bookmarkName = bookmarkName.toLowerCase();
+    HashSet<String> found = new HashSet<String>();
+    HashSet<String> started = new HashSet<String>();
+    XTextCursor cursor = range.getText().createTextCursorByRange(range);
+    if (UNO.XEnumerationAccess(cursor) != null)
+    {
+      XEnumeration xenum = UNO.XEnumerationAccess(cursor).createEnumeration();
+      while (xenum.hasMoreElements())
+      {
+        XEnumeration parEnum = null;
+        try
+        {
+          parEnum =
+            UNO.XEnumerationAccess(xenum.nextElement()).createEnumeration();
+        }
+        catch (java.lang.Exception e)
+        {}
+
+        while (parEnum != null && parEnum.hasMoreElements())
+        {
+          try
+          {
+            Object element = parEnum.nextElement();
+            XNamed bookmark = UNO.XNamed(UNO.getProperty(element, "Bookmark"));
+            String name = (bookmark != null) ? bookmark.getName() : "";
+
+            if (name.toLowerCase().startsWith(bookmarkName))
+            {
+              boolean isStart =
+                ((Boolean) UNO.getProperty(element, "IsStart")).booleanValue();
+              if (isStart)
+                started.add(name);
+              else if (started.contains(name)) found.add(name);
+            }
+          }
+          catch (WrappedTargetException ex) 
+          {
+            break;
+          }
+          catch (NoSuchElementException ex)
+          {
+            break;
+          }
+        }
+      }
+    }
+    return found;
   }
   
 }
