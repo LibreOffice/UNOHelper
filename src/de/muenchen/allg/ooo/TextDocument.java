@@ -41,6 +41,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.regex.Pattern;
 
 import com.sun.star.beans.Property;
 import com.sun.star.beans.PropertyState;
@@ -501,19 +502,21 @@ public class TextDocument
   
   /**
    * Liefert die Namen aller Bookmarks, die in im Bereich range existieren und
-   * (case insesitive) mit dem Namen bookmarkName anfangen.
-   * 
-   * @param bookmarkName
-   * @param range
+   * regex matchen. Hinweis: Die Funktion liefert nur Bookmarks zurück, von denen
+   * Anfang UND Ende in dem Bereich liegen (die schließt kollabierte Bookmarks mit ein).
+   * OpenOffice.org hatte in diesem Bereich einige Probleme (oder hat sie immer noch), so
+   * dass ich nicht sicher bin, ob dies überall gewährleistet ist. Insbesondere bei 
+   * TextRanges in Tabellen meine ich mich erinnern zu können, dass die Enumeration immer
+   * die ganze Zelle liefert anstatt den ausgewählten Bereich. Es ist also nicht auszuschließen,
+   * dass diese Methode unter bestimmten Umständen zu viele Bookmarks zurückliefert.
    */
-  public static HashSet<String> getBookmarkNamesStartingWith(String bookmarkName,
+  public static HashSet<String> getBookmarkNamesMatching(Pattern regex,
       XTextRange range)
   {
     // Hier findet eine iteration des über den XEnumerationAccess des ranges
     // statt. Man könnte statt dessen auch über range-compare mit den bereits
     // bestehenden Blöcken aus TextDocumentModel.get<blockname>Blocks()
     // vergleichen...
-    bookmarkName = bookmarkName.toLowerCase();
     HashSet<String> found = new HashSet<String>();
     HashSet<String> started = new HashSet<String>();
     XTextCursor cursor = range.getText().createTextCursorByRange(range);
@@ -539,12 +542,17 @@ public class TextDocument
             XNamed bookmark = UNO.XNamed(UNO.getProperty(element, "Bookmark"));
             String name = (bookmark != null) ? bookmark.getName() : "";
 
-            if (name.toLowerCase().startsWith(bookmarkName))
+            if (regex.matcher(name).matches())
             {
-              boolean isStart =
-                ((Boolean) UNO.getProperty(element, "IsStart")).booleanValue();
+              boolean isStart = Boolean.TRUE.equals(UNO.getProperty(element, "IsStart"));
               if (isStart)
-                started.add(name);
+              {
+                boolean isCollapsed = Boolean.TRUE.equals(UNO.getProperty(element, "IsCollapsed"));
+                if (isCollapsed)
+                  found.add(name);
+                else
+                  started.add(name);
+              }
               else if (started.contains(name)) found.add(name);
             }
           }
