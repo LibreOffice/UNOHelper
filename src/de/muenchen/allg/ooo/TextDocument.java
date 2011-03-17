@@ -27,7 +27,7 @@
 * 29.01.2008 | BNK | +deleteParagraph
 * 30.01.2008 | BNK | +disappearParagraph
 * 03.03.2010 | ERT | +getBookmarkNamesStartingWith
-* 17.03.2011 | ERT | isSimpleType um Prüfung auf Void und Type erweitert
+* 17.03.2011 | BED | isSimpleType um Prüfung auf Void und Type erweitert
 * -------------------------------------------------------------------
 *
 * @author Matthias Benkmann (D-III-ITD 5.1)
