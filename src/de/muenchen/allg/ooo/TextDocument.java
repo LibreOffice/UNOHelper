@@ -27,10 +27,10 @@
 * 29.01.2008 | BNK | +deleteParagraph
 * 30.01.2008 | BNK | +disappearParagraph
 * 03.03.2010 | ERT | +getBookmarkNamesStartingWith
+* 17.03.2010 | ERT | isSimpleType um Prüfung auf Void und Type erweitert
 * -------------------------------------------------------------------
 *
 * @author Matthias Benkmann (D-III-ITD 5.1)
-* @version 1.0
 * 
 */
 package de.muenchen.allg.ooo;
@@ -397,6 +397,14 @@ public class TextDocument
       return true;
     }
     else if (AnyConverter.isObject(o))
+    {
+      return false;
+    }
+    else if (AnyConverter.isVoid(o))
+    {
+      return false;
+    }
+    else if (AnyConverter.isType(o))
     {
       return false;
     }
