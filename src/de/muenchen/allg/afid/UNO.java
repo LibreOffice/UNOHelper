@@ -225,6 +225,7 @@ import com.sun.star.lang.XMultiComponentFactory;
 import com.sun.star.lang.XMultiServiceFactory;
 import com.sun.star.lang.XServiceInfo;
 import com.sun.star.lang.XSingleServiceFactory;
+import com.sun.star.rdf.XDocumentMetadataAccess;
 import com.sun.star.script.browse.BrowseNodeFactoryViewTypes;
 import com.sun.star.script.browse.BrowseNodeTypes;
 import com.sun.star.script.browse.XBrowseNode;
@@ -1573,6 +1574,12 @@ public class UNO {
     public static XRowSet XRowSet(Object o)
     {
         return (XRowSet)UnoRuntime.queryInterface(XRowSet.class,o);
+    }
+
+    /** Holt {@link XDocumentMetadataAccess} Interface von o.*/
+    public static XDocumentMetadataAccess XDocumentMetadataAccess(Object o)
+    {
+        return (XDocumentMetadataAccess)UnoRuntime.queryInterface(XDocumentMetadataAccess.class,o);
     }
 
 	// ACHTUNG: Interface-Methoden fangen hier mit einem grossen X an!
