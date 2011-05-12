@@ -159,10 +159,11 @@
 * 25.06.2009 | LUT | +hideTextRange(...) zur korrekten Behandlung von Ein- 
 *                  |  Ausblendungen
 * 23.02.2010 | BNK | +XQueriesSupplier
+* 04.05.2011 | LUT | +XDocumentMetadataAccess 
+* 12.05.2011 | BED | +XRefreshable
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
-* @version 1.0
 * 
 * */
 package de.muenchen.allg.afid;
@@ -295,6 +296,7 @@ import com.sun.star.util.XCloseBroadcaster;
 import com.sun.star.util.XCloseable;
 import com.sun.star.util.XModifiable;
 import com.sun.star.util.XModifyBroadcaster;
+import com.sun.star.util.XRefreshable;
 import com.sun.star.util.XStringSubstitution;
 import com.sun.star.util.XURLTransformer;
 import com.sun.star.util.XUpdatable;
@@ -1581,6 +1583,13 @@ public class UNO {
     {
         return (XDocumentMetadataAccess)UnoRuntime.queryInterface(XDocumentMetadataAccess.class,o);
     }
+    
+    /** Holt {@link XRefreshable} Interface von o.*/
+    public static XRefreshable XRefreshable(Object o)
+    {
+        return (XRefreshable)UnoRuntime.queryInterface(XRefreshable.class,o);
+    }
+
 
 	// ACHTUNG: Interface-Methoden fangen hier mit einem grossen X an!
     
