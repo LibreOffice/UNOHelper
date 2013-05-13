@@ -82,6 +82,7 @@
  * 18.05.2006 | LUT | + xUpdatable()
  *                    + xTextFramesSupplier()
  * 19.05.2006 | LUT | + xViewSettingsSupplier() 
+ * 13.05.2013 | UKT | + Anpassungen an LO 4.0
  * -------------------------------------------------------------------
  */
 
@@ -125,8 +126,8 @@ import com.sun.star.container.XIndexContainer;
 import com.sun.star.container.XNameAccess;
 import com.sun.star.container.XNameContainer;
 import com.sun.star.container.XNamed;
-import com.sun.star.document.XDocumentInfoSupplier;
 import com.sun.star.document.XDocumentInsertable;
+import com.sun.star.document.XDocumentPropertiesSupplier;
 import com.sun.star.document.XEventBroadcaster;
 import com.sun.star.drawing.XShape;
 import com.sun.star.frame.XComponentLoader;
@@ -999,9 +1000,9 @@ public class UnoService
     return (XDispatch) queryInterface(XDispatch.class);
   }
 
-  public XDocumentInfoSupplier xDocumentInfoSupplier()
+  public XDocumentPropertiesSupplier xDocumentPropertiesSupplier()
   {
-    return (XDocumentInfoSupplier) queryInterface(XDocumentInfoSupplier.class);
+    return (XDocumentPropertiesSupplier) queryInterface(XDocumentPropertiesSupplier.class);
   }
 
   public XNameAccess xNameAccess()

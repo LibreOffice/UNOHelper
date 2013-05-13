@@ -161,6 +161,7 @@
 * 23.02.2010 | BNK | +XQueriesSupplier
 * 04.05.2011 | LUT | +XDocumentMetadataAccess 
 * 12.05.2011 | BED | +XRefreshable
+* 13.05.2013 | UKT | Anpassungen an LO 4.0
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
