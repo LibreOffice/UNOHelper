@@ -1454,7 +1454,7 @@ public class UNO {
     }   
 
     /** Holt {@link com.sun.star.document.XDocumentProperties} Interface von o.*/
-    public static XDocumentProperties XDocumentInfo(Object o)
+    public static XDocumentProperties XDocumentProperties(Object o)
     {
         return (XDocumentProperties)UnoRuntime.queryInterface(XDocumentProperties.class,o);
     }   
