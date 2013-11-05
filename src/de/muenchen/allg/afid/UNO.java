@@ -161,6 +161,7 @@
 * 23.02.2010 | BNK | +XQueriesSupplier
 * 04.05.2011 | LUT | +XDocumentMetadataAccess 
 * 12.05.2011 | BED | +XRefreshable
+* 13.05.2013 | UKT | Anpassungen an LO 4.0
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -196,9 +197,9 @@ import com.sun.star.container.XNameAccess;
 import com.sun.star.container.XNameContainer;
 import com.sun.star.container.XNamed;
 import com.sun.star.document.MacroExecMode;
-import com.sun.star.document.XDocumentInfo;
-import com.sun.star.document.XDocumentInfoSupplier;
 import com.sun.star.document.XDocumentInsertable;
+import com.sun.star.document.XDocumentProperties;
+import com.sun.star.document.XDocumentPropertiesSupplier;
 import com.sun.star.document.XEventBroadcaster;
 import com.sun.star.document.XStorageBasedDocument;
 import com.sun.star.drawing.XControlShape;
@@ -1446,16 +1447,16 @@ public class UNO {
         return (XFramesSupplier)UnoRuntime.queryInterface(XFramesSupplier.class,o);
     }   
 
-    /** Holt {@link XDocumentInfoSupplier} Interface von o.*/
-    public static XDocumentInfoSupplier XDocumentInfoSupplier(Object o)
+    /** Holt {@link XDocumentPropertiesSupplier} Interface von o.*/
+    public static XDocumentPropertiesSupplier XDocumentPropertiesSupplier(Object o)
     {
-        return (XDocumentInfoSupplier)UnoRuntime.queryInterface(XDocumentInfoSupplier.class,o);
+        return (XDocumentPropertiesSupplier)UnoRuntime.queryInterface(XDocumentPropertiesSupplier.class,o);
     }   
 
-    /** Holt {@link com.sun.star.document.XDocumentInfo} Interface von o.*/
-    public static XDocumentInfo XDocumentInfo(Object o)
+    /** Holt {@link com.sun.star.document.XDocumentProperties} Interface von o.*/
+    public static XDocumentProperties XDocumentProperties(Object o)
     {
-        return (XDocumentInfo)UnoRuntime.queryInterface(XDocumentInfo.class,o);
+        return (XDocumentProperties)UnoRuntime.queryInterface(XDocumentProperties.class,o);
     }   
 
     /** Holt {@link XDispatchProviderInterception} Interface von o.*/
