@@ -162,6 +162,7 @@
 * 04.05.2011 | LUT | +XDocumentMetadataAccess 
 * 12.05.2011 | BED | +XRefreshable
 * 13.05.2013 | UKT | Anpassungen an LO 4.0
+* 11.04.2014 | Loi | XTopWindow2 eingefügt
 * ------------------------------------------------------------------- 
 *
 * @author D-III-ITD 5.1 Matthias S. Benkmann
@@ -178,6 +179,7 @@ import java.util.Vector;
 import com.sun.star.awt.XDevice;
 import com.sun.star.awt.XToolkit;
 import com.sun.star.awt.XTopWindow;
+import com.sun.star.awt.XTopWindow2;
 import com.sun.star.awt.XUserInputInterception;
 import com.sun.star.awt.XWindow;
 import com.sun.star.awt.XWindow2;
@@ -962,6 +964,12 @@ public class UNO {
     public static XTopWindow XTopWindow(Object o)
     {
         return (XTopWindow)UnoRuntime.queryInterface(XTopWindow.class,o);
+    }
+    
+    /** Holt {@link XTopWindow2} Interface von o.*/
+    public static XTopWindow2 XTopWindow2(Object o)
+    {
+        return (XTopWindow2)UnoRuntime.queryInterface(XTopWindow2.class,o);
     }
     
     /** Holt {@link XCloseable} Interface von o.*/
