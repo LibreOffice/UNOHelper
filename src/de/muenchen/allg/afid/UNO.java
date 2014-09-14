@@ -169,6 +169,7 @@
 * */
 package de.muenchen.allg.afid;
 
+import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -1974,9 +1975,14 @@ public class UNO {
 		}
 
 		// XAcceleratorConfiguration xAcceleratorConfiguration
-		XAcceleratorConfiguration shortcutManager = UNO
-				.XAcceleratorConfiguration(moduleUICfgMgr.getShortCutManager());
-		return shortcutManager;
+		try {
+			Method m = moduleUICfgMgr.getClass().getMethod("getShortCutManager", (Class[])null);
+			XAcceleratorConfiguration shortcutManager = UNO
+				.XAcceleratorConfiguration(m.invoke(moduleUICfgMgr, (Object[])null));
+			return shortcutManager;
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	
