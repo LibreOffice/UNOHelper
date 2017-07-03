@@ -186,20 +186,20 @@ import com.sun.star.view.XViewSettingsSupplier;
 
 /**
  * The class UnoService is a wrapper for UnoService-Objects provided by the
- * OpenOffice.org API. The main aim of this wrapper is to make java-programs more
- * readable by avoiding the neccessity of UnoRuntime.queryInterface-calls. The
- * wrapper performs the queryInterface-calls and holds the corresponding
+ * OpenOffice.org API. The main aim of this wrapper is to make java-programs
+ * more readable by avoiding the neccessity of UnoRuntime.queryInterface-calls.
+ * The wrapper performs the queryInterface-calls and holds the corresponding
  * interface-instances. Temporary variables for singular interface-types are no
  * longer needed in your own java-programs.
  * 
- * The wrapper provides convenience-methods to certain aspects of uno-services like
- * getter and setter for property-values.
+ * The wrapper provides convenience-methods to certain aspects of uno-services
+ * like getter and setter for property-values.
  * 
- * The wrapper also increases transparency when working with uno-objects. It provides
- * methods to inspect uno-services at runtime and print information about
- * supported-services, implemented interfaces, properties and methods. It makes
- * Uno-Programming in java similar to OOo-Basic programming using tools like the
- * famous XRay-tool.
+ * The wrapper also increases transparency when working with uno-objects. It
+ * provides methods to inspect uno-services at runtime and print information
+ * about supported-services, implemented interfaces, properties and methods. It
+ * makes Uno-Programming in java similar to OOo-Basic programming using tools
+ * like the famous XRay-tool.
  */
 public class UnoService
 {
@@ -209,11 +209,6 @@ public class UnoService
   private final Object unoObject;
 
   /**
-   * This map contains all at least one time required interface-instances of this
-   * uno-service.
-   */
-  // private Map interfaceMap;
-  /**
    * The constructor creates a new wrapperclass for a given uno-service object.
    * 
    * @param unoObject
@@ -222,29 +217,25 @@ public class UnoService
   public UnoService(Object unoObject)
   {
     this.unoObject = unoObject;
-    // interfaceMap = new HashMap();
   }
 
   /**
-   * This method returns the interface-instance of this UnoService for a specified
-   * interface-type. It performs a UnoRuntime.queryInterface call and caches the
-   * result interface-type. If the service doesn't implement the required interface,
-   * the method returns <code>null</code>. Use the construct
+   * This method returns the interface-instance of this UnoService for a
+   * specified interface-type. It performs a UnoRuntime.queryInterface call and
+   * caches the result interface-type. If the service doesn't implement the
+   * required interface, the method returns <code>null</code>. Use the construct
    * <code>if (myUnoService.xAnInterface() != null) ...</code> to ensure the
    * service really implements the interface.
    * 
    * @param ifClass
    *          interface-type to query for.
    * @return The interface instance for this uno-service. If the service doesn't
-   *         implement the required interface, the method returns <code>null</null>.
+   *         implement the required interface, the method returns
+   *         <code>null</null>.
    */
-  public Object queryInterface(Class ifClass)
+  public <T> T queryInterface(Class<T> ifClass)
   {
-    // if (!interfaceMap.containsKey(ifClass)) {
     return UnoRuntime.queryInterface(ifClass, this.unoObject);
-    // interfaceMap.put(ifClass, ifInstance);
-    // }
-    // return interfaceMap.get(ifClass);
   }
 
   /**********************************************************************************
@@ -262,8 +253,7 @@ public class UnoService
     if (this.xServiceInfo() != null)
     {
       return this.xServiceInfo().getImplementationName();
-    }
-    else
+    } else
     {
       return "none";
     }
@@ -271,8 +261,8 @@ public class UnoService
 
   /**
    * This method provides information about supported services, implemented
-   * interfaces, supported properties and methods of this uno-service. The lists of
-   * services, implemented interfaces and methods are sorted in alphabetical
+   * interfaces, supported properties and methods of this uno-service. The lists
+   * of services, implemented interfaces and methods are sorted in alphabetical
    * ascending order.
    * 
    * @return a string containing all the inspection information.
@@ -290,8 +280,7 @@ public class UnoService
       str += dbg_Properties();
       str += dbg_SupportedInterfacesAndMethods();
       return str;
-    }
-    else
+    } else
     {
       return "null";
     }
@@ -315,7 +304,8 @@ public class UnoService
   }
 
   /**
-   * This method returns a sorted list of services supported by this uno-service.
+   * This method returns a sorted list of services supported by this
+   * uno-service.
    * 
    * @return a string containig the inspection-information.
    */
@@ -325,13 +315,12 @@ public class UnoService
     if (this.xServiceInfo() != null)
     {
       str += "\n";
-      Iterator servicesIterator = getSortedServiceIterator();
+      Iterator<String> servicesIterator = getSortedServiceIterator();
       while (servicesIterator.hasNext())
       {
-        str += "  " + ((String) servicesIterator.next()) + "\n";
+        str += "  " + servicesIterator.next() + "\n";
       }
-    }
-    else
+    } else
     {
       str += "none\n";
     }
@@ -339,7 +328,8 @@ public class UnoService
   }
 
   /**
-   * This method returns a sorted list of properties supported by this uno-service.
+   * This method returns a sorted list of properties supported by this
+   * uno-service.
    * 
    * @return a string containig the inspection-information.
    */
@@ -349,27 +339,27 @@ public class UnoService
     if (this.xPropertySet() != null)
     {
       str += "\n";
-      Property[] props = this.xPropertySet().getPropertySetInfo().getProperties();
+      Property[] props = this.xPropertySet().getPropertySetInfo()
+          .getProperties();
       for (int i = 0; i < props.length; i++)
       {
         String name = props[i].Name;
         str += "  " + name + " - " + props[i].Type.getZClass().getName();
         try
         {
-          if (name.equals("Bookmark"))
+          if ("Bookmark".equals(name))
           {
             UnoService bookmark = this.getPropertyValue(name);
             str += "  (Bookmark '" + bookmark.xNamed().getName() + "')";
-          }
-          else
-            str += "  (" + this.getPropertyValue(props[i].Name).toString() + ")";
+          } else
+            str += "  (" + this.getPropertyValue(props[i].Name).toString()
+                + ")";
+        } catch (java.lang.Exception x)
+        {
         }
-        catch (java.lang.Exception x)
-        {}
         str += "\n";
       }
-    }
-    else
+    } else
     {
       str += "none\n";
     }
@@ -387,13 +377,12 @@ public class UnoService
     if (this.xTypeProvider() != null)
     {
       str += "\n";
-      Iterator typesIterator = getSortedTypesIterator();
+      Iterator<Type> typesIterator = getSortedTypesIterator();
       while (typesIterator.hasNext())
       {
-        str += "  " + ((Type) typesIterator.next()).getTypeName() + "\n";
+        str += "  " + typesIterator.next().getTypeName() + "\n";
       }
-    }
-    else
+    } else
     {
       str += "none";
     }
@@ -412,17 +401,17 @@ public class UnoService
     if (this.xTypeProvider() != null)
     {
       str += "\n";
-      Iterator typesIterator = getSortedTypesIterator();
+      Iterator<Type> typesIterator = getSortedTypesIterator();
       while (typesIterator.hasNext())
       {
-        Type type = (Type) typesIterator.next();
+        Type type = typesIterator.next();
         str += "  " + type.getTypeName() + "\n";
-        Iterator methodsIterator = getSortedMethodsIterator(type);
+        Iterator<Method> methodsIterator = getSortedMethodsIterator(type);
         while (methodsIterator.hasNext())
         {
-          Method m = (Method) methodsIterator.next();
+          Method m = methodsIterator.next();
           str += "    - " + m.getName() + "(";
-          Class[] par = m.getParameterTypes();
+          Class<?>[] par = m.getParameterTypes();
           for (int k = 0; k < par.length; k++)
           {
             if (k != 0)
@@ -435,8 +424,7 @@ public class UnoService
 
         }
       }
-    }
-    else
+    } else
     {
       str += "none";
     }
@@ -446,105 +434,43 @@ public class UnoService
   /**
    * This method returns an Iterator to a sorted list of supported services.
    */
-  private Iterator getSortedServiceIterator()
+  private Iterator<String> getSortedServiceIterator()
   {
     if (this.xServiceInfo() != null)
     {
-      return getSortedArrayIterator(this.xServiceInfo().getSupportedServiceNames(),
-        new Comparator()
-        {
-          public int compare(Object arg0, Object arg1)
+      return getSortedArrayIterator(
+          this.xServiceInfo().getSupportedServiceNames(),
+          new Comparator<String>()
           {
-            return ((String) arg0).compareTo((String) arg1);
-          }
+            @Override
+            public int compare(String arg0, String arg1)
+            {
+              return arg0.compareTo(arg1);
+            }
 
-          public boolean equals(Object obj)
-          {
-            return this == obj;
-          }
-        });
-    }
-    else
+            @Override
+            public boolean equals(Object obj)
+            {
+              return this == obj;
+            }
+          });
+    } else
     {
-      return new Iterator()
+      return new Iterator<String>()
       {
-
+        @Override
         public void remove()
         {
           throw new IllegalStateException();
         }
 
-        public Object next() throws NoSuchElementException
-        {
-          throw new NoSuchElementException(); 
-        }
-
-        public boolean hasNext()
-        {
-          return false;
-        }
-      };
-    }
-  }
-
-  /**
-   * This method returns an Iterator to a sorted list of methods supported by the
-   * specified interface-type.
-   */
-  private Iterator getSortedMethodsIterator(Type type)
-  {
-    Iterator methodsIterator =
-      getSortedArrayIterator(type.getZClass().getMethods(), new Comparator()
-      {
-        public int compare(Object arg0, Object arg1)
-        {
-          return ((Method) arg0).getName().compareTo(((Method) arg1).getName());
-        }
-
-        public boolean equals(Object obj)
-        {
-          return this == obj;
-        }
-      });
-    return methodsIterator;
-  }
-
-  /**
-   * This method returns an Iterator to a sorted List of implemented interface-types.
-   */
-  private Iterator getSortedTypesIterator()
-  {
-    if (this.xTypeProvider() != null)
-    {
-      return getSortedArrayIterator(this.xTypeProvider().getTypes(),
-        new Comparator()
-        {
-          public int compare(Object arg0, Object arg1)
-          {
-            return ((Type) arg0).getTypeName().compareTo(((Type) arg1).getTypeName());
-          }
-
-          public boolean equals(Object obj)
-          {
-            return this == obj;
-          }
-        });
-    }
-    else
-    {
-      return new Iterator()
-      {
-
-        public void remove()
-        {
-          throw new IllegalStateException();
-        }
-
-        public Object next() throws NoSuchElementException
+        @Override
+        public String next()
         {
           throw new NoSuchElementException();
         }
 
+        @Override
         public boolean hasNext()
         {
           return false;
@@ -554,13 +480,84 @@ public class UnoService
   }
 
   /**
-   * This generic method sorts an array comparing its elements using a comperator.
-   * The method is needes by the methods getSortedServiceIterator(),
+   * This method returns an Iterator to a sorted list of methods supported by
+   * the specified interface-type.
+   */
+  private Iterator<Method> getSortedMethodsIterator(Type type)
+  {
+    return getSortedArrayIterator(type.getZClass().getMethods(),
+        new Comparator<Method>()
+        {
+          @Override
+          public int compare(Method arg0, Method arg1)
+          {
+            return arg0.getName().compareTo((arg1).getName());
+          }
+
+          @Override
+          public boolean equals(Object obj)
+          {
+            return this == obj;
+          }
+        });
+  }
+
+  /**
+   * This method returns an Iterator to a sorted List of implemented
+   * interface-types.
+   */
+  private Iterator<Type> getSortedTypesIterator()
+  {
+    if (this.xTypeProvider() != null)
+    {
+      return getSortedArrayIterator(this.xTypeProvider().getTypes(),
+          new Comparator<Type>()
+          {
+            @Override
+            public int compare(Type arg0, Type arg1)
+            {
+              return arg0.getTypeName().compareTo(arg1.getTypeName());
+            }
+
+            @Override
+            public boolean equals(Object obj)
+            {
+              return this == obj;
+            }
+          });
+    } else
+    {
+      return new Iterator<Type>()
+      {
+        @Override
+        public void remove()
+        {
+          throw new IllegalStateException();
+        }
+
+        @Override
+        public Type next()
+        {
+          throw new NoSuchElementException();
+        }
+
+        @Override
+        public boolean hasNext()
+        {
+          return false;
+        }
+      };
+    }
+  }
+
+  /**
+   * This generic method sorts an array comparing its elements using a
+   * comperator. The method is needes by the methods getSortedServiceIterator(),
    * getSortedMethodsIterator(Type type) and getSortedTypesIterator(),
    */
-  private Iterator getSortedArrayIterator(Object[] array, Comparator c)
+  private <T> Iterator<T> getSortedArrayIterator(T[] array, Comparator<T> c)
   {
-    TreeSet set = new TreeSet(c);
+    TreeSet<T> set = new TreeSet<T>(c);
     for (int i = 0; i < array.length; i++)
     {
       set.add(array[i]);
@@ -573,8 +570,8 @@ public class UnoService
    *********************************************************************************/
 
   /**
-   * This method returns the property of the uno-service and wrappes the result in a
-   * new UnoService-object.
+   * This method returns the property of the uno-service and wrappes the result
+   * in a new UnoService-object.
    * 
    * @param p
    *          the name of the required property
@@ -586,8 +583,7 @@ public class UnoService
     if (this.xPropertySet() != null)
     {
       return new UnoService(this.xPropertySet().getPropertyValue(p));
-    }
-    else
+    } else
     {
       throw new Exception("Service doesn't support interface XPropertySet");
     }
@@ -607,8 +603,7 @@ public class UnoService
     if (this.xPropertySet() != null)
     {
       this.xPropertySet().setPropertyValue(p, o);
-    }
-    else
+    } else
     {
       throw new Exception("Service doesn't support interface XPropertySet");
     }
@@ -626,8 +621,7 @@ public class UnoService
     if (this.xServiceInfo() != null)
     {
       return this.xServiceInfo().supportsService(s);
-    }
-    else
+    } else
     {
       return false;
     }
@@ -648,14 +642,15 @@ public class UnoService
    * 
    * @see java.lang.Object#toString()
    */
+  @Override
   public String toString()
   {
     return unoObject.toString();
   }
 
   /**
-   * This method creates and returns a new UnoService using the xMultiServiceFactory
-   * of the current unoObject.
+   * This method creates and returns a new UnoService using the
+   * xMultiServiceFactory of the current unoObject.
    * 
    * @param name
    *          the name of the required service
@@ -669,8 +664,7 @@ public class UnoService
     if (this.xMultiServiceFactory() != null)
     {
       return new UnoService(this.xMultiServiceFactory().createInstance(name));
-    }
-    else
+    } else
     {
       return new UnoService(null);
     }
@@ -693,10 +687,9 @@ public class UnoService
   {
     if (this.xMultiServiceFactory() != null)
     {
-      return new UnoService(this.xMultiServiceFactory().createInstanceWithArguments(
-        name, args));
-    }
-    else
+      return new UnoService(
+          this.xMultiServiceFactory().createInstanceWithArguments(name, args));
+    } else
     {
       return new UnoService(null);
     }
@@ -715,8 +708,8 @@ public class UnoService
   public static UnoService createWithContext(String name, XComponentContext ctx)
       throws Exception
   {
-    return new UnoService(ctx.getServiceManager().createInstanceWithContext(name,
-      ctx));
+    return new UnoService(
+        ctx.getServiceManager().createInstanceWithContext(name, ctx));
   }
 
   /**********************************************************************************
@@ -727,392 +720,392 @@ public class UnoService
 
   public XTextDocument xTextDocument()
   {
-    return (XTextDocument) queryInterface(XTextDocument.class);
+    return queryInterface(XTextDocument.class);
   }
 
   public XComponentLoader xComponentLoader()
   {
-    return (XComponentLoader) queryInterface(XComponentLoader.class);
+    return queryInterface(XComponentLoader.class);
   }
 
   public XDesktop xDesktop()
   {
-    return (XDesktop) queryInterface(XDesktop.class);
+    return queryInterface(XDesktop.class);
   }
 
   public XText xText()
   {
-    return (XText) queryInterface(XText.class);
+    return queryInterface(XText.class);
   }
 
   public XTextRange xTextRange()
   {
-    return (XTextRange) queryInterface(XTextRange.class);
+    return queryInterface(XTextRange.class);
   }
 
   public XPropertySet xPropertySet()
   {
-    return (XPropertySet) queryInterface(XPropertySet.class);
+    return queryInterface(XPropertySet.class);
   }
 
   public XCloseable xCloseable()
   {
-    return (XCloseable) queryInterface(XCloseable.class);
+    return queryInterface(XCloseable.class);
   }
 
   public XComponentContext xComponentContext()
   {
-    return (XComponentContext) queryInterface(XComponentContext.class);
+    return queryInterface(XComponentContext.class);
   }
 
   public XMultiComponentFactory xMultiComponentFactory()
   {
-    return (XMultiComponentFactory) queryInterface(XMultiComponentFactory.class);
+    return queryInterface(XMultiComponentFactory.class);
   }
 
   public XMultiServiceFactory xMultiServiceFactory()
   {
-    return (XMultiServiceFactory) queryInterface(XMultiServiceFactory.class);
+    return queryInterface(XMultiServiceFactory.class);
   }
 
   public XUnoUrlResolver xUnoUrlResolver()
   {
-    return (XUnoUrlResolver) queryInterface(XUnoUrlResolver.class);
+    return queryInterface(XUnoUrlResolver.class);
   }
 
   public XServiceInfo xServiceInfo()
   {
-    return (XServiceInfo) queryInterface(XServiceInfo.class);
+    return queryInterface(XServiceInfo.class);
   }
 
   public XPropertySetInfo xPropertySetInfo()
   {
-    return (XPropertySetInfo) queryInterface(XPropertySetInfo.class);
+    return queryInterface(XPropertySetInfo.class);
   }
 
   public XInterface xInterface()
   {
-    return (XInterface) queryInterface(XInterface.class);
+    return queryInterface(XInterface.class);
   }
 
   public XTypeProvider xTypeProvider()
   {
-    return (XTypeProvider) queryInterface(XTypeProvider.class);
+    return queryInterface(XTypeProvider.class);
   }
 
   public XEnumerationAccess xEnumerationAccess()
   {
-    return (XEnumerationAccess) queryInterface(XEnumerationAccess.class);
+    return queryInterface(XEnumerationAccess.class);
   }
 
   public XEnumeration xEnumeration()
   {
-    return (XEnumeration) queryInterface(XEnumeration.class);
+    return queryInterface(XEnumeration.class);
   }
 
   public XTextField xTextField()
   {
-    return (XTextField) queryInterface(XTextField.class);
+    return queryInterface(XTextField.class);
   }
 
   public XTextContent xTextContent()
   {
-    return (XTextContent) queryInterface(XTextContent.class);
+    return queryInterface(XTextContent.class);
   }
 
   public XShape xShape()
   {
-    return (XShape) queryInterface(XShape.class);
+    return queryInterface(XShape.class);
   }
 
   public XFilePicker xFilePicker()
   {
-    return (XFilePicker) queryInterface(XFilePicker.class);
+    return queryInterface(XFilePicker.class);
   }
 
   public XFrame xFrame()
   {
-    return (XFrame) queryInterface(XFrame.class);
+    return queryInterface(XFrame.class);
   }
 
   public XToolkit xToolkit()
   {
-    return (XToolkit) queryInterface(XToolkit.class);
+    return queryInterface(XToolkit.class);
   }
 
   public XExtendedToolkit xExtendedToolkit()
   {
-    return (XExtendedToolkit) queryInterface(XExtendedToolkit.class);
+    return queryInterface(XExtendedToolkit.class);
   }
 
   public XWindow xWindow()
   {
-    return (XWindow) queryInterface(XWindow.class);
+    return queryInterface(XWindow.class);
   }
 
   public XWindowPeer xWindowPeer()
   {
-    return (XWindowPeer) queryInterface(XWindowPeer.class);
+    return queryInterface(XWindowPeer.class);
   }
 
   public XComboBox xComboBox()
   {
-    return (XComboBox) queryInterface(XComboBox.class);
+    return queryInterface(XComboBox.class);
   }
 
   public XModel xModel()
   {
-    return (XModel) queryInterface(XModel.class);
+    return queryInterface(XModel.class);
   }
 
   public XLayoutManager xLayoutManager()
   {
-    return (XLayoutManager) queryInterface(XLayoutManager.class);
+    return queryInterface(XLayoutManager.class);
   }
 
   public XModuleUIConfigurationManagerSupplier xModuleUIConfigurationManagerSupplier()
   {
-    return (XModuleUIConfigurationManagerSupplier) queryInterface(XModuleUIConfigurationManagerSupplier.class);
+    return queryInterface(XModuleUIConfigurationManagerSupplier.class);
   }
 
   public XUIConfigurationManager xUIConfigurationManager()
   {
-    return (XUIConfigurationManager) queryInterface(XUIConfigurationManager.class);
+    return queryInterface(XUIConfigurationManager.class);
   }
 
   public XIndexAccess xIndexAccess()
   {
-    return (XIndexAccess) queryInterface(XIndexAccess.class);
+    return queryInterface(XIndexAccess.class);
   }
 
   public XIndexContainer xIndexContainer()
   {
-    return (XIndexContainer) queryInterface(XIndexContainer.class);
+    return queryInterface(XIndexContainer.class);
   }
 
   public XElementAccess xElementAccess()
   {
-    return (XElementAccess) queryInterface(XElementAccess.class);
+    return queryInterface(XElementAccess.class);
   }
 
   public XDockableWindow xDockableWindow()
   {
-    return (XDockableWindow) queryInterface(XDockableWindow.class);
+    return queryInterface(XDockableWindow.class);
   }
 
   public XListBox xListBox()
   {
-    return (XListBox) queryInterface(XListBox.class);
+    return queryInterface(XListBox.class);
   }
 
   public XVclWindowPeer xVclWindowPeer()
   {
-    return (XVclWindowPeer) queryInterface(XVclWindowPeer.class);
+    return queryInterface(XVclWindowPeer.class);
   }
 
   public XTextComponent xTextComponent()
   {
-    return (XTextComponent) queryInterface(XTextComponent.class);
+    return queryInterface(XTextComponent.class);
   }
 
   public XModuleManager xModuleManager()
   {
-    return (XModuleManager) queryInterface(XModuleManager.class);
+    return queryInterface(XModuleManager.class);
   }
 
   public XUIElementSettings xUIElementSettings()
   {
-    return (XUIElementSettings) queryInterface(XUIElementSettings.class);
+    return queryInterface(XUIElementSettings.class);
   }
 
   public XConfigManager xConfigManager()
   {
-    return (XConfigManager) queryInterface(XConfigManager.class);
+    return queryInterface(XConfigManager.class);
   }
 
   public XStringSubstitution xStringSubstitution()
   {
-    return (XStringSubstitution) queryInterface(XStringSubstitution.class);
+    return queryInterface(XStringSubstitution.class);
   }
 
   public XSimpleRegistry xSimpleRegistry()
   {
-    return (XSimpleRegistry) queryInterface(XSimpleRegistry.class);
+    return queryInterface(XSimpleRegistry.class);
   }
 
   public XRegistryKey xRegistryKey()
   {
-    return (XRegistryKey) queryInterface(XRegistryKey.class);
+    return queryInterface(XRegistryKey.class);
   }
 
   public XBookmarksSupplier xBookmarksSupplier()
   {
-    return (XBookmarksSupplier) queryInterface(XBookmarksSupplier.class);
+    return queryInterface(XBookmarksSupplier.class);
   }
 
   public XNamed xNamed()
   {
-    return (XNamed) queryInterface(XNamed.class);
+    return queryInterface(XNamed.class);
   }
 
   public XDocumentInsertable xDocumentInsertable()
   {
-    return (XDocumentInsertable) queryInterface(XDocumentInsertable.class);
+    return queryInterface(XDocumentInsertable.class);
   }
 
   public XTextCursor xTextCursor()
   {
-    return (XTextCursor) queryInterface(XTextCursor.class);
+    return queryInterface(XTextCursor.class);
   }
 
   public XURLTransformer xURLTransformer()
   {
-    return (XURLTransformer) queryInterface(XURLTransformer.class);
+    return queryInterface(XURLTransformer.class);
   }
 
   public XTextRangeCompare xTextRangeCompare()
   {
-    return (XTextRangeCompare) queryInterface(XTextRangeCompare.class);
+    return queryInterface(XTextRangeCompare.class);
   }
 
   public XTextFieldsSupplier xTextFieldsSupplier()
   {
-    return (XTextFieldsSupplier) queryInterface(XTextFieldsSupplier.class);
+    return queryInterface(XTextFieldsSupplier.class);
   }
 
   public XEventBroadcaster xEventBroadcaster()
   {
-    return (XEventBroadcaster) queryInterface(XEventBroadcaster.class);
+    return queryInterface(XEventBroadcaster.class);
   }
 
   public XComponent xComponent()
   {
-    return (XComponent) queryInterface(XComponent.class);
+    return queryInterface(XComponent.class);
   }
 
   public XDevice xDevice()
   {
-    return (XDevice) queryInterface(XDevice.class);
+    return queryInterface(XDevice.class);
   }
 
   public XDispatch xDispatch()
   {
-    return (XDispatch) queryInterface(XDispatch.class);
+    return queryInterface(XDispatch.class);
   }
 
   public XDocumentPropertiesSupplier xDocumentPropertiesSupplier()
   {
-    return (XDocumentPropertiesSupplier) queryInterface(XDocumentPropertiesSupplier.class);
+    return queryInterface(XDocumentPropertiesSupplier.class);
   }
 
   public XNameAccess xNameAccess()
   {
-    return (XNameAccess) queryInterface(XNameAccess.class);
+    return queryInterface(XNameAccess.class);
   }
 
   public XModifiable xModifiable()
   {
-    return (XModifiable) queryInterface(XModifiable.class);
+    return queryInterface(XModifiable.class);
   }
 
   public XUIElementFactory xUIElementFactory()
   {
-    return (XUIElementFactory) queryInterface(XUIElementFactory.class);
+    return queryInterface(XUIElementFactory.class);
   }
 
   public XSingleComponentFactory xSingleComponentFactory()
   {
-    return (XSingleComponentFactory) queryInterface(XSingleComponentFactory.class);
+    return queryInterface(XSingleComponentFactory.class);
   }
 
   public XUIConfigurationPersistence xUIConfigurationPersistence()
   {
-    return (XUIConfigurationPersistence) queryInterface(XUIConfigurationPersistence.class);
+    return queryInterface(XUIConfigurationPersistence.class);
   }
 
   public XHierarchicalName xHierarchicalName()
   {
-    return (XHierarchicalName) queryInterface(XHierarchicalName.class);
+    return queryInterface(XHierarchicalName.class);
   }
 
   public XHierarchicalPropertySet xHierarchicalPropertySet()
   {
-    return (XHierarchicalPropertySet) queryInterface(XHierarchicalPropertySet.class);
+    return queryInterface(XHierarchicalPropertySet.class);
   }
 
   public XMultiPropertySet xMultiPropertySet()
   {
-    return (XMultiPropertySet) queryInterface(XMultiPropertySet.class);
+    return queryInterface(XMultiPropertySet.class);
   }
 
   public XSingleServiceFactory xSingleServiceFactory()
   {
-    return (XSingleServiceFactory) queryInterface(XSingleServiceFactory.class);
+    return queryInterface(XSingleServiceFactory.class);
   }
 
   public XNameContainer xNameContainer()
   {
-    return (XNameContainer) queryInterface(XNameContainer.class);
+    return queryInterface(XNameContainer.class);
   }
 
   public XChangesBatch xChangesBatch()
   {
-    return (XChangesBatch) queryInterface(XChangesBatch.class);
+    return queryInterface(XChangesBatch.class);
   }
 
   public XUIConfigurationManagerSupplier xUIConfigurationManagerSupplier()
   {
-    return (XUIConfigurationManagerSupplier) queryInterface(XUIConfigurationManagerSupplier.class);
+    return queryInterface(XUIConfigurationManagerSupplier.class);
   }
 
   public XLayoutManagerEventBroadcaster xLayoutManagerEventBroadcaster()
   {
-    return (XLayoutManagerEventBroadcaster) queryInterface(XLayoutManagerEventBroadcaster.class);
+    return queryInterface(XLayoutManagerEventBroadcaster.class);
   }
 
   public XParagraphCursor xParagraphCursor()
   {
-    return (XParagraphCursor) queryInterface(XParagraphCursor.class);
+    return queryInterface(XParagraphCursor.class);
   }
 
   public XUpdatable xUpdatable()
   {
-    return (XUpdatable) queryInterface(XUpdatable.class);
+    return queryInterface(XUpdatable.class);
   }
 
   public XTextViewCursorSupplier xTextViewCursorSupplier()
   {
-    return (XTextViewCursorSupplier) queryInterface(XTextViewCursorSupplier.class);
+    return queryInterface(XTextViewCursorSupplier.class);
   }
 
   public XTextViewCursor xTextViewCursor()
   {
-    return (XTextViewCursor) queryInterface(XTextViewCursor.class);
+    return queryInterface(XTextViewCursor.class);
   }
 
   public XDispatchHelper xDispatchHelper()
   {
-    return (XDispatchHelper) queryInterface(XDispatchHelper.class);
+    return queryInterface(XDispatchHelper.class);
   }
 
   public XDispatchProvider xDispatchProvider()
   {
-    return (XDispatchProvider) queryInterface(XDispatchProvider.class);
+    return queryInterface(XDispatchProvider.class);
   }
 
   public XController xController()
   {
-    return (XController) queryInterface(XController.class);
+    return queryInterface(XController.class);
   }
 
   public XTextFramesSupplier xTextFramesSupplier()
   {
-    return (XTextFramesSupplier) queryInterface(XTextFramesSupplier.class);
+    return queryInterface(XTextFramesSupplier.class);
   }
 
   public XViewSettingsSupplier xViewSettingsSupplier()
   {
-    return (XViewSettingsSupplier) queryInterface(XViewSettingsSupplier.class);
+    return queryInterface(XViewSettingsSupplier.class);
   }
 
   // ... add wrapper-methods for your own interfaces here...
@@ -1132,6 +1125,7 @@ public class UnoService
       Button ok = new Button("OK");
       ok.addActionListener(new ActionListener()
       {
+        @Override
         public void actionPerformed(ActionEvent e)
         {
           // Hide dialog

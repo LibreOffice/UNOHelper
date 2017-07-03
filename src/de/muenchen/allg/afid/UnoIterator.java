@@ -46,4 +46,10 @@ public class UnoIterator<T> implements Iterator<T>
     }
   }
 
+  @Override
+  public void remove()
+  {
+    throw new UnsupportedOperationException("Remove is not allowed");
+  }
+
 }

@@ -58,9 +58,7 @@ import com.sun.star.embed.XStorage;
 import com.sun.star.embed.XTransactedObject;
 import com.sun.star.embed.XTransactionBroadcaster;
 import com.sun.star.embed.XTransactionListener;
-import com.sun.star.io.BufferSizeExceededException;
 import com.sun.star.io.IOException;
-import com.sun.star.io.NotConnectedException;
 import com.sun.star.io.XInputStream;
 import com.sun.star.io.XOutputStream;
 import com.sun.star.io.XSeekable;
@@ -78,11 +76,12 @@ import de.muenchen.allg.afid.UNO;
 /**
  * Diese Klasse definiert die notwendigen Services, um mit mit der Methode
  * XStorageBasedDocument.storeToStorage(...) XML-Daten aktiver Dokumente in den
- * Hauptspeicher zu speichern. Dazu wird mit {@link #createByteArrayStorage()} ein
- * Objekt erzeugt, das die Daten im Hauptspeicher verwaltet und aus Java-Sicht
- * besonders leicht weiter verarbeitet werden kann. Mit
- * {@link #createXStorage(de.muenchen.allg.ooo.MemoryStorage.ByteArrayStorage)} wird
- * ein entsprechender UNO-Service erzeugt, der für storeToStorage(...) geeignet ist.
+ * Hauptspeicher zu speichern. Dazu wird mit {@link #createByteArrayStorage()}
+ * ein Objekt erzeugt, das die Daten im Hauptspeicher verwaltet und aus
+ * Java-Sicht besonders leicht weiter verarbeitet werden kann. Mit
+ * {@link #createXStorage(de.muenchen.allg.ooo.MemoryStorage.ByteArrayStorage)}
+ * wird ein entsprechender UNO-Service erzeugt, der für storeToStorage(...)
+ * geeignet ist.
  * 
  * @author Christoph Lutz (D-III-ITD-D101)
  */
@@ -90,8 +89,13 @@ public class MemoryStorage
 {
 
   /**
-   * Diese Methode erzeugt einen ByteArrayStorage in dem Dokumente unkomprimiert und
-   * unverschlüsselt im Hauptspeicher abgelegt werden können.
+   * Der Logger, auf den Meldungen ausgegeben werden, wenn er gesetzt ist.
+   */
+  private static Logger logger = null;
+
+  /**
+   * Diese Methode erzeugt einen ByteArrayStorage in dem Dokumente unkomprimiert
+   * und unverschlüsselt im Hauptspeicher abgelegt werden können.
    * 
    * @author Christoph Lutz (D-III-ITD-D101)
    */
@@ -101,18 +105,19 @@ public class MemoryStorage
   }
 
   /**
-   * Erzeugt eine Implementierung des Service com::sun::star::embed::Storage, bei dem
-   * die Daten eines Dokuments in einem ByteArrayStorage abgelegt werden.
+   * Erzeugt eine Implementierung des Service com::sun::star::embed::Storage,
+   * bei dem die Daten eines Dokuments in einem ByteArrayStorage abgelegt
+   * werden.
    * 
    * Achtung: Der UNO-Service definiert viele Methoden, die jedoch in der Praxis
-   * nicht alle relevant sind. Um toten Code zu vermeiden, und da die Spezifikation
-   * dieser Methoden in der UNO-API nicht aussagekräftig genug ist, wurden die
-   * unnötigen Methoden daher nicht implementiert. Das birgt aber auch das Risiko,
-   * dass neue OOo-Versionen in Zukunft das Storage anders ansprechen und dabei nicht
-   * implementierte Methoden verwenden könnten. Als Hilfestellung bei der Fehlersuche
-   * dient hier das public-field {@link #logger}, in dem ein Logger hinterlegt
-   * werden kann und über den verwendete, aber nicht implementierte Methoden erkannt
-   * werden können.
+   * nicht alle relevant sind. Um toten Code zu vermeiden, und da die
+   * Spezifikation dieser Methoden in der UNO-API nicht aussagekräftig genug
+   * ist, wurden die unnötigen Methoden daher nicht implementiert. Das birgt
+   * aber auch das Risiko, dass neue OOo-Versionen in Zukunft das Storage anders
+   * ansprechen und dabei nicht implementierte Methoden verwenden könnten. Als
+   * Hilfestellung bei der Fehlersuche dient hier das public-field
+   * {@link #logger}, in dem ein Logger hinterlegt werden kann und über den
+   * verwendete, aber nicht implementierte Methoden erkannt werden können.
    * 
    * @author Christoph Lutz (D-III-ITD-D101)
    */
@@ -123,18 +128,13 @@ public class MemoryStorage
 
   /**
    * Logger-Interfaces für die Behandlung von Debug-Ausgaben dieser Klasse. Für
-   * Debugging-Zwecke kann es sinnvoll und notwendig sein, einen eigenen Logger zu
-   * definieren und diesen über setLogger(MemoryStorage.Logger) zu setzen.
+   * Debugging-Zwecke kann es sinnvoll und notwendig sein, einen eigenen Logger
+   * zu definieren und diesen über setLogger(MemoryStorage.Logger) zu setzen.
    */
   public interface Logger
   {
     public void log(String s);
   }
-
-  /**
-   * Der Logger, auf den Meldungen ausgegeben werden, wenn er gesetzt ist.
-   */
-  private static Logger logger = null;
 
   /**
    * Setzt den Logger auf den Meldungen dieser Klasse ausgegeben werden.
@@ -149,33 +149,34 @@ public class MemoryStorage
   }
 
   /**
-   * Gibt eine Logger-Meldung mit der Nachricht s auf dem Logger aus, wenn dieser !=
-   * null ist.
+   * Gibt eine Logger-Meldung mit der Nachricht s auf dem Logger aus, wenn
+   * dieser != null ist.
    * 
    * @author Christoph Lutz (D-III-ITD-D101)
    */
   private static void log(String s)
   {
-    if (logger != null) logger.log(s);
+    if (logger != null)
+      logger.log(s);
   }
 
   /**
    * NotYetImplemented: Gibt eine Logger-Meldung mit der Nachricht
-   * "NotYetImplemented: " + s für eine Methode aus, die derzeit nicht implementiert
-   * ist.
+   * "NotYetImplemented: " + s für eine Methode aus, die derzeit nicht
+   * implementiert ist.
    * 
    * @author Christoph Lutz (D-III-ITD-D101)
    */
-  private static void NYI(String s)
+  private static void notYetImplemented(String s)
   {
     log("NotYetImplemented: " + s);
   }
 
   /**
-   * Diese Klasse definiert ein Storage, das benannte ByteArray-Datenblöcke aufnehmen
-   * kann. Das Storage enthält ausschließlich Elemente mit Daten und hält diese in
-   * einer flachen Struktur ohne Hierarchie. Daher kennt es keine Verzeichnisse, die
-   * einzelnen Elemente können aber Namen mit "/" enthalten.
+   * Diese Klasse definiert ein Storage, das benannte ByteArray-Datenblöcke
+   * aufnehmen kann. Das Storage enthält ausschließlich Elemente mit Daten und
+   * hält diese in einer flachen Struktur ohne Hierarchie. Daher kennt es keine
+   * Verzeichnisse, die einzelnen Elemente können aber Namen mit "/" enthalten.
    * 
    * @author Christoph Lutz (D-III-ITD-D101)
    */
@@ -196,8 +197,8 @@ public class MemoryStorage
     }
 
     /**
-     * Fügt das Element elementName mit den Daten data und dem MediaType mediaType in
-     * dieses Storage ein.
+     * Fügt das Element elementName mit den Daten data und dem MediaType
+     * mediaType in dieses Storage ein.
      * 
      * @author Christoph Lutz (D-III-ITD-D101)
      */
@@ -215,20 +216,21 @@ public class MemoryStorage
     public int getSize(String elementName)
     {
       byte[] buffy = mapNameToData.get(elementName);
-      if (buffy != null) return buffy.length;
+      if (buffy != null)
+        return buffy.length;
       return 0;
     }
 
     /**
-     * Liefert einen InputStream des Elements elementName zurück. Ist elementName
-     * nicht definiert, so wird eine java.util.NoSuchElementException geworfen.
+     * Liefert einen InputStream des Elements elementName zurück. Ist
+     * elementName nicht definiert, so wird eine
+     * java.util.NoSuchElementException geworfen.
      * 
      * @throws java.util.NoSuchElementException
      * 
      * @author Christoph Lutz (D-III-ITD-D101)
      */
     public InputStream getInputStream(String elementName)
-        throws java.util.NoSuchElementException
     {
       byte[] data = mapNameToData.get(elementName);
       if (data != null)
@@ -238,8 +240,8 @@ public class MemoryStorage
     }
 
     /**
-     * Liefert die namen aller Einträge des Storage in einer alphabetisch sortierten
-     * Liste zurück.
+     * Liefert die namen aller Einträge des Storage in einer alphabetisch
+     * sortierten Liste zurück.
      * 
      * @author Christoph Lutz (D-III-ITD-D101)
      */
@@ -267,8 +269,8 @@ public class MemoryStorage
     }
 
     /**
-     * Diese Methode erzeugt eine Datei META-INF/manifest.xml, die die Elemente des
-     * Storage beschreibt, und nimmt sie in das Storage mit auf.
+     * Diese Methode erzeugt eine Datei META-INF/manifest.xml, die die Elemente
+     * des Storage beschreibt, und nimmt sie in das Storage mit auf.
      * 
      * @author Christoph Lutz (D-III-ITD-D101)
      */
@@ -276,7 +278,8 @@ public class MemoryStorage
     {
       StringBuilder manifest = new StringBuilder();
       manifest.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-      manifest.append("<manifest:manifest xmlns:manifest=\"urn:oasis:names:tc:opendocument:xmlns:manifest:1.0\">\n");
+      manifest.append(
+          "<manifest:manifest xmlns:manifest=\"urn:oasis:names:tc:opendocument:xmlns:manifest:1.0\">\n");
 
       if (mediaType != null)
       {
@@ -287,33 +290,35 @@ public class MemoryStorage
 
       for (String name : mapNameToMediaType.keySet())
       {
-        String mediaType = mapNameToMediaType.get(name);
+        String media = mapNameToMediaType.get(name);
         manifest.append("  <manifest:file-entry manifest:media-type=\"");
-        manifest.append(mediaType);
+        manifest.append(media);
         manifest.append("\" manifest:full-path=\"");
         manifest.append(name);
         manifest.append("\"/>\n");
       }
 
       manifest.append("</manifest:manifest>");
-      mapNameToData.put("META-INF/manifest.xml", manifest.toString().getBytes());
+      mapNameToData.put("META-INF/manifest.xml",
+          manifest.toString().getBytes());
     }
   }
 
   /**
-   * Diese Klasse implementiert den UNO-Service com::sun::star::embed::Storage. Viele
-   * Methoden müssen definiert sein, damit der Service Storage von der UNO-Bridge
-   * korrekt anerkannt wird und ohne Fehler verwendet werden kann. In der Praxis sind
-   * aber viele der definierten Methoden überflüssig. Sie werden daher auch hier
-   * nicht implementiert, sonder nur definiert. Normalerweise sollte dies keine
-   * Probleme bereiten. Sollte es damit doch einmal Probleme geben, kann mit Hilfe
-   * des Loggers erkannt werden, ob eine nicht implementierte Methode verwendet wurde
-   * und diese implementiert werden.
+   * Diese Klasse implementiert den UNO-Service com::sun::star::embed::Storage.
+   * Viele Methoden müssen definiert sein, damit der Service Storage von der
+   * UNO-Bridge korrekt anerkannt wird und ohne Fehler verwendet werden kann. In
+   * der Praxis sind aber viele der definierten Methoden überflüssig. Sie werden
+   * daher auch hier nicht implementiert, sonder nur definiert. Normalerweise
+   * sollte dies keine Probleme bereiten. Sollte es damit doch einmal Probleme
+   * geben, kann mit Hilfe des Loggers erkannt werden, ob eine nicht
+   * implementierte Methode verwendet wurde und diese implementiert werden.
    * 
    * @author Christoph Lutz (D-III-ITD-D101)
    */
-  private static class StorageImpl extends SimplePropertySet implements XStorage,
-      XTransactedObject, XTransactionBroadcaster, XEncryptionProtectedSource
+  private static class StorageImpl extends SimplePropertySet
+      implements XStorage, XTransactedObject, XTransactionBroadcaster,
+      XEncryptionProtectedSource
   {
 
     private final String namePrefix;
@@ -336,84 +341,89 @@ public class MemoryStorage
       props.put("HasEncryptedEntries", Boolean.FALSE);
     }
 
+    @Override
     public XStream cloneEncryptedStreamElement(String arg0, String arg1)
-        throws InvalidStorageException, IllegalArgumentException,
-        NoEncryptionException, WrongPasswordException, IOException,
+        throws NoEncryptionException, WrongPasswordException, IOException,
         StorageWrappedTargetException
     {
-      NYI(this + ".cloneEncryptedStreamElement" + arg0);
+      notYetImplemented(this + ".cloneEncryptedStreamElement" + arg0);
       return null;
     }
 
-    public XStream cloneStreamElement(String arg0) throws InvalidStorageException,
-        IllegalArgumentException, WrongPasswordException, IOException,
+    @Override
+    public XStream cloneStreamElement(String arg0)
+        throws WrongPasswordException, IOException,
         StorageWrappedTargetException
     {
-      NYI(this + ".cloneStreamElement " + arg0);
+      notYetImplemented(this + ".cloneStreamElement " + arg0);
       return null;
     }
 
+    @Override
     public void copyElementTo(String arg0, XStorage arg1, String arg2)
-        throws InvalidStorageException, IllegalArgumentException,
-        NoSuchElementException, ElementExistException, IOException,
+        throws NoSuchElementException, ElementExistException, IOException,
         StorageWrappedTargetException
     {
-      NYI(this + ".copyElementTo " + arg0);
+      notYetImplemented(this + ".copyElementTo " + arg0);
     }
 
-    public void copyLastCommitTo(XStorage arg0) throws InvalidStorageException,
-        IllegalArgumentException, IOException, StorageWrappedTargetException
+    @Override
+    public void copyLastCommitTo(XStorage arg0)
+        throws IOException, StorageWrappedTargetException
     {
-      NYI(this + ".copyLastCommitTo " + arg0);
+      notYetImplemented(this + ".copyLastCommitTo " + arg0);
     }
 
+    @Override
     public void copyStorageElementLastCommitTo(String arg0, XStorage arg1)
-        throws InvalidStorageException, IllegalArgumentException, IOException,
-        StorageWrappedTargetException
+        throws IOException, StorageWrappedTargetException
     {
-      NYI(this + ".copyStorageElementLastCommitTo " + arg0);
+      notYetImplemented(this + ".copyStorageElementLastCommitTo " + arg0);
     }
 
-    public void copyToStorage(XStorage arg0) throws InvalidStorageException,
-        IllegalArgumentException, IOException, StorageWrappedTargetException
+    @Override
+    public void copyToStorage(XStorage arg0)
+        throws IOException, StorageWrappedTargetException
     {
-      NYI(this + ".copyToStorage " + arg0);
+      notYetImplemented(this + ".copyToStorage " + arg0);
     }
 
-    public boolean isStorageElement(String arg0) throws NoSuchElementException,
-        IllegalArgumentException, InvalidStorageException
+    @Override
+    public boolean isStorageElement(String arg0)
+        throws NoSuchElementException, InvalidStorageException
     {
-      NYI(this + ".isStorageElement " + arg0);
+      notYetImplemented(this + ".isStorageElement " + arg0);
       return false;
     }
 
-    public boolean isStreamElement(String arg0) throws NoSuchElementException,
-        IllegalArgumentException, InvalidStorageException
+    @Override
+    public boolean isStreamElement(String arg0)
+        throws NoSuchElementException, InvalidStorageException
     {
-      NYI(this + ".isStreamElement " + arg0);
+      notYetImplemented(this + ".isStreamElement " + arg0);
       return false;
     }
 
+    @Override
     public void moveElementTo(String arg0, XStorage arg1, String arg2)
-        throws InvalidStorageException, IllegalArgumentException,
-        NoSuchElementException, ElementExistException, IOException,
+        throws NoSuchElementException, ElementExistException, IOException,
         StorageWrappedTargetException
     {
-      NYI(this + ".moveElementTo " + arg0);
+      notYetImplemented(this + ".moveElementTo " + arg0);
     }
 
-    public XStream openEncryptedStreamElement(String arg0, int arg1, String arg2)
-        throws InvalidStorageException, IllegalArgumentException,
-        NoEncryptionException, WrongPasswordException, IOException,
-        StorageWrappedTargetException
+    @Override
+    public XStream openEncryptedStreamElement(String arg0, int arg1,
+        String arg2) throws NoEncryptionException, WrongPasswordException,
+        IOException, StorageWrappedTargetException
     {
-      NYI(this + ".openEncryptedStreamElement " + arg0);
+      notYetImplemented(this + ".openEncryptedStreamElement " + arg0);
       return null;
     }
 
+    @Override
     public XStorage openStorageElement(String arg0, int arg1)
-        throws InvalidStorageException, IllegalArgumentException, IOException,
-        StorageWrappedTargetException
+        throws IOException, StorageWrappedTargetException
     {
 
       log(this + ".openStorageElement " + arg0);
@@ -421,81 +431,92 @@ public class MemoryStorage
       return s;
     }
 
+    @Override
     public XStream openStreamElement(String name, int openMode)
-        throws InvalidStorageException, IllegalArgumentException,
-        WrongPasswordException, IOException, StorageWrappedTargetException
+        throws WrongPasswordException, IOException,
+        StorageWrappedTargetException
     {
 
       log(this + ".openStreamElement " + name);
       return new StreamElementImpl(bas, namePrefix + name, openMode);
     }
 
-    public void removeElement(String arg0) throws InvalidStorageException,
-        IllegalArgumentException, NoSuchElementException, IOException,
-        StorageWrappedTargetException
+    @Override
+    public void removeElement(String arg0) throws NoSuchElementException,
+        IOException, StorageWrappedTargetException
     {
-      NYI(this + ".removeElement " + arg0);
+      notYetImplemented(this + ".removeElement " + arg0);
     }
 
+    @Override
     public void renameElement(String arg0, String arg1)
-        throws InvalidStorageException, IllegalArgumentException,
-        NoSuchElementException, ElementExistException, IOException,
+        throws NoSuchElementException, ElementExistException, IOException,
         StorageWrappedTargetException
     {
-      NYI(this + ".renameElement " + arg0);
+      notYetImplemented(this + ".renameElement " + arg0);
     }
 
-    public Object getByName(String arg0) throws NoSuchElementException,
-        WrappedTargetException
+    @Override
+    public Object getByName(String arg0)
+        throws NoSuchElementException, WrappedTargetException
     {
-      NYI(this + ".getByName " + arg0);
+      notYetImplemented(this + ".getByName " + arg0);
       return null;
     }
 
+    @Override
     public String[] getElementNames()
     {
-      NYI(this + ".getElementNames");
+      notYetImplemented(this + ".getElementNames");
       return new String[] {};
     }
 
+    @Override
     public boolean hasByName(String arg0)
     {
       log(this + ".hasByName " + arg0);
       for (String name : bas.getElementNames())
       {
         name += "/";
-        if (name.startsWith(namePrefix + arg0 + "/")) return true;
+        if (name.startsWith(namePrefix + arg0 + "/"))
+          return true;
       }
       return false;
     }
 
+    @Override
     public Type getElementType()
     {
-      NYI(this + ".getElementType");
+      notYetImplemented(this + ".getElementType");
       return null;
     }
 
+    @Override
     public boolean hasElements()
     {
-      NYI(this + ".hasElements");
+      notYetImplemented(this + ".hasElements");
       return false;
     }
 
+    @Override
     public void addEventListener(XEventListener arg0)
     {
-      NYI(this + ".addEventListener");
+      notYetImplemented(this + ".addEventListener");
     }
 
+    @Override
     public void dispose()
     {
-      NYI(this + ".dispose");
+      notYetImplemented(this + ".dispose");
     }
 
+    @Override
     public void removeEventListener(XEventListener arg0)
     {
-      NYI(this + ".removeEventListener");
+      notYetImplemented(this + ".removeEventListener");
     }
 
+    @Override
     public void commit() throws IOException, WrappedTargetException
     {
       log(this + ".commit");
@@ -503,37 +524,44 @@ public class MemoryStorage
       {
 
         Object mediaType = props.get("MediaType");
-        if (mediaType != null) bas.setMediatype(mediaType.toString());
+        if (mediaType != null)
+          bas.setMediatype(mediaType.toString());
 
         bas.createManifest();
       }
     }
 
+    @Override
     public void revert() throws IOException, WrappedTargetException
     {
-      NYI(this + ".revert");
+      notYetImplemented(this + ".revert");
     }
 
+    @Override
     public void addTransactionListener(XTransactionListener arg0)
     {
-      NYI(this + ".addTransactionListener");
+      notYetImplemented(this + ".addTransactionListener");
     }
 
+    @Override
     public void removeTransactionListener(XTransactionListener arg0)
     {
-      NYI(this + ".removeTransactionListener");
+      notYetImplemented(this + ".removeTransactionListener");
     }
 
+    @Override
     public void removeEncryption() throws IOException
     {
-      NYI(this + ".removeEncryption");
+      notYetImplemented(this + ".removeEncryption");
     }
 
+    @Override
     public void setEncryptionPassword(String arg0) throws IOException
     {
-      NYI(this + ".setEncryptionPassword");
+      notYetImplemented(this + ".setEncryptionPassword");
     }
 
+    @Override
     public String toString()
     {
       return props.get("URL").toString();
@@ -541,14 +569,15 @@ public class MemoryStorage
   }
 
   /**
-   * Diese Klasse implementiert den UNO-Service com::sun::star::embed::StorageStream.
-   * Viele Methoden müssen definiert sein, damit der Service StorageStream von der
-   * UNO-Bridge korrekt anerkannt wird und ohne Fehler verwendet werden kann. In der
-   * Praxis sind aber einige der definierten Methoden überflüssig. Sie werden daher
-   * auch nicht implementiert, sonder nur definiert. Normalerweise sollte dies keine
-   * Probleme bereiten. Sollte es damit doch einmal Probleme geben, kann mit Hilfe
-   * des Loggers erkannt werden, ob eine nicht implementierte Methode verwendet wurde
-   * und diese implementiert werden.
+   * Diese Klasse implementiert den UNO-Service
+   * com::sun::star::embed::StorageStream. Viele Methoden müssen definiert sein,
+   * damit der Service StorageStream von der UNO-Bridge korrekt anerkannt wird
+   * und ohne Fehler verwendet werden kann. In der Praxis sind aber einige der
+   * definierten Methoden überflüssig. Sie werden daher auch nicht
+   * implementiert, sonder nur definiert. Normalerweise sollte dies keine
+   * Probleme bereiten. Sollte es damit doch einmal Probleme geben, kann mit
+   * Hilfe des Loggers erkannt werden, ob eine nicht implementierte Methode
+   * verwendet wurde und diese implementiert werden.
    * 
    * @author Christoph Lutz (D-III-ITD-D101)
    */
@@ -566,26 +595,22 @@ public class MemoryStorage
 
     private final XOutputStream xOutputStream = new XOutputStream()
     {
-
-      public void writeBytes(byte[] arg0) throws NotConnectedException,
-          BufferSizeExceededException, IOException
+      @Override
+      public void writeBytes(byte[] arg0) throws IOException
       {
-
         log(cn + ".XOutputStream.writeBytes (length=" + arg0.length + ")");
         try
         {
           baos.write(arg0);
-        }
-        catch (java.io.IOException e)
+        } catch (java.io.IOException e)
         {
           throw new IOException(e.toString());
         }
       }
 
-      public void flush() throws NotConnectedException, BufferSizeExceededException,
-          IOException
+      @Override
+      public void flush() throws IOException
       {
-
         log(cn + ".XOutputStream.flush");
         flushIntern();
       }
@@ -596,17 +621,15 @@ public class MemoryStorage
         props.put("Size", bas.getSize(name));
       }
 
-      public void closeOutput() throws NotConnectedException,
-          BufferSizeExceededException, IOException
+      @Override
+      public void closeOutput() throws IOException
       {
-
         log(cn + ".XOutputStream.closeOutput");
         flushIntern();
         try
         {
           baos.close();
-        }
-        catch (java.io.IOException e)
+        } catch (java.io.IOException e)
         {
           throw new IOException(e.toString());
         }
@@ -615,35 +638,36 @@ public class MemoryStorage
 
     private final XInputStream xInputStream = new XInputStream()
     {
-
-      public void skipBytes(int arg0) throws NotConnectedException,
-          BufferSizeExceededException, IOException
+      @Override
+      public void skipBytes(int arg0) throws IOException
       {
-        NYI(cn + ".XInputStream.skipBytes");
+        notYetImplemented(cn + ".XInputStream.skipBytes");
       }
 
-      public int readSomeBytes(byte[][] arg0, int arg1)
-          throws NotConnectedException, BufferSizeExceededException, IOException
+      @Override
+      public int readSomeBytes(byte[][] arg0, int arg1) throws IOException
       {
-        NYI(cn + ".XInputStream.readSomeBytes");
+        notYetImplemented(cn + ".XInputStream.readSomeBytes");
         return 0;
       }
 
-      public int readBytes(byte[][] arg0, int arg1) throws NotConnectedException,
-          BufferSizeExceededException, IOException
+      @Override
+      public int readBytes(byte[][] arg0, int arg1) throws  IOException
       {
-        NYI(cn + ".XInputStream.readBytes");
+        notYetImplemented(cn + ".XInputStream.readBytes");
         return 0;
       }
 
-      public void closeInput() throws NotConnectedException, IOException
+      @Override
+      public void closeInput() throws IOException
       {
-        NYI(cn + ".XInputStream.closeInput");
+        notYetImplemented(cn + ".XInputStream.closeInput");
       }
 
-      public int available() throws NotConnectedException, IOException
+      @Override
+      public int available() throws IOException
       {
-        NYI(cn + ".XInputStream.available");
+        notYetImplemented(cn + ".XInputStream.available");
         return 0;
       }
     };
@@ -662,6 +686,7 @@ public class MemoryStorage
       this.cn = toString();
     }
 
+    @Override
     public XInputStream getInputStream()
     {
       log(this + ".getInputStream");
@@ -674,57 +699,67 @@ public class MemoryStorage
       return (o == null) ? "" : o.toString();
     }
 
+    @Override
     public XOutputStream getOutputStream()
     {
       log(this + ".getOutputStream");
       return xOutputStream;
     }
 
+    @Override
     public String toString()
     {
       return "streamelement:///" + name;
     }
 
+    @Override
     public long getLength() throws IOException
     {
-      NYI(this + ".getLength");
+      notYetImplemented(this + ".getLength");
       return 0;
     }
 
+    @Override
     public long getPosition() throws IOException
     {
-      NYI(this + ".getPosition");
+      notYetImplemented(this + ".getPosition");
       return 0;
     }
 
+    @Override
     public void seek(long arg0) throws IllegalArgumentException, IOException
     {
-      NYI(this + ".seek");
+      notYetImplemented(this + ".seek");
     }
 
+    @Override
     public void removeEncryption() throws IOException
     {
-      NYI(this + ".removeEncryption");
+      notYetImplemented(this + ".removeEncryption");
     }
 
+    @Override
     public void setEncryptionPassword(String arg0) throws IOException
     {
-      NYI(this + ".setEncryptionPassword");
+      notYetImplemented(this + ".setEncryptionPassword");
     }
 
+    @Override
     public void addEventListener(XEventListener arg0)
     {
-      NYI(this + ".addEventListener");
+      notYetImplemented(this + ".addEventListener");
     }
 
+    @Override
     public void dispose()
     {
-      NYI(this + ".dispose");
+      notYetImplemented(this + ".dispose");
     }
 
+    @Override
     public void removeEventListener(XEventListener arg0)
     {
-      NYI(this + ".removeEventListener");
+      notYetImplemented(this + ".removeEventListener");
     }
 
   }
@@ -745,26 +780,32 @@ public class MemoryStorage
       props = new HashMap<String, Object>();
     }
 
-    public void addPropertyChangeListener(String arg0, XPropertyChangeListener arg1)
+    @Override
+    public void addPropertyChangeListener(String arg0,
+        XPropertyChangeListener arg1)
         throws UnknownPropertyException, WrappedTargetException
     {
-      NYI(this + ".addPropertyChangeListener");
+      notYetImplemented(this + ".addPropertyChangeListener");
     }
 
-    public void addVetoableChangeListener(String arg0, XVetoableChangeListener arg1)
+    @Override
+    public void addVetoableChangeListener(String arg0,
+        XVetoableChangeListener arg1)
         throws UnknownPropertyException, WrappedTargetException
     {
-      NYI(this + ".addVetoableChangeListener");
+      notYetImplemented(this + ".addVetoableChangeListener");
     }
 
+    @Override
     public XPropertySetInfo getPropertySetInfo()
     {
-      NYI(this + ".getPropertySetInfo");
+      notYetImplemented(this + ".getPropertySetInfo");
       return null;
     }
 
-    public Object getPropertyValue(String arg0) throws UnknownPropertyException,
-        WrappedTargetException
+    @Override
+    public Object getPropertyValue(String arg0)
+        throws UnknownPropertyException, WrappedTargetException
     {
 
       log(this + ".getPropertyValue " + arg0);
@@ -775,23 +816,26 @@ public class MemoryStorage
         throw new UnknownPropertyException(arg0);
     }
 
+    @Override
     public void removePropertyChangeListener(String arg0,
-        XPropertyChangeListener arg1) throws UnknownPropertyException,
-        WrappedTargetException
+        XPropertyChangeListener arg1)
+        throws UnknownPropertyException, WrappedTargetException
     {
-      NYI(this + ".removePropertyChangeListener " + arg0);
+      notYetImplemented(this + ".removePropertyChangeListener " + arg0);
     }
 
+    @Override
     public void removeVetoableChangeListener(String arg0,
-        XVetoableChangeListener arg1) throws UnknownPropertyException,
-        WrappedTargetException
+        XVetoableChangeListener arg1)
+        throws UnknownPropertyException, WrappedTargetException
     {
-      NYI(this + ".removeVetoableChangeListener " + arg0);
+      notYetImplemented(this + ".removeVetoableChangeListener " + arg0);
     }
 
+    @Override
     public void setPropertyValue(String arg0, Object arg1)
         throws UnknownPropertyException, PropertyVetoException,
-        IllegalArgumentException, WrappedTargetException
+        WrappedTargetException
     {
 
       log(this + ".setPropertyValue " + arg0 + " " + arg1);
@@ -800,8 +844,8 @@ public class MemoryStorage
   }
 
   /**
-   * Testmethode: Speichert das aktive Vordergrunddokument in ein Storage und dieses
-   * nach /tmp/test.odt.
+   * Testmethode: Speichert das aktive Vordergrunddokument in ein Storage und
+   * dieses nach /tmp/test.odt.
    * 
    * @author Christoph Lutz (D-III-ITD-D101)
    */
@@ -809,6 +853,7 @@ public class MemoryStorage
   {
     MemoryStorage.logger = new Logger()
     {
+      @Override
       public void log(String s)
       {
         System.out.println(s);
@@ -816,8 +861,8 @@ public class MemoryStorage
     };
 
     UNO.init();
-    XStorageBasedDocument sbd =
-      UNO.XStorageBasedDocument(UNO.desktop.getCurrentComponent());
+    XStorageBasedDocument sbd = UNO
+        .XStorageBasedDocument(UNO.desktop.getCurrentComponent());
 
     log("UNO.init() done");
 
@@ -830,8 +875,7 @@ public class MemoryStorage
 
       sbd.storeToStorage(storage, new PropertyValue[] {});
 
-    }
-    catch (Throwable t)
+    } catch (Throwable t)
     {
       t.printStackTrace();
     }
@@ -841,17 +885,18 @@ public class MemoryStorage
       log("Element: " + name);
     }
 
-    log("storeToStorage finished after " + (System.currentTimeMillis() - startTime)
-      + " ms");
+    log("storeToStorage finished after "
+        + (System.currentTimeMillis() - startTime) + " ms");
 
     new ODFMerger.StorageZipOutput(new ODFMerger.Storage()
     {
+      @Override
       public InputStream getInputStream(String elementName)
-          throws java.util.NoSuchElementException
       {
         return bas.getInputStream(elementName);
       }
 
+      @Override
       public List<String> getElementNames()
       {
         return bas.getElementNames();

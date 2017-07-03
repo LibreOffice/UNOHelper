@@ -77,14 +77,14 @@ import de.muenchen.allg.afid.UNO;
 public class TextDocument
 {
   /**
-   * Diese Properties werden in der hier gelisteten Reihenfolge über getProperty/setProperty
-   * Paare kopiert.
+   * Diese Properties werden in der hier gelisteten Reihenfolge über
+   * getProperty/setProperty Paare kopiert.
    */
-  private static final String[] PAGE_STYLE_PROP_NAMES = { 
-      "BackColor", "BackGraphicURL", "BackGraphicLocation",
-      "BackGraphicFilter", "IsLandscape", "PageStyleLayout", "BackTransparent",
-      "Size", "Width", "Height", "LeftMargin", "RightMargin", "TopMargin",
-      "BottomMargin", "LeftBorder", "RightBorder", "TopBorder", "BottomBorder",
+  private static final String[] PAGE_STYLE_PROP_NAMES = { "BackColor",
+      "BackGraphicURL", "BackGraphicLocation", "BackGraphicFilter",
+      "IsLandscape", "PageStyleLayout", "BackTransparent", "Size", "Width",
+      "Height", "LeftMargin", "RightMargin", "TopMargin", "BottomMargin",
+      "LeftBorder", "RightBorder", "TopBorder", "BottomBorder",
       "LeftBorderDistance", "RightBorderDistance", "TopBorderDistance",
       "BottomBorderDistance", "ShadowFormat", "NumberingType",
       "PrinterPaperTray", "RegisterModeActive", "RegisterParagraphStyle",
@@ -109,155 +109,190 @@ public class TextDocument
       "GridDisplay", "GridMode", "GridColor", "GridLines", "GridBaseHeight",
       "GridRubyHeight", "GridRubyBelow", "GridPrint", "HeaderDynamicSpacing",
       "FooterDynamicSpacing", "BorderDistance", "FooterBorderDistance",
-      "HeaderBorderDistance" }; /* Fehlen: TextColumns, UserDefinedAttributes 
-   * HeaderText, HeaderTextLeft, HeaderTextRight,  
-   * FooterText, FooterTextLeft, FooterTextRight,
-   * FollowStyle (weil es zu Absturz führt (siehe CrashCopyingPagestyle.java)
-   * */
-  
-  
-  private static final String[] CHAR_STYLE_PROP_NAMES = { "CharFontName","CharFontStyleName", 
-    "CharFontFamily", "CharFontCharSet", "CharFontPitch", "CharColor", "CharEscapement",
-    "CharHeight", "CharUnderline", "CharWeight", "CharPosture", "CharAutoKerning",
-    "CharBackColor", "CharBackTransparent", "CharCaseMap", "CharCrossedOut",
-    "CharFlash", "CharStrikeout", "CharWordMode", "CharKerning", "CharLocale",
-    "CharKeepTogether", "CharNoLineBreak", "CharShadowed", "CharFontType",
-    "CharStyleName", "CharContoured", "CharCombineIsOn", "CharCombinePrefix",
-    "CharCombineSuffix", "CharEmphasis", "CharRelief", "RubyText", "RubyAdjust",
-    "RubyCharStyleName", "RubyIsAbove", "CharRotation", "CharRotationIsFitToLine", 
-    "CharScaleWidth", "HyperLinkURL", "HyperLinkTarget", "HyperLinkName", "VisitedCharStyleName",
-    "UnvisitedCharStyleName", "CharEscapementHeight", "CharNoHyphenation", "CharUnderlineColor",
-    "CharUnderlineHasColor", "CharHidden", "CharHeightAsian", "CharWeightAsian",
-    "CharFontNameAsian", "CharFontStyleNameAsian", "CharFontFamilyAsian",
-    "CharFontCharSetAsian", "CharFontPitchAsian", "CharPostureAsian", "CharLocaleAsian",
-    "CharHeightComplex", "CharWeightComplex", "CharFontNameComplex", "CharFontStyleNameComplex",
-    "CharFontFamilyComplex", "CharFontCharSetComplex", "CharFontPitchComplex",
-    "CharPostureComplex", "CharLocaleComplex"
-    };/* Fehlen: TextUserDefinedAttributes */
-  
+      "HeaderBorderDistance" }; /*
+                                 * Fehlen: TextColumns, UserDefinedAttributes
+                                 * HeaderText, HeaderTextLeft, HeaderTextRight,
+                                 * FooterText, FooterTextLeft, FooterTextRight,
+                                 * FollowStyle (weil es zu Absturz führt (siehe
+                                 * CrashCopyingPagestyle.java)
+                                 */
+
+  private static final String[] CHAR_STYLE_PROP_NAMES = { "CharFontName",
+      "CharFontStyleName", "CharFontFamily", "CharFontCharSet", "CharFontPitch",
+      "CharColor", "CharEscapement", "CharHeight", "CharUnderline",
+      "CharWeight", "CharPosture", "CharAutoKerning", "CharBackColor",
+      "CharBackTransparent", "CharCaseMap", "CharCrossedOut", "CharFlash",
+      "CharStrikeout", "CharWordMode", "CharKerning", "CharLocale",
+      "CharKeepTogether", "CharNoLineBreak", "CharShadowed", "CharFontType",
+      "CharStyleName", "CharContoured", "CharCombineIsOn", "CharCombinePrefix",
+      "CharCombineSuffix", "CharEmphasis", "CharRelief", "RubyText",
+      "RubyAdjust", "RubyCharStyleName", "RubyIsAbove", "CharRotation",
+      "CharRotationIsFitToLine", "CharScaleWidth", "HyperLinkURL",
+      "HyperLinkTarget", "HyperLinkName", "VisitedCharStyleName",
+      "UnvisitedCharStyleName", "CharEscapementHeight", "CharNoHyphenation",
+      "CharUnderlineColor", "CharUnderlineHasColor", "CharHidden",
+      "CharHeightAsian", "CharWeightAsian", "CharFontNameAsian",
+      "CharFontStyleNameAsian", "CharFontFamilyAsian", "CharFontCharSetAsian",
+      "CharFontPitchAsian", "CharPostureAsian", "CharLocaleAsian",
+      "CharHeightComplex", "CharWeightComplex", "CharFontNameComplex",
+      "CharFontStyleNameComplex", "CharFontFamilyComplex",
+      "CharFontCharSetComplex", "CharFontPitchComplex", "CharPostureComplex",
+      "CharLocaleComplex" };/* Fehlen: TextUserDefinedAttributes */
+
   /**
-   * Diese Properties werden in der hier gelisteten Reihenfolge über 
+   * Diese Properties werden in der hier gelisteten Reihenfolge über
    * {@link #copyXText2XTextRange(XText, XTextRange)} kopiert.
    */
-  private static final String[] HEADER_FOOTER_PROP_NAMES = { "HeaderText", "HeaderTextLeft",
-    "HeaderTextRight", "FooterText", "FooterTextLeft", "FooterTextRight"};
-  
+  private static final String[] HEADER_FOOTER_PROP_NAMES = { "HeaderText",
+      "HeaderTextLeft", "HeaderTextRight", "FooterText", "FooterTextLeft",
+      "FooterTextRight" };
+
   /**
-   * Kopiert die Eigenschaften von PageStyle oldStyle auf einen PageStyle mit Namen 
-   * newName (der angelegt wird, wenn er noch nicht existiert).
-   * @param doc das Textdokument in dem der neue PageStyle angelegt werden soll. Der alte
-   * PageStyle kann in einem beliebigen Dokument liegen.
-   * @author Matthias Benkmann (D-III-ITD 5.1)
-   * TESTED
-   * @throws Exception falls was schief geht 
+   * Kopiert die Eigenschaften von PageStyle oldStyle auf einen PageStyle mit
+   * Namen newName (der angelegt wird, wenn er noch nicht existiert).
+   * 
+   * @param doc
+   *          das Textdokument in dem der neue PageStyle angelegt werden soll.
+   *          Der alte PageStyle kann in einem beliebigen Dokument liegen.
+   * @author Matthias Benkmann (D-III-ITD 5.1) TESTED
+   * @throws Exception
+   *           falls was schief geht
    */
-  public static void copyPageStyle(XTextDocument doc, XPropertySet oldStyle, String newName) throws Exception
+  public static void copyPageStyle(XTextDocument doc, XPropertySet oldStyle,
+      String newName) throws Exception
   {
-    XNameContainer pageStyles = UNO.XNameContainer(UNO.XStyleFamiliesSupplier(doc).getStyleFamilies().getByName("PageStyles"));
-    
+    XNameContainer pageStyles = UNO
+        .XNameContainer(UNO.XStyleFamiliesSupplier(doc).getStyleFamilies()
+            .getByName("PageStyles"));
+
     XPropertySet newStyle;
     if (pageStyles.hasByName(newName))
     {
       newStyle = UNO.XPropertySet(pageStyles.getByName(newName));
-      if (UnoRuntime.areSame(oldStyle, newStyle)) return;
-    }
-    else
+      if (UnoRuntime.areSame(oldStyle, newStyle))
+        return;
+    } else
     {
-      newStyle = UNO.XPropertySet(UNO.XMultiServiceFactory(doc).createInstance("com.sun.star.style.PageStyle"));
+      newStyle = UNO.XPropertySet(UNO.XMultiServiceFactory(doc)
+          .createInstance("com.sun.star.style.PageStyle"));
       pageStyles.insertByName(newName, newStyle);
     }
-        
+
     for (int i = 0; i < PAGE_STYLE_PROP_NAMES.length; ++i)
     {
       Object val = null;
-      try{
+      try
+      {
         val = null;
         val = oldStyle.getPropertyValue(PAGE_STYLE_PROP_NAMES[i]);
         newStyle.setPropertyValue(PAGE_STYLE_PROP_NAMES[i], val);
-      }catch(Exception x)
+      } catch (Exception x)
       {
-        if (val != null) //Nur dann Exception werfen, wenn überhaupt ein Property zu kopieren da ist
+        if (val != null) // Nur dann Exception werfen, wenn überhaupt ein
+                         // Property zu kopieren da ist
         {
-          throw new Exception("Fehler beim Kopieren von Property \""+PAGE_STYLE_PROP_NAMES[i]+"\"", x);
+          throw new Exception("Fehler beim Kopieren von Property \""
+              + PAGE_STYLE_PROP_NAMES[i] + "\"", x);
         }
       }
     }
-    
+
     for (int i = 0; i < HEADER_FOOTER_PROP_NAMES.length; ++i)
     {
       XText val = null;
-      try{
+      try
+      {
         val = null;
         val = UNO.XText(oldStyle.getPropertyValue(HEADER_FOOTER_PROP_NAMES[i]));
         if (val != null)
         {
-          XText dest = UNO.XText(newStyle.getPropertyValue(HEADER_FOOTER_PROP_NAMES[i]));
+          XText dest = UNO
+              .XText(newStyle.getPropertyValue(HEADER_FOOTER_PROP_NAMES[i]));
           copyXText2XTextRange(val, dest.createTextCursorByRange(dest));
         }
-      }catch(Exception x)
+      } catch (Exception x)
       {
-        throw new Exception("Fehler beim Kopieren von Property \""+HEADER_FOOTER_PROP_NAMES[i]+"\"", x);
+        throw new Exception("Fehler beim Kopieren von Property \""
+            + HEADER_FOOTER_PROP_NAMES[i] + "\"", x);
       }
     }
   }
-  
+
   /**
    * Ersetzt dest durch den Inhalt von source.
-   * @author Matthias Benkmann (D-III-ITD 5.1)
-   * TESTED
-   * @throws Exception falls was schief geht 
+   * 
+   * @author Matthias Benkmann (D-III-ITD 5.1) TESTED
+   * @throws Exception
+   *           falls was schief geht
    */
-  public static void copyXText2XTextRange(XText source, XTextRange dest) throws Exception
+  public static void copyXText2XTextRange(XText source, XTextRange dest)
+      throws Exception
   {
-    XAutoTextContainer autoTextContainer = UNO.XAutoTextContainer(UNO.createUNOService("com.sun.star.text.AutoTextContainer"));
+    XAutoTextContainer autoTextContainer = UNO.XAutoTextContainer(
+        UNO.createUNOService("com.sun.star.text.AutoTextContainer"));
     int rand;
-    
+
     String groupName = null;
     XAutoTextGroup atgroup;
-    for (int i = 0; ; ++i)
+    for (int i = 0;; ++i)
     {
-      rand = (int)(Math.random()*100000);
-      try{
-        groupName = "WollMuxTemp"+rand;
-        atgroup = autoTextContainer.insertNewByName(groupName+"*1");
-        break;
-      }catch(Exception x)  
+      rand = (int) (Math.random() * 100000);
+      try
       {
-        if ( i >= 100) throw x;
+        groupName = "WollMuxTemp" + rand;
+        atgroup = autoTextContainer.insertNewByName(groupName + "*1");
+        break;
+      } catch (Exception x)
+      {
+        if (i >= 100)
+          throw x;
       }
     }
-    
-    try{
+
+    try
+    {
       XTextRange range = source.createTextCursorByRange(source);
-      XAutoTextEntry atentry = atgroup.insertNewByName("X","X",range);
+      XAutoTextEntry atentry = atgroup.insertNewByName("X", "X", range);
       dest.setString("");
       atentry.applyTo(dest);
-    }
-    finally{
-      try{ autoTextContainer.removeByName(groupName); } catch(Exception y) {};
+    } finally
+    {
+      try
+      {
+        autoTextContainer.removeByName(groupName);
+      } catch (Exception y)
+      {
+      }
     }
   }
-  
+
   /**
-   * Kopiert alle Character Attributes, die den Zustand {@link com.sun.star.beans.PropertyState#DIRECT_VALUE}
-   * haben von from nach to. 
-   * @author Matthias Benkmann (D-III-ITD 5.1)
-   * TESTED
+   * Kopiert alle Character Attributes, die den Zustand
+   * {@link com.sun.star.beans.PropertyState#DIRECT_VALUE} haben von from nach
+   * to.
+   * 
+   * @author Matthias Benkmann (D-III-ITD 5.1) TESTED
    */
-  public static void copyDirectValueCharAttributes(XPropertyState from, XPropertySet to)
+  public static void copyDirectValueCharAttributes(XPropertyState from,
+      XPropertySet to)
   {
     XPropertySet fromSet = UNO.XPropertySet(from);
     for (int i = 0; i < CHAR_STYLE_PROP_NAMES.length; ++i)
     {
-      try{
-        if (from.getPropertyState(CHAR_STYLE_PROP_NAMES[i]).equals(PropertyState.DIRECT_VALUE))
+      try
+      {
+        if (from.getPropertyState(CHAR_STYLE_PROP_NAMES[i])
+            .equals(PropertyState.DIRECT_VALUE))
         {
-          to.setPropertyValue(CHAR_STYLE_PROP_NAMES[i], fromSet.getPropertyValue(CHAR_STYLE_PROP_NAMES[i]));
+          to.setPropertyValue(CHAR_STYLE_PROP_NAMES[i],
+              fromSet.getPropertyValue(CHAR_STYLE_PROP_NAMES[i]));
         }
-      }catch(Exception x){}
+      } catch (Exception x)
+      {
+      }
     }
   }
-  
+
   /**
    * Löscht den ganzen ersten Absatz an der Cursorposition textCursor.
    */
@@ -266,25 +301,26 @@ public class TextDocument
     // Beim Löschen des Absatzes erzeugt OOo ein ungewolltes
     // "Zombie"-Bookmark.
     // Issue Siehe http://qa.openoffice.org/issues/show_bug.cgi?id=65247
-    
+
     XTextContent paragraph = null;
-    
+
     // Ersten Absatz des Bookmarks holen:
     XEnumerationAccess access = UNO.XEnumerationAccess(range);
     if (access != null)
     {
       XEnumeration xenum = access.createEnumeration();
-      if (xenum.hasMoreElements()) try
-      {
-        paragraph = UNO.XTextContent(xenum.nextElement());
-      }
-      catch (Exception e)
-      {
-        //sollte eigentlich nicht passieren können
-      }
+      if (xenum.hasMoreElements())
+        try
+        {
+          paragraph = UNO.XTextContent(xenum.nextElement());
+        } catch (Exception e)
+        {
+          // sollte eigentlich nicht passieren können
+        }
     }
-    if (paragraph == null) return;
-    
+    if (paragraph == null)
+      return;
+
     // Lösche den Paragraph
     try
     {
@@ -292,24 +328,25 @@ public class TextDocument
       // removeTextContent nicht gelöscht werden. In diesme Fall wird hier
       // wenigstens der Inhalt entfernt:
       paragraph.getAnchor().setString("");
-      
+
       // Paragraph löschen
       range.getText().removeTextContent(paragraph);
-    }
-    catch (NoSuchElementException e)
+    } catch (NoSuchElementException e)
     {
-      //sollte eigentlich nicht passieren können
+      // sollte eigentlich nicht passieren können
     }
   }
 
   /**
-   * Lässt den ersten Absatz in der TextRange range verschwinden, ohne ihn zu löschen. 
-   * @author Matthias Benkmann (D-III-ITD 5.1)
-   * TESTED
+   * Lässt den ersten Absatz in der TextRange range verschwinden, ohne ihn zu
+   * löschen.
+   * 
+   * @author Matthias Benkmann (D-III-ITD 5.1) TESTED
    */
   public static void disappearParagraph(XTextRange range)
   {
-    try{
+    try
+    {
       XEnumerationAccess access = UNO.XEnumerationAccess(range);
       XEnumeration xenum = access.createEnumeration();
       XPropertySet props = UNO.XPropertySet(xenum.nextElement());
@@ -319,24 +356,24 @@ public class TextDocument
       props.setPropertyValue("CharHidden", Boolean.TRUE);
       LineSpacing ls = new LineSpacing();
       ls.Mode = LineSpacingMode.FIX;
-      ls.Height = 2; //Lieber nicht 0 nehmen. Vielleicht möchte jemand irgendwo dadurch dividieren
+      ls.Height = 2; // Lieber nicht 0 nehmen. Vielleicht möchte jemand irgendwo
+                     // dadurch dividieren
       props.setPropertyValue("ParaLineSpacing", ls);
       props.setPropertyValue("ParaTopMargin", Integer.valueOf(0));
       props.setPropertyValue("ParaBottomMargin", Integer.valueOf(0));
       props.setPropertyValue("ParaLineNumberCount", Boolean.FALSE);
-    }catch(Exception x)
+    } catch (Exception x)
     {
-      //sollte nicht passieren
+      // sollte nicht passieren
     }
   }
 
-  
   /**
-   * Kopiert alle Properties, die nicht komplexe Objekte (structs, interfaces, exceptions)
-   * oder Sequenzen von komplexen Objekten sind von in nach out. Sequenzen simpler Typen
-   * werden kopiert. 
-   * @author Matthias Benkmann (D-III-ITD 5.1)
-   * TESTED
+   * Kopiert alle Properties, die nicht komplexe Objekte (structs, interfaces,
+   * exceptions) oder Sequenzen von komplexen Objekten sind von in nach out.
+   * Sequenzen simpler Typen werden kopiert.
+   * 
+   * @author Matthias Benkmann (D-III-ITD 5.1) TESTED
    */
   public static void copySimpleProperties(XPropertySet in, XPropertySet out)
   {
@@ -345,27 +382,29 @@ public class TextDocument
     for (int i = 0; i < props.length; ++i)
     {
       Object prop;
-      try{
+      try
+      {
         prop = in.getPropertyValue(props[i].Name);
-      } catch(Exception x)
+      } catch (Exception x)
       {
         continue;
       }
 
       /*
-       * Die eigentlich unnötig komplexe Aufteilung in 2
-       * try-catch-Blöcke habe ich nur gewählt, um isSimpleType nicht in einem
-       * try-catch-Block zu haben. Ich habe nämlich nicht alle Teilaspekte von
-       * isSimpleType() getestet (insbes. nicht die Behandlung von Sequenzen).
-       * Ich gehe davon aus, dass alles funktioniert, aber falls doch ein
-       * Fehler (sprich Exception) auftritt, dann will ich nicht, dass diese
-       * einfach von einem try-catch-Block ohne Logging abgewürgt wird.
+       * Die eigentlich unnötig komplexe Aufteilung in 2 try-catch-Blöcke habe
+       * ich nur gewählt, um isSimpleType nicht in einem try-catch-Block zu
+       * haben. Ich habe nämlich nicht alle Teilaspekte von isSimpleType()
+       * getestet (insbes. nicht die Behandlung von Sequenzen). Ich gehe davon
+       * aus, dass alles funktioniert, aber falls doch ein Fehler (sprich
+       * Exception) auftritt, dann will ich nicht, dass diese einfach von einem
+       * try-catch-Block ohne Logging abgewürgt wird.
        */
       if (isSimpleType(prop))
       {
-        try{
+        try
+        {
           out.setPropertyValue(props[i].Name, prop);
-        } catch(Exception x)
+        } catch (Exception x)
         {
           continue;
         }
@@ -374,51 +413,51 @@ public class TextDocument
   }
 
   /**
-   * Liefert true gdw o nicht Exception, Struct oder Interface ist oder eine Sequenz, die
-   * sowas enthält.
+   * Liefert true gdw o nicht Exception, Struct oder Interface ist oder eine
+   * Sequenz, die sowas enthält.
+   * 
    * @author Matthias Benkmann (D-III-ITD 5.1)
    */
   private static boolean isSimpleType(Object o)
   {
     if (AnyConverter.isArray(o))
     {
-      try{
+      try
+      {
         Object arryConv = AnyConverter.toArray(o);
         int len = Array.getLength(arryConv);
-        if (len == 0) return true;
-        return isSimpleType(Array.get(arryConv,0));
-      }catch(Exception x)
+        if (len == 0)
+          return true;
+        return isSimpleType(Array.get(arryConv, 0));
+      } catch (Exception x)
       {
-        throw new RuntimeException("Dies dürfte nicht passieren.",x);
+        throw new RuntimeException("Dies dürfte nicht passieren.", x);
       }
-    }
-    else if (AnyConverter.isEnum(o))
+    } else if (AnyConverter.isEnum(o))
     {
       return true;
-    }
-    else if (AnyConverter.isObject(o))
+    } else if (AnyConverter.isObject(o))
+    {
+      return false;
+    } else if (AnyConverter.isVoid(o))
+    {
+      return false;
+    } else if (AnyConverter.isType(o))
     {
       return false;
     }
-    else if (AnyConverter.isVoid(o))
-    {
-      return false;
-    }
-    else if (AnyConverter.isType(o))
-    {
-      return false;
-    }
-    
+
     return true;
   }
-  
+
   public static void main(String[] args) throws Exception
   {
     /*
-     * Kopiert den Standard-PageStyle des aktuellen Vordergrunddokuments auf den PageStyle
-     * "foo" und testet, wieviele Eigenschaften erfolgreich kopiert werden konnten.
+     * Kopiert den Standard-PageStyle des aktuellen Vordergrunddokuments auf den
+     * PageStyle "foo" und testet, wieviele Eigenschaften erfolgreich kopiert
+     * werden konnten.
      */
-    
+
     UNO.init();
     XTextDocument doc = UNO.XTextDocument(UNO.desktop.getCurrentComponent());
     if (doc == null)
@@ -426,97 +465,98 @@ public class TextDocument
       System.err.println("Vordergrundokument ist kein Textdokument");
       System.exit(0);
     }
-    
-    XNameContainer pageStyles = UNO.XNameContainer(UNO.XStyleFamiliesSupplier(doc).getStyleFamilies().getByName("PageStyles"));
-    
+
+    XNameContainer pageStyles = UNO
+        .XNameContainer(UNO.XStyleFamiliesSupplier(doc).getStyleFamilies()
+            .getByName("PageStyles"));
+
     XPropertySet newStyle;
     String newName = "foo";
     String oldName = "Standard";
     if (pageStyles.hasByName(newName))
     {
       newStyle = UNO.XPropertySet(pageStyles.getByName(newName));
-    }
-    else
+    } else
     {
-      newStyle = UNO.XPropertySet(UNO.XMultiServiceFactory(doc).createInstance("com.sun.star.style.PageStyle"));
+      newStyle = UNO.XPropertySet(UNO.XMultiServiceFactory(doc)
+          .createInstance("com.sun.star.style.PageStyle"));
       pageStyles.insertByName(newName, newStyle);
     }
-    
+
     XPropertySet oldStyle = UNO.XPropertySet(pageStyles.getByName(oldName));
-    SortedSet propNames = new TreeSet();
-    
+    SortedSet<String> propNames = new TreeSet<String>();
+
     XPropertySetInfo oldStylePropInfo = oldStyle.getPropertySetInfo();
     XPropertySetInfo newStylePropInfo = newStyle.getPropertySetInfo();
-    
+
     Property[] props = oldStylePropInfo.getProperties();
     for (int i = 0; i < props.length; ++i)
       propNames.add(props[i].Name);
-    
+
     props = newStylePropInfo.getProperties();
     for (int i = 0; i < props.length; ++i)
       propNames.add(props[i].Name);
-    
-    // -1 ungesetzt, 0 nach kopieren gleich, 1 nach kopieren ungleich,  
+
+    // -1 ungesetzt, 0 nach kopieren gleich, 1 nach kopieren ungleich,
     // 2 vor kopieren gleich
     int[] propCompareState = new int[propNames.size()];
     Arrays.fill(propCompareState, -1);
-    
-    Iterator iter = propNames.iterator();
+
+    Iterator<String> iter = propNames.iterator();
     int idx = 0;
     while (iter.hasNext())
     {
-      String propName = (String)iter.next();
-      if (newStylePropInfo.hasPropertyByName(propName) 
-       && oldStylePropInfo.hasPropertyByName(propName))
+      String propName = iter.next();
+      if (newStylePropInfo.hasPropertyByName(propName)
+          && oldStylePropInfo.hasPropertyByName(propName)
+          && UnoRuntime.areSame(newStyle.getPropertyValue(propName),
+              oldStyle.getPropertyValue(propName)))
       {
-        if (UnoRuntime.areSame(newStyle.getPropertyValue(propName), oldStyle.getPropertyValue(propName)))
-          propCompareState[idx] = 2; 
+        propCompareState[idx] = 2;
       }
-      
+
       ++idx;
     }
-    
+
     copyPageStyle(doc, oldStyle, newName);
-    
+
     iter = propNames.iterator();
     idx = 0;
     while (iter.hasNext())
     {
-      String propName = (String)iter.next();
+      String propName = iter.next();
       if (!newStylePropInfo.hasPropertyByName(propName))
       {
-        System.out.println("*** "+propName+" => nur im alten Style");
-      }
-      else if (!oldStylePropInfo.hasPropertyByName(propName))
+        System.out.println("*** " + propName + " => nur im alten Style");
+      } else if (!oldStylePropInfo.hasPropertyByName(propName))
       {
-        System.out.println("*** "+propName+" => nur im neuen Style");
-      }
-      else if (!UnoRuntime.areSame(newStyle.getPropertyValue(propName), oldStyle.getPropertyValue(propName)))
+        System.out.println("*** " + propName + " => nur im neuen Style");
+      } else if (!UnoRuntime.areSame(newStyle.getPropertyValue(propName),
+          oldStyle.getPropertyValue(propName)))
       {
-        System.out.println("*** "+propName+" => verschieden!");
+        System.out.println("*** " + propName + " => verschieden!");
         if (propCompareState[idx] == 2)
-          System.out.println(propName+" => vor Kopieren noch gleich!!!!!");
-      }
-      else if (propCompareState[idx] == 2)
-        System.out.println(propName+" => schon vor Kopieren gleich!");
-      
-      
+          System.out.println(propName + " => vor Kopieren noch gleich!!!!!");
+      } else if (propCompareState[idx] == 2)
+        System.out.println(propName + " => schon vor Kopieren gleich!");
+
       ++idx;
     }
-   
+
     System.exit(0);
-    
+
   }
-  
+
   /**
    * Liefert die Namen aller Bookmarks, die in im Bereich range existieren und
-   * regex matchen. Hinweis: Die Funktion liefert nur Bookmarks zurück, von denen
-   * Anfang UND Ende in dem Bereich liegen (die schließt kollabierte Bookmarks mit ein).
-   * OpenOffice.org hatte in diesem Bereich einige Probleme (oder hat sie immer noch), so
-   * dass ich nicht sicher bin, ob dies überall gewährleistet ist. Insbesondere bei 
-   * TextRanges in Tabellen meine ich mich erinnern zu können, dass die Enumeration immer
-   * die ganze Zelle liefert anstatt den ausgewählten Bereich. Es ist also nicht auszuschließen,
-   * dass diese Methode unter bestimmten Umständen zu viele Bookmarks zurückliefert.
+   * regex matchen. Hinweis: Die Funktion liefert nur Bookmarks zurück, von
+   * denen Anfang UND Ende in dem Bereich liegen (die schließt kollabierte
+   * Bookmarks mit ein). OpenOffice.org hatte in diesem Bereich einige Probleme
+   * (oder hat sie immer noch), so dass ich nicht sicher bin, ob dies überall
+   * gewährleistet ist. Insbesondere bei TextRanges in Tabellen meine ich mich
+   * erinnern zu können, dass die Enumeration immer die ganze Zelle liefert
+   * anstatt den ausgewählten Bereich. Es ist also nicht auszuschließen, dass
+   * diese Methode unter bestimmten Umständen zu viele Bookmarks zurückliefert.
    */
   public static HashSet<String> getBookmarkNamesMatching(Pattern regex,
       XTextRange range)
@@ -536,11 +576,11 @@ public class TextDocument
         XEnumeration parEnum = null;
         try
         {
-          parEnum =
-            UNO.XEnumerationAccess(xenum.nextElement()).createEnumeration();
+          parEnum = UNO.XEnumerationAccess(xenum.nextElement())
+              .createEnumeration();
+        } catch (java.lang.Exception e)
+        {
         }
-        catch (java.lang.Exception e)
-        {}
 
         while (parEnum != null && parEnum.hasMoreElements())
         {
@@ -552,23 +592,23 @@ public class TextDocument
 
             if (regex.matcher(name).matches())
             {
-              boolean isStart = Boolean.TRUE.equals(UNO.getProperty(element, "IsStart"));
+              boolean isStart = Boolean.TRUE
+                  .equals(UNO.getProperty(element, "IsStart"));
               if (isStart)
               {
-                boolean isCollapsed = Boolean.TRUE.equals(UNO.getProperty(element, "IsCollapsed"));
+                boolean isCollapsed = Boolean.TRUE
+                    .equals(UNO.getProperty(element, "IsCollapsed"));
                 if (isCollapsed)
                   found.add(name);
                 else
                   started.add(name);
-              }
-              else if (started.contains(name)) found.add(name);
+              } else if (started.contains(name))
+                found.add(name);
             }
-          }
-          catch (WrappedTargetException ex) 
+          } catch (WrappedTargetException ex)
           {
             break;
-          }
-          catch (NoSuchElementException ex)
+          } catch (NoSuchElementException ex)
           {
             break;
           }
@@ -577,5 +617,5 @@ public class TextDocument
     }
     return found;
   }
-  
+
 }

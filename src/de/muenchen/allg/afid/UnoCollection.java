@@ -6,7 +6,7 @@ import com.sun.star.container.XEnumeration;
 import com.sun.star.container.XEnumerationAccess;
 
 /**
- * Wrapperklasse für {@link XEnumeration}. Kann mit for-each-loop iteriert werden.
+ * Wrapperklasse fÃ¼r {@link XEnumeration}. Kann mit for-each-loop iteriert werden.
  * 
  * @author snoopy
  *
@@ -16,6 +16,13 @@ public class UnoCollection<T> implements Iterable<T>
 {
   private XEnumerationAccess enuAccess;
   private Class<T> c;
+
+  protected UnoCollection(XEnumerationAccess enuAccess, Class<T> c)
+  {
+    this.enuAccess = enuAccess;
+    this.c = c;
+
+  }
 
   /**
    * Erzeugt eine UnoCollection aus einem Uno-Object, dass XEnumerationAccess implementiert.
@@ -27,13 +34,6 @@ public class UnoCollection<T> implements Iterable<T>
   public static <T> UnoCollection<T> getCollection(XEnumerationAccess enuAccess, Class<T> c)
   {
     return new UnoCollection<T>(enuAccess, c);
-  }
-
-  protected UnoCollection(XEnumerationAccess enuAccess, Class<T> c)
-  {
-    this.enuAccess = enuAccess;
-    this.c = c;
-
   }
 
   @Override

@@ -44,7 +44,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
@@ -62,14 +61,14 @@ import org.w3c.dom.NodeList;
 
 /**
  * Definiert einen ODFMerger, der auf XML-Basis mehrere Dokumente zu einem
- * Gesamtdokument zusammen fassen kann. Der Merger setzt aktuell vorraus, dass die zu
- * mergenden Dokumente gleichartig sind, bzw. aus dem selben Ursprungsdokument
- * erzeugt wurden. Mit dieser Voraussetzung ist es nicht notwendig, bestimmte
- * Ressourcen (z.B. Bilder und manche Styles) aufzudoppeln - sie werden einfach
- * mehrfach verwendet. Der Merger ist also nicht für beliebige unterschiedliche
- * Dokumente geeignet, sollte aber z.B. für die Erzeugung von Gesamtdokumenten in
- * Rahmen eines WollMux-Komfortdrucks alle notwendigen Elemente übernehmen und ggf.
- * mit Fixup-Methoden anpassen.
+ * Gesamtdokument zusammen fassen kann. Der Merger setzt aktuell vorraus, dass
+ * die zu mergenden Dokumente gleichartig sind, bzw. aus dem selben
+ * Ursprungsdokument erzeugt wurden. Mit dieser Voraussetzung ist es nicht
+ * notwendig, bestimmte Ressourcen (z.B. Bilder und manche Styles) aufzudoppeln
+ * - sie werden einfach mehrfach verwendet. Der Merger ist also nicht für
+ * beliebige unterschiedliche Dokumente geeignet, sollte aber z.B. für die
+ * Erzeugung von Gesamtdokumenten in Rahmen eines WollMux-Komfortdrucks alle
+ * notwendigen Elemente übernehmen und ggf. mit Fixup-Methoden anpassen.
  * 
  * @author Christoph Lutz (D-III-ITD-D101)
  */
@@ -92,8 +91,8 @@ public class ODFMerger
   ContentMerger cm;
 
   /**
-   * Das zuerst hinzugefügte Dokument hat eine Sonderrolle, da es als Basis für das
-   * Erbebnisdokument verwendet wird. Angepasst werden lediglich styles.xml,
+   * Das zuerst hinzugefügte Dokument hat eine Sonderrolle, da es als Basis für
+   * das Erbebnisdokument verwendet wird. Angepasst werden lediglich styles.xml,
    * content.xml und meta.xml. Alle anderen Ressourcen werden aus dem ersten
    * hinzugefügten Storage übernommen.
    */
@@ -106,7 +105,7 @@ public class ODFMerger
    */
   public interface Storage
   {
-    InputStream getInputStream(String elementName) throws NoSuchElementException;
+    InputStream getInputStream(String elementName);
 
     List<String> getElementNames();
   }
@@ -129,7 +128,8 @@ public class ODFMerger
    */
   public void add(Storage s)
   {
-    if (firstStorage == null) firstStorage = s;
+    if (firstStorage == null)
+      firstStorage = s;
 
     try
     {
@@ -137,9 +137,8 @@ public class ODFMerger
       mm.add(s.getInputStream("meta.xml"));
       sm.add(s.getInputStream("styles.xml"), pageOffset);
       cm.add(s.getInputStream("content.xml"), pageOffset,
-        sm.getLastMasterStylesChangeMap());
-    }
-    catch (NoSuchElementException e)
+          sm.getLastMasterStylesChangeMap());
+    } catch (NoSuchElementException e)
     {
       e.printStackTrace();
     }
@@ -165,8 +164,8 @@ public class ODFMerger
   }
 
   /**
-   * Merged die Daten der meta.xml-Dateien, die in den mit add hinzugefügten Storages
-   * vorhanden sind.
+   * Merged die Daten der meta.xml-Dateien, die in den mit add hinzugefügten
+   * Storages vorhanden sind.
    * 
    * @author Christoph Lutz (D-III-ITD-D101)
    */
@@ -192,14 +191,13 @@ public class ODFMerger
       {
         docBuilder = factory.newDocumentBuilder();
         doc = docBuilder.parse(is);
-      }
-      catch (Exception e)
+      } catch (Exception e)
       {
         e.printStackTrace();
       }
 
-      Node statistic =
-        getFirstChild(getFirstChild(getFirstChild(doc), "office:meta"),
+      Node statistic = getFirstChild(
+          getFirstChild(getFirstChild(doc), "office:meta"),
           "meta:document-statistic");
       if (statistic != null)
       {
@@ -212,15 +210,15 @@ public class ODFMerger
           if (name.endsWith("count"))
           {
             Integer oldValue = counters.get(name);
-            if (oldValue == null) oldValue = Integer.valueOf(0);
+            if (oldValue == null)
+              oldValue = Integer.valueOf(0);
             try
             {
               Integer newValue = Integer.valueOf(value);
               counters.put(name, oldValue + newValue);
               if ("meta:page-count".equals(name))
                 pageCount = getPageCountConsiderFillerPages() + newValue;
-            }
-            catch (NumberFormatException e)
+            } catch (NumberFormatException e)
             {
               e.printStackTrace();
             }
@@ -234,6 +232,7 @@ public class ODFMerger
      * 
      * @see de.muenchen.allg.itd51.test.DOMBasedODFMerger.Merger#getResultData()
      */
+    @Override
     public byte[] getResultData()
     {
       // TODO Die in counters und in pageCount gesammelten Werte auch
@@ -243,8 +242,8 @@ public class ODFMerger
 
     /**
      * Liefert die aktuelle Seitenzahl des gemergten Dokuments mit bereits
-     * eingefügten bzw. noch einzufügenden Leerseiten damit das nächste Dokument auf
-     * einer ungeraden Seite starten kann.
+     * eingefügten bzw. noch einzufügenden Leerseiten damit das nächste Dokument
+     * auf einer ungeraden Seite starten kann.
      * 
      * @author Christoph Lutz (D-III-ITD-D101)
      */
@@ -262,8 +261,7 @@ public class ODFMerger
    */
   public static class StylesMerger extends Merger
   {
-    private HashMap<String, String> masterStylesChangeMap =
-      new HashMap<String, String>();
+    private HashMap<String, String> masterStylesChangeMap = new HashMap<String, String>();
 
     public StylesMerger()
     {
@@ -286,36 +284,27 @@ public class ODFMerger
         Document doc = docBuilder.parse(is);
 
         // remove Page-Count Felder
-        deleteOrReplaceByChild(doc, toDeleteNodeNames, toReplaceByChildNodeNames);
+        deleteOrReplaceByChild(doc, toDeleteNodeNames,
+            toReplaceByChildNodeNames);
 
         // unify masterStyleNames
-        Node masterStyles =
-          getFirstChild(doc.getFirstChild(), "office:master-styles");
+        Node masterStyles = getFirstChild(doc.getFirstChild(),
+            "office:master-styles");
         masterStylesChangeMap.clear();
         for (String s : getStyleNames(masterStyles))
           masterStylesChangeMap.put(s, s + "_" + pageOffset);
-        adjustStyleNames(doc, masterStylesChangeMap, new String[] {
-          "style:name", "style:master-page-name" });
+        adjustStyleNames(doc, masterStylesChangeMap,
+            new String[] { "style:name", "style:master-page-name" });
 
         if (resultDoc == null)
         {
           resultDoc = (Document) doc.cloneNode(true);
-        }
-        else
+        } else
         {
           // master Styles mergen
-          Node srcNode = getFirstChild(doc.getFirstChild(), "office:master-styles");
-          Node resultNode =
-            getFirstChild(resultDoc.getFirstChild(), "office:master-styles");
-          NodeList list = srcNode.getChildNodes();
-          for (int i = 0; i < list.getLength(); ++i)
-          {
-            Node n = list.item(i);
-            resultNode.appendChild(resultDoc.importNode(n, true));
-          }
+          mergeStyles(doc, "office:master-styles");
         }
-      }
-      catch (Exception e)
+      } catch (Exception e)
       {
         e.printStackTrace();
       }
@@ -365,18 +354,20 @@ public class ODFMerger
         Document doc = docBuilder.parse(is);
 
         // remove TextFields und andere Elemente
-        deleteOrReplaceByChild(doc, toDeleteNodeNames, toReplaceByChildNodeNames);
+        deleteOrReplaceByChild(doc, toDeleteNodeNames,
+            toReplaceByChildNodeNames);
 
         // add page break to first text:p paragraph
-        Node autoStyles =
-          getFirstChild(doc.getFirstChild(), "office:automatic-styles");
+        Node autoStyles = getFirstChild(doc.getFirstChild(),
+            "office:automatic-styles");
         HashSet<String> names = getStyleNames(autoStyles);
         Node firstTextPNode = getFirstTextPNode(doc);
         String newParStyleName = createUnusedParStyleName(names);
-        String oldParStyleName = adjustParStyleName(firstTextPNode, newParStyleName);
+        String oldParStyleName = adjustParStyleName(firstTextPNode,
+            newParStyleName);
         String masterPageName = getMasterPageName(autoStyles, oldParStyleName);
         autoStyles.appendChild(createPageBreakParStyleNode(doc, newParStyleName,
-          oldParStyleName, masterPageName));
+            oldParStyleName, masterPageName));
 
         // addPageAnchorOffset
         addPageAnchorOffset(doc, pageOffset);
@@ -385,32 +376,23 @@ public class ODFMerger
         HashMap<String, String> stylesChangeMap = new HashMap<String, String>();
         for (String s : getStyleNames(autoStyles))
           stylesChangeMap.put(s, s + "_" + pageOffset);
-        adjustStyleNames(doc, stylesChangeMap, new String[] {
-          "style:name", "draw:style-name", "text:style-name",
-          "presentation:style-name", "style:style-name", "style:parent-style-name",
-          "chart:style-name", "table:style-name" });
+        adjustStyleNames(doc, stylesChangeMap,
+            new String[] { "style:name", "draw:style-name", "text:style-name",
+                "presentation:style-name", "style:style-name",
+                "style:parent-style-name", "chart:style-name",
+                "table:style-name" });
 
         // unify masterStyleNames
         adjustStyleNames(doc, masterStylesChangeMap,
-          new String[] { "style:master-page-name" });
+            new String[] { "style:master-page-name" });
 
         if (resultDoc == null)
         {
           resultDoc = (Document) doc.cloneNode(true);
-        }
-        else
+        } else
         {
           // Automatic Styles mergen
-          Node srcNode =
-            getFirstChild(doc.getFirstChild(), "office:automatic-styles");
-          Node resultNode =
-            getFirstChild(resultDoc.getFirstChild(), "office:automatic-styles");
-          NodeList list = srcNode.getChildNodes();
-          for (int i = 0; i < list.getLength(); ++i)
-          {
-            Node n = list.item(i);
-            resultNode.appendChild(resultDoc.importNode(n, true));
-          }
+          mergeStyles(doc, "office:automatic-styles");
 
           // office:text mergen
           // - sequence-decls werden nicht gemerged.
@@ -418,48 +400,46 @@ public class ODFMerger
           // Block am Anfang
           // - die restlichen Elemente werden jeweils hinten
           // angehängt.
-          srcNode =
-            getFirstChild(getFirstChild(doc.getFirstChild(), "office:body"),
-              "office:text");
-          resultNode =
-            getFirstChild(getFirstChild(resultDoc.getFirstChild(), "office:body"),
+          Node srcNode = getFirstChild(
+              getFirstChild(doc.getFirstChild(), "office:body"), "office:text");
+          Node resultNode = getFirstChild(
+              getFirstChild(resultDoc.getFirstChild(), "office:body"),
               "office:text");
           Node lastPageAnchoredNode = getLastPageAnchoredNode(resultNode);
           Node beginContentBlock = null;
           if (lastPageAnchoredNode != null)
             beginContentBlock = lastPageAnchoredNode.getNextSibling();
-          list = srcNode.getChildNodes();
+          NodeList list = srcNode.getChildNodes();
           for (int i = 0; i < list.getLength(); ++i)
           {
             Node n = list.item(i);
-            if ("text:sequence-decls".equals(n.getNodeName())) continue;
+            if ("text:sequence-decls".equals(n.getNodeName()))
+              continue;
             if (isPageAnchored(n))
             {
               if (beginContentBlock != null)
               {
                 resultNode.insertBefore(resultDoc.importNode(n, true),
-                  beginContentBlock);
+                    beginContentBlock);
               }
-            }
-            else
+            } else
               resultNode.appendChild(resultDoc.importNode(n, true));
           }
 
         }
-      }
-      catch (Exception e)
+      } catch (Exception e)
       {
         e.printStackTrace();
       }
     }
 
     /**
-     * Diese Methode liefert den Wert des Attributs style:master-page-name zurück,
-     * das im Style styleName oder in Styles, von denen styleName abhängig ist,
-     * definiert ist; Gesucht wird im Abschnitt AutoStyles, dessen Knoten autoStyles
-     * als Übergabeparameter erwartet wird; Ist keine MasterPage für einen dieser
-     * Styles definiert oder ist der gesuchte Style selbst nicht definiert, so wird
-     * "Standard" zurück geliefert.
+     * Diese Methode liefert den Wert des Attributs style:master-page-name
+     * zurück, das im Style styleName oder in Styles, von denen styleName
+     * abhängig ist, definiert ist; Gesucht wird im Abschnitt AutoStyles, dessen
+     * Knoten autoStyles als Übergabeparameter erwartet wird; Ist keine
+     * MasterPage für einen dieser Styles definiert oder ist der gesuchte Style
+     * selbst nicht definiert, so wird "Standard" zurück geliefert.
      * 
      * @param autoStyles
      * @param styleName
@@ -473,16 +453,18 @@ public class ODFMerger
       {
         Node n = list.item(i);
         NamedNodeMap nnm = n.getAttributes();
-        if (nnm != null
-          && styleName.equals(nnm.getNamedItem("style:name").getFirstChild().getNodeValue()))
+        if (nnm != null && styleName.equals(
+            nnm.getNamedItem("style:name").getFirstChild().getNodeValue()))
         {
 
           Node mpn = nnm.getNamedItem("style:master-page-name");
-          if (mpn != null) return mpn.getFirstChild().getNodeValue();
+          if (mpn != null)
+            return mpn.getFirstChild().getNodeValue();
 
           Node psn = nnm.getNamedItem("style:parent-style-name");
           if (psn != null)
-            return getMasterPageName(autoStyles, psn.getFirstChild().getNodeValue());
+            return getMasterPageName(autoStyles,
+                psn.getFirstChild().getNodeValue());
 
           return "Standard";
         }
@@ -494,29 +476,31 @@ public class ODFMerger
      * Erzeugt die Style-Definition eines Styles newParStyleName, der von
      * oldParStyleName erbt und einen Seitennumbruch an diesem Paragraphen
      * verursacht, dessen Seitenzähler mit 1 initialisiert ist. Das Resultat in
-     * XML-Syntax: <style:style style:name="$newParStyleName"
-     * style:family="paragraph" style:parent-style-name="$oldParStyleName"
-     * style:master-page-name="$oldMasterStyleName"><style:paragraph-properties
-     * style:page-number="1"/></style:style>
+     * XML-Syntax:
+     * <style:style style:name="$newParStyleName" style:family="paragraph"
+     * style:parent-style-name="$oldParStyleName" style:master-page-name=
+     * "$oldMasterStyleName"><style:paragraph-properties style:page-number="1"/>
+     * </style:style>
      * 
      * @param doc
-     *          Das Dokument in das die Style-Definition später eingepflegt werden
-     *          soll.
+     *          Das Dokument in das die Style-Definition später eingepflegt
+     *          werden soll.
      * @param newParStyleName
      *          der Name der zu erzeugenden Style-Definition.
      * @param oldParStyleName
      *          der Name des Styles, von dem geerbt wird.
      * @param oldMasterPageStyleName
-     *          der Style-Name der MasterPage, die als Seitenvorlage für die neue
-     *          Seite verwendet werden soll. Soll keine spezielle Seite gesetzt
-     *          werden, so sorgt die Übergabe von "Standard" für das gewünschte
-     *          Ergebnis. Der Wert ist verpflichtend, da ohne ihn kein Seitenumbruch
-     *          definiert ist.
+     *          der Style-Name der MasterPage, die als Seitenvorlage für die
+     *          neue Seite verwendet werden soll. Soll keine spezielle Seite
+     *          gesetzt werden, so sorgt die Übergabe von "Standard" für das
+     *          gewünschte Ergebnis. Der Wert ist verpflichtend, da ohne ihn
+     *          kein Seitenumbruch definiert ist.
      * 
      * @author Christoph Lutz (D-III-ITD-D101)
      */
-    private Node createPageBreakParStyleNode(Document doc, String newParStyleName,
-        String oldParStyleName, String oldMasterPageStyleName)
+    private Node createPageBreakParStyleNode(Document doc,
+        String newParStyleName, String oldParStyleName,
+        String oldMasterPageStyleName)
     {
       Node styleStyle = doc.createElement("style:style");
       Node att = doc.createAttribute("style:name");
@@ -541,12 +525,12 @@ public class ODFMerger
     }
 
     /**
-     * Wenn das übergebene Element node ein Attribut text:style-name definiert, so
-     * wird der Wert dieses Attributs neu mit newParStyleName belegt. Diese Methode
-     * dient üblicherweise dazu, den ersten Absatz eines Dokuments mit einer
-     * Absatzformatierung zu belegen, in der ein Seitenumbruch definiert ist. Auf
-     * diese Art wird der gewünschte Seitenumbruch vor jedes zu mergende Dokument
-     * eingefügt.
+     * Wenn das übergebene Element node ein Attribut text:style-name definiert,
+     * so wird der Wert dieses Attributs neu mit newParStyleName belegt. Diese
+     * Methode dient üblicherweise dazu, den ersten Absatz eines Dokuments mit
+     * einer Absatzformatierung zu belegen, in der ein Seitenumbruch definiert
+     * ist. Auf diese Art wird der gewünschte Seitenumbruch vor jedes zu
+     * mergende Dokument eingefügt.
      * 
      * @author Christoph Lutz (D-III-ITD-D101)
      */
@@ -567,12 +551,12 @@ public class ODFMerger
     }
 
     /**
-     * Prüft, ob das übergebene Element (üblicherweise ein Text-Frame) an der Seite
-     * verankert ist. Hintergrund ist der, dass bei der Suche nach dem ersten
-     * Paragraph des Dokuments alle Text-Frames ignoriert werden müssen, die nicht
-     * Teil des Haupttextteils des Dokuments sind. Der erste Paragraph des
-     * Haupttextteils wird benötigt, um den Seitenumbruch vor dem hinzumergen eines
-     * neuen Dokuments einzufügen.
+     * Prüft, ob das übergebene Element (üblicherweise ein Text-Frame) an der
+     * Seite verankert ist. Hintergrund ist der, dass bei der Suche nach dem
+     * ersten Paragraph des Dokuments alle Text-Frames ignoriert werden müssen,
+     * die nicht Teil des Haupttextteils des Dokuments sind. Der erste Paragraph
+     * des Haupttextteils wird benötigt, um den Seitenumbruch vor dem
+     * hinzumergen eines neuen Dokuments einzufügen.
      * 
      * @author Christoph Lutz (D-III-ITD-D101)
      */
@@ -583,24 +567,26 @@ public class ODFMerger
       {
         Node anchorType = atts.getNamedItem("text:anchor-type");
         if (anchorType != null
-          && "page".equals(anchorType.getFirstChild().getNodeValue())) return true;
+            && "page".equals(anchorType.getFirstChild().getNodeValue()))
+          return true;
       }
       return false;
     }
 
     /**
-     * Im XML-Dokument müssen alle an der Seite verankerten Objekte in einem Block
-     * hintereinander aufgeführt sein, damit OOo sie korrekt darstellen kann (ich
-     * habe nicht geprüft, ob diese Anforderung aus der ODF-Spezifikation resultiert,
-     * oder ob es sich hier um einen OOo-Bug handelt). Diese Methode liefert den
-     * Knoten des letzten Objekts, das an der Seite verankert ist, zurück oder null,
-     * wenn kein an der Seite verankertes Objekt im Dokument gefunden wurde.
+     * Im XML-Dokument müssen alle an der Seite verankerten Objekte in einem
+     * Block hintereinander aufgeführt sein, damit OOo sie korrekt darstellen
+     * kann (ich habe nicht geprüft, ob diese Anforderung aus der
+     * ODF-Spezifikation resultiert, oder ob es sich hier um einen OOo-Bug
+     * handelt). Diese Methode liefert den Knoten des letzten Objekts, das an
+     * der Seite verankert ist, zurück oder null, wenn kein an der Seite
+     * verankertes Objekt im Dokument gefunden wurde.
      * 
      * @param officeTextNode
-     *          Der Knoten des Elements office:text unterhalb dessen die an der Seite
-     *          verankerten Objekte aufgelistet sind.
-     * @return den Knoten des letzten Elements, das an der Seite verankert ist oder
-     *         null, wenn kein solches Objekt vorhanden ist.
+     *          Der Knoten des Elements office:text unterhalb dessen die an der
+     *          Seite verankerten Objekte aufgelistet sind.
+     * @return den Knoten des letzten Elements, das an der Seite verankert ist
+     *         oder null, wenn kein solches Objekt vorhanden ist.
      * 
      * @author Christoph Lutz (D-III-ITD-D101)
      */
@@ -611,22 +597,23 @@ public class ODFMerger
       for (int i = 0; i < list.getLength(); ++i)
       {
         Node n = list.item(i);
-        if (isPageAnchored(n)) last = n;
+        if (isPageAnchored(n))
+          last = n;
       }
       return last;
     }
 
     /**
-     * Sucht im Dokument node rekursiv nach dem ersten Text-Paragraphen. Bei diesem
-     * Paragraphen kann später der einzufügende Seitenumbruch angewendet werden.
-     * Dabei ist wichtig, dass der Paragraph im Haupttextteil liegt. So müssen z.B.
-     * Paragraphen in TextFrames, die an der Seite verankert sind, ignoriert werden.
-     * Dies wird erreicht, in dem alle an der Seite verankerten Objekte gleich zu
-     * Beginn ignoriert werden.
+     * Sucht im Dokument node rekursiv nach dem ersten Text-Paragraphen. Bei
+     * diesem Paragraphen kann später der einzufügende Seitenumbruch angewendet
+     * werden. Dabei ist wichtig, dass der Paragraph im Haupttextteil liegt. So
+     * müssen z.B. Paragraphen in TextFrames, die an der Seite verankert sind,
+     * ignoriert werden. Dies wird erreicht, in dem alle an der Seite
+     * verankerten Objekte gleich zu Beginn ignoriert werden.
      * 
      * @param node
-     *          Hier kann der Hauptknoten des Dokument angegeben werden - es wird
-     *          rekursiv gesucht.
+     *          Hier kann der Hauptknoten des Dokument angegeben werden - es
+     *          wird rekursiv gesucht.
      * @return den ersten Paragraphen des Haupttextteils oder null, wenn keiner
      *         gefunden wurde.
      * 
@@ -634,29 +621,32 @@ public class ODFMerger
      */
     private static Node getFirstTextPNode(Node node)
     {
-      if (isPageAnchored(node)) return null;
+      if (isPageAnchored(node))
+        return null;
 
-      if ("text:p".equals(node.getNodeName())) return node;
+      if ("text:p".equals(node.getNodeName()))
+        return node;
 
       // process childs
       NodeList list = node.getChildNodes();
       for (int i = 0; i < list.getLength(); i++)
       {
         Node firstTextPNode = getFirstTextPNode(list.item(i));
-        if (firstTextPNode != null) return firstTextPNode;
+        if (firstTextPNode != null)
+          return firstTextPNode;
       }
       return null;
     }
 
     /**
-     * Diese Fixup-Methode korrigiert rekursiv alle an der Seite verankeren Objekte
-     * in dem der neue Seiten-Offset innerhalb des gemergten Dokuments offset zu der
-     * bereits gesetzten Startseite hinzugefügt wird.
+     * Diese Fixup-Methode korrigiert rekursiv alle an der Seite verankeren
+     * Objekte in dem der neue Seiten-Offset innerhalb des gemergten Dokuments
+     * offset zu der bereits gesetzten Startseite hinzugefügt wird.
      * 
      * @param node
-     *          Den Knoten eines Objekts. Ist dieses Objekt an der Seite verankert,
-     *          so wird der Offset offset zu dem bereits gesetzten Wert des Attributs
-     *          text:anchor-page-number addiert.
+     *          Den Knoten eines Objekts. Ist dieses Objekt an der Seite
+     *          verankert, so wird der Offset offset zu dem bereits gesetzten
+     *          Wert des Attributs text:anchor-page-number addiert.
      * @param offset
      *          Die Seitennummer der Seite, mit der das aktuelle Dokument im
      *          gemergten Dokument beginnt.
@@ -680,8 +670,7 @@ public class ODFMerger
             try
             {
               anchorPageNumber = Integer.valueOf(nStr);
-            }
-            catch (NumberFormatException e)
+            } catch (NumberFormatException e)
             {
               e.printStackTrace();
             }
@@ -708,23 +697,25 @@ public class ODFMerger
   {
 
     /**
-     * Das Ergebnisdokument, das mit dem ersten hinzugefügten Dokument initialisiert
-     * wird und in dem später alle weiteren Dokumente zusammengemergt werden.
+     * Das Ergebnisdokument, das mit dem ersten hinzugefügten Dokument
+     * initialisiert wird und in dem später alle weiteren Dokumente
+     * zusammengemergt werden.
      */
     protected Document resultDoc = null;
 
     /**
-     * Enthält die Namen aller XML-Elemente, die im Ergebnisdokument nicht erwünscht
-     * sind und durch ihre Kinder ersetzt werden sollen (falls Kinder vorhanden
-     * sind). Beispiel: Textfelder werden durch ihre Repräsentation ersetzt.
+     * Enthält die Namen aller XML-Elemente, die im Ergebnisdokument nicht
+     * erwünscht sind und durch ihre Kinder ersetzt werden sollen (falls Kinder
+     * vorhanden sind). Beispiel: Textfelder werden durch ihre Repräsentation
+     * ersetzt.
      */
     protected HashSet<String> toReplaceByChildNodeNames = null;
 
     /**
-     * Enthält die Namen aller Knoten, die im Ergebnisdokument nicht erwünscht sind
-     * und vollständig entfernt werden können. Z.B. Notizen oder Bookmarks. Damit
-     * wird das Ergebnisdokument etwas entschlankt und nicht benötigte Elemente
-     * müssen nicht unnötig angepasst (Fixups) werden.
+     * Enthält die Namen aller Knoten, die im Ergebnisdokument nicht erwünscht
+     * sind und vollständig entfernt werden können. Z.B. Notizen oder Bookmarks.
+     * Damit wird das Ergebnisdokument etwas entschlankt und nicht benötigte
+     * Elemente müssen nicht unnötig angepasst (Fixups) werden.
      */
     protected HashSet<String> toDeleteNodeNames = null;
 
@@ -735,9 +726,9 @@ public class ODFMerger
     }
 
     /**
-     * Sucht im Knoten parent nach Style-Definitionen und liefert die Namen aller
-     * gefundenen Style-Definitionen als Menge zurück. Als parent wird dabei
-     * üblicherweise ein Block text:auto-styles (aus content.xml) oder
+     * Sucht im Knoten parent nach Style-Definitionen und liefert die Namen
+     * aller gefundenen Style-Definitionen als Menge zurück. Als parent wird
+     * dabei üblicherweise ein Block text:auto-styles (aus content.xml) oder
      * text:master-styles (aus styles.xml) erwartet.
      * 
      * @author Christoph Lutz (D-III-ITD-D101)
@@ -752,16 +743,17 @@ public class ODFMerger
         NamedNodeMap nnm = n.getAttributes();
         if (nnm != null)
         {
-          names.add(nnm.getNamedItem("style:name").getFirstChild().getNodeValue());
+          names.add(
+              nnm.getNamedItem("style:name").getFirstChild().getNodeValue());
         }
       }
       return names;
     }
 
     /**
-     * Erzeugt den Namen eines neuen, garantiert unbenutzen Paragraph-Styles, der
-     * bisher nicht in names vorhanden ist. Der Name von Paragraph-Styles ist
-     * übelicherweise wie "P<zahl>" aufgebaut.
+     * Erzeugt den Namen eines neuen, garantiert unbenutzen Paragraph-Styles,
+     * der bisher nicht in names vorhanden ist. Der Name von Paragraph-Styles
+     * ist übelicherweise wie "P<zahl>" aufgebaut.
      * 
      * @param names
      *          Die Menge der bereits bekannten Paragraph-Styles
@@ -774,14 +766,16 @@ public class ODFMerger
       for (int i = 1; true; ++i)
       {
         String n = "P" + i;
-        if (!names.contains(n)) return n;
+        if (!names.contains(n))
+          return n;
       }
     }
 
     /**
-     * Diese Methode entfernt rekursiv Knoten aus dem Dokument, wobei toDelete alle
-     * Elemente beschreibt, die komplett (mitsamt Kinder) gelöscht werden sollen und
-     * toReplace alle Knoten beschreibt, die durch ihre Kinder ersetzt werden sollen.
+     * Diese Methode entfernt rekursiv Knoten aus dem Dokument, wobei toDelete
+     * alle Elemente beschreibt, die komplett (mitsamt Kinder) gelöscht werden
+     * sollen und toReplace alle Knoten beschreibt, die durch ihre Kinder
+     * ersetzt werden sollen.
      * 
      * @param node
      *          Der Knoten, ab dem rekursiv ersetzt werden soll.
@@ -823,9 +817,9 @@ public class ODFMerger
 
     /**
      * Fixup-Methode für Stylenamen, die rekursiv Namen von Styles in Attributen
-     * anpasst; Dabei beschreibt stylesChangeMap die Zuordnung von alten Namen auf
-     * neue Namen und attributesToAdjust die Liste der Attribute, die angepasst
-     * werden sollen, wenn sie in einem Element gesetzt sine.
+     * anpasst; Dabei beschreibt stylesChangeMap die Zuordnung von alten Namen
+     * auf neue Namen und attributesToAdjust die Liste der Attribute, die
+     * angepasst werden sollen, wenn sie in einem Element gesetzt sine.
      * 
      * @param node
      *          Ausgangsknoten für die rekursive Anpassung.
@@ -833,8 +827,8 @@ public class ODFMerger
      *          HashMap mit einer Zuordnung von alten Style-Namen auf die neu zu
      *          setzenden Style-Namen.
      * @param attributesToAdjust
-     *          Eine Liste der Attribute, die in allen Elementen und Unterelementen
-     *          angepasst werden sollen, wenn sie gesetzt sind.
+     *          Eine Liste der Attribute, die in allen Elementen und
+     *          Unterelementen angepasst werden sollen, wenn sie gesetzt sind.
      * 
      * @author Christoph Lutz (D-III-ITD-D101)
      */
@@ -849,8 +843,10 @@ public class ODFMerger
           Node item = atts.getNamedItem(attName);
           if (item != null)
           {
-            String newVal = stylesChangeMap.get(item.getFirstChild().getNodeValue());
-            if (newVal != null) item.getFirstChild().setNodeValue(newVal);
+            String newVal = stylesChangeMap
+                .get(item.getFirstChild().getNodeValue());
+            if (newVal != null)
+              item.getFirstChild().setNodeValue(newVal);
           }
         }
       }
@@ -864,24 +860,44 @@ public class ODFMerger
     }
 
     /**
+     * Intergrierte die Styles aus doc im resultDoc.
+     * 
+     * @param doc
+     *          Das ausgangs Dokument.
+     * @param style
+     *          Das zu integrierende Styles Attribut.
+     */
+    protected void mergeStyles(Document doc, String style)
+    {
+      Node srcNode = getFirstChild(doc.getFirstChild(), style);
+      Node resultNode = getFirstChild(resultDoc.getFirstChild(), style);
+      NodeList list = srcNode.getChildNodes();
+      for (int i = 0; i < list.getLength(); ++i)
+      {
+        Node n = list.item(i);
+        resultNode.appendChild(resultDoc.importNode(n, true));
+      }
+    }
+
+    /**
      * Liefert das XML-Ergebnisdokument des Mergevorgangs als byte[].
      * 
      * @author Christoph Lutz (D-III-ITD-D101)
      */
     public byte[] getResultData()
     {
-      if (resultDoc != null) try
-      {
-        StringWriter sw = new StringWriter();
-        TransformerFactory tf = TransformerFactory.newInstance();
-        Transformer transformer = tf.newTransformer();
-        transformer.transform(new DOMSource(resultDoc), new StreamResult(sw));
-        return sw.toString().getBytes();
-      }
-      catch (Exception e)
-      {
-        e.printStackTrace();
-      }
+      if (resultDoc != null)
+        try
+        {
+          StringWriter sw = new StringWriter();
+          TransformerFactory tf = TransformerFactory.newInstance();
+          Transformer transformer = tf.newTransformer();
+          transformer.transform(new DOMSource(resultDoc), new StreamResult(sw));
+          return sw.toString().getBytes();
+        } catch (Exception e)
+        {
+          e.printStackTrace();
+        }
       return null;
     }
 
@@ -892,30 +908,34 @@ public class ODFMerger
      */
     protected static Node getFirstChild(Node parent, String element)
     {
-      if (parent == null) return null;
+      if (parent == null)
+        return null;
       NodeList nl = parent.getChildNodes();
       for (int i = 0; i < nl.getLength(); i++)
       {
         Node child = nl.item(i);
-        if (element.equals(child.getNodeName())) return child;
+        if (element.equals(child.getNodeName()))
+          return child;
       }
       return null;
     }
 
     /**
-     * Liefert parent.getFirstChild() zurück oder null, wenn parent selbst null ist.
+     * Liefert parent.getFirstChild() zurück oder null, wenn parent selbst null
+     * ist.
      * 
      * @author Christoph Lutz (D-III-ITD-D101)
      */
     protected static Node getFirstChild(Node parent)
     {
-      if (parent == null) return null;
+      if (parent == null)
+        return null;
       return parent.getFirstChild();
     }
 
     /**
-     * Erzeugt eine simple Baumansicht des Knotens node und aller Unterknoten auf
-     * System.out für Debugzwecke.
+     * Erzeugt eine simple Baumansicht des Knotens node und aller Unterknoten
+     * auf System.out für Debugzwecke.
      * 
      * @author Christoph Lutz (D-III-ITD-D101)
      */
@@ -938,23 +958,24 @@ public class ODFMerger
 
     private ZipFile zipFile;
 
-    public ZipedODFFileStorage(File file) throws ZipException, IOException
+    public ZipedODFFileStorage(File file) throws IOException
     {
       this.zipFile = new ZipFile(file);
     }
 
+    @Override
     public InputStream getInputStream(String elementName)
     {
       try
       {
         return zipFile.getInputStream(zipFile.getEntry(elementName));
-      }
-      catch (IOException e)
+      } catch (IOException e)
       {
         throw new NoSuchElementException(elementName);
       }
     }
 
+    @Override
     public List<String> getElementNames()
     {
       List<String> names = new ArrayList<String>();
@@ -969,8 +990,9 @@ public class ODFMerger
   }
 
   /**
-   * Repräsentiert ein Storage, das Ressourcen von einem anderen Storage übernimmt,
-   * in dem jedoch einzelne Ressourcen verändert bzw. überschrieben werden können.
+   * Repräsentiert ein Storage, das Ressourcen von einem anderen Storage
+   * übernimmt, in dem jedoch einzelne Ressourcen verändert bzw. überschrieben
+   * werden können.
    * 
    * @author Christoph Lutz (D-III-ITD-D101)
    */
@@ -991,8 +1013,8 @@ public class ODFMerger
       overrideMap.put(elementName, data);
     }
 
+    @Override
     public InputStream getInputStream(String elementName)
-        throws NoSuchElementException
     {
       byte[] data = overrideMap.get(elementName);
       if (data != null)
@@ -1002,6 +1024,7 @@ public class ODFMerger
       return storage.getInputStream(elementName);
     }
 
+    @Override
     public List<String> getElementNames()
     {
       return storage.getElementNames();
@@ -1009,8 +1032,8 @@ public class ODFMerger
   }
 
   /**
-   * Erweitert ein Storage um die Fähigkeit, die enthaltenen Daten in ein gezipptes
-   * odf-File zu schreiben.
+   * Erweitert ein Storage um die Fähigkeit, die enthaltenen Daten in ein
+   * gezipptes odf-File zu schreiben.
    * 
    * @author Christoph Lutz (D-III-ITD-D101)
    */
@@ -1060,15 +1083,16 @@ public class ODFMerger
     {
       try
       {
-        merger.add(new ZipedODFFileStorage(new File(
-          "testdata/odfmerge/slv_seriendruck/test" + i + ".odt")));
-      }
-      catch (Exception e)
+        merger.add(new ZipedODFFileStorage(
+            new File("testdata/odfmerge/slv_seriendruck/test" + i + ".odt")));
+      } catch (Exception e)
       {
         e.printStackTrace();
       }
-      if (i % 10 == 0) System.out.print(" ");
-      if (i % 50 == 0) System.out.print("\n");
+      if (i % 10 == 0)
+        System.out.print(" ");
+      if (i % 50 == 0)
+        System.out.print("\n");
       System.out.print("X");
       System.out.flush();
     }
@@ -1077,14 +1101,13 @@ public class ODFMerger
     try
     {
       new StorageZipOutput(result).writeToFile(new File("/tmp/test.odt"));
-    }
-    catch (Exception e)
+    } catch (Exception e)
     {
       e.printStackTrace();
     }
 
     System.out.println("\n\nMerge finished after "
-      + (System.currentTimeMillis() - startTime) + " ms");
+        + (System.currentTimeMillis() - startTime) + " ms");
 
   }
 }
