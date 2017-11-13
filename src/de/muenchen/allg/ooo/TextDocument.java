@@ -36,6 +36,7 @@
 package de.muenchen.allg.ooo;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -616,6 +617,60 @@ public class TextDocument
       }
     }
     return found;
+  }
+  
+  public static String parseHighlightColor(Integer highlightColor)
+  {
+    if (highlightColor == null)
+	return null;
+    
+    String colStr = "00000000";
+    colStr += Integer.toHexString(highlightColor.intValue());
+    colStr = colStr.substring(colStr.length() - 8, colStr.length());
+    String hcAtt = " HIGHLIGHT_COLOR '" + colStr + "'";
+    
+    return hcAtt;
+  }
+  
+  public static ArrayList<XNamed> getBookmarkByTextRange(XTextRange range) {
+    ArrayList<XNamed> bookmarks = new ArrayList<XNamed>();
+    XTextCursor currentCursor = range.getText().createTextCursorByRange(range);
+    if (UNO.XEnumerationAccess(currentCursor) != null)
+    {
+      XEnumeration xenum = UNO.XEnumerationAccess(currentCursor).createEnumeration();
+      while (xenum.hasMoreElements())
+      {
+        XEnumeration parEnum = null;
+        try
+        {
+          parEnum =
+            UNO.XEnumerationAccess(xenum.nextElement()).createEnumeration();
+        }
+        catch (java.lang.Exception e)
+        {}
+
+        while (parEnum != null && parEnum.hasMoreElements())
+        {
+          try
+          {
+            Object element = parEnum.nextElement();
+            bookmarks.add(UNO.XNamed(UNO.getProperty(element, "Bookmark")));
+            
+            //break;
+          }
+          catch (WrappedTargetException ex) 
+          {
+            break;
+          }
+          catch (NoSuchElementException ex)
+          {
+            break;
+          }
+        }
+      }
+    }
+    
+    return bookmarks;
   }
 
 }
