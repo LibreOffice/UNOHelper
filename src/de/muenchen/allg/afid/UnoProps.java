@@ -31,6 +31,8 @@
  */
 package de.muenchen.allg.afid;
 
+import java.util.ArrayList;
+
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.beans.UnknownPropertyException;
 
@@ -51,6 +53,15 @@ public class UnoProps
   public UnoProps()
   {
     props = new PropertyValue[] {};
+  }
+  
+  /**
+   * Kapselt ein existierendes PropertyValue-Array.
+   * 
+   * @param values
+   */
+  public UnoProps(PropertyValue... values) {
+	  props = values;
   }
 
   /**
@@ -89,7 +100,7 @@ public class UnoProps
    * 
    * @param props
    */
-  public UnoProps(Object[] props)
+  public UnoProps(Object... props)
   {
     if (props == null)
     {
@@ -97,26 +108,15 @@ public class UnoProps
       return;
     }
 
-    // Zähle Anzahl der PropertyValue-Einträge.
-    int count = 0;
-    for (int i = 0; i < props.length; i++)
-    {
-      if (props[i] instanceof PropertyValue)
-        count++;
+    ArrayList<PropertyValue> list = new ArrayList<>();
+    for (Object p : props) {
+    	if (p instanceof PropertyValue) {
+        PropertyValue pv = (PropertyValue) p;
+    		list.add(new PropertyValue(pv.Name, pv.Handle, pv.Value, pv.State));
+    	}
     }
-
-    // Erzeuge neues PropertyValue[]:
-    this.props = new PropertyValue[count];
-    int x = 0;
-    for (int i = 0; i < props.length; i++)
-    {
-      if (props[i] instanceof PropertyValue)
-      {
-        PropertyValue pv = (PropertyValue) props[i];
-        this.props[x++] = new PropertyValue(pv.Name, pv.Handle, pv.Value,
-            pv.State);
-      }
-    }
+    
+    this.props = list.toArray(new PropertyValue[] {});
   }
 
   /**
@@ -195,6 +195,8 @@ public class UnoProps
    * @return Liefert ein UnoService-Objekt zurück, das den den Wert des
    *         Properties mit dem Namen name kapselt.
    * @throws UnknownPropertyException
+   * 
+   * @deprecated
    */
   public UnoService getPropertyValueAsUnoService(String name)
       throws UnknownPropertyException

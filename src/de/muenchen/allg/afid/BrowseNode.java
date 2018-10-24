@@ -65,11 +65,11 @@ public class BrowseNode
    *
    * @author bnk
    */
-  public String URL()
+  public String getURL()
   {
     return (String) UNO.getProperty(node, "URI");
   }
-
+  
   /**
    * Liefert das ungewrappte Objekt für die direkte Übergabe an UNO-Funktionen.
    *
@@ -109,7 +109,7 @@ public class BrowseNode
    *          spezifiziert das Interface das gequeryt werden soll.
    * @author bnk
    */
-  public Object as(Class<?> c)
+  public <T> T as(Class<T> c)
   {
     return UnoRuntime.queryInterface(c, node);
   }

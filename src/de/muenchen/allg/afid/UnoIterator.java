@@ -24,7 +24,8 @@ public class UnoIterator<T> implements Iterator<T>
     return enu.hasMoreElements();
   }
 
-  @Override
+  @SuppressWarnings("unchecked")
+	@Override
   public T next()
   {
     try

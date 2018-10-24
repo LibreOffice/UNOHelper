@@ -46,6 +46,8 @@ import java.util.regex.Pattern;
 
 import com.sun.star.beans.Property;
 import com.sun.star.beans.PropertyState;
+import com.sun.star.beans.PropertyVetoException;
+import com.sun.star.beans.UnknownPropertyException;
 import com.sun.star.beans.XPropertySet;
 import com.sun.star.beans.XPropertySetInfo;
 import com.sun.star.beans.XPropertyState;
@@ -54,6 +56,7 @@ import com.sun.star.container.XEnumeration;
 import com.sun.star.container.XEnumerationAccess;
 import com.sun.star.container.XNameContainer;
 import com.sun.star.container.XNamed;
+import com.sun.star.lang.IllegalArgumentException;
 import com.sun.star.lang.WrappedTargetException;
 import com.sun.star.style.LineSpacing;
 import com.sun.star.style.LineSpacingMode;
@@ -62,13 +65,13 @@ import com.sun.star.text.XAutoTextEntry;
 import com.sun.star.text.XAutoTextGroup;
 import com.sun.star.text.XText;
 import com.sun.star.text.XTextContent;
-import com.sun.star.text.XTextCursor;
 import com.sun.star.text.XTextDocument;
 import com.sun.star.text.XTextRange;
 import com.sun.star.uno.AnyConverter;
 import com.sun.star.uno.UnoRuntime;
 
 import de.muenchen.allg.afid.UNO;
+import de.muenchen.allg.afid.UnoIterator;
 
 /**
  * Hilfsfunktionen für die Arbeit mit OOo TextDokumenten
@@ -309,32 +312,25 @@ public class TextDocument
     XEnumerationAccess access = UNO.XEnumerationAccess(range);
     if (access != null)
     {
-      XEnumeration xenum = access.createEnumeration();
-      if (xenum.hasMoreElements())
-        try
-        {
-          paragraph = UNO.XTextContent(xenum.nextElement());
-        } catch (Exception e)
-        {
-          // sollte eigentlich nicht passieren können
-        }
+    	paragraph = new UnoIterator<XTextContent>(access, XTextContent.class).next();
     }
-    if (paragraph == null)
-      return;
 
-    // Lösche den Paragraph
-    try
+    if (paragraph != null)
     {
-      // Ist der Paragraph der einzige Paragraph des Textes, dann kann er mit
-      // removeTextContent nicht gelöscht werden. In diesme Fall wird hier
-      // wenigstens der Inhalt entfernt:
-      paragraph.getAnchor().setString("");
-
-      // Paragraph löschen
-      range.getText().removeTextContent(paragraph);
-    } catch (NoSuchElementException e)
-    {
-      // sollte eigentlich nicht passieren können
+	    // Lösche den Paragraph
+	    try
+	    {
+	      // Ist der Paragraph der einzige Paragraph des Textes, dann kann er mit
+	      // removeTextContent nicht gelöscht werden. In diesme Fall wird hier
+	      // wenigstens der Inhalt entfernt:
+	      paragraph.getAnchor().setString("");
+	
+	      // Paragraph löschen
+	      range.getText().removeTextContent(paragraph);
+	    } catch (NoSuchElementException e)
+	    {
+	      // sollte eigentlich nicht passieren können
+	    }
     }
   }
 
@@ -380,36 +376,18 @@ public class TextDocument
   {
     XPropertySetInfo propInfo = in.getPropertySetInfo();
     Property[] props = propInfo.getProperties();
-    for (int i = 0; i < props.length; ++i)
+    for (Property prop : props)
     {
-      Object prop;
+      Object value;
       try
       {
-        prop = in.getPropertyValue(props[i].Name);
-      } catch (Exception x)
-      {
-        continue;
-      }
-
-      /*
-       * Die eigentlich unnötig komplexe Aufteilung in 2 try-catch-Blöcke habe
-       * ich nur gewählt, um isSimpleType nicht in einem try-catch-Block zu
-       * haben. Ich habe nämlich nicht alle Teilaspekte von isSimpleType()
-       * getestet (insbes. nicht die Behandlung von Sequenzen). Ich gehe davon
-       * aus, dass alles funktioniert, aber falls doch ein Fehler (sprich
-       * Exception) auftritt, dann will ich nicht, dass diese einfach von einem
-       * try-catch-Block ohne Logging abgewürgt wird.
-       */
-      if (isSimpleType(prop))
-      {
-        try
+        value = in.getPropertyValue(prop.Name);
+        if (isSimpleType(value))
         {
-          out.setPropertyValue(props[i].Name, prop);
-        } catch (Exception x)
-        {
-          continue;
+            out.setPropertyValue(prop.Name, value);
         }
-      }
+      } catch (UnknownPropertyException | WrappedTargetException | 
+      		IllegalArgumentException | PropertyVetoException ex)  {}
     }
   }
 
@@ -430,7 +408,7 @@ public class TextDocument
         if (len == 0)
           return true;
         return isSimpleType(Array.get(arryConv, 0));
-      } catch (Exception x)
+      } catch (java.lang.IllegalArgumentException x)
       {
         throw new RuntimeException("Dies dürfte nicht passieren.", x);
       }
@@ -559,8 +537,7 @@ public class TextDocument
    * anstatt den ausgewählten Bereich. Es ist also nicht auszuschließen, dass
    * diese Methode unter bestimmten Umständen zu viele Bookmarks zurückliefert.
    */
-  public static HashSet<String> getBookmarkNamesMatching(Pattern regex,
-      XTextRange range)
+  public static HashSet<String> getBookmarkNamesMatching(Pattern regex, XTextRange range)
   {
     // Hier findet eine iteration des über den XEnumerationAccess des ranges
     // statt. Man könnte statt dessen auch über range-compare mit den bereits
@@ -568,61 +545,40 @@ public class TextDocument
     // vergleichen...
     HashSet<String> found = new HashSet<String>();
     HashSet<String> started = new HashSet<String>();
-    XTextCursor cursor = range.getText().createTextCursorByRange(range);
-    if (UNO.XEnumerationAccess(cursor) != null)
-    {
-      XEnumeration xenum = UNO.XEnumerationAccess(cursor).createEnumeration();
-      while (xenum.hasMoreElements())
+    
+    UNO.forEachTextPortionInRange(range, o -> {
+      XNamed bookmark = UNO.XNamed(UNO.getProperty(o, "Bookmark"));
+      String name = (bookmark != null) ? bookmark.getName() : "";
+
+      if (regex.matcher(name).matches())
       {
-        XEnumeration parEnum = null;
-        try
+        if (Boolean.TRUE.equals(UNO.getProperty(o, "IsStart")))
         {
-          parEnum = UNO.XEnumerationAccess(xenum.nextElement())
-              .createEnumeration();
-        } catch (java.lang.Exception e)
-        {
-        }
-
-        while (parEnum != null && parEnum.hasMoreElements())
-        {
-          try
+          if (Boolean.TRUE.equals(UNO.getProperty(o, "IsCollapsed")))
           {
-            Object element = parEnum.nextElement();
-            XNamed bookmark = UNO.XNamed(UNO.getProperty(element, "Bookmark"));
-            String name = (bookmark != null) ? bookmark.getName() : "";
-
-            if (regex.matcher(name).matches())
-            {
-              boolean isStart = Boolean.TRUE
-                  .equals(UNO.getProperty(element, "IsStart"));
-              if (isStart)
-              {
-                boolean isCollapsed = Boolean.TRUE
-                    .equals(UNO.getProperty(element, "IsCollapsed"));
-                if (isCollapsed)
-                  found.add(name);
-                else
-                  started.add(name);
-              } else if (started.contains(name))
-                found.add(name);
-            }
-          } catch (WrappedTargetException ex)
-          {
-            break;
-          } catch (NoSuchElementException ex)
-          {
-            break;
+            found.add(name);
           }
+          else
+          {
+            started.add(name);
+          }
+        } 
+        else if (started.contains(name))
+        {
+          found.add(name);
         }
       }
-    }
+    });
+    
     return found;
   }
   
   public static String parseHighlightColor(Integer highlightColor)
   {
     if (highlightColor == null)
-	return null;
+    {
+    	return null;
+    }
     
     String colStr = "00000000";
     colStr += Integer.toHexString(highlightColor.intValue());
@@ -634,43 +590,12 @@ public class TextDocument
   
   public static ArrayList<XNamed> getBookmarkByTextRange(XTextRange range) {
     ArrayList<XNamed> bookmarks = new ArrayList<XNamed>();
-    XTextCursor currentCursor = range.getText().createTextCursorByRange(range);
-    if (UNO.XEnumerationAccess(currentCursor) != null)
-    {
-      XEnumeration xenum = UNO.XEnumerationAccess(currentCursor).createEnumeration();
-      while (xenum.hasMoreElements())
-      {
-        XEnumeration parEnum = null;
-        try
-        {
-          parEnum =
-            UNO.XEnumerationAccess(xenum.nextElement()).createEnumeration();
-        }
-        catch (java.lang.Exception e)
-        {}
-
-        while (parEnum != null && parEnum.hasMoreElements())
-        {
-          try
-          {
-            Object element = parEnum.nextElement();
-            bookmarks.add(UNO.XNamed(UNO.getProperty(element, "Bookmark")));
-            
-            //break;
-          }
-          catch (WrappedTargetException ex) 
-          {
-            break;
-          }
-          catch (NoSuchElementException ex)
-          {
-            break;
-          }
-        }
-      }
-    }
     
+    UNO.forEachTextPortionInRange(range, o ->
+    {
+    	bookmarks.add(UNO.XNamed(UNO.getProperty(o, "Bookmark")));
+    });
+
     return bookmarks;
   }
-
 }

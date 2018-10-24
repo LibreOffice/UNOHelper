@@ -200,6 +200,8 @@ import com.sun.star.view.XViewSettingsSupplier;
  * about supported-services, implemented interfaces, properties and methods. It
  * makes Uno-Programming in java similar to OOo-Basic programming using tools
  * like the famous XRay-tool.
+ * 
+ * @deprecated 
  */
 public class UnoService
 {

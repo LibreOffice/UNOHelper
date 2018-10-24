@@ -35,6 +35,17 @@ public class UnoCollection<T> implements Iterable<T>
   {
     return new UnoCollection<T>(enuAccess, c);
   }
+  
+  public static <T> UnoCollection<T> getCollection(Object o, Class<T> c)
+  {
+    XEnumerationAccess enuAccess = UNO.XEnumerationAccess(o);
+    if (enuAccess != null)
+    {    
+    	return new UnoCollection<T>(enuAccess, c);
+    }
+    
+    return null;
+  }
 
   @Override
   public Iterator<T> iterator()
