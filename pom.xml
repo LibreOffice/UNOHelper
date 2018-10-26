@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.muenchen</groupId>
 	<artifactId>unohelper</artifactId>
@@ -11,11 +12,11 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
-  <scm>
-    <developerConnection>scm:git:https://github.com/WollMux/UNOHelper.git</developerConnection>
-	  <tag>HEAD</tag>
-  </scm>
-	
+	<scm>
+		<developerConnection>scm:git:https://github.com/WollMux/UNOHelper.git</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
+
 	<distributionManagement>
 		<repository>
 			<id>release</id>
@@ -67,9 +68,10 @@
 				<version>3.0.1</version>
 				<configuration>
 					<failOnError>false</failOnError>
-          <additionalOptions>-html5</additionalOptions>
-          <additionalparam>-Xdoclint:none</additionalparam>
-          <additionalOptions>-Xdoclint:none</additionalOptions>          
+					<additionalparam>-Xdoclint:none</additionalparam>
+					<additionalOptions>
+						<additionalOption>-Xdoclint:none</additionalOption>
+					</additionalOptions>
 				</configuration>
 				<executions>
 					<execution>

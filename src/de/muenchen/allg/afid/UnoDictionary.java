@@ -10,6 +10,12 @@ import com.sun.star.container.XNameAccess;
 import com.sun.star.lang.WrappedTargetException;
 import com.sun.star.uno.Type;
 
+/**
+ * Wrappt ein UNO-XNameAcess als JAVA-Dictionary.
+ * 
+ * @param <V>
+ *            Typ des Values im Dictionary
+ */
 public class UnoDictionary<V> extends Dictionary<String, V>
 {
 	private XNameAccess access;
@@ -19,6 +25,9 @@ public class UnoDictionary<V> extends Dictionary<String, V>
 		access = UNO.XNameAccess(o);
 	}
 
+	/**
+	 * Wird nicht unterstützt.
+	 */
 	@Override
 	public Enumeration<V> elements()
 	{
@@ -41,7 +50,6 @@ public class UnoDictionary<V> extends Dictionary<String, V>
 	@Override
 	public boolean isEmpty()
 	{
-		// TODO Auto-generated method stub
 		return !access.hasElements();
 	}
 
@@ -51,18 +59,27 @@ public class UnoDictionary<V> extends Dictionary<String, V>
 		return Collections.enumeration(Arrays.asList(access.getElementNames()));
 	}
 
+	/**
+	 * Wird nicht unterstützt.
+	 */
 	@Override
 	public V put(String arg0, V arg1)
 	{
 		throw new UnsupportedOperationException();
 	}
 
+	/**
+	 * Wird nicht unterstützt.
+	 */
 	@Override
 	public V remove(Object arg0)
 	{
 		throw new UnsupportedOperationException();
 	}
 
+	/**
+	 * Wird nicht unterstützt.
+	 */
 	@Override
 	public int size()
 	{

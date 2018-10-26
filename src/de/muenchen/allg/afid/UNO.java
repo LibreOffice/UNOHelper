@@ -367,21 +367,19 @@ public class UNO
    * Verbindungsparameter. Einfacher geht's mit {@link #init()}.
    * 
    * @param connectionString
-   *          z.B.
-   *          "uno:socket,host=localhost,port=8100;urp;StarOffice.ServiceManager"
+   *                           z.B.
+   *                           "uno:socket,host=localhost,port=8100;urp;StarOffice.ServiceManager"
    * @throws Exception
-   *           falls was schief geht.
+   *                     falls was schief geht.
    * @see init()
    * @author Matthias Benkmann (D-III-ITD 5.1)
    */
   public static void init(String connectionString) throws Exception
   {
-    XComponentContext xLocalContext = Bootstrap
-        .createInitialComponentContext(null);
+    XComponentContext xLocalContext = Bootstrap.createInitialComponentContext(null);
     XMultiComponentFactory xLocalFactory = xLocalContext.getServiceManager();
     XUnoUrlResolver xUrlResolver = UNO
-        .XUnoUrlResolver(xLocalFactory.createInstanceWithContext(
-            "com.sun.star.bridge.UnoUrlResolver", xLocalContext));
+        .XUnoUrlResolver(xLocalFactory.createInstanceWithContext("com.sun.star.bridge.UnoUrlResolver", xLocalContext));
     init(xUrlResolver.resolve(connectionString));
   }
 
@@ -390,7 +388,7 @@ public class UNO
    * automagisch ermittelt.
    * 
    * @throws Exception
-   *           falls was schief geht.
+   *                     falls was schief geht.
    * @author Matthias Benkmann (D-III-ITD 5.1)
    */
   public static void init() throws Exception
@@ -403,42 +401,32 @@ public class UNO
    * existierende Verbindung.
    * 
    * @param remoteServiceManager
-   *          der Haupt-ServiceManager.
+   *                               der Haupt-ServiceManager.
    * @throws Exception
-   *           falls was schief geht.
+   *                     falls was schief geht.
    * @author Matthias Benkmann (D-III-ITD 5.1)
    */
   public static void init(Object remoteServiceManager) throws Exception
   {
-    xMCF = UnoRuntime.queryInterface(XMultiComponentFactory.class,
-        remoteServiceManager);
+    xMCF = UnoRuntime.queryInterface(XMultiComponentFactory.class, remoteServiceManager);
     xMSF = UnoRuntime.queryInterface(XMultiServiceFactory.class, xMCF);
     defaultContext = UnoRuntime.queryInterface(XComponentContext.class,
-        (UnoRuntime.queryInterface(XPropertySet.class, xMCF))
-            .getPropertyValue("DefaultContext"));
+        (UnoRuntime.queryInterface(XPropertySet.class, xMCF)).getPropertyValue("DefaultContext"));
 
     desktop = UnoRuntime.queryInterface(XDesktop.class,
-        xMCF.createInstanceWithContext("com.sun.star.frame.Desktop",
-            defaultContext));
+        xMCF.createInstanceWithContext("com.sun.star.frame.Desktop", defaultContext));
 
-    XBrowseNodeFactory masterBrowseNodeFac = UnoRuntime
-        .queryInterface(XBrowseNodeFactory.class, defaultContext.getValueByName(
-            "/singletons/com.sun.star.script.browse.theBrowseNodeFactory"));
-    scriptRoot = new BrowseNode(masterBrowseNodeFac
-        .createView(BrowseNodeFactoryViewTypes.MACROORGANIZER));
+    XBrowseNodeFactory masterBrowseNodeFac = UnoRuntime.queryInterface(XBrowseNodeFactory.class,
+        defaultContext.getValueByName("/singletons/com.sun.star.script.browse.theBrowseNodeFactory"));
+    scriptRoot = new BrowseNode(masterBrowseNodeFac.createView(BrowseNodeFactoryViewTypes.MACROORGANIZER));
 
-    XScriptProviderFactory masterProviderFac = UnoRuntime.queryInterface(
-        XScriptProviderFactory.class, defaultContext.getValueByName(
-            "/singletons/com.sun.star.script.provider.theMasterScriptProviderFactory"));
-    masterScriptProvider = masterProviderFac
-        .createScriptProvider(defaultContext);
+    XScriptProviderFactory masterProviderFac = UnoRuntime.queryInterface(XScriptProviderFactory.class,
+        defaultContext.getValueByName("/singletons/com.sun.star.script.provider.theMasterScriptProviderFactory"));
+    masterScriptProvider = masterProviderFac.createScriptProvider(defaultContext);
 
-    dbContext = UNO.XNamingService(
-        UNO.createUNOService("com.sun.star.sdb.DatabaseContext"));
-    urlTransformer = UNO.XURLTransformer(
-        UNO.createUNOService("com.sun.star.util.URLTransformer"));
-    dispatchHelper = UNO.XDispatchHelper(
-        UNO.createUNOService("com.sun.star.frame.DispatchHelper"));
+    dbContext = UNO.XNamingService(UNO.createUNOService("com.sun.star.sdb.DatabaseContext"));
+    urlTransformer = UNO.XURLTransformer(UNO.createUNOService("com.sun.star.util.URLTransformer"));
+    dispatchHelper = UNO.XDispatchHelper(UNO.createUNOService("com.sun.star.frame.DispatchHelper"));
   }
 
   /**
@@ -446,21 +434,22 @@ public class UNO
    * Dokument.
    * 
    * @param url
-   *          die URL des zu ladenden Dokuments, z.B.
-   *          "file:///C:/temp/footest.odt" oder "private:factory/swriter" (für
-   *          ein leeres).
+   *                      die URL des zu ladenden Dokuments, z.B.
+   *                      "file:///C:/temp/footest.odt" oder
+   *                      "private:factory/swriter" (für ein leeres).
    * @param asTemplate
-   *          falls true wird das Dokument als Vorlage behandelt und ein neues
-   *          unbenanntes Dokument erzeugt.
+   *                      falls true wird das Dokument als Vorlage behandelt und
+   *                      ein neues unbenanntes Dokument erzeugt.
    * @param allowMacros
-   *          falls true wird die Ausführung von Makros freigeschaltet.
+   *                      falls true wird die Ausführung von Makros
+   *                      freigeschaltet.
    * @return das geöffnete Dokument
    * @throws com.sun.star.io.IOException
    * @throws com.sun.star.lang.IllegalArgumentException
    * @author Matthias Benkmann (D-III-ITD 5.1)
    */
-  public static XComponent loadComponentFromURL(String url, boolean asTemplate,
-      boolean allowMacros) throws com.sun.star.io.IOException
+  public static XComponent loadComponentFromURL(String url, boolean asTemplate, boolean allowMacros)
+      throws com.sun.star.io.IOException
   {
     return loadComponentFromURL(url, asTemplate, allowMacros, false);
   }
@@ -470,23 +459,24 @@ public class UNO
    * Erfolgsfall {@link #compo} auf das geöffnete Dokument.
    * 
    * @param url
-   *          die URL des zu ladenden Dokuments, z.B.
-   *          "file:///C:/temp/footest.odt" oder "private:factory/swriter" (für
-   *          ein leeres).
+   *                      die URL des zu ladenden Dokuments, z.B.
+   *                      "file:///C:/temp/footest.odt" oder
+   *                      "private:factory/swriter" (für ein leeres).
    * @param asTemplate
-   *          falls true wird das Dokument als Vorlage behandelt und ein neues
-   *          unbenanntes Dokument erzeugt.
+   *                      falls true wird das Dokument als Vorlage behandelt und
+   *                      ein neues unbenanntes Dokument erzeugt.
    * @param allowMacros
-   *          falls true wird die Ausführung von Makros freigeschaltet.
+   *                      falls true wird die Ausführung von Makros
+   *                      freigeschaltet.
    * @param hidden
-   *          falls true wird das Dokument unsichtbar geöffnet
+   *                      falls true wird das Dokument unsichtbar geöffnet
    * @return das geöffnete Dokument
    * @throws com.sun.star.io.IOException
    * @throws com.sun.star.lang.IllegalArgumentException
    * @author Christoph Lutz (D-III-ITD 5.1)
    */
-  public static XComponent loadComponentFromURL(String url, boolean asTemplate,
-      boolean allowMacros, boolean hidden) throws com.sun.star.io.IOException
+  public static XComponent loadComponentFromURL(String url, boolean asTemplate, boolean allowMacros, boolean hidden)
+      throws com.sun.star.io.IOException
   {
     short allowMacrosShort;
     if (allowMacros)
@@ -501,21 +491,21 @@ public class UNO
    * Dokument.
    * 
    * @param url
-   *          die URL des zu ladenden Dokuments, z.B.
-   *          "file:///C:/temp/footest.odt" oder "private:factory/swriter" (für
-   *          ein leeres).
+   *                      die URL des zu ladenden Dokuments, z.B.
+   *                      "file:///C:/temp/footest.odt" oder
+   *                      "private:factory/swriter" (für ein leeres).
    * @param asTemplate
-   *          falls true wird das Dokument als Vorlage behandelt und ein neues
-   *          unbenanntes Dokument erzeugt.
+   *                      falls true wird das Dokument als Vorlage behandelt und
+   *                      ein neues unbenanntes Dokument erzeugt.
    * @param allowMacros
-   *          eine der Konstanten aus {@link MacroExecMode}.
+   *                      eine der Konstanten aus {@link MacroExecMode}.
    * @return das geöffnete Dokument
    * @throws com.sun.star.io.IOException
    * @throws com.sun.star.lang.IllegalArgumentException
    * @author Matthias Benkmann (D-III-ITD 5.1)
    */
-  public static XComponent loadComponentFromURL(String url, boolean asTemplate,
-      short allowMacros) throws com.sun.star.io.IOException
+  public static XComponent loadComponentFromURL(String url, boolean asTemplate, short allowMacros)
+      throws com.sun.star.io.IOException
   {
     return loadComponentFromURL(url, asTemplate, allowMacros, false);
   }
@@ -525,21 +515,21 @@ public class UNO
    * Erfolgsfall {@link #compo} auf das geöffnete Dokument.
    * 
    * @param url
-   *          die URL des zu ladenden Dokuments, z.B.
-   *          "file:///C:/temp/footest.odt" oder "private:factory/swriter" (für
-   *          ein leeres).
+   *                      die URL des zu ladenden Dokuments, z.B.
+   *                      "file:///C:/temp/footest.odt" oder
+   *                      "private:factory/swriter" (für ein leeres).
    * @param asTemplate
-   *          falls true wird das Dokument als Vorlage behandelt und ein neues
-   *          unbenanntes Dokument erzeugt.
+   *                      falls true wird das Dokument als Vorlage behandelt und
+   *                      ein neues unbenanntes Dokument erzeugt.
    * @param allowMacros
-   *          eine der Konstanten aus {@link MacroExecMode}.
+   *                      eine der Konstanten aus {@link MacroExecMode}.
    * @return das geöffnete Dokument
    * @throws com.sun.star.io.IOException
    * @throws com.sun.star.lang.IllegalArgumentException
    * @author Christoph Lutz (D-III-ITD 5.1)
    */
-  public static XComponent loadComponentFromURL(String url, boolean asTemplate,
-      short allowMacros, boolean hidden) throws com.sun.star.io.IOException
+  public static XComponent loadComponentFromURL(String url, boolean asTemplate, short allowMacros, boolean hidden)
+      throws com.sun.star.io.IOException
   {
     XComponentLoader loader = UNO.XComponentLoader(desktop);
     PropertyValue[] arguments = new PropertyValue[3];
@@ -552,8 +542,7 @@ public class UNO
     arguments[2] = new PropertyValue();
     arguments[2].Name = "Hidden";
     arguments[2].Value = Boolean.valueOf(hidden);
-    XComponent lc = loader.loadComponentFromURL(url, "_blank",
-        FrameSearchFlag.CREATE, arguments);
+    XComponent lc = loader.loadComponentFromURL(url, "_blank", FrameSearchFlag.CREATE, arguments);
     if (lc != null)
       compo = lc;
     return lc;
@@ -566,68 +555,65 @@ public class UNO
    */
   public static void dispatch(XModel doc, String url)
   {
-    XDispatchProvider prov = UNO
-        .XDispatchProvider(doc.getCurrentController().getFrame());
-    dispatchHelper.executeDispatch(prov, url, "", FrameSearchFlag.SELF,
-        new PropertyValue[] {});
+    XDispatchProvider prov = UNO.XDispatchProvider(doc.getCurrentController().getFrame());
+    dispatchHelper.executeDispatch(prov, url, "", FrameSearchFlag.SELF, new PropertyValue[]
+    {});
   }
 
   /**
    * Dispatcht url auf dem aktuellen Controll von doc mittels
    * {@link XNotifyingDispatch}, wartet auf die Benachrichtigung, dass der
    * Dispatch vollständig abgearbeitet ist, und liefert das
-   * {@link DispatchResultEvent} dieser Benachrichtigung zurück oder null, wenn
-   * zu url kein XNotifyingDispatch definiert ist oder der Dispatch mit
-   * disposing abgebrochen wurde.
+   * {@link DispatchResultEvent} dieser Benachrichtigung zurück oder null, wenn zu
+   * url kein XNotifyingDispatch definiert ist oder der Dispatch mit disposing
+   * abgebrochen wurde.
    * 
    * @author Christoph Lutz (D-III-ITD-D101)
    */
-  public static DispatchResultEvent dispatchAndWait(XTextDocument doc,
-      String url)
+  public static DispatchResultEvent dispatchAndWait(XTextDocument doc, String url)
   {
     if (doc == null)
       return null;
 
     URL unoUrl = getParsedUNOUrl(url);
 
-    XDispatchProvider prov = UNO
-        .XDispatchProvider(doc.getCurrentController().getFrame());
+    XDispatchProvider prov = UNO.XDispatchProvider(doc.getCurrentController().getFrame());
     if (prov == null)
       return null;
 
-    XNotifyingDispatch disp = UNO.XNotifyingDispatch(
-        prov.queryDispatch(unoUrl, "", FrameSearchFlag.SELF));
+    XNotifyingDispatch disp = UNO.XNotifyingDispatch(prov.queryDispatch(unoUrl, "", FrameSearchFlag.SELF));
     if (disp == null)
       return null;
 
-    final boolean[] lock = new boolean[] { true };
-    final DispatchResultEvent[] resultEvent = new DispatchResultEvent[] {
-        null };
+    final boolean[] lock = new boolean[]
+    { true };
+    final DispatchResultEvent[] resultEvent = new DispatchResultEvent[]
+    { null };
 
-    disp.dispatchWithNotification(unoUrl, new PropertyValue[] {},
-        new XDispatchResultListener()
+    disp.dispatchWithNotification(unoUrl, new PropertyValue[]
+    {}, new XDispatchResultListener()
+    {
+      @Override
+      public void disposing(EventObject arg0)
+      {
+        synchronized (lock)
         {
-          @Override
-          public void disposing(EventObject arg0)
-          {
-            synchronized (lock)
-            {
-              lock[0] = false;
-              lock.notifyAll();
-            }
-          }
+          lock[0] = false;
+          lock.notifyAll();
+        }
+      }
 
-          @Override
-          public void dispatchFinished(DispatchResultEvent arg0)
-          {
-            synchronized (lock)
-            {
-              resultEvent[0] = arg0;
-              lock[0] = false;
-              lock.notifyAll();
-            }
-          }
-        });
+      @Override
+      public void dispatchFinished(DispatchResultEvent arg0)
+      {
+        synchronized (lock)
+        {
+          resultEvent[0] = arg0;
+          lock[0] = false;
+          lock.notifyAll();
+        }
+      }
+    });
 
     synchronized (lock)
     {
@@ -647,60 +633,71 @@ public class UNO
    * Verfügung stellt.
    * 
    * @param scriptProviderOrSupplier
-   *          ist ein Objekt, das entweder {@link XScriptProvider} oder
-   *          {@link XScriptProviderSupplier} implementiert. Dies kann z.B. ein
-   *          TextDocument sein. Soll einfach nur ein Skript aus dem gesamten
-   *          Skript-Baum ausgeführt werden, kann die Funktion
-   *          {@link #executeGlobalMacro(String, Object[])} verwendet werden,
-   *          die diesen Parameter nicht erfordert. ACHTUNG! Es wird nicht
-   *          zwangsweise der übergebene scriptProviderOrSupplier verwendet um
-   *          das Skript auszuführen. Er stellt nur den Einstieg in den
-   *          Skript-Baum dar.
+   *                                   ist ein Objekt, das entweder
+   *                                   {@link XScriptProvider} oder
+   *                                   {@link XScriptProviderSupplier}
+   *                                   implementiert. Dies kann z.B. ein
+   *                                   TextDocument sein. Soll einfach nur ein
+   *                                   Skript aus dem gesamten Skript-Baum
+   *                                   ausgeführt werden, kann die Funktion
+   *                                   {@link #executeGlobalMacro(String, Object[])}
+   *                                   verwendet werden, die diesen Parameter
+   *                                   nicht erfordert. ACHTUNG! Es wird nicht
+   *                                   zwangsweise der übergebene
+   *                                   scriptProviderOrSupplier verwendet um das
+   *                                   Skript auszuführen. Er stellt nur den
+   *                                   Einstieg in den Skript-Baum dar.
    * @param macroName
-   *          ist der Name des Makros. Der Name kann optional durch "."
-   *          abgetrennte Bezeichner für Bibliotheken/Module vorangestellt
-   *          haben. Es sind also sowohl "Foo" als auch "Module1.Foo" und
-   *          "Standard.Module1.Foo" erlaubt. Wenn kein passendes Makro gefunden
-   *          wird, wird zuerst versucht, case-insensitive danach zu suchen.
-   *          Falls dabei ebenfalls kein Makro gefunden wird, wird eine
-   *          {@link RuntimeException} geworfen.
+   *                                   ist der Name des Makros. Der Name kann
+   *                                   optional durch "." abgetrennte Bezeichner
+   *                                   für Bibliotheken/Module vorangestellt
+   *                                   haben. Es sind also sowohl "Foo" als auch
+   *                                   "Module1.Foo" und "Standard.Module1.Foo"
+   *                                   erlaubt. Wenn kein passendes Makro gefunden
+   *                                   wird, wird zuerst versucht,
+   *                                   case-insensitive danach zu suchen. Falls
+   *                                   dabei ebenfalls kein Makro gefunden wird,
+   *                                   wird eine {@link RuntimeException}
+   *                                   geworfen.
    * @param args
-   *          die Argumente, die dem Makro übergeben werden sollen.
+   *                                   die Argumente, die dem Makro übergeben
+   *                                   werden sollen.
    * @param location
-   *          eine Liste aller erlaubten locations ("application", "share",
-   *          "document") für das Makro. Bei der Suche wird zuerst ein
-   *          case-sensitive Match in allen gelisteten locations gesucht, bevor
-   *          die case-insensitive Suche versucht wird. Durch Verwendung der
-   *          exakten Gross-/Kleinschreibung des Makros und korrekte Ordnung der
-   *          location Liste lässt sich also immer das richtige Makro
-   *          selektieren.
+   *                                   eine Liste aller erlaubten locations
+   *                                   ("application", "share", "document") für
+   *                                   das Makro. Bei der Suche wird zuerst ein
+   *                                   case-sensitive Match in allen gelisteten
+   *                                   locations gesucht, bevor die
+   *                                   case-insensitive Suche versucht wird. Durch
+   *                                   Verwendung der exakten
+   *                                   Gross-/Kleinschreibung des Makros und
+   *                                   korrekte Ordnung der location Liste lässt
+   *                                   sich also immer das richtige Makro
+   *                                   selektieren.
    * @throws RuntimeException
-   *           wenn entweder kein passendes Makro gefunden wurde, oder
-   *           scriptProviderOrSupplier weder {@link XScriptProvider} noch
-   *           {@link XScriptProviderSupplier} implementiert.
+   *                            wenn entweder kein passendes Makro gefunden wurde,
+   *                            oder scriptProviderOrSupplier weder
+   *                            {@link XScriptProvider} noch
+   *                            {@link XScriptProviderSupplier} implementiert.
    * @return den Rückgabewert des Makros.
    * @author Matthias Benkmann (D-III-ITD 5.1)
    */
-  public static Object executeMacro(Object scriptProviderOrSupplier,
-      String macroName, Object[] args, String[] location)
+  public static Object executeMacro(Object scriptProviderOrSupplier, String macroName, Object[] args, String[] location)
   {
-    XScriptProvider provider = UnoRuntime.queryInterface(XScriptProvider.class,
-        scriptProviderOrSupplier);
+    XScriptProvider provider = UnoRuntime.queryInterface(XScriptProvider.class, scriptProviderOrSupplier);
     if (provider == null)
     {
-      XScriptProviderSupplier supp = UnoRuntime.queryInterface(
-          XScriptProviderSupplier.class, scriptProviderOrSupplier);
+      XScriptProviderSupplier supp = UnoRuntime.queryInterface(XScriptProviderSupplier.class, scriptProviderOrSupplier);
       if (supp == null)
-        throw new RuntimeException(
-            "Übergebenes Objekt ist weder XScriptProvider noch XScriptProviderSupplier");
+        throw new RuntimeException("Übergebenes Objekt ist weder XScriptProvider noch XScriptProviderSupplier");
       provider = supp.getScriptProvider();
     }
 
     XBrowseNode root = UnoRuntime.queryInterface(XBrowseNode.class, provider);
     /*
      * Wir übergeben NICHT provider als drittes Argument, sondern lassen
-     * Internal.executeMacroInternal den provider selbst bestimmen. Das hat
-     * keinen besonderen Grund. Es erscheint einfach nur etwas robuster, den
+     * Internal.executeMacroInternal den provider selbst bestimmen. Das hat keinen
+     * besonderen Grund. Es erscheint einfach nur etwas robuster, den
      * "nächstgelegenen" ScriptProvider zu verwenden.
      */
     return Utils.executeMacroInternal(macroName, args, null, root, location);
@@ -712,58 +709,59 @@ public class UNO
    * location=application Vorrang vor einem mit location=share.
    * 
    * @param macroName
-   *          ist der Name des Makros. Der Name kann optional durch "."
-   *          abgetrennte Bezeichner für Bibliotheken/Module vorangestellt
-   *          haben. Es sind also sowohl "Foo" als auch "Module1.Foo" und
-   *          "Standard.Module1.Foo" erlaubt. Wenn kein passendes Makro gefunden
-   *          wird, wird zuerst versucht, case-insensitive danach zu suchen.
-   *          Falls dabei ebenfalls kein Makro gefunden wird, wird eine
-   *          {@link RuntimeException} geworfen.
+   *                    ist der Name des Makros. Der Name kann optional durch "."
+   *                    abgetrennte Bezeichner für Bibliotheken/Module
+   *                    vorangestellt haben. Es sind also sowohl "Foo" als auch
+   *                    "Module1.Foo" und "Standard.Module1.Foo" erlaubt. Wenn
+   *                    kein passendes Makro gefunden wird, wird zuerst versucht,
+   *                    case-insensitive danach zu suchen. Falls dabei ebenfalls
+   *                    kein Makro gefunden wird, wird eine
+   *                    {@link RuntimeException} geworfen.
    * @param args
-   *          die Argumente, die dem Makro übergeben werden sollen.
+   *                    die Argumente, die dem Makro übergeben werden sollen.
    * @throws RuntimeException
-   *           wenn kein passendes Makro gefunden wurde.
+   *                            wenn kein passendes Makro gefunden wurde.
    * @return den Rückgabewert des Makros.
    * @author Matthias Benkmann (D-III-ITD 5.1)
    */
   public static Object executeGlobalMacro(String macroName, Object[] args)
   {
-    final String[] userAndShare = new String[] { "application", "share" };
-    return Utils.executeMacroInternal(macroName, args, null,
-        scriptRoot.unwrap(), userAndShare);
+    final String[] userAndShare = new String[]
+    { "application", "share" };
+    return Utils.executeMacroInternal(macroName, args, null, scriptRoot.unwrap(), userAndShare);
   }
 
   /**
    * Ruft ein Makro aus dem gesamten Makro-Baum auf.
    * 
    * @param macroName
-   *          ist der Name des Makros. Der Name kann optional durch "."
-   *          abgetrennte Bezeichner für Bibliotheken/Module vorangestellt
-   *          haben. Es sind also sowohl "Foo" als auch "Module1.Foo" und
-   *          "Standard.Module1.Foo" erlaubt. Wenn kein passendes Makro gefunden
-   *          wird, wird zuerst versucht, case-insensitive danach zu suchen.
-   *          Falls dabei ebenfalls kein Makro gefunden wird, wird eine
-   *          {@link RuntimeException} geworfen.
+   *                    ist der Name des Makros. Der Name kann optional durch "."
+   *                    abgetrennte Bezeichner für Bibliotheken/Module
+   *                    vorangestellt haben. Es sind also sowohl "Foo" als auch
+   *                    "Module1.Foo" und "Standard.Module1.Foo" erlaubt. Wenn
+   *                    kein passendes Makro gefunden wird, wird zuerst versucht,
+   *                    case-insensitive danach zu suchen. Falls dabei ebenfalls
+   *                    kein Makro gefunden wird, wird eine
+   *                    {@link RuntimeException} geworfen.
    * @param args
-   *          die Argumente, die dem Makro übergeben werden sollen.
+   *                    die Argumente, die dem Makro übergeben werden sollen.
    * @param location
-   *          eine Liste aller erlaubten locations ("application", "share",
-   *          "document") für das Makro. Bei der Suche wird zuerst ein
-   *          case-sensitive Match in allen gelisteten locations gesucht, bevor
-   *          die case-insenstive Suche versucht wird. Durch Verwendung der
-   *          exakten Gross-/Kleinschreibung des Makros und korrekte Ordnung der
-   *          location Liste lässt sich also immer das richtige Makro
-   *          selektieren.
+   *                    eine Liste aller erlaubten locations ("application",
+   *                    "share", "document") für das Makro. Bei der Suche wird
+   *                    zuerst ein case-sensitive Match in allen gelisteten
+   *                    locations gesucht, bevor die case-insenstive Suche
+   *                    versucht wird. Durch Verwendung der exakten
+   *                    Gross-/Kleinschreibung des Makros und korrekte Ordnung der
+   *                    location Liste lässt sich also immer das richtige Makro
+   *                    selektieren.
    * @throws RuntimeException
-   *           wenn kein passendes Makro gefunden wurde.
+   *                            wenn kein passendes Makro gefunden wurde.
    * @return den Rückgabewert des Makros.
    * @author Matthias Benkmann (D-III-ITD 5.1)
    */
-  public static Object executeMacro(String macroName, Object[] args,
-      String[] location)
+  public static Object executeMacro(String macroName, Object[] args, String[] location)
   {
-    return Utils.executeMacroInternal(macroName, args, null,
-        scriptRoot.unwrap(), location);
+    return Utils.executeMacroInternal(macroName, args, null, scriptRoot.unwrap(), location);
   }
 
   /**
@@ -773,9 +771,9 @@ public class UNO
    * implementiert, ansonsten wird false zurückgegeben.
    * 
    * @param service
-   *          Das zu prüfende Service-Objekt
+   *                      Das zu prüfende Service-Objekt
    * @param serviceName
-   *          der voll-qualifizierte Service-Name des services.
+   *                      der voll-qualifizierte Service-Name des services.
    * @return true, wenn das Objekt das XServiceInfo-Interface und den gesuchten
    *         Service implementiert, ansonsten false.
    * @author Christoph Lutz (D-III-ITD 5.1)
@@ -797,11 +795,11 @@ public class UNO
    * @return den gefundenen Knoten oder null falls keiner gefunden.
    * @author Matthias Benkmann (D-III-ITD 5.1)
    */
-  public static XBrowseNode findBrowseNodeTreeLeaf(XBrowseNode xBrowseNode,
-      String prefix, String nameToFind, boolean caseSensitive)
+  public static XBrowseNode findBrowseNodeTreeLeaf(XBrowseNode xBrowseNode, String prefix, String nameToFind,
+      boolean caseSensitive)
   {
-    XBrowseNodeAndXScriptProvider x = findBrowseNodeTreeLeafAndScriptProvider(
-        xBrowseNode, prefix, nameToFind, caseSensitive);
+    XBrowseNodeAndXScriptProvider x = findBrowseNodeTreeLeafAndScriptProvider(xBrowseNode, prefix, nameToFind,
+        caseSensitive);
     return x.XBrowseNode;
   }
 
@@ -814,17 +812,15 @@ public class UNO
    * 
    * @return den gefundenen Knoten, sowie den nächsten Vorfahren, der
    *         XScriptProvider implementiert (oder den Knoten selbst, falls dieser
-   *         XScriptProvider implementiert). Falls kein entsprechender Knoten
-   *         oder Vorfahre gefunden wurde, wird der entsprechende Wert als null
+   *         XScriptProvider implementiert). Falls kein entsprechender Knoten oder
+   *         Vorfahre gefunden wurde, wird der entsprechende Wert als null
    *         geliefert.
    * @author Matthias Benkmann (D-III-ITD 5.1)
    */
-  public static XBrowseNodeAndXScriptProvider findBrowseNodeTreeLeafAndScriptProvider(
-      XBrowseNode xBrowseNode, String prefix, String nameToFind,
-      boolean caseSensitive)
+  public static XBrowseNodeAndXScriptProvider findBrowseNodeTreeLeafAndScriptProvider(XBrowseNode xBrowseNode,
+      String prefix, String nameToFind, boolean caseSensitive)
   {
-    return findBrowseNodeTreeLeafAndScriptProvider(xBrowseNode, prefix,
-        nameToFind, caseSensitive, null);
+    return findBrowseNodeTreeLeafAndScriptProvider(xBrowseNode, prefix, nameToFind, caseSensitive, null);
   }
 
   /**
@@ -835,36 +831,36 @@ public class UNO
    * .
    * 
    * @param xBrowseNode
-   *          Wurzel des zu durchsuchenden Baums.
+   *                        Wurzel des zu durchsuchenden Baums.
    * @param prefix
-   *          wird dem Namen jedes Knoten vorangestellt. Dies wird verwendet,
-   *          wenn xBrowseNode nicht die Wurzel ist.
+   *                        wird dem Namen jedes Knoten vorangestellt. Dies wird
+   *                        verwendet, wenn xBrowseNode nicht die Wurzel ist.
    * @param nameToFind
-   *          der zu suchende Name.
+   *                        der zu suchende Name.
    * @param caseSensitive
-   *          falls true, so wird Gross-/Kleinschreibung berücksichtigt bei der
-   *          Suche.
+   *                        falls true, so wird Gross-/Kleinschreibung
+   *                        berücksichtigt bei der Suche.
    * @param location
-   *          Es gelten nur Knoten als Treffer, die ein "URI" Property haben,
-   *          das eine location enthält die einem String in der
-   *          <code>location</code> Liste entspricht. Mögliche locations sind
-   *          "document", "application" und "share". Falls
-   *          <code>location==null</code>, so wird {"document", "application",
-   *          "share"} angenommen.
+   *                        Es gelten nur Knoten als Treffer, die ein "URI"
+   *                        Property haben, das eine location enthält die einem
+   *                        String in der <code>location</code> Liste entspricht.
+   *                        Mögliche locations sind "document", "application" und
+   *                        "share". Falls <code>location==null</code>, so wird
+   *                        {"document", "application", "share"} angenommen.
    * @return den gefundenen Knoten, sowie den nächsten Vorfahren, der
-   *         XScriptProvider implementiert. Falls kein entsprechender Knoten
-   *         oder Vorfahre gefunden wurde, wird der entsprechende Wert als null
+   *         XScriptProvider implementiert. Falls kein entsprechender Knoten oder
+   *         Vorfahre gefunden wurde, wird der entsprechende Wert als null
    *         geliefert.
    * @author Matthias Benkmann (D-III-ITD 5.1)
    */
-  public static XBrowseNodeAndXScriptProvider findBrowseNodeTreeLeafAndScriptProvider(
-      XBrowseNode xBrowseNode, String prefix, String nameToFind,
-      boolean caseSensitive, String[] location)
+  public static XBrowseNodeAndXScriptProvider findBrowseNodeTreeLeafAndScriptProvider(XBrowseNode xBrowseNode,
+      String prefix, String nameToFind, boolean caseSensitive, String[] location)
   {
     String[] loc;
     if (location == null)
     {
-      loc = new String[] { "document", "application", "share" };
+      loc = new String[]
+      { "document", "application", "share" };
     } else
     {
       loc = location;
@@ -897,8 +893,7 @@ public class UNO
       ++i1;
     }
 
-    Utils.findBrowseNodeTreeLeavesAndScriptProviders(
-        new BrowseNode(xBrowseNode), prefixVec, prefixLCVec, nameToFindArr,
+    Utils.findBrowseNodeTreeLeavesAndScriptProviders(new BrowseNode(xBrowseNode), prefixVec, prefixLCVec, nameToFindArr,
         nameToFindLCArr, loc, null, found);
 
     if (found.isEmpty())
@@ -909,16 +904,15 @@ public class UNO
     if (caseSensitive && !findNode.isCaseCorrect)
       return new XBrowseNodeAndXScriptProvider(null, null);
 
-    return new XBrowseNodeAndXScriptProvider(findNode.XBrowseNode,
-        findNode.XScriptProvider);
+    return new XBrowseNodeAndXScriptProvider(findNode.XBrowseNode, findNode.XScriptProvider);
   }
 
   /**
    * Liefert den Wert von Property propName des Objekts o zurück.
    * 
-   * @return den Wert des Propertys oder <code>null</code>, falls o entweder
-   *         nicht das XPropertySet Interface implementiert, oder kein Property
-   *         names propName hat oder ein sonstiger Fehler aufgetreten ist.
+   * @return den Wert des Propertys oder <code>null</code>, falls o entweder nicht
+   *         das XPropertySet Interface implementiert, oder kein Property names
+   *         propName hat oder ein sonstiger Fehler aufgetreten ist.
    */
   public static Object getProperty(Object o, String propName)
   {
@@ -938,18 +932,18 @@ public class UNO
   /**
    * Setzt das Property propName des Objekts o auf den Wert propVal und liefert
    * den neuen Wert zurück. Falls o kein XPropertySet implementiert, oder das
-   * Property propName nicht gelesen werden kann (z.B. weil o diese Property
-   * nicht besitzt), so wird null zurückgeliefert. Zu beachten ist, dass es
-   * möglich ist, dass der zurückgelieferte Wert nicht propVal und auch nicht
-   * null ist. Dies geschieht insbesondere, wenn ein Event Handler sein Veto
-   * gegen die Änderung eingelegt hat.
+   * Property propName nicht gelesen werden kann (z.B. weil o diese Property nicht
+   * besitzt), so wird null zurückgeliefert. Zu beachten ist, dass es möglich ist,
+   * dass der zurückgelieferte Wert nicht propVal und auch nicht null ist. Dies
+   * geschieht insbesondere, wenn ein Event Handler sein Veto gegen die Änderung
+   * eingelegt hat.
    * 
    * @param o
-   *          das Objekt, dessen Property zu ändern ist.
+   *                   das Objekt, dessen Property zu ändern ist.
    * @param propName
-   *          der Name des zu ändernden Properties.
+   *                   der Name des zu ändernden Properties.
    * @param propVal
-   *          der neue Wert.
+   *                   der neue Wert.
    * @return der Wert des Propertys nach der (versuchten) Änderung oder null,
    *         falls der Wert des Propertys nicht mal lesbar ist.
    * @author bnk
@@ -978,18 +972,18 @@ public class UNO
   /**
    * Setzt das Property propName auf den ursprünglichen Wert zurück, der als
    * Voreinstellung für das Objekt o hinterlegt ist und liefert den neuen Wert
-   * zurück. Falls o kein XPropertyState implementiert, oder das Property
-   * propName nicht gelesen werden kann (z.B. weil o diese Property nicht
-   * besitzt), so wird null zurückgeliefert. Zu beachten ist, dass es möglich
-   * ist, dass das Property nicht zurück gesetzt wird, wenn ein Event Handler
-   * sein Veto gegen die Änderung einlegt.
+   * zurück. Falls o kein XPropertyState implementiert, oder das Property propName
+   * nicht gelesen werden kann (z.B. weil o diese Property nicht besitzt), so wird
+   * null zurückgeliefert. Zu beachten ist, dass es möglich ist, dass das Property
+   * nicht zurück gesetzt wird, wenn ein Event Handler sein Veto gegen die
+   * Änderung einlegt.
    * 
    * @param o
-   *          das Objekt, dessen Property zu ändern ist.
+   *                   das Objekt, dessen Property zu ändern ist.
    * @param propName
-   *          der Name des zu ändernden Properties.
+   *                   der Name des zu ändernden Properties.
    * @param propVal
-   *          der neue Wert.
+   *                   der neue Wert.
    * @return der Wert des Propertys nach der (versuchten) Änderung oder null,
    *         falls der Wert des Propertys nicht mal lesbar ist.
    * @author bnk
@@ -1019,7 +1013,7 @@ public class UNO
    * Erzeugt einen Dienst im Haupt-Servicemanager mit dem DefaultContext.
    * 
    * @param serviceName
-   *          Name des zu erzeugenden Dienstes
+   *                      Name des zu erzeugenden Dienstes
    * @return ein Objekt, das den Dienst anbietet, oder null falls Fehler.
    * @author bnk
    */
@@ -1033,7 +1027,7 @@ public class UNO
       return null;
     }
   }
-  
+
   /** Holt {@link XSingleServiceFactory} Interface von o. */
   public static XSingleServiceFactory XSingleServiceFactory(Object o)
   {
@@ -1113,8 +1107,7 @@ public class UNO
   }
 
   /** Holt {@link XTextGraphicObjectsSupplier} Interface von o. */
-  public static XTextGraphicObjectsSupplier XTextGraphicObjectsSupplier(
-      Object o)
+  public static XTextGraphicObjectsSupplier XTextGraphicObjectsSupplier(Object o)
   {
     return UnoRuntime.queryInterface(XTextGraphicObjectsSupplier.class, o);
   }
@@ -1312,11 +1305,9 @@ public class UNO
   }
 
   /** Holt {@link XModuleUIConfigurationManagerSupplier} Interface von o. */
-  public static XModuleUIConfigurationManagerSupplier XModuleUIConfigurationManagerSupplier(
-      Object o)
+  public static XModuleUIConfigurationManagerSupplier XModuleUIConfigurationManagerSupplier(Object o)
   {
-    return UnoRuntime
-        .queryInterface(XModuleUIConfigurationManagerSupplier.class, o);
+    return UnoRuntime.queryInterface(XModuleUIConfigurationManagerSupplier.class, o);
   }
 
   /** Holt {@link XText} Interface von o. */
@@ -1560,8 +1551,7 @@ public class UNO
   }
 
   /** Holt {@link XDocumentPropertiesSupplier} Interface von o. */
-  public static XDocumentPropertiesSupplier XDocumentPropertiesSupplier(
-      Object o)
+  public static XDocumentPropertiesSupplier XDocumentPropertiesSupplier(Object o)
   {
     return UnoRuntime.queryInterface(XDocumentPropertiesSupplier.class, o);
   }
@@ -1573,8 +1563,7 @@ public class UNO
   }
 
   /** Holt {@link XDispatchProviderInterception} Interface von o. */
-  public static XDispatchProviderInterception XDispatchProviderInterception(
-      Object o)
+  public static XDispatchProviderInterception XDispatchProviderInterception(Object o)
   {
     return UnoRuntime.queryInterface(XDispatchProviderInterception.class, o);
   }
@@ -1636,8 +1625,7 @@ public class UNO
   /**
    * Holt {@link com.sun.star.ui.XUIConfigurationPersistence} Interface von o.
    */
-  public static XUIConfigurationPersistence XUIConfigurationPersistence(
-      Object o)
+  public static XUIConfigurationPersistence XUIConfigurationPersistence(Object o)
   {
     return UnoRuntime.queryInterface(XUIConfigurationPersistence.class, o);
   }
@@ -1645,8 +1633,7 @@ public class UNO
   /**
    * Holt {@link com.sun.star.ui.XModuleUIConfigurationManager} Interface von o.
    */
-  public static XModuleUIConfigurationManager XModuleUIConfigurationManager(
-      Object o)
+  public static XModuleUIConfigurationManager XModuleUIConfigurationManager(Object o)
   {
     return UnoRuntime.queryInterface(XModuleUIConfigurationManager.class, o);
   }
@@ -1722,8 +1709,8 @@ public class UNO
    */
   public static com.sun.star.util.URL getParsedUNOUrl(String urlStr)
   {
-    com.sun.star.util.URL[] unoURL = new com.sun.star.util.URL[] {
-        new com.sun.star.util.URL() };
+    com.sun.star.util.URL[] unoURL = new com.sun.star.util.URL[]
+    { new com.sun.star.util.URL() };
     unoURL[0].Complete = urlStr;
     if (urlTransformer != null)
       urlTransformer.parseStrict(unoURL);
@@ -1733,29 +1720,30 @@ public class UNO
 
   /**
    * Liefert ein Service ConfigurationAccess mit dem der lesende Zugriff auf die
-   * OOo-Configuration ab dem Knoten nodepath ermöglicht wird oder null, wenn
-   * der Service nicht erzeugt werden kann.
+   * OOo-Configuration ab dem Knoten nodepath ermöglicht wird oder null, wenn der
+   * Service nicht erzeugt werden kann.
    * 
    * @param nodepath
-   *          Beschreibung des Knotens des Konfigurationsbaumes, der als neue
-   *          Wurzel zurückgeliefert werden soll. Ein nodepath ist z.B.
-   *          "/org.openoffice.Office.Writer/AutoFunction/Format/ByInput/ApplyNumbering"
+   *                   Beschreibung des Knotens des Konfigurationsbaumes, der als
+   *                   neue Wurzel zurückgeliefert werden soll. Ein nodepath ist
+   *                   z.B.
+   *                   "/org.openoffice.Office.Writer/AutoFunction/Format/ByInput/ApplyNumbering"
    * @return ein ConfigurationUpdateAccess mit der Wurzel an dem Knoten nodepath
-   *         oder null, falls der Service nicht erzeugt werden kann (wenn z.B.
-   *         der Knoten nodepath nicht existiert).
+   *         oder null, falls der Service nicht erzeugt werden kann (wenn z.B. der
+   *         Knoten nodepath nicht existiert).
    * @author christoph.lutz
    */
   public static XNameAccess getConfigurationAccess(String nodepath)
   {
-    PropertyValue[] props = new PropertyValue[] { new PropertyValue() };
+    PropertyValue[] props = new PropertyValue[]
+    { new PropertyValue() };
     props[0].Name = "nodepath";
     props[0].Value = nodepath;
     Object confProv = getConfigurationProvider();
     try
     {
-      return UNO.XNameAccess(
-          UNO.XMultiServiceFactory(confProv).createInstanceWithArguments(
-              "com.sun.star.configuration.ConfigurationAccess", props));
+      return UNO.XNameAccess(UNO.XMultiServiceFactory(confProv)
+          .createInstanceWithArguments("com.sun.star.configuration.ConfigurationAccess", props));
     } catch (Exception e)
     {
     }
@@ -1768,25 +1756,26 @@ public class UNO
    * ermöglicht wird oder null wenn der Service nicht erzeugt werden kann.
    * 
    * @param nodepath
-   *          Beschreibung des Knotens des Konfigurationsbaumes, der als neue
-   *          Wurzel zurückgeliefert werden soll. Ein nodepath ist z.B.
-   *          "/org.openoffice.Office.Writer/AutoFunction/Format/ByInput/ApplyNumbering"
+   *                   Beschreibung des Knotens des Konfigurationsbaumes, der als
+   *                   neue Wurzel zurückgeliefert werden soll. Ein nodepath ist
+   *                   z.B.
+   *                   "/org.openoffice.Office.Writer/AutoFunction/Format/ByInput/ApplyNumbering"
    * @return ein ConfigurationUpdateAccess mit der Wurzel an dem Knoten nodepath
-   *         oder null, falls der Service nicht erzeugt werden kann (wenn z.B.
-   *         der Knoten nodepath nicht existiert).
+   *         oder null, falls der Service nicht erzeugt werden kann (wenn z.B. der
+   *         Knoten nodepath nicht existiert).
    * @author christoph.lutz
    */
   public static XChangesBatch getConfigurationUpdateAccess(String nodepath)
   {
-    PropertyValue[] props = new PropertyValue[] { new PropertyValue() };
+    PropertyValue[] props = new PropertyValue[]
+    { new PropertyValue() };
     props[0].Name = "nodepath";
     props[0].Value = nodepath;
     Object confProv = getConfigurationProvider();
     try
     {
-      return UNO.XChangesBatch(
-          UNO.XMultiServiceFactory(confProv).createInstanceWithArguments(
-              "com.sun.star.configuration.ConfigurationUpdateAccess", props));
+      return UNO.XChangesBatch(UNO.XMultiServiceFactory(confProv)
+          .createInstanceWithArguments("com.sun.star.configuration.ConfigurationUpdateAccess", props));
     } catch (Exception e)
     {
     }
@@ -1794,16 +1783,15 @@ public class UNO
   }
 
   /**
-   * Liefert den configurationProvider, mit dem der Zugriff auf die
-   * Konfiguration von OOo ermöglicht wird.
+   * Liefert den configurationProvider, mit dem der Zugriff auf die Konfiguration
+   * von OOo ermöglicht wird.
    * 
    * @return ein neuer configurationProvider
    */
   private static Object getConfigurationProvider()
   {
     if (configurationProvider == null)
-      configurationProvider = createUNOService(
-          "com.sun.star.configuration.ConfigurationProvider");
+      configurationProvider = createUNOService("com.sun.star.configuration.ConfigurationProvider");
     return configurationProvider;
   }
 
@@ -1811,18 +1799,17 @@ public class UNO
    * Liefert den shortcutManager zu der OOo Komponente component zurück.
    * 
    * @param component
-   *          die OOo Komponente zu der der ShortcutManager geliefert werden
-   *          soll z.B "com.sun.star.text.TextDocument"
-   * @return der shortcutManager zur OOo Komponente component oder null falls
-   *         kein shortcutManager erzeugt werden kann.
+   *                    die OOo Komponente zu der der ShortcutManager geliefert
+   *                    werden soll z.B "com.sun.star.text.TextDocument"
+   * @return der shortcutManager zur OOo Komponente component oder null falls kein
+   *         shortcutManager erzeugt werden kann.
    * 
    */
   public static XAcceleratorConfiguration getShortcutManager(String component)
   {
     // XModuleUIConfigurationManagerSupplier moduleUICfgMgrSupplier
-    XModuleUIConfigurationManagerSupplier moduleUICfgMgrSupplier = UNO
-        .XModuleUIConfigurationManagerSupplier(UNO.createUNOService(
-            "com.sun.star.ui.ModuleUIConfigurationManagerSupplier"));
+    XModuleUIConfigurationManagerSupplier moduleUICfgMgrSupplier = UNO.XModuleUIConfigurationManagerSupplier(
+        UNO.createUNOService("com.sun.star.ui.ModuleUIConfigurationManagerSupplier"));
 
     if (moduleUICfgMgrSupplier == null)
       return null;
@@ -1832,8 +1819,7 @@ public class UNO
 
     try
     {
-      moduleUICfgMgr = moduleUICfgMgrSupplier
-          .getUIConfigurationManager(component);
+      moduleUICfgMgr = moduleUICfgMgrSupplier.getUIConfigurationManager(component);
     } catch (NoSuchElementException e)
     {
       return null;
@@ -1842,10 +1828,8 @@ public class UNO
     // XAcceleratorConfiguration xAcceleratorConfiguration
     try
     {
-      Method m = moduleUICfgMgr.getClass().getMethod("getShortCutManager",
-          (Class[]) null);
-      return UNO
-          .XAcceleratorConfiguration(m.invoke(moduleUICfgMgr, (Object[]) null));
+      Method m = moduleUICfgMgr.getClass().getMethod("getShortCutManager", (Class[]) null);
+      return UNO.XAcceleratorConfiguration(m.invoke(moduleUICfgMgr, (Object[]) null));
     } catch (Exception e)
     {
       return null;
@@ -1854,23 +1838,22 @@ public class UNO
 
   /**
    * Wenn hide=true ist, so wird die Eigenschaft CharHidden für range auf true
-   * gesetzt und andernfalls der Standardwert (=false) für die Property
-   * CharHidden wieder hergestellt. Dadurch lässt sich der Text in range
-   * unsichtbar schalten bzw. wieder sichtbar schalten. Die Repräsentation von
-   * unsichtbar geschaltenen Stellen erfolgt in der Art, dass OOo für den
-   * unsichtbaren Textbereich ein neuen automatisch generierten Character-Style
-   * anlegt, der die Eigenschaften der bisher gesetzten Styles erbt und
-   * lediglich die Eigenschaft "Sichtbarkeit" auf unsichtbar setzt. Beim
-   * Aufheben einer unsichtbaren Stelle sorgt das Zurücksetzen auf den
-   * Standardwert dafür, dass der vorher angelegte automatische-Style wieder
-   * zurück genommen wird - so ist sichergestellt, dass das Aus- und
-   * Wiedereinblenden von Textbereichen keine Änderungen der bisher gesetzten
-   * Styles hervorruft.
+   * gesetzt und andernfalls der Standardwert (=false) für die Property CharHidden
+   * wieder hergestellt. Dadurch lässt sich der Text in range unsichtbar schalten
+   * bzw. wieder sichtbar schalten. Die Repräsentation von unsichtbar geschaltenen
+   * Stellen erfolgt in der Art, dass OOo für den unsichtbaren Textbereich ein
+   * neuen automatisch generierten Character-Style anlegt, der die Eigenschaften
+   * der bisher gesetzten Styles erbt und lediglich die Eigenschaft "Sichtbarkeit"
+   * auf unsichtbar setzt. Beim Aufheben einer unsichtbaren Stelle sorgt das
+   * Zurücksetzen auf den Standardwert dafür, dass der vorher angelegte
+   * automatische-Style wieder zurück genommen wird - so ist sichergestellt, dass
+   * das Aus- und Wiedereinblenden von Textbereichen keine Änderungen der bisher
+   * gesetzten Styles hervorruft.
    * 
    * @param range
-   *          Der Textbereich, der aus- bzw. eingeblendet werden soll.
+   *                Der Textbereich, der aus- bzw. eingeblendet werden soll.
    * @param hide
-   *          hide=true blendet aus, hide=false blendet ein.
+   *                hide=true blendet aus, hide=false blendet ein.
    * 
    * @author Christoph Lutz (D-III-ITD-D101)
    */
@@ -1896,33 +1879,63 @@ public class UNO
     }
   }
 
-	public static void forEachParagraphInRange(XTextRange range, Consumer<Object> c) {
-	  XTextCursor cursor = range.getText().createTextCursorByRange(range);
-	  
-	  for (XEnumeration par : UnoCollection.getCollection(cursor, XEnumeration.class))
-	  {
-	    	c.accept(par);
-	  }
-	}
+  /**
+   * Iteriert über alle Paragraphen in einer XTextRange.
+   * 
+   * @param range
+   * @param c
+   *                Lambda-Funktion, die den aktuellen Paragraphen als Parameter
+   *                erhält.
+   */
+  public static void forEachParagraphInRange(XTextRange range, Consumer<Object> c)
+  {
+    XTextCursor cursor = range.getText().createTextCursorByRange(range);
 
-	public static void forEachTextPortionInRange(XTextRange range, Consumer<Object> c) {
-	  XTextCursor cursor = range.getText().createTextCursorByRange(range);
-	  
-	  for (XEnumeration parEnum : UnoCollection.getCollection(cursor, XEnumeration.class))
-	  {
-	  	for (Object o : UnoCollection.getCollection(parEnum, Object.class))
-	  	{
-	    	c.accept(o);
-	  	}
-	  }
-	}
-	
-	public static Object getFirstElementInEnumeration(Object o) throws NoSuchElementException, WrappedTargetException {
-		XEnumerationAccess access = UNO.XEnumerationAccess(o);
-		if (access != null) {
-			return access.createEnumeration().nextElement();
-		}
-		
-		return null;
-	}
+    for (XEnumeration par : UnoCollection.getCollection(cursor, XEnumeration.class))
+    {
+      c.accept(par);
+    }
+  }
+
+  /**
+   * Iteriert über alle Text-Objekte in einer XTextRange.
+   * 
+   * @param range
+   * @param c
+   *                Lambda-Funktion, die das aktuelle Text-Objekt als Parameter
+   *                erhält.
+   */
+  public static void forEachTextPortionInRange(XTextRange range, Consumer<Object> c)
+  {
+    XTextCursor cursor = range.getText().createTextCursorByRange(range);
+
+    for (XEnumeration parEnum : UnoCollection.getCollection(cursor, XEnumeration.class))
+    {
+      for (Object o : UnoCollection.getCollection(parEnum, Object.class))
+      {
+        c.accept(o);
+      }
+    }
+  }
+
+  /**
+   * Liefert das erste Element eines UNO-Objekts zurück, das XEnumerationAccess
+   * implementiert.
+   * 
+   * @param o
+   *            Objekt, das eine Enumeration enthält.
+   * @return
+   * @throws NoSuchElementException
+   * @throws WrappedTargetException
+   */
+  public static Object getFirstElementInEnumeration(Object o) throws NoSuchElementException, WrappedTargetException
+  {
+    XEnumerationAccess access = UNO.XEnumerationAccess(o);
+    if (access != null)
+    {
+      return access.createEnumeration().nextElement();
+    }
+
+    return null;
+  }
 }

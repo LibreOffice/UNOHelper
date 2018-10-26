@@ -6,6 +6,9 @@ import com.sun.star.container.XIndexAccess;
 import com.sun.star.lang.IndexOutOfBoundsException;
 import com.sun.star.lang.WrappedTargetException;
 
+/**
+ * Wrappt XIndexAccess als JAVA-List.
+ */
 public class UnoList<T> extends AbstractList<T>
 {
 	private XIndexAccess access;

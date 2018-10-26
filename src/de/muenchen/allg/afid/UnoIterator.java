@@ -7,6 +7,12 @@ import com.sun.star.container.XEnumeration;
 import com.sun.star.container.XEnumerationAccess;
 import com.sun.star.uno.UnoRuntime;
 
+/**
+ * Wrappt eine UNO-Enumeration als JAVA-Iterator.
+ * 
+ * @param <T>
+ *          Typ des Objekts in der Enumeration.
+ */
 public class UnoIterator<T> implements Iterator<T>
 {
   private XEnumeration enu;
@@ -25,7 +31,7 @@ public class UnoIterator<T> implements Iterator<T>
   }
 
   @SuppressWarnings("unchecked")
-	@Override
+  @Override
   public T next()
   {
     try
@@ -33,10 +39,9 @@ public class UnoIterator<T> implements Iterator<T>
       if (c != Object.class)
       {
         return UnoRuntime.queryInterface(c, enu.nextElement());
-      }
-      else
+      } else
       {
-        return (T)enu.nextElement();
+        return (T) enu.nextElement();
       }
     } catch (NoSuchElementException e)
     {
@@ -47,6 +52,9 @@ public class UnoIterator<T> implements Iterator<T>
     }
   }
 
+  /**
+   * Wird nicht unterstützt.
+   */
   @Override
   public void remove()
   {

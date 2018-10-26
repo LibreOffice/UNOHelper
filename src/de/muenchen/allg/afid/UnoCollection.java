@@ -6,7 +6,8 @@ import com.sun.star.container.XEnumeration;
 import com.sun.star.container.XEnumerationAccess;
 
 /**
- * Wrapperklasse für {@link XEnumeration}. Kann mit for-each-loop iteriert werden.
+ * Wrapperklasse für {@link XEnumeration}. Kann mit for-each-loop iteriert
+ * werden.
  * 
  * @author snoopy
  *
@@ -25,25 +26,35 @@ public class UnoCollection<T> implements Iterable<T>
   }
 
   /**
-   * Erzeugt eine UnoCollection aus einem Uno-Object, dass XEnumerationAccess implementiert.
+   * Erzeugt eine UnoCollection XEnumerationAccess-Objekt.
    * 
    * @param enuAccess
-   * @param c darf nur ein Interface aus der UNO-Api oder Object sein.
+   * @param c
+   *                    darf nur ein Interface aus der UNO-Api oder Object sein.
    * @return
    */
   public static <T> UnoCollection<T> getCollection(XEnumerationAccess enuAccess, Class<T> c)
   {
     return new UnoCollection<T>(enuAccess, c);
   }
-  
+
+  /**
+   * Erzeugt eine UnoCollection aus einem Uno-Object.
+   * 
+   * @param o
+   *            UNO-Object, dass XEnumerationAccess implementiert
+   * @param c
+   *            darf nur ein Interface aus der UNO-Api oder Object sein.
+   * @return
+   */
   public static <T> UnoCollection<T> getCollection(Object o, Class<T> c)
   {
     XEnumerationAccess enuAccess = UNO.XEnumerationAccess(o);
     if (enuAccess != null)
-    {    
-    	return new UnoCollection<T>(enuAccess, c);
+    {
+      return new UnoCollection<T>(enuAccess, c);
     }
-    
+
     return null;
   }
 
