@@ -175,6 +175,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import com.sun.star.awt.XDevice;
 import com.sun.star.awt.XToolkit;
 import com.sun.star.awt.XTopWindow;
@@ -430,19 +432,16 @@ public class UNO
   }
 
   /**
-   * Läd ein Dokument und setzt im Erfolgsfall {@link #compo} auf das geöffnete
+   * Lädt ein Dokument und setzt im Erfolgsfall {@link #compo} auf das geöffnete
    * Dokument.
    * 
-   * @param url
-   *                      die URL des zu ladenden Dokuments, z.B.
-   *                      "file:///C:/temp/footest.odt" oder
-   *                      "private:factory/swriter" (für ein leeres).
-   * @param asTemplate
-   *                      falls true wird das Dokument als Vorlage behandelt und
-   *                      ein neues unbenanntes Dokument erzeugt.
-   * @param allowMacros
-   *                      falls true wird die Ausführung von Makros
-   *                      freigeschaltet.
+   * @param url         die URL des zu ladenden Dokuments, z.B.
+   *                    "file:///C:/temp/footest.odt" oder
+   *                    "private:factory/swriter" (für ein leeres).
+   * @param asTemplate  falls true wird das Dokument als Vorlage behandelt und
+   *                    ein neues unbenanntes Dokument erzeugt.
+   * @param allowMacros falls true wird die Ausführung von Makros
+   *                    freigeschaltet.
    * @return das geöffnete Dokument
    * @throws com.sun.star.io.IOException
    * @throws com.sun.star.lang.IllegalArgumentException
@@ -455,21 +454,17 @@ public class UNO
   }
 
   /**
-   * Läd ein Dokument abhängig von hidden sichtbar oder unsichtbar und setzt im
+   * Lädt ein Dokument abhängig von hidden sichtbar oder unsichtbar und setzt im
    * Erfolgsfall {@link #compo} auf das geöffnete Dokument.
    * 
-   * @param url
-   *                      die URL des zu ladenden Dokuments, z.B.
-   *                      "file:///C:/temp/footest.odt" oder
-   *                      "private:factory/swriter" (für ein leeres).
-   * @param asTemplate
-   *                      falls true wird das Dokument als Vorlage behandelt und
-   *                      ein neues unbenanntes Dokument erzeugt.
-   * @param allowMacros
-   *                      falls true wird die Ausführung von Makros
-   *                      freigeschaltet.
-   * @param hidden
-   *                      falls true wird das Dokument unsichtbar geöffnet
+   * @param url         die URL des zu ladenden Dokuments, z.B.
+   *                    "file:///C:/temp/footest.odt" oder
+   *                    "private:factory/swriter" (für ein leeres).
+   * @param asTemplate  falls true wird das Dokument als Vorlage behandelt und
+   *                    ein neues unbenanntes Dokument erzeugt.
+   * @param allowMacros falls true wird die Ausführung von Makros
+   *                    freigeschaltet.
+   * @param hidden      falls true wird das Dokument unsichtbar geöffnet
    * @return das geöffnete Dokument
    * @throws com.sun.star.io.IOException
    * @throws com.sun.star.lang.IllegalArgumentException
@@ -487,18 +482,15 @@ public class UNO
   }
 
   /**
-   * Läd ein Dokument und setzt im Erfolgsfall {@link #compo} auf das geöffnete
+   * Lädt ein Dokument und setzt im Erfolgsfall {@link #compo} auf das geöffnete
    * Dokument.
    * 
-   * @param url
-   *                      die URL des zu ladenden Dokuments, z.B.
-   *                      "file:///C:/temp/footest.odt" oder
-   *                      "private:factory/swriter" (für ein leeres).
-   * @param asTemplate
-   *                      falls true wird das Dokument als Vorlage behandelt und
-   *                      ein neues unbenanntes Dokument erzeugt.
-   * @param allowMacros
-   *                      eine der Konstanten aus {@link MacroExecMode}.
+   * @param url         die URL des zu ladenden Dokuments, z.B.
+   *                    "file:///C:/temp/footest.odt" oder
+   *                    "private:factory/swriter" (für ein leeres).
+   * @param asTemplate  falls true wird das Dokument als Vorlage behandelt und
+   *                    ein neues unbenanntes Dokument erzeugt.
+   * @param allowMacros eine der Konstanten aus {@link MacroExecMode}.
    * @return das geöffnete Dokument
    * @throws com.sun.star.io.IOException
    * @throws com.sun.star.lang.IllegalArgumentException
@@ -511,24 +503,74 @@ public class UNO
   }
 
   /**
-   * Läd ein Dokument abhängig von hidden sichtbar oder unsichtbar und setzt im
+   * Lädt ein Dokument abhängig von hidden sichtbar oder unsichtbar und setzt im
    * Erfolgsfall {@link #compo} auf das geöffnete Dokument.
    * 
-   * @param url
-   *                      die URL des zu ladenden Dokuments, z.B.
-   *                      "file:///C:/temp/footest.odt" oder
-   *                      "private:factory/swriter" (für ein leeres).
-   * @param asTemplate
-   *                      falls true wird das Dokument als Vorlage behandelt und
-   *                      ein neues unbenanntes Dokument erzeugt.
-   * @param allowMacros
-   *                      eine der Konstanten aus {@link MacroExecMode}.
+   * @param url         die URL des zu ladenden Dokuments, z.B.
+   *                    "file:///C:/temp/footest.odt" oder
+   *                    "private:factory/swriter" (für ein leeres).
+   * @param asTemplate  falls true wird das Dokument als Vorlage behandelt und
+   *                    ein neues unbenanntes Dokument erzeugt.
+   * @param allowMacros eine der Konstanten aus {@link MacroExecMode}.
    * @return das geöffnete Dokument
    * @throws com.sun.star.io.IOException
    * @throws com.sun.star.lang.IllegalArgumentException
    * @author Christoph Lutz (D-III-ITD 5.1)
    */
-  public static XComponent loadComponentFromURL(String url, boolean asTemplate, short allowMacros, boolean hidden)
+  public static XComponent loadComponentFromURL(String url, boolean asTemplate,
+    short allowMacros, boolean hidden)
+      throws com.sun.star.io.IOException
+  {
+    return loadComponentFromURL(url, asTemplate, allowMacros, hidden,
+      (PropertyValue) null);
+  }
+
+  /**
+   * Lädt ein Dokument abhängig von hidden sichtbar oder unsichtbar und setzt im
+   * Erfolgsfall {@link #compo} auf das geöffnete Dokument.
+   * 
+   * @param url         die URL des zu ladenden Dokuments, z.B.
+   *                    "file:///C:/temp/footest.odt" oder
+   *                    "private:factory/swriter" (für ein leeres).
+   * @param asTemplate  falls true wird das Dokument als Vorlage behandelt und
+   *                    ein neues unbenanntes Dokument erzeugt.
+   * @param allowMacros falls true wird die Ausführung von Makros
+   *                    freigeschaltet.
+   * @param hidden      falls true wird das Dokument unsichtbar geöffnet
+   * @param args        zusätzliche Parameter für
+   *                    XComponentLoader.loadComponentFromUrl
+   * @return das geöffnete Dokument
+   * @throws com.sun.star.io.IOException
+   * @throws com.sun.star.lang.IllegalArgumentException
+   */
+  public static XComponent loadComponentFromURL(String url, boolean asTemplate,
+    boolean allowMacros, PropertyValue... args)
+    throws com.sun.star.io.IOException
+  {
+    return loadComponentFromURL(url, asTemplate,
+      (allowMacros) ? MacroExecMode.ALWAYS_EXECUTE_NO_WARN
+        : MacroExecMode.NEVER_EXECUTE,
+      false, args);
+  }
+
+  /**
+   * Lädt ein Dokument abhängig von hidden sichtbar oder unsichtbar und setzt im
+   * Erfolgsfall {@link #compo} auf das geöffnete Dokument.
+   * 
+   * @param url         die URL des zu ladenden Dokuments, z.B.
+   *                    "file:///C:/temp/footest.odt" oder
+   *                    "private:factory/swriter" (für ein leeres).
+   * @param asTemplate  falls true wird das Dokument als Vorlage behandelt und
+   *                    ein neues unbenanntes Dokument erzeugt.
+   * @param allowMacros eine der Konstanten aus {@link MacroExecMode}.
+   * @param args        zusätzliche Parameter für
+   *                    XComponentLoader.loadComponentFromUrl
+   * @return das geöffnete Dokument
+   * @throws com.sun.star.io.IOException
+   * @throws com.sun.star.lang.IllegalArgumentException
+   */
+  public static XComponent loadComponentFromURL(String url, boolean asTemplate,
+    short allowMacros, boolean hidden, PropertyValue... args)
       throws com.sun.star.io.IOException
   {
     XComponentLoader loader = UNO.XComponentLoader(desktop);
@@ -542,6 +584,9 @@ public class UNO
     arguments[2] = new PropertyValue();
     arguments[2].Name = "Hidden";
     arguments[2].Value = Boolean.valueOf(hidden);
+
+    arguments = ArrayUtils.addAll(arguments, args);
+
     XComponent lc = loader.loadComponentFromURL(url, "_blank", FrameSearchFlag.CREATE, arguments);
     if (lc != null)
       compo = lc;
