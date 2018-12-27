@@ -177,7 +177,12 @@ import java.util.function.Consumer;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import com.sun.star.awt.XButton;
+import com.sun.star.awt.XCheckBox;
 import com.sun.star.awt.XDevice;
+import com.sun.star.awt.XNumericField;
+import com.sun.star.awt.XRadioButton;
+import com.sun.star.awt.XSpinField;
 import com.sun.star.awt.XToolkit;
 import com.sun.star.awt.XTopWindow;
 import com.sun.star.awt.XUserInputInterception;
@@ -306,6 +311,8 @@ import com.sun.star.util.XUpdatable;
 import com.sun.star.view.XPrintable;
 import com.sun.star.view.XSelectionSupplier;
 import com.sun.star.view.XViewSettingsSupplier;
+
+import de.muenchen.allg.afid.Utils.FindNode;
 
 /**
  * Hilfsklasse zur leichteren Verwendung der UNO API. * @author BNK
@@ -910,7 +917,7 @@ public class UNO
     {
       loc = location;
     }
-    List<Utils.FindNode> found = new LinkedList<Utils.FindNode>();
+    List<FindNode> found = new LinkedList<FindNode>();
     List<String> prefixVec = new ArrayList<String>();
     List<String> prefixLCVec = new ArrayList<String>();
     String[] prefixArr = prefix.split("\\.");
@@ -1741,6 +1748,31 @@ public class UNO
   public static XRefreshable XRefreshable(Object o)
   {
     return UnoRuntime.queryInterface(XRefreshable.class, o);
+  }
+  
+  public static XButton toXButton(Object object)
+  {
+    return UnoRuntime.queryInterface(XButton.class, object);
+  }
+
+  public static XCheckBox toXCheckBox(Object object)
+  {
+    return UnoRuntime.queryInterface(XCheckBox.class, object);
+  }
+
+  public static XRadioButton toXRadio(Object object)
+  {
+    return UnoRuntime.queryInterface(XRadioButton.class, object);
+  }
+
+  public static XNumericField toXNumericField(Object object)
+  {
+    return UnoRuntime.queryInterface(XNumericField.class, object);
+  }
+
+  public static XSpinField toXSpinField(Object object)
+  {
+    return UnoRuntime.queryInterface(XSpinField.class, object);
   }
 
   // ACHTUNG: Interface-Methoden fangen hier mit einem grossen X an!
