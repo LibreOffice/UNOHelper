@@ -529,7 +529,7 @@ public class UNO
       throws com.sun.star.io.IOException
   {
     return loadComponentFromURL(url, asTemplate, allowMacros, hidden,
-      (PropertyValue) null);
+        new PropertyValue[] {});
   }
 
   /**
