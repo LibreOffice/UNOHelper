@@ -47,7 +47,6 @@ import com.sun.star.uno.UnoRuntime;
  * unterstützen. Diese sind vor allem nützlich beim Durchsuchen des Baumes aller
  * installierten Skripts.
  * 
- * @author bnk
  */
 public class BrowseNode
 {
@@ -63,9 +62,9 @@ public class BrowseNode
    * Skripting-Framework benötigt wird. Nicht zu verwechseln mit "macro:" URLs!
    * Falls dieses Property nicht existiert, wird null geliefert.
    *
-   * @author bnk
+   * @throws UnoHelperException 
    */
-  public String getURL()
+  public String getURL() throws UnoHelperException
   {
     return (String) UNO.getProperty(node, "URI");
   }
