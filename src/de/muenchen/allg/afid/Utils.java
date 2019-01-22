@@ -54,38 +54,39 @@ import com.sun.star.uno.RuntimeException;
     }
 
     /**
-     * siehe {@link UNO#findBrowseNodeTreeLeafAndScriptProvider(XBrowseNode,
-     * String, String, boolean, String[]))}
-     * 
-     * @param xScriptProvider
-     *          der zuletzt gesehene xScriptProvider
-     * @param nameToFind
-     *          der zu suchende Name in seine Bestandteile zwischen den Punkten
-     *          zerlegt.
-     * @param nameToFindLC
-     *          wie nameToFind aber alles lowercase.
-     * @param prefix
-     *          das Prefix in seine Bestandteile zwischen den Punkten zerlegt.
-     * @param prefixLC
-     *          wie prefix aber alles lowercase.
-     * @param found
-     *          Liste von {@link FindNode}s mit dem Ergebnis der Suche (anfangs
-     *          leere Liste übergeben). Die Sortierung ist so, dass zuerst alle
-     *          case-sensitive Matches (also exakte Matches) aufgeführt sind,
-     *          sortiert gemäss location und dann alle case-insensitive Matches
-     *          sortiert gemäss location. Falls <code>location == null</code>,
-     *          so wird nur nach case-sensitive und case-insenstive sortiert,
-     *          innerhalb dieser Gruppen jedoch nicht mehr.
-     * @return die Anzahl der Rekursionsstufen, die beendet werden sollen. Zum
-     *         Beispiel heisst ein Rückgabewert von 1, dass die aufrufende
-     *         Funktion ein <code>return 0</code> machen soll.
-     * 
-     * @author bnk
-     */
+   * siehe {@link UNO#findBrowseNodeTreeLeafAndScriptProvider(XBrowseNode,
+   * String, String, boolean, String[]))}
+   * 
+   * @param xScriptProvider
+   *          der zuletzt gesehene xScriptProvider
+   * @param nameToFind
+   *          der zu suchende Name in seine Bestandteile zwischen den Punkten
+   *          zerlegt.
+   * @param nameToFindLC
+   *          wie nameToFind aber alles lowercase.
+   * @param prefix
+   *          das Prefix in seine Bestandteile zwischen den Punkten zerlegt.
+   * @param prefixLC
+   *          wie prefix aber alles lowercase.
+   * @param found
+   *          Liste von {@link FindNode}s mit dem Ergebnis der Suche (anfangs
+   *          leere Liste übergeben). Die Sortierung ist so, dass zuerst alle
+   *          case-sensitive Matches (also exakte Matches) aufgeführt sind,
+   *          sortiert gemäss location und dann alle case-insensitive Matches
+   *          sortiert gemäss location. Falls <code>location == null</code>,
+   *          so wird nur nach case-sensitive und case-insenstive sortiert,
+   *          innerhalb dieser Gruppen jedoch nicht mehr.
+   * @return die Anzahl der Rekursionsstufen, die beendet werden sollen. Zum
+   *         Beispiel heisst ein Rückgabewert von 1, dass die aufrufende
+   *         Funktion ein <code>return 0</code> machen soll.
+   * 
+   * @throws UnoHelperException 
+   */
     public static int findBrowseNodeTreeLeavesAndScriptProviders(
         BrowseNode node, List<String> prefix, List<String> prefixLC,
         String[] nameToFind, String[] nameToFindLC, String[] location,
-        XScriptProvider xScriptProvider, List<Utils.FindNode> found)
+      XScriptProvider xScriptProvider, List<Utils.FindNode> found)
+      throws UnoHelperException
     {
       String name = node.getName();
       String nameLC = name.toLowerCase();
@@ -246,23 +247,25 @@ import com.sun.star.uno.RuntimeException;
     }
 
     /**
-     * Falls <code>node.URL() == null</code> oder die URL keinen "location="
-     * Teil enthält, so wird "" geliefert, ansonsten der "location=" Teil ohne
-     * das führende "location=".
-     * 
-     * @author bnk
-     */
-    private static String getLocation(BrowseNode node)
+   * Falls <code>node.URL() == null</code> oder die URL keinen "location="
+   * Teil enthält, so wird "" geliefert, ansonsten der "location=" Teil ohne
+   * das führende "location=".
+   * 
+   * @author bnk
+   * @throws UnoHelperException 
+   */
+  private static String getLocation(BrowseNode node) throws UnoHelperException
     { // T
       return getUrlComponent(node, "location");
     }
 
-    private static String getLanguage(BrowseNode node)
+  private static String getLanguage(BrowseNode node) throws UnoHelperException
     {
       return getUrlComponent(node, "language");
     }
 
-    private static String getUrlComponent(BrowseNode node, String id)
+  private static String getUrlComponent(BrowseNode node, String id)
+      throws UnoHelperException
     {
       String url = node.getURL();
       if (url == null)
@@ -280,13 +283,15 @@ import com.sun.star.uno.RuntimeException;
     }
 
     /**
-     * Wenn <code>provider = null</code>, so wird versucht, einen passenden
-     * Provider zu finden.
-     * 
-     * @author bnk
-     */
+   * Wenn <code>provider = null</code>, so wird versucht, einen passenden
+   * Provider zu finden.
+   * 
+   * @author bnk
+   * @throws UnoHelperException 
+   */
     static Object executeMacroInternal(String macroName, Object[] args,
-        XScriptProvider provider, XBrowseNode root, String[] location)
+      XScriptProvider provider, XBrowseNode root, String[] location)
+      throws UnoHelperException
     { // T
       XBrowseNodeAndXScriptProvider o = UNO
           .findBrowseNodeTreeLeafAndScriptProvider(root, "", macroName, false,

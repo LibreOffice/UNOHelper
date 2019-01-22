@@ -164,11 +164,10 @@
 * 13.05.2013 | UKT | Anpassungen an LO 4.0
 * ------------------------------------------------------------------- 
 *
-* @author D-III-ITD 5.1 Matthias S. Benkmann
-* 
-* */
+*/
 package de.muenchen.allg.afid;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -190,6 +189,8 @@ import com.sun.star.awt.XWindow;
 import com.sun.star.awt.XWindow2;
 import com.sun.star.awt.XWindowPeer;
 import com.sun.star.beans.PropertyValue;
+import com.sun.star.beans.PropertyVetoException;
+import com.sun.star.beans.UnknownPropertyException;
 import com.sun.star.beans.XMultiPropertySet;
 import com.sun.star.beans.XPropertySet;
 import com.sun.star.beans.XPropertyState;
@@ -197,7 +198,6 @@ import com.sun.star.bridge.XUnoUrlResolver;
 import com.sun.star.comp.helper.Bootstrap;
 import com.sun.star.container.NoSuchElementException;
 import com.sun.star.container.XContentEnumerationAccess;
-import com.sun.star.container.XEnumeration;
 import com.sun.star.container.XEnumerationAccess;
 import com.sun.star.container.XIndexAccess;
 import com.sun.star.container.XIndexContainer;
@@ -229,7 +229,9 @@ import com.sun.star.frame.XModel;
 import com.sun.star.frame.XNotifyingDispatch;
 import com.sun.star.frame.XStorable;
 import com.sun.star.frame.XToolbarController;
+import com.sun.star.io.IOException;
 import com.sun.star.lang.EventObject;
+import com.sun.star.lang.IllegalArgumentException;
 import com.sun.star.lang.WrappedTargetException;
 import com.sun.star.lang.XComponent;
 import com.sun.star.lang.XMultiComponentFactory;
@@ -378,31 +380,47 @@ public class UNO
    * @param connectionString
    *                           z.B.
    *                           "uno:socket,host=localhost,port=8100;urp;StarOffice.ServiceManager"
-   * @throws Exception
+   * @throws UnoHelperException
    *                     falls was schief geht.
    * @see init()
-   * @author Matthias Benkmann (D-III-ITD 5.1)
    */
-  public static void init(String connectionString) throws Exception
+  public static void init(String connectionString) throws UnoHelperException
   {
-    XComponentContext xLocalContext = Bootstrap.createInitialComponentContext(null);
-    XMultiComponentFactory xLocalFactory = xLocalContext.getServiceManager();
-    XUnoUrlResolver xUrlResolver = UNO
-        .XUnoUrlResolver(xLocalFactory.createInstanceWithContext("com.sun.star.bridge.UnoUrlResolver", xLocalContext));
-    init(xUrlResolver.resolve(connectionString));
+    try
+    {
+      XComponentContext xLocalContext = Bootstrap
+          .createInitialComponentContext(null);
+      XMultiComponentFactory xLocalFactory = xLocalContext.getServiceManager();
+      XUnoUrlResolver xUrlResolver = UNO
+          .XUnoUrlResolver(xLocalFactory.createInstanceWithContext(
+              "com.sun.star.bridge.UnoUrlResolver", xLocalContext));
+      init(xUrlResolver.resolve(connectionString));
+    }
+    catch (Exception e)
+    {
+      throw new UnoHelperException(
+          "Verbindung zu Office konnte nicht hergestellt werden.", e);
+    }
   }
 
   /**
    * Stellt die Verbindung mit OpenOffice her. Die Verbindungsparameter werden
    * automagisch ermittelt.
    * 
-   * @throws Exception
+   * @throws UnoHelperException
    *                     falls was schief geht.
-   * @author Matthias Benkmann (D-III-ITD 5.1)
    */
-  public static void init() throws Exception
+  public static void init() throws UnoHelperException
   {
-    init(Bootstrap.bootstrap().getServiceManager());
+    try
+    {
+      init(Bootstrap.bootstrap().getServiceManager());
+    }
+    catch (Exception e)
+    {
+      throw new UnoHelperException(
+          "Verbindung zu Office konnte nicht hergestellt werden.", e);
+    }
   }
 
   /**
@@ -411,31 +429,50 @@ public class UNO
    * 
    * @param remoteServiceManager
    *                               der Haupt-ServiceManager.
-   * @throws Exception
+   * @throws UnoHelperException
    *                     falls was schief geht.
-   * @author Matthias Benkmann (D-III-ITD 5.1)
    */
-  public static void init(Object remoteServiceManager) throws Exception
+  public static void init(Object remoteServiceManager) throws UnoHelperException
   {
-    xMCF = UnoRuntime.queryInterface(XMultiComponentFactory.class, remoteServiceManager);
-    xMSF = UnoRuntime.queryInterface(XMultiServiceFactory.class, xMCF);
-    defaultContext = UnoRuntime.queryInterface(XComponentContext.class,
-        (UnoRuntime.queryInterface(XPropertySet.class, xMCF)).getPropertyValue("DefaultContext"));
+    try
+    {
+      xMCF = UnoRuntime.queryInterface(XMultiComponentFactory.class,
+          remoteServiceManager);
+      xMSF = UnoRuntime.queryInterface(XMultiServiceFactory.class, xMCF);
+      defaultContext = UnoRuntime.queryInterface(XComponentContext.class,
+          (UnoRuntime.queryInterface(XPropertySet.class, xMCF))
+              .getPropertyValue("DefaultContext"));
 
-    desktop = UnoRuntime.queryInterface(XDesktop.class,
-        xMCF.createInstanceWithContext("com.sun.star.frame.Desktop", defaultContext));
+      desktop = UnoRuntime.queryInterface(XDesktop.class,
+          xMCF.createInstanceWithContext("com.sun.star.frame.Desktop",
+              defaultContext));
 
-    XBrowseNodeFactory masterBrowseNodeFac = UnoRuntime.queryInterface(XBrowseNodeFactory.class,
-        defaultContext.getValueByName("/singletons/com.sun.star.script.browse.theBrowseNodeFactory"));
-    scriptRoot = new BrowseNode(masterBrowseNodeFac.createView(BrowseNodeFactoryViewTypes.MACROORGANIZER));
+      XBrowseNodeFactory masterBrowseNodeFac = UnoRuntime.queryInterface(
+          XBrowseNodeFactory.class,
+          defaultContext.getValueByName(
+              "/singletons/com.sun.star.script.browse.theBrowseNodeFactory"));
+      scriptRoot = new BrowseNode(masterBrowseNodeFac
+          .createView(BrowseNodeFactoryViewTypes.MACROORGANIZER));
 
-    XScriptProviderFactory masterProviderFac = UnoRuntime.queryInterface(XScriptProviderFactory.class,
-        defaultContext.getValueByName("/singletons/com.sun.star.script.provider.theMasterScriptProviderFactory"));
-    masterScriptProvider = masterProviderFac.createScriptProvider(defaultContext);
+      XScriptProviderFactory masterProviderFac = UnoRuntime.queryInterface(
+          XScriptProviderFactory.class,
+          defaultContext.getValueByName(
+              "/singletons/com.sun.star.script.provider.theMasterScriptProviderFactory"));
+      masterScriptProvider = masterProviderFac
+          .createScriptProvider(defaultContext);
 
-    dbContext = UNO.XNamingService(UNO.createUNOService("com.sun.star.sdb.DatabaseContext"));
-    urlTransformer = UNO.XURLTransformer(UNO.createUNOService("com.sun.star.util.URLTransformer"));
-    dispatchHelper = UNO.XDispatchHelper(UNO.createUNOService("com.sun.star.frame.DispatchHelper"));
+      dbContext = UNO.XNamingService(
+          UNO.createUNOService("com.sun.star.sdb.DatabaseContext"));
+      urlTransformer = UNO.XURLTransformer(
+          UNO.createUNOService("com.sun.star.util.URLTransformer"));
+      dispatchHelper = UNO.XDispatchHelper(
+          UNO.createUNOService("com.sun.star.frame.DispatchHelper"));
+    }
+    catch (IllegalArgumentException | com.sun.star.uno.Exception e)
+    {
+      throw new UnoHelperException(
+          "Verbindung zu Office konnte nicht hergestellt werden.", e);
+    }
   }
 
   /**
@@ -450,14 +487,12 @@ public class UNO
    * @param allowMacros falls true wird die Ausführung von Makros
    *                    freigeschaltet.
    * @return das geöffnete Dokument
-   * @throws com.sun.star.io.IOException
-   * @throws com.sun.star.lang.IllegalArgumentException
-   * @author Matthias Benkmann (D-III-ITD 5.1)
+   * @throws UnoHelperException
    */
   public static XComponent loadComponentFromURL(String url, boolean asTemplate, boolean allowMacros)
-      throws com.sun.star.io.IOException
+      throws UnoHelperException
   {
-    return loadComponentFromURL(url, asTemplate, allowMacros, false);
+      return loadComponentFromURL(url, asTemplate, allowMacros, false);
   }
 
   /**
@@ -473,18 +508,16 @@ public class UNO
    *                    freigeschaltet.
    * @param hidden      falls true wird das Dokument unsichtbar geöffnet
    * @return das geöffnete Dokument
-   * @throws com.sun.star.io.IOException
-   * @throws com.sun.star.lang.IllegalArgumentException
-   * @author Christoph Lutz (D-III-ITD 5.1)
+   * @throws UnoHelperException
    */
   public static XComponent loadComponentFromURL(String url, boolean asTemplate, boolean allowMacros, boolean hidden)
-      throws com.sun.star.io.IOException
+      throws UnoHelperException
   {
-    short allowMacrosShort;
+    short allowMacrosShort = MacroExecMode.NEVER_EXECUTE;
     if (allowMacros)
+    {
       allowMacrosShort = MacroExecMode.ALWAYS_EXECUTE_NO_WARN;
-    else
-      allowMacrosShort = MacroExecMode.NEVER_EXECUTE;
+    }
     return loadComponentFromURL(url, asTemplate, allowMacrosShort, hidden);
   }
 
@@ -499,12 +532,10 @@ public class UNO
    *                    ein neues unbenanntes Dokument erzeugt.
    * @param allowMacros eine der Konstanten aus {@link MacroExecMode}.
    * @return das geöffnete Dokument
-   * @throws com.sun.star.io.IOException
-   * @throws com.sun.star.lang.IllegalArgumentException
-   * @author Matthias Benkmann (D-III-ITD 5.1)
+   * @throws UnoHelperException
    */
   public static XComponent loadComponentFromURL(String url, boolean asTemplate, short allowMacros)
-      throws com.sun.star.io.IOException
+      throws UnoHelperException
   {
     return loadComponentFromURL(url, asTemplate, allowMacros, false);
   }
@@ -520,13 +551,11 @@ public class UNO
    *                    ein neues unbenanntes Dokument erzeugt.
    * @param allowMacros eine der Konstanten aus {@link MacroExecMode}.
    * @return das geöffnete Dokument
-   * @throws com.sun.star.io.IOException
-   * @throws com.sun.star.lang.IllegalArgumentException
-   * @author Christoph Lutz (D-III-ITD 5.1)
+   * @throws UnoHelperException
    */
   public static XComponent loadComponentFromURL(String url, boolean asTemplate,
     short allowMacros, boolean hidden)
-      throws com.sun.star.io.IOException
+      throws UnoHelperException
   {
     return loadComponentFromURL(url, asTemplate, allowMacros, hidden,
         new PropertyValue[] {});
@@ -547,12 +576,11 @@ public class UNO
    * @param args        zusätzliche Parameter für
    *                    XComponentLoader.loadComponentFromUrl
    * @return das geöffnete Dokument
-   * @throws com.sun.star.io.IOException
-   * @throws com.sun.star.lang.IllegalArgumentException
+   * @throws UnoHelperException
    */
   public static XComponent loadComponentFromURL(String url, boolean asTemplate,
     boolean allowMacros, PropertyValue... args)
-    throws com.sun.star.io.IOException
+      throws UnoHelperException
   {
     return loadComponentFromURL(url, asTemplate,
       (allowMacros) ? MacroExecMode.ALWAYS_EXECUTE_NO_WARN
@@ -573,37 +601,43 @@ public class UNO
    * @param args        zusätzliche Parameter für
    *                    XComponentLoader.loadComponentFromUrl
    * @return das geöffnete Dokument
-   * @throws com.sun.star.io.IOException
-   * @throws com.sun.star.lang.IllegalArgumentException
+   * @throws UnoHelperException
    */
   public static XComponent loadComponentFromURL(String url, boolean asTemplate,
     short allowMacros, boolean hidden, PropertyValue... args)
-      throws com.sun.star.io.IOException
+      throws UnoHelperException
   {
-    XComponentLoader loader = UNO.XComponentLoader(desktop);
-    PropertyValue[] arguments = new PropertyValue[3];
-    arguments[0] = new PropertyValue();
-    arguments[0].Name = "MacroExecutionMode";
-    arguments[0].Value = Short.valueOf(allowMacros);
-    arguments[1] = new PropertyValue();
-    arguments[1].Name = "AsTemplate";
-    arguments[1].Value = Boolean.valueOf(asTemplate);
-    arguments[2] = new PropertyValue();
-    arguments[2].Name = "Hidden";
-    arguments[2].Value = Boolean.valueOf(hidden);
+    try
+    {
+      XComponentLoader loader = UNO.XComponentLoader(desktop);
+      PropertyValue[] arguments = new PropertyValue[3];
+      arguments[0] = new PropertyValue();
+      arguments[0].Name = "MacroExecutionMode";
+      arguments[0].Value = Short.valueOf(allowMacros);
+      arguments[1] = new PropertyValue();
+      arguments[1].Name = "AsTemplate";
+      arguments[1].Value = Boolean.valueOf(asTemplate);
+      arguments[2] = new PropertyValue();
+      arguments[2].Name = "Hidden";
+      arguments[2].Value = Boolean.valueOf(hidden);
 
-    arguments = ArrayUtils.addAll(arguments, args);
+      arguments = ArrayUtils.addAll(arguments, args);
 
-    XComponent lc = loader.loadComponentFromURL(url, "_blank", FrameSearchFlag.CREATE, arguments);
-    if (lc != null)
-      compo = lc;
-    return lc;
+      XComponent lc = loader.loadComponentFromURL(url, "_blank",
+          FrameSearchFlag.CREATE, arguments);
+      if (lc != null)
+        compo = lc;
+      return lc;
+    }
+    catch (IllegalArgumentException | IOException e)
+    {
+      throw new UnoHelperException(
+          "Dokument konnte nicht geladen werden.", e);
+    }
   }
 
   /**
    * Dispatcht url auf dem aktuellen Controll von doc.
-   * 
-   * @author Matthias Benkmann (D-III-ITD 5.1)
    */
   public static void dispatch(XModel doc, String url)
   {
@@ -619,8 +653,6 @@ public class UNO
    * {@link DispatchResultEvent} dieser Benachrichtigung zurück oder null, wenn zu
    * url kein XNotifyingDispatch definiert ist oder der Dispatch mit disposing
    * abgebrochen wurde.
-   * 
-   * @author Christoph Lutz (D-III-ITD-D101)
    */
   public static DispatchResultEvent dispatchAndWait(XTextDocument doc, String url)
   {
@@ -732,9 +764,11 @@ public class UNO
    *                            {@link XScriptProvider} noch
    *                            {@link XScriptProviderSupplier} implementiert.
    * @return den Rückgabewert des Makros.
-   * @author Matthias Benkmann (D-III-ITD 5.1)
+   * @throws UnoHelperException 
    */
-  public static Object executeMacro(Object scriptProviderOrSupplier, String macroName, Object[] args, String[] location)
+  public static Object executeMacro(Object scriptProviderOrSupplier,
+      String macroName, Object[] args, String[] location)
+      throws UnoHelperException
   {
     XScriptProvider provider = UnoRuntime.queryInterface(XScriptProvider.class, scriptProviderOrSupplier);
     if (provider == null)
@@ -774,9 +808,10 @@ public class UNO
    * @throws RuntimeException
    *                            wenn kein passendes Makro gefunden wurde.
    * @return den Rückgabewert des Makros.
-   * @author Matthias Benkmann (D-III-ITD 5.1)
+   * @throws UnoHelperException 
    */
   public static Object executeGlobalMacro(String macroName, Object[] args)
+      throws UnoHelperException
   {
     final String[] userAndShare = new String[]
     { "application", "share" };
@@ -809,9 +844,10 @@ public class UNO
    * @throws RuntimeException
    *                            wenn kein passendes Makro gefunden wurde.
    * @return den Rückgabewert des Makros.
-   * @author Matthias Benkmann (D-III-ITD 5.1)
+   * @throws UnoHelperException 
    */
-  public static Object executeMacro(String macroName, Object[] args, String[] location)
+  public static Object executeMacro(String macroName, Object[] args,
+      String[] location) throws UnoHelperException
   {
     return Utils.executeMacroInternal(macroName, args, null, scriptRoot.unwrap(), location);
   }
@@ -828,7 +864,6 @@ public class UNO
    *                      der voll-qualifizierte Service-Name des services.
    * @return true, wenn das Objekt das XServiceInfo-Interface und den gesuchten
    *         Service implementiert, ansonsten false.
-   * @author Christoph Lutz (D-III-ITD 5.1)
    */
   public static boolean supportsService(Object service, String serviceName)
   {
@@ -845,10 +880,10 @@ public class UNO
    * .
    * 
    * @return den gefundenen Knoten oder null falls keiner gefunden.
-   * @author Matthias Benkmann (D-III-ITD 5.1)
+   * @throws UnoHelperException 
    */
   public static XBrowseNode findBrowseNodeTreeLeaf(XBrowseNode xBrowseNode, String prefix, String nameToFind,
-      boolean caseSensitive)
+      boolean caseSensitive) throws UnoHelperException
   {
     XBrowseNodeAndXScriptProvider x = findBrowseNodeTreeLeafAndScriptProvider(xBrowseNode, prefix, nameToFind,
         caseSensitive);
@@ -867,10 +902,11 @@ public class UNO
    *         XScriptProvider implementiert). Falls kein entsprechender Knoten oder
    *         Vorfahre gefunden wurde, wird der entsprechende Wert als null
    *         geliefert.
-   * @author Matthias Benkmann (D-III-ITD 5.1)
+   * @throws UnoHelperException 
    */
   public static XBrowseNodeAndXScriptProvider findBrowseNodeTreeLeafAndScriptProvider(XBrowseNode xBrowseNode,
       String prefix, String nameToFind, boolean caseSensitive)
+      throws UnoHelperException
   {
     return findBrowseNodeTreeLeafAndScriptProvider(xBrowseNode, prefix, nameToFind, caseSensitive, null);
   }
@@ -903,10 +939,11 @@ public class UNO
    *         XScriptProvider implementiert. Falls kein entsprechender Knoten oder
    *         Vorfahre gefunden wurde, wird der entsprechende Wert als null
    *         geliefert.
-   * @author Matthias Benkmann (D-III-ITD 5.1)
+   * @throws UnoHelperException 
    */
   public static XBrowseNodeAndXScriptProvider findBrowseNodeTreeLeafAndScriptProvider(XBrowseNode xBrowseNode,
-      String prefix, String nameToFind, boolean caseSensitive, String[] location)
+      String prefix, String nameToFind, boolean caseSensitive,
+      String[] location) throws UnoHelperException
   {
     String[] loc;
     if (location == null)
@@ -922,19 +959,25 @@ public class UNO
     List<String> prefixLCVec = new ArrayList<String>();
     String[] prefixArr = prefix.split("\\.");
     for (int i = 0; i < prefixArr.length; ++i)
+    {
       if (!prefixArr[i].isEmpty())
       {
         prefixVec.add(prefixArr[i]);
         prefixLCVec.add(prefixArr[i].toLowerCase());
       }
+    }
 
     String[] nameToFindArrPre = nameToFind.split("\\.");
     int i1 = 0;
     while (i1 < nameToFindArrPre.length && nameToFindArrPre[i1].isEmpty())
+    {
       ++i1;
+    }
     int i2 = nameToFindArrPre.length - 1;
     while (i2 >= i1 && nameToFindArrPre[i2].isEmpty())
+    {
       --i2;
+    }
     ++i2;
     String[] nameToFindArr = new String[i2 - i1];
     String[] nameToFindLCArr = new String[i2 - i1];
@@ -949,12 +992,16 @@ public class UNO
         nameToFindLCArr, loc, null, found);
 
     if (found.isEmpty())
+    {
       return new XBrowseNodeAndXScriptProvider(null, null);
+    }
 
     Utils.FindNode findNode = found.get(0);
 
     if (caseSensitive && !findNode.isCaseCorrect)
+    {
       return new XBrowseNodeAndXScriptProvider(null, null);
+    }
 
     return new XBrowseNodeAndXScriptProvider(findNode.XBrowseNode, findNode.XScriptProvider);
   }
@@ -965,18 +1012,25 @@ public class UNO
    * @return den Wert des Propertys oder <code>null</code>, falls o entweder nicht
    *         das XPropertySet Interface implementiert, oder kein Property names
    *         propName hat oder ein sonstiger Fehler aufgetreten ist.
+   * @throws UnoHelperException 
    */
   public static Object getProperty(Object o, String propName)
+      throws UnoHelperException
   {
     Object ret = null;
     try
     {
       XPropertySet props = UNO.XPropertySet(o);
       if (props == null)
-        return null;
+      {
+        throw new UnoHelperException(
+            "Object doesn't support XPropertySet.");
+      }
       ret = props.getPropertyValue(propName);
-    } catch (Exception e)
+    }
+    catch (UnknownPropertyException | WrappedTargetException e)
     {
+      throw new UnoHelperException("Property konnte nicht gelesen werden.", e);
     }
     return ret;
   }
@@ -999,25 +1053,30 @@ public class UNO
    * @return der Wert des Propertys nach der (versuchten) Änderung oder null,
    *         falls der Wert des Propertys nicht mal lesbar ist.
    * @author bnk
+   * @throws UnoHelperException 
    */
   public static Object setProperty(Object o, String propName, Object propVal)
+      throws UnoHelperException
   {
     Object ret = null;
+    XPropertySet props = UNO.XPropertySet(o);
+    if (props == null)
+    {
+      throw new UnoHelperException(
+          "Object doesn't support XPropertySet.");
+    }
     try
     {
-      XPropertySet props = UNO.XPropertySet(o);
-      if (props == null)
-        return null;
-      try
-      {
-        props.setPropertyValue(propName, propVal);
-      } catch (Exception x)
-      {
-      }
+      props.setPropertyValue(propName, propVal);
       ret = props.getPropertyValue(propName);
-    } catch (Exception e)
-    {
     }
+    catch (UnknownPropertyException | IllegalArgumentException
+        | PropertyVetoException | WrappedTargetException e)
+    {
+      throw new UnoHelperException("Property konnte nicht geschrieben werden.",
+          e);
+    }
+
     return ret;
   }
 
@@ -1067,16 +1126,18 @@ public class UNO
    * @param serviceName
    *                      Name des zu erzeugenden Dienstes
    * @return ein Objekt, das den Dienst anbietet, oder null falls Fehler.
-   * @author bnk
+   * @throws UnoHelperRuntimeException 
    */
   public static Object createUNOService(String serviceName)
   {
     try
     {
       return xMCF.createInstanceWithContext(serviceName, defaultContext);
-    } catch (Exception x)
+    }
+    catch (com.sun.star.uno.Exception e)
     {
-      return null;
+      throw new UnoHelperRuntimeException(
+          "UNO-Service konnte nicht erstellt werden.", e);
     }
   }
 
@@ -1790,7 +1851,9 @@ public class UNO
     { new com.sun.star.util.URL() };
     unoURL[0].Complete = urlStr;
     if (urlTransformer != null)
+    {
       urlTransformer.parseStrict(unoURL);
+    }
 
     return unoURL[0];
   }
@@ -1811,6 +1874,7 @@ public class UNO
    * @author christoph.lutz
    */
   public static XNameAccess getConfigurationAccess(String nodepath)
+      throws UnoHelperException
   {
     PropertyValue[] props = new PropertyValue[]
     { new PropertyValue() };
@@ -1820,11 +1884,13 @@ public class UNO
     try
     {
       return UNO.XNameAccess(UNO.XMultiServiceFactory(confProv)
-          .createInstanceWithArguments("com.sun.star.configuration.ConfigurationAccess", props));
-    } catch (Exception e)
-    {
+          .createInstanceWithArguments(
+              "com.sun.star.configuration.ConfigurationAccess", props));
     }
-    return null;
+    catch (com.sun.star.uno.Exception e)
+    {
+      throw new UnoHelperException(e);
+    }
   }
 
   /**
@@ -1840,9 +1906,10 @@ public class UNO
    * @return ein ConfigurationUpdateAccess mit der Wurzel an dem Knoten nodepath
    *         oder null, falls der Service nicht erzeugt werden kann (wenn z.B. der
    *         Knoten nodepath nicht existiert).
-   * @author christoph.lutz
+   * @throws UnoHelperException 
    */
   public static XChangesBatch getConfigurationUpdateAccess(String nodepath)
+      throws UnoHelperException
   {
     PropertyValue[] props = new PropertyValue[]
     { new PropertyValue() };
@@ -1855,8 +1922,8 @@ public class UNO
           .createInstanceWithArguments("com.sun.star.configuration.ConfigurationUpdateAccess", props));
     } catch (Exception e)
     {
+      throw new UnoHelperException(e);
     }
-    return null;
   }
 
   /**
@@ -1880,36 +1947,37 @@ public class UNO
    *                    werden soll z.B "com.sun.star.text.TextDocument"
    * @return der shortcutManager zur OOo Komponente component oder null falls kein
    *         shortcutManager erzeugt werden kann.
+   * @throws UnoHelperException 
    * 
    */
   public static XAcceleratorConfiguration getShortcutManager(String component)
+      throws UnoHelperException
   {
     // XModuleUIConfigurationManagerSupplier moduleUICfgMgrSupplier
     XModuleUIConfigurationManagerSupplier moduleUICfgMgrSupplier = UNO.XModuleUIConfigurationManagerSupplier(
         UNO.createUNOService("com.sun.star.ui.ModuleUIConfigurationManagerSupplier"));
 
     if (moduleUICfgMgrSupplier == null)
-      return null;
-
-    // XCUIConfigurationManager moduleUICfgMgr
-    XUIConfigurationManager moduleUICfgMgr = null;
-
-    try
-    {
-      moduleUICfgMgr = moduleUICfgMgrSupplier.getUIConfigurationManager(component);
-    } catch (NoSuchElementException e)
     {
       return null;
     }
 
-    // XAcceleratorConfiguration xAcceleratorConfiguration
     try
     {
+      // XCUIConfigurationManager moduleUICfgMgr
+      XUIConfigurationManager moduleUICfgMgr = null;
+
+      moduleUICfgMgr = moduleUICfgMgrSupplier.getUIConfigurationManager(component);
+
+      // XAcceleratorConfiguration xAcceleratorConfiguration
       Method m = moduleUICfgMgr.getClass().getMethod("getShortCutManager", (Class[]) null);
       return UNO.XAcceleratorConfiguration(m.invoke(moduleUICfgMgr, (Object[]) null));
-    } catch (Exception e)
+    }
+    catch (NoSuchElementException | NoSuchMethodException | SecurityException
+        | IllegalAccessException | java.lang.IllegalArgumentException
+        | InvocationTargetException e)
     {
-      return null;
+      throw new UnoHelperException("Kein Zugriff auf den ShrotcutManager.", e);
     }
   }
 
@@ -1933,8 +2001,10 @@ public class UNO
    *                hide=true blendet aus, hide=false blendet ein.
    * 
    * @author Christoph Lutz (D-III-ITD-D101)
+   * @throws UnoHelperException 
    */
   public static void hideTextRange(XTextRange range, boolean hide)
+      throws UnoHelperException
   {
     String propName = "CharHidden";
     if (hide)
@@ -1968,9 +2038,13 @@ public class UNO
   {
     XTextCursor cursor = range.getText().createTextCursorByRange(range);
 
-    for (XEnumeration par : UnoCollection.getCollection(cursor, XEnumeration.class))
+    for (XEnumerationAccess par : UnoCollection.getCollection(cursor,
+        XEnumerationAccess.class))
     {
-      c.accept(par);
+      if (par != null)
+      {
+        c.accept(par);
+      }
     }
   }
 
@@ -1986,11 +2060,15 @@ public class UNO
   {
     XTextCursor cursor = range.getText().createTextCursorByRange(range);
 
-    for (XEnumeration parEnum : UnoCollection.getCollection(cursor, XEnumeration.class))
+    for (XEnumerationAccess parEnum : UnoCollection.getCollection(cursor,
+        XEnumerationAccess.class))
     {
-      for (Object o : UnoCollection.getCollection(parEnum, Object.class))
+      if (parEnum != null)
       {
-        c.accept(o);
+        for (Object o : UnoCollection.getCollection(parEnum, Object.class))
+        {
+          c.accept(o);
+        }
       }
     }
   }

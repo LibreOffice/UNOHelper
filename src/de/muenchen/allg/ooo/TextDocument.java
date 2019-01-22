@@ -71,6 +71,8 @@ import com.sun.star.uno.AnyConverter;
 import com.sun.star.uno.UnoRuntime;
 
 import de.muenchen.allg.afid.UNO;
+import de.muenchen.allg.afid.UnoHelperException;
+import de.muenchen.allg.afid.UnoHelperRuntimeException;
 import de.muenchen.allg.afid.UnoIterator;
 
 /**
@@ -536,8 +538,11 @@ public class TextDocument
    * erinnern zu können, dass die Enumeration immer die ganze Zelle liefert
    * anstatt den ausgewählten Bereich. Es ist also nicht auszuschließen, dass
    * diese Methode unter bestimmten Umständen zu viele Bookmarks zurückliefert.
+   * 
+   * @throws UnoHelperRuntimeException
    */
-  public static HashSet<String> getBookmarkNamesMatching(Pattern regex, XTextRange range)
+  public static HashSet<String> getBookmarkNamesMatching(Pattern regex,
+      XTextRange range)
   {
     // Hier findet eine iteration des über den XEnumerationAccess des ranges
     // statt. Man könnte statt dessen auch über range-compare mit den bereits
@@ -547,26 +552,33 @@ public class TextDocument
     HashSet<String> started = new HashSet<String>();
     
     UNO.forEachTextPortionInRange(range, o -> {
-      XNamed bookmark = UNO.XNamed(UNO.getProperty(o, "Bookmark"));
-      String name = (bookmark != null) ? bookmark.getName() : "";
-
-      if (regex.matcher(name).matches())
+      try
       {
-        if (Boolean.TRUE.equals(UNO.getProperty(o, "IsStart")))
+        XNamed bookmark = UNO.XNamed(UNO.getProperty(o, "Bookmark"));
+        String name = (bookmark != null) ? bookmark.getName() : "";
+
+        if (regex.matcher(name).matches())
         {
-          if (Boolean.TRUE.equals(UNO.getProperty(o, "IsCollapsed")))
+          if (Boolean.TRUE.equals(UNO.getProperty(o, "IsStart")))
+          {
+            if (Boolean.TRUE.equals(UNO.getProperty(o, "IsCollapsed")))
+            {
+              found.add(name);
+            }
+            else
+            {
+              started.add(name);
+            }
+          } 
+          else if (started.contains(name))
           {
             found.add(name);
           }
-          else
-          {
-            started.add(name);
-          }
-        } 
-        else if (started.contains(name))
-        {
-          found.add(name);
         }
+      }
+      catch (UnoHelperException e)
+      {
+        throw new UnoHelperRuntimeException(e);
       }
     });
     
@@ -587,13 +599,25 @@ public class TextDocument
     
     return hcAtt;
   }
-  
+
+  /**
+   * Gibt eine Liste aller Bookmarks in einer TextRange zurück.
+   * 
+   * @throws UnoHelperRuntimeException 
+   */
   public static ArrayList<XNamed> getBookmarkByTextRange(XTextRange range) {
     ArrayList<XNamed> bookmarks = new ArrayList<XNamed>();
     
     UNO.forEachTextPortionInRange(range, o ->
     {
-    	bookmarks.add(UNO.XNamed(UNO.getProperty(o, "Bookmark")));
+    	try
+      {
+        bookmarks.add(UNO.XNamed(UNO.getProperty(o, "Bookmark")));
+      }
+      catch (UnoHelperException e)
+      {
+        throw new UnoHelperRuntimeException(e);
+      }
     });
 
     return bookmarks;
