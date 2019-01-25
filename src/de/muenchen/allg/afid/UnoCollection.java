@@ -26,33 +26,34 @@ public class UnoCollection<T> implements Iterable<T>
   }
 
   /**
-   * Erzeugt eine UnoCollection XEnumerationAccess-Objekt.
+   * Erzeugt eine UnoCollection aus einem XEnumerationAccess-Objekt.
    * 
    * @param enuAccess
+   *          Das XEnumerationAccess Object.
    * @param c
-   *                    darf nur ein Interface aus der UNO-Api oder Object sein.
-   * @return
+   *          darf nur ein Interface aus der UNO-Api oder Object sein.
+   * @return Eine UnoCollection.
    */
   public static <T> UnoCollection<T> getCollection(XEnumerationAccess enuAccess, Class<T> c)
   {
-    return new UnoCollection<T>(enuAccess, c);
+    return new UnoCollection<>(enuAccess, c);
   }
 
   /**
    * Erzeugt eine UnoCollection aus einem Uno-Object.
    * 
    * @param o
-   *            UNO-Object, dass XEnumerationAccess implementiert
+   *          UNO-Object, dass XEnumerationAccess implementiert
    * @param c
-   *            darf nur ein Interface aus der UNO-Api oder Object sein.
-   * @return
+   *          darf nur ein Interface aus der UNO-Api oder Object sein.
+   * @return Die UnoCollection.
    */
   public static <T> UnoCollection<T> getCollection(Object o, Class<T> c)
   {
     XEnumerationAccess enuAccess = UNO.XEnumerationAccess(o);
     if (enuAccess != null)
     {
-      return new UnoCollection<T>(enuAccess, c);
+      return new UnoCollection<>(enuAccess, c);
     }
 
     return null;
@@ -61,6 +62,6 @@ public class UnoCollection<T> implements Iterable<T>
   @Override
   public Iterator<T> iterator()
   {
-    return new UnoIterator<T>(enuAccess, c);
+    return new UnoIterator<>(enuAccess, c);
   }
 }

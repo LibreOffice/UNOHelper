@@ -33,14 +33,13 @@ package de.muenchen.allg.ooo;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import com.sun.star.beans.PropertyValue;
 import com.sun.star.beans.PropertyVetoException;
 import com.sun.star.beans.UnknownPropertyException;
 import com.sun.star.beans.XPropertyChangeListener;
@@ -49,7 +48,6 @@ import com.sun.star.beans.XPropertySetInfo;
 import com.sun.star.beans.XVetoableChangeListener;
 import com.sun.star.container.ElementExistException;
 import com.sun.star.container.NoSuchElementException;
-import com.sun.star.document.XStorageBasedDocument;
 import com.sun.star.embed.ElementModes;
 import com.sun.star.embed.InvalidStorageException;
 import com.sun.star.embed.StorageWrappedTargetException;
@@ -63,15 +61,12 @@ import com.sun.star.io.XInputStream;
 import com.sun.star.io.XOutputStream;
 import com.sun.star.io.XSeekable;
 import com.sun.star.io.XStream;
-import com.sun.star.lang.IllegalArgumentException;
 import com.sun.star.lang.WrappedTargetException;
 import com.sun.star.lang.XComponent;
 import com.sun.star.lang.XEventListener;
 import com.sun.star.packages.NoEncryptionException;
 import com.sun.star.packages.WrongPasswordException;
 import com.sun.star.uno.Type;
-
-import de.muenchen.allg.afid.UNO;
 
 /**
  * Diese Klasse definiert die notwendigen Services, um mit mit der Methode
@@ -96,8 +91,6 @@ public class MemoryStorage
   /**
    * Diese Methode erzeugt einen ByteArrayStorage in dem Dokumente unkomprimiert
    * und unverschlüsselt im Hauptspeicher abgelegt werden können.
-   * 
-   * @author Christoph Lutz (D-III-ITD-D101)
    */
   public static ByteArrayStorage createByteArrayStorage()
   {
@@ -118,8 +111,6 @@ public class MemoryStorage
    * Hilfestellung bei der Fehlersuche dient hier das public-field
    * {@link #logger}, in dem ein Logger hinterlegt werden kann und über den
    * verwendete, aber nicht implementierte Methoden erkannt werden können.
-   * 
-   * @author Christoph Lutz (D-III-ITD-D101)
    */
   public static XStorage createXStorage(ByteArrayStorage bas)
   {
@@ -140,8 +131,6 @@ public class MemoryStorage
    * Setzt den Logger auf den Meldungen dieser Klasse ausgegeben werden.
    * 
    * @param newLogger
-   * 
-   * @author Christoph Lutz (D-III-ITD-D101)
    */
   public static void setLogger(Logger newLogger)
   {
@@ -151,8 +140,6 @@ public class MemoryStorage
   /**
    * Gibt eine Logger-Meldung mit der Nachricht s auf dem Logger aus, wenn
    * dieser != null ist.
-   * 
-   * @author Christoph Lutz (D-III-ITD-D101)
    */
   private static void log(String s)
   {
@@ -164,8 +151,6 @@ public class MemoryStorage
    * NotYetImplemented: Gibt eine Logger-Meldung mit der Nachricht
    * "NotYetImplemented: " + s für eine Methode aus, die derzeit nicht
    * implementiert ist.
-   * 
-   * @author Christoph Lutz (D-III-ITD-D101)
    */
   private static void notYetImplemented(String s)
   {
@@ -177,8 +162,6 @@ public class MemoryStorage
    * aufnehmen kann. Das Storage enthält ausschließlich Elemente mit Daten und
    * hält diese in einer flachen Struktur ohne Hierarchie. Daher kennt es keine
    * Verzeichnisse, die einzelnen Elemente können aber Namen mit "/" enthalten.
-   * 
-   * @author Christoph Lutz (D-III-ITD-D101)
    */
   public static class ByteArrayStorage
   {
@@ -191,16 +174,14 @@ public class MemoryStorage
 
     private ByteArrayStorage()
     {
-      this.mapNameToData = new HashMap<String, byte[]>();
-      this.mapNameToMediaType = new HashMap<String, String>();
+      this.mapNameToData = new HashMap<>();
+      this.mapNameToMediaType = new HashMap<>();
       mediaType = null;
     }
 
     /**
      * Fügt das Element elementName mit den Daten data und dem MediaType
      * mediaType in dieses Storage ein.
-     * 
-     * @author Christoph Lutz (D-III-ITD-D101)
      */
     public void setData(String elementName, byte[] data, String mediaType)
     {
@@ -210,8 +191,6 @@ public class MemoryStorage
 
     /**
      * Liefert die Anzahl Datenbytes des Elements elementName zurück.
-     * 
-     * @author Christoph Lutz (D-III-ITD-D101)
      */
     public int getSize(String elementName)
     {
@@ -227,8 +206,6 @@ public class MemoryStorage
      * java.util.NoSuchElementException geworfen.
      * 
      * @throws java.util.NoSuchElementException
-     * 
-     * @author Christoph Lutz (D-III-ITD-D101)
      */
     public InputStream getInputStream(String elementName)
     {
@@ -242,12 +219,10 @@ public class MemoryStorage
     /**
      * Liefert die namen aller Einträge des Storage in einer alphabetisch
      * sortierten Liste zurück.
-     * 
-     * @author Christoph Lutz (D-III-ITD-D101)
      */
     public List<String> getElementNames()
     {
-      List<String> list = new ArrayList<String>(mapNameToData.keySet());
+      List<String> list = new ArrayList<>(mapNameToData.keySet());
       Collections.sort(list);
       return list;
     }
@@ -260,8 +235,6 @@ public class MemoryStorage
      * @param mediaType
      *          Der mediaType für Textdokumente ist z.B.
      *          application/vnd.oasis.opendocument.text
-     * 
-     * @author Christoph Lutz (D-III-ITD-D101)
      */
     public void setMediatype(String mediaType)
     {
@@ -271,8 +244,6 @@ public class MemoryStorage
     /**
      * Diese Methode erzeugt eine Datei META-INF/manifest.xml, die die Elemente
      * des Storage beschreibt, und nimmt sie in das Storage mit auf.
-     * 
-     * @author Christoph Lutz (D-III-ITD-D101)
      */
     public void createManifest()
     {
@@ -288,13 +259,12 @@ public class MemoryStorage
         manifest.append("\" manifest:full-path=\"/\"/>\n");
       }
 
-      for (String name : mapNameToMediaType.keySet())
+      for (Map.Entry<String, String> entry : mapNameToMediaType.entrySet())
       {
-        String media = mapNameToMediaType.get(name);
         manifest.append("  <manifest:file-entry manifest:media-type=\"");
-        manifest.append(media);
+        manifest.append(entry.getValue());
         manifest.append("\" manifest:full-path=\"");
-        manifest.append(name);
+        manifest.append(entry.getKey());
         manifest.append("\"/>\n");
       }
 
@@ -427,8 +397,7 @@ public class MemoryStorage
     {
 
       log(this + ".openStorageElement " + arg0);
-      StorageImpl s = new StorageImpl(bas, namePrefix + arg0 + "/", arg1);
-      return s;
+      return new StorageImpl(bas, namePrefix + arg0 + "/", arg1);
     }
 
     @Override
@@ -634,6 +603,12 @@ public class MemoryStorage
           throw new IOException(e.toString());
         }
       }
+      
+      private String getMediaType()
+      {
+        Object o = props.get("MediaType");
+        return (o == null) ? "" : o.toString();
+      }
     };
 
     private final XInputStream xInputStream = new XInputStream()
@@ -693,12 +668,6 @@ public class MemoryStorage
       return xInputStream;
     }
 
-    private String getMediaType()
-    {
-      Object o = props.get("MediaType");
-      return (o == null) ? "" : o.toString();
-    }
-
     @Override
     public XOutputStream getOutputStream()
     {
@@ -727,7 +696,7 @@ public class MemoryStorage
     }
 
     @Override
-    public void seek(long arg0) throws IllegalArgumentException, IOException
+    public void seek(long arg0) throws IOException
     {
       notYetImplemented(this + ".seek");
     }
@@ -777,7 +746,7 @@ public class MemoryStorage
 
     public SimplePropertySet()
     {
-      props = new HashMap<String, Object>();
+      props = new HashMap<>();
     }
 
     @Override
@@ -841,68 +810,5 @@ public class MemoryStorage
       log(this + ".setPropertyValue " + arg0 + " " + arg1);
       props.put(arg0, arg1);
     }
-  }
-
-  /**
-   * Testmethode: Speichert das aktive Vordergrunddokument in ein Storage und
-   * dieses nach /tmp/test.odt.
-   * 
-   * @author Christoph Lutz (D-III-ITD-D101)
-   */
-  public static void main(String[] args) throws Exception
-  {
-    MemoryStorage.logger = new Logger()
-    {
-      @Override
-      public void log(String s)
-      {
-        System.out.println(s);
-      }
-    };
-
-    UNO.init();
-    XStorageBasedDocument sbd = UNO
-        .XStorageBasedDocument(UNO.desktop.getCurrentComponent());
-
-    log("UNO.init() done");
-
-    long startTime = System.currentTimeMillis();
-
-    final ByteArrayStorage bas = createByteArrayStorage();
-    XStorage storage = createXStorage(bas);
-    try
-    {
-
-      sbd.storeToStorage(storage, new PropertyValue[] {});
-
-    } catch (Throwable t)
-    {
-      t.printStackTrace();
-    }
-
-    for (String name : bas.getElementNames())
-    {
-      log("Element: " + name);
-    }
-
-    log("storeToStorage finished after "
-        + (System.currentTimeMillis() - startTime) + " ms");
-
-    new ODFMerger.StorageZipOutput(new ODFMerger.Storage()
-    {
-      @Override
-      public InputStream getInputStream(String elementName)
-      {
-        return bas.getInputStream(elementName);
-      }
-
-      @Override
-      public List<String> getElementNames()
-      {
-        return bas.getElementNames();
-      }
-    }).writeToFile(new File("/tmp/test.odt"));
-
-    System.exit(0);
   }
 }

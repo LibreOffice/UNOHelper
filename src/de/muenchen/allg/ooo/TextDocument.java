@@ -40,6 +40,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
@@ -160,7 +162,6 @@ public class TextDocument
    * @param doc
    *          das Textdokument in dem der neue PageStyle angelegt werden soll.
    *          Der alte PageStyle kann in einem beliebigen Dokument liegen.
-   * @author Matthias Benkmann (D-III-ITD 5.1) TESTED
    * @throws Exception
    *           falls was schief geht
    */
@@ -208,7 +209,6 @@ public class TextDocument
       XText val = null;
       try
       {
-        val = null;
         val = UNO.XText(oldStyle.getPropertyValue(HEADER_FOOTER_PROP_NAMES[i]));
         if (val != null)
         {
@@ -226,8 +226,7 @@ public class TextDocument
 
   /**
    * Ersetzt dest durch den Inhalt von source.
-   * 
-   * @author Matthias Benkmann (D-III-ITD 5.1) TESTED
+   *
    * @throws Exception
    *           falls was schief geht
    */
@@ -276,8 +275,6 @@ public class TextDocument
    * Kopiert alle Character Attributes, die den Zustand
    * {@link com.sun.star.beans.PropertyState#DIRECT_VALUE} haben von from nach
    * to.
-   * 
-   * @author Matthias Benkmann (D-III-ITD 5.1) TESTED
    */
   public static void copyDirectValueCharAttributes(XPropertyState from,
       XPropertySet to)
@@ -339,8 +336,6 @@ public class TextDocument
   /**
    * Lässt den ersten Absatz in der TextRange range verschwinden, ohne ihn zu
    * löschen.
-   * 
-   * @author Matthias Benkmann (D-III-ITD 5.1) TESTED
    */
   public static void disappearParagraph(XTextRange range)
   {
@@ -371,8 +366,6 @@ public class TextDocument
    * Kopiert alle Properties, die nicht komplexe Objekte (structs, interfaces,
    * exceptions) oder Sequenzen von komplexen Objekten sind von in nach out.
    * Sequenzen simpler Typen werden kopiert.
-   * 
-   * @author Matthias Benkmann (D-III-ITD 5.1) TESTED
    */
   public static void copySimpleProperties(XPropertySet in, XPropertySet out)
   {
@@ -396,8 +389,6 @@ public class TextDocument
   /**
    * Liefert true gdw o nicht Exception, Struct oder Interface ist oder eine
    * Sequenz, die sowas enthält.
-   * 
-   * @author Matthias Benkmann (D-III-ITD 5.1)
    */
   private static boolean isSimpleType(Object o)
   {
@@ -465,7 +456,7 @@ public class TextDocument
     }
 
     XPropertySet oldStyle = UNO.XPropertySet(pageStyles.getByName(oldName));
-    SortedSet<String> propNames = new TreeSet<String>();
+    SortedSet<String> propNames = new TreeSet<>();
 
     XPropertySetInfo oldStylePropInfo = oldStyle.getPropertySetInfo();
     XPropertySetInfo newStylePropInfo = newStyle.getPropertySetInfo();
@@ -541,15 +532,15 @@ public class TextDocument
    * 
    * @throws UnoHelperRuntimeException
    */
-  public static HashSet<String> getBookmarkNamesMatching(Pattern regex,
+  public static Set<String> getBookmarkNamesMatching(Pattern regex,
       XTextRange range)
   {
     // Hier findet eine iteration des über den XEnumerationAccess des ranges
     // statt. Man könnte statt dessen auch über range-compare mit den bereits
     // bestehenden Blöcken aus TextDocumentModel.get<blockname>Blocks()
     // vergleichen...
-    HashSet<String> found = new HashSet<String>();
-    HashSet<String> started = new HashSet<String>();
+    HashSet<String> found = new HashSet<>();
+    HashSet<String> started = new HashSet<>();
     
     UNO.forEachTextPortionInRange(range, o -> {
       try
@@ -605,8 +596,8 @@ public class TextDocument
    * 
    * @throws UnoHelperRuntimeException 
    */
-  public static ArrayList<XNamed> getBookmarkByTextRange(XTextRange range) {
-    ArrayList<XNamed> bookmarks = new ArrayList<XNamed>();
+  public static List<XNamed> getBookmarkByTextRange(XTextRange range) {
+    ArrayList<XNamed> bookmarks = new ArrayList<>();
     
     UNO.forEachTextPortionInRange(range, o ->
     {

@@ -122,7 +122,7 @@ public class UnoProps
   /**
    * Liefert das zugehörige PropertyValue[] zurück.
    * 
-   * @return
+   * @return Die Property-Values.
    */
   public PropertyValue[] getProps()
   {
@@ -198,6 +198,7 @@ public class UnoProps
    * 
    * @deprecated
    */
+  @Deprecated
   public UnoService getPropertyValueAsUnoService(String name)
       throws UnknownPropertyException
   {
@@ -226,14 +227,14 @@ public class UnoProps
   @Override
   public String toString()
   {
-    String str = "UnoProps[ ";
+    StringBuilder str = new StringBuilder("UnoProps[ ");
     for (int i = 0; i < props.length; i++)
     {
       if (i != 0)
-        str += ", ";
-      str += props[i].Name + "=>\"" + props[i].Value + "\"";
+        str.append(", ");
+      str.append(props[i].Name + "=>\"" + props[i].Value + "\"");
     }
-    str += " ]";
-    return str;
+    str.append(" ]");
+    return str.toString();
   }
 }
