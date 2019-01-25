@@ -320,6 +320,7 @@ import de.muenchen.allg.afid.Utils.FindNode;
  * Hilfsklasse zur leichteren Verwendung der UNO API. * @author BNK
  *
  */
+@SuppressWarnings("squid:S00100")
 public class UNO
 {
   /**
@@ -382,7 +383,7 @@ public class UNO
    *                           "uno:socket,host=localhost,port=8100;urp;StarOffice.ServiceManager"
    * @throws UnoHelperException
    *                     falls was schief geht.
-   * @see init()
+   * @see #init()
    */
   public static void init(String connectionString) throws UnoHelperException
   {
@@ -572,7 +573,6 @@ public class UNO
    *                    ein neues unbenanntes Dokument erzeugt.
    * @param allowMacros falls true wird die Ausführung von Makros
    *                    freigeschaltet.
-   * @param hidden      falls true wird das Dokument unsichtbar geöffnet
    * @param args        zusätzliche Parameter für
    *                    XComponentLoader.loadComponentFromUrl
    * @return das geöffnete Dokument
@@ -876,7 +876,7 @@ public class UNO
    * Durchsucht einen {@link XBrowseNode} Baum nach einem Blatt vom Typ SCRIPT,
    * dessen Name nameToFind ist (kann durch "." abgetrennte Pfadangabe im
    * Skript-Baum enthalten). Siehe
-   * {@link #findBrowseNodeTreeLeafAndScriptProvider(XBrowseNode, String, String, boolean, String)}
+   * {@link #findBrowseNodeTreeLeafAndScriptProvider(XBrowseNode, String, String, boolean, String[])}
    * .
    * 
    * @return den gefundenen Knoten oder null falls keiner gefunden.
@@ -887,14 +887,14 @@ public class UNO
   {
     XBrowseNodeAndXScriptProvider x = findBrowseNodeTreeLeafAndScriptProvider(xBrowseNode, prefix, nameToFind,
         caseSensitive);
-    return x.XBrowseNode;
+    return x.getXBrowseNode();
   }
 
   /**
    * Durchsucht einen {@link XBrowseNode} Baum nach einem Blatt vom Typ SCRIPT,
    * dessen Name nameToFind ist (kann durch "." abgetrennte Pfadangabe im
    * Skript-Baum enthalten). Siehe
-   * {@link #findBrowseNodeTreeLeafAndScriptProvider(XBrowseNode, String, String, boolean, String)}
+   * {@link #findBrowseNodeTreeLeafAndScriptProvider(XBrowseNode, String, String, boolean, String[])}
    * .
    * 
    * @return den gefundenen Knoten, sowie den nächsten Vorfahren, der
@@ -914,8 +914,7 @@ public class UNO
   /**
    * Durchsucht einen {@link XBrowseNode} Baum nach einem Blatt vom Typ SCRIPT,
    * dessen Name nameToFind ist (kann durch "." abgetrennte Pfadangabe im
-   * Skript-Baum enthalten). Siehe
-   * {@link #findBrowseNodeTreeLeafAndScriptProvider(XBrowseNode, String, String, boolean, String)}
+   * Skript-Baum enthalten).
    * .
    * 
    * @param xBrowseNode
@@ -954,9 +953,9 @@ public class UNO
     {
       loc = location;
     }
-    List<FindNode> found = new LinkedList<FindNode>();
-    List<String> prefixVec = new ArrayList<String>();
-    List<String> prefixLCVec = new ArrayList<String>();
+    List<FindNode> found = new LinkedList<>();
+    List<String> prefixVec = new ArrayList<>();
+    List<String> prefixLCVec = new ArrayList<>();
     String[] prefixArr = prefix.split("\\.");
     for (int i = 0; i < prefixArr.length; ++i)
     {
@@ -998,12 +997,12 @@ public class UNO
 
     Utils.FindNode findNode = found.get(0);
 
-    if (caseSensitive && !findNode.isCaseCorrect)
+    if (caseSensitive && !findNode.isCaseCorrect())
     {
       return new XBrowseNodeAndXScriptProvider(null, null);
     }
 
-    return new XBrowseNodeAndXScriptProvider(findNode.XBrowseNode, findNode.XScriptProvider);
+    return new XBrowseNodeAndXScriptProvider(findNode.getXBrowseNode(), findNode.getXScriptProvider());
   }
 
   /**
@@ -1052,7 +1051,6 @@ public class UNO
    *                   der neue Wert.
    * @return der Wert des Propertys nach der (versuchten) Änderung oder null,
    *         falls der Wert des Propertys nicht mal lesbar ist.
-   * @author bnk
    * @throws UnoHelperException 
    */
   public static Object setProperty(Object o, String propName, Object propVal)
@@ -1093,11 +1091,8 @@ public class UNO
    *                   das Objekt, dessen Property zu ändern ist.
    * @param propName
    *                   der Name des zu ändernden Properties.
-   * @param propVal
-   *                   der neue Wert.
    * @return der Wert des Propertys nach der (versuchten) Änderung oder null,
    *         falls der Wert des Propertys nicht mal lesbar ist.
-   * @author bnk
    */
   public static Object setPropertyToDefault(Object o, String propName)
   {
@@ -1609,7 +1604,7 @@ public class UNO
     return UnoRuntime.queryInterface(XParagraphCursor.class, o);
   }
 
-  /** Holt {@link com.sun.star.lang.XServiceInf} Interface von o. */
+  /** Holt {@link XServiceInfo} Interface von o. */
   public static XServiceInfo XServiceInfo(Object o)
   {
     return UnoRuntime.queryInterface(XServiceInfo.class, o);
@@ -1723,7 +1718,7 @@ public class UNO
     return UnoRuntime.queryInterface(XTextSection.class, o);
   }
 
-  /** Holt {@link com.sun.star.text.XTextSectionSupplier} Interface von o. */
+  /** Holt {@link XTextSectionsSupplier} Interface von o. */
   public static XTextSectionsSupplier XTextSectionsSupplier(Object o)
   {
     return UnoRuntime.queryInterface(XTextSectionsSupplier.class, o);
@@ -1769,7 +1764,7 @@ public class UNO
     return UnoRuntime.queryInterface(XFrame.class, o);
   }
 
-  /** Holt {@link com.sun.star.style.XTextColumns} Interface von o. */
+  /** Holt {@link XTextColumns} Interface von o. */
   public static XTextColumns XTextColumns(Object o)
   {
     return UnoRuntime.queryInterface(XTextColumns.class, o);
@@ -1843,7 +1838,6 @@ public class UNO
    * 
    * @param urlStr
    * @return vorgeparste UNO-URL von urlStr.
-   * @author christoph.lutz
    */
   public static com.sun.star.util.URL getParsedUNOUrl(String urlStr)
   {
@@ -1871,7 +1865,6 @@ public class UNO
    * @return ein ConfigurationUpdateAccess mit der Wurzel an dem Knoten nodepath
    *         oder null, falls der Service nicht erzeugt werden kann (wenn z.B. der
    *         Knoten nodepath nicht existiert).
-   * @author christoph.lutz
    */
   public static XNameAccess getConfigurationAccess(String nodepath)
       throws UnoHelperException
@@ -1999,8 +1992,6 @@ public class UNO
    *                Der Textbereich, der aus- bzw. eingeblendet werden soll.
    * @param hide
    *                hide=true blendet aus, hide=false blendet ein.
-   * 
-   * @author Christoph Lutz (D-III-ITD-D101)
    * @throws UnoHelperException 
    */
   public static void hideTextRange(XTextRange range, boolean hide)
@@ -2078,8 +2069,9 @@ public class UNO
    * implementiert.
    * 
    * @param o
-   *            Objekt, das eine Enumeration enthält.
-   * @return
+   *          Objekt, das eine Enumeration enthält.
+   * @return Das erste Element eines UNO-Objekts zurück, das XEnumerationAccess
+   *         implementiert.
    * @throws NoSuchElementException
    * @throws WrappedTargetException
    */

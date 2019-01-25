@@ -123,8 +123,6 @@ public class ODFMerger
 
   /**
    * Fügt das Dokument in Form des Storages s zum Ergebnisdokument hinzu.
-   * 
-   * @author Christoph Lutz (D-III-ITD-D101)
    */
   public void add(Storage s)
   {
@@ -147,8 +145,6 @@ public class ODFMerger
   /**
    * Liefert ein Storage zurück, das das Ergebnisdokument des bisherigen Merges
    * repräsentiert.
-   * 
-   * @author Christoph Lutz (D-III-ITD-D101)
    */
   public Storage getResultStorage()
   {
@@ -166,20 +162,16 @@ public class ODFMerger
   /**
    * Merged die Daten der meta.xml-Dateien, die in den mit add hinzugefügten
    * Storages vorhanden sind.
-   * 
-   * @author Christoph Lutz (D-III-ITD-D101)
    */
   public static class MetaMerger extends Merger
   {
 
     private int pageCount = 0;
 
-    private HashMap<String, Integer> counters = new HashMap<String, Integer>();
+    private HashMap<String, Integer> counters = new HashMap<>();
 
     /**
      * Merged die in is mitgelieferte meta.xml in das Ergebnisdokument ein.
-     * 
-     * @author Christoph Lutz (D-III-ITD-D101) TODO: testen
      */
     public void add(InputStream is)
     {
@@ -244,8 +236,6 @@ public class ODFMerger
      * Liefert die aktuelle Seitenzahl des gemergten Dokuments mit bereits
      * eingefügten bzw. noch einzufügenden Leerseiten damit das nächste Dokument
      * auf einer ungeraden Seite starten kann.
-     * 
-     * @author Christoph Lutz (D-III-ITD-D101)
      */
     public int getPageCountConsiderFillerPages()
     {
@@ -261,7 +251,7 @@ public class ODFMerger
    */
   public static class StylesMerger extends Merger
   {
-    private HashMap<String, String> masterStylesChangeMap = new HashMap<String, String>();
+    private HashMap<String, String> masterStylesChangeMap = new HashMap<>();
 
     public StylesMerger()
     {
@@ -270,8 +260,6 @@ public class ODFMerger
 
     /**
      * Merged die in is mitgelieferte styles.xml in das Ergebnisdokument ein.
-     * 
-     * @author Christoph Lutz (D-III-ITD-D101) TODO: testen
      */
     public void add(InputStream is, int pageOffset)
     {
@@ -339,8 +327,6 @@ public class ODFMerger
 
     /**
      * Merged die in is mitgelieferte content.xml in das Ergebnisdokument ein.
-     * 
-     * @author Christoph Lutz (D-III-ITD-D101) TODO: testen
      */
     public void add(InputStream is, int pageOffset,
         Map<String, String> masterStylesChangeMap)
@@ -373,7 +359,7 @@ public class ODFMerger
         addPageAnchorOffset(doc, pageOffset);
 
         // unify autoStyleNames
-        HashMap<String, String> stylesChangeMap = new HashMap<String, String>();
+        HashMap<String, String> stylesChangeMap = new HashMap<>();
         for (String s : getStyleNames(autoStyles))
           stylesChangeMap.put(s, s + "_" + pageOffset);
         adjustStyleNames(doc, stylesChangeMap,
@@ -495,8 +481,6 @@ public class ODFMerger
      *          gesetzt werden, so sorgt die Übergabe von "Standard" für das
      *          gewünschte Ergebnis. Der Wert ist verpflichtend, da ohne ihn
      *          kein Seitenumbruch definiert ist.
-     * 
-     * @author Christoph Lutz (D-III-ITD-D101)
      */
     private Node createPageBreakParStyleNode(Document doc,
         String newParStyleName, String oldParStyleName,
@@ -531,8 +515,6 @@ public class ODFMerger
      * einer Absatzformatierung zu belegen, in der ein Seitenumbruch definiert
      * ist. Auf diese Art wird der gewünschte Seitenumbruch vor jedes zu
      * mergende Dokument eingefügt.
-     * 
-     * @author Christoph Lutz (D-III-ITD-D101)
      */
     public static String adjustParStyleName(Node node, String newParStyleName)
     {
@@ -557,8 +539,6 @@ public class ODFMerger
      * die nicht Teil des Haupttextteils des Dokuments sind. Der erste Paragraph
      * des Haupttextteils wird benötigt, um den Seitenumbruch vor dem
      * hinzumergen eines neuen Dokuments einzufügen.
-     * 
-     * @author Christoph Lutz (D-III-ITD-D101)
      */
     private static boolean isPageAnchored(Node node)
     {
@@ -587,8 +567,6 @@ public class ODFMerger
      *          Seite verankerten Objekte aufgelistet sind.
      * @return den Knoten des letzten Elements, das an der Seite verankert ist
      *         oder null, wenn kein solches Objekt vorhanden ist.
-     * 
-     * @author Christoph Lutz (D-III-ITD-D101)
      */
     private static Node getLastPageAnchoredNode(Node officeTextNode)
     {
@@ -616,8 +594,6 @@ public class ODFMerger
      *          wird rekursiv gesucht.
      * @return den ersten Paragraphen des Haupttextteils oder null, wenn keiner
      *         gefunden wurde.
-     * 
-     * @author Christoph Lutz (D-III-ITD-D101)
      */
     private static Node getFirstTextPNode(Node node)
     {
@@ -650,8 +626,6 @@ public class ODFMerger
      * @param offset
      *          Die Seitennummer der Seite, mit der das aktuelle Dokument im
      *          gemergten Dokument beginnt.
-     * 
-     * @author Christoph Lutz (D-III-ITD-D101)
      */
     private static void addPageAnchorOffset(Node node, int offset)
     {
@@ -662,10 +636,9 @@ public class ODFMerger
         if (item != null && "page".equals(item.getFirstChild().getNodeValue()))
         {
           item = atts.getNamedItem("text:anchor-page-number");
-          String nStr = "1";
           if (item != null)
           {
-            nStr = item.getFirstChild().getNodeValue();
+            String nStr = item.getFirstChild().getNodeValue();
             int anchorPageNumber = 1;
             try
             {
@@ -721,8 +694,8 @@ public class ODFMerger
 
     public Merger()
     {
-      this.toReplaceByChildNodeNames = new HashSet<String>();
-      this.toDeleteNodeNames = new HashSet<String>();
+      this.toReplaceByChildNodeNames = new HashSet<>();
+      this.toDeleteNodeNames = new HashSet<>();
     }
 
     /**
@@ -730,12 +703,10 @@ public class ODFMerger
      * aller gefundenen Style-Definitionen als Menge zurück. Als parent wird
      * dabei üblicherweise ein Block text:auto-styles (aus content.xml) oder
      * text:master-styles (aus styles.xml) erwartet.
-     * 
-     * @author Christoph Lutz (D-III-ITD-D101)
      */
     protected static HashSet<String> getStyleNames(Node parent)
     {
-      HashSet<String> names = new HashSet<String>();
+      HashSet<String> names = new HashSet<>();
       NodeList list = parent.getChildNodes();
       for (int i = 0; i < list.getLength(); ++i)
       {
@@ -758,8 +729,6 @@ public class ODFMerger
      * @param names
      *          Die Menge der bereits bekannten Paragraph-Styles
      * @return einen neuen unbenutzen Stylenamen nach dem Schame "P<zahl>".
-     * 
-     * @author Christoph Lutz (D-III-ITD-D101)
      */
     protected static String createUnusedParStyleName(HashSet<String> names)
     {
@@ -785,8 +754,6 @@ public class ODFMerger
      * @param toReplace
      *          beschreibt die Namen von Elemente, die durch ihre Kinder ersetzt
      *          werden sollen.
-     * 
-     * @author Christoph Lutz (D-III-ITD-D101)
      */
     protected static void deleteOrReplaceByChild(Node node,
         HashSet<String> toDelete, HashSet<String> toReplace)
@@ -829,8 +796,6 @@ public class ODFMerger
      * @param attributesToAdjust
      *          Eine Liste der Attribute, die in allen Elementen und
      *          Unterelementen angepasst werden sollen, wenn sie gesetzt sind.
-     * 
-     * @author Christoph Lutz (D-III-ITD-D101)
      */
     protected static void adjustStyleNames(Node node,
         Map<String, String> stylesChangeMap, String[] attributesToAdjust)
@@ -881,8 +846,6 @@ public class ODFMerger
 
     /**
      * Liefert das XML-Ergebnisdokument des Mergevorgangs als byte[].
-     * 
-     * @author Christoph Lutz (D-III-ITD-D101)
      */
     public byte[] getResultData()
     {
@@ -903,8 +866,6 @@ public class ODFMerger
 
     /**
      * Liefert das erste Kind von parent mit dem Elementnamen element zurück
-     * 
-     * @author Christoph Lutz (D-III-ITD-D101)
      */
     protected static Node getFirstChild(Node parent, String element)
     {
@@ -923,8 +884,6 @@ public class ODFMerger
     /**
      * Liefert parent.getFirstChild() zurück oder null, wenn parent selbst null
      * ist.
-     * 
-     * @author Christoph Lutz (D-III-ITD-D101)
      */
     protected static Node getFirstChild(Node parent)
     {
@@ -936,8 +895,6 @@ public class ODFMerger
     /**
      * Erzeugt eine simple Baumansicht des Knotens node und aller Unterknoten
      * auf System.out für Debugzwecke.
-     * 
-     * @author Christoph Lutz (D-III-ITD-D101)
      */
     protected static void dumpNode(Node node, String fillers)
     {
@@ -978,7 +935,7 @@ public class ODFMerger
     @Override
     public List<String> getElementNames()
     {
-      List<String> names = new ArrayList<String>();
+      List<String> names = new ArrayList<>();
       Enumeration<? extends ZipEntry> entries = zipFile.entries();
       while (entries.hasMoreElements())
       {
@@ -1005,7 +962,7 @@ public class ODFMerger
     public OverrideStorage(Storage storage)
     {
       this.storage = storage;
-      this.overrideMap = new HashMap<String, byte[]>();
+      this.overrideMap = new HashMap<>();
     }
 
     public void override(String elementName, byte[] data)
@@ -1049,65 +1006,23 @@ public class ODFMerger
     public void writeToFile(File file) throws IOException
     {
       byte[] buffy = new byte[1024];
-      ZipOutputStream os = new ZipOutputStream(new FileOutputStream(file));
-      for (String name : storage.getElementNames())
+      try (ZipOutputStream os = new ZipOutputStream(new FileOutputStream(file)))
       {
-        ZipEntry entry = new ZipEntry(name);
-
-        os.putNextEntry(entry);
-
-        InputStream is = storage.getInputStream(name);
-        for (int read = 0; (read = is.read(buffy)) > 0;)
+        for (String name : storage.getElementNames())
         {
-          os.write(buffy, 0, read);
+          ZipEntry entry = new ZipEntry(name);
+  
+          os.putNextEntry(entry);
+  
+          InputStream is = storage.getInputStream(name);
+          for (int read = 0; (read = is.read(buffy)) > 0;)
+          {
+            os.write(buffy, 0, read);
+          }
+  
+          os.closeEntry();
         }
-
-        os.closeEntry();
       }
-      os.close();
     }
-  }
-
-  /**
-   * Testmethode
-   * 
-   * @author Christoph Lutz (D-III-ITD-D101)
-   */
-  public static void main(String[] args)
-  {
-    System.out.println("Starting Merge");
-    long startTime = System.currentTimeMillis();
-
-    ODFMerger merger = new ODFMerger();
-    for (int i = 0; i < 150; ++i)
-    {
-      try
-      {
-        merger.add(new ZipedODFFileStorage(
-            new File("testdata/odfmerge/slv_seriendruck/test" + i + ".odt")));
-      } catch (Exception e)
-      {
-        e.printStackTrace();
-      }
-      if (i % 10 == 0)
-        System.out.print(" ");
-      if (i % 50 == 0)
-        System.out.print("\n");
-      System.out.print("X");
-      System.out.flush();
-    }
-
-    Storage result = merger.getResultStorage();
-    try
-    {
-      new StorageZipOutput(result).writeToFile(new File("/tmp/test.odt"));
-    } catch (Exception e)
-    {
-      e.printStackTrace();
-    }
-
-    System.out.println("\n\nMerge finished after "
-        + (System.currentTimeMillis() - startTime) + " ms");
-
   }
 }

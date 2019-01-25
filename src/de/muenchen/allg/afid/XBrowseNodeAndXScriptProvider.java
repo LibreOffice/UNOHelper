@@ -5,8 +5,8 @@ import com.sun.star.script.provider.XScriptProvider;
 
 public class XBrowseNodeAndXScriptProvider
   {
-    public XBrowseNode XBrowseNode = null;
-    public XScriptProvider XScriptProvider = null;
+    private XBrowseNode xBrowseNode = null;
+    private XScriptProvider xScriptProvider = null;
 
     public XBrowseNodeAndXScriptProvider()
     {
@@ -15,7 +15,17 @@ public class XBrowseNodeAndXScriptProvider
     public XBrowseNodeAndXScriptProvider(XBrowseNode xBrowseNode,
         XScriptProvider xScriptProvider)
     {
-      this.XBrowseNode = xBrowseNode;
-      this.XScriptProvider = xScriptProvider;
+      this.xBrowseNode = xBrowseNode;
+      this.xScriptProvider = xScriptProvider;
+    }
+
+    public XBrowseNode getXBrowseNode()
+    {
+      return xBrowseNode;
+    }
+
+    public XScriptProvider getXScriptProvider()
+    {
+      return xScriptProvider;
     }
   }

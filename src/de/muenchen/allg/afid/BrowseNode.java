@@ -71,8 +71,6 @@ public class BrowseNode
   
   /**
    * Liefert das ungewrappte Objekt für die direkte Übergabe an UNO-Funktionen.
-   *
-   * @author bnk
    */
   public XBrowseNode unwrap()
   {
@@ -81,8 +79,6 @@ public class BrowseNode
 
   /**
    * Liefert den Namen des Knoten.
-   *
-   * @author bnk
    */
   public String getName()
   {
@@ -93,8 +89,6 @@ public class BrowseNode
    * Liefert den Typ des Knoten. Im Zusammenhang mit Makros sind die möglichen
    * Werte aus der Konstantengruppe
    * {@link com.sun.star.script.browse.BrowseNodeTypes}.
-   *
-   * @author bnk
    */
   public short getType()
   {
@@ -106,7 +100,6 @@ public class BrowseNode
    *
    * @param c
    *          spezifiziert das Interface das gequeryt werden soll.
-   * @author bnk
    */
   public <T> T as(Class<T> c)
   {
@@ -131,7 +124,7 @@ public class BrowseNode
   protected static class ChildIterator implements Iterator<BrowseNode>
   {
     private boolean childrenOnly;
-    private LinkedList<XBrowseNode> toVisit = new LinkedList<XBrowseNode>();
+    private LinkedList<XBrowseNode> toVisit = new LinkedList<>();
 
     public ChildIterator(XBrowseNode root, boolean childrenOnly)
     {
@@ -156,7 +149,7 @@ public class BrowseNode
       return !toVisit.isEmpty();
     }
 
-    /** Returns an {@link Object} of class {@BrowseNode}. */
+    /** Returns an {@link Object} of class {@link BrowseNode}. */
     @Override
     public BrowseNode next()
     {

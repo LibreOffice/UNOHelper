@@ -203,6 +203,7 @@ import com.sun.star.view.XViewSettingsSupplier;
  * 
  * @deprecated 
  */
+@Deprecated
 public class UnoService
 {
   /**
