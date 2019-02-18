@@ -288,6 +288,7 @@ import com.sun.star.text.XTextSection;
 import com.sun.star.text.XTextSectionsSupplier;
 import com.sun.star.text.XTextTable;
 import com.sun.star.text.XTextViewCursorSupplier;
+import com.sun.star.ucb.XFileIdentifierConverter;
 import com.sun.star.ui.XAcceleratorConfiguration;
 import com.sun.star.ui.XModuleUIConfigurationManager;
 import com.sun.star.ui.XModuleUIConfigurationManagerSupplier;
@@ -634,6 +635,29 @@ public class UNO
       throw new UnoHelperException(
           "Dokument konnte nicht geladen werden.", e);
     }
+  }
+  
+  /**
+   * Konvertiert Dateipfad in eine systemspezifische URL.
+   * 
+   * @param filePath
+   * @return eine für LO valide URL oder ein leerer String falls der Dateipfad nicht durch XFileIdentifierConverter konvertiert werden konnte.
+   * @throws UnoHelperException
+   */
+  public static String convertFilePathToURL(String filePath) throws UnoHelperException {
+    String resultURL = null;
+    
+    try
+    {
+      Object fileContentProvider = UNO.xMCF.createInstanceWithContext("com.sun.star.ucb.FileContentProvider", UNO.defaultContext);
+      XFileIdentifierConverter xFileConverter = UnoRuntime.queryInterface(XFileIdentifierConverter.class, fileContentProvider);
+      resultURL = xFileConverter.getFileURLFromSystemPath("", filePath);
+    } catch (Exception e)
+    {
+      throw new UnoHelperException("", e);
+    } 
+    
+    return resultURL;
   }
 
   /**
