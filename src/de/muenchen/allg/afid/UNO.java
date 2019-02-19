@@ -178,6 +178,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import com.sun.star.awt.XButton;
 import com.sun.star.awt.XCheckBox;
+import com.sun.star.awt.XControl;
 import com.sun.star.awt.XDevice;
 import com.sun.star.awt.XNumericField;
 import com.sun.star.awt.XRadioButton;
@@ -188,6 +189,7 @@ import com.sun.star.awt.XUserInputInterception;
 import com.sun.star.awt.XWindow;
 import com.sun.star.awt.XWindow2;
 import com.sun.star.awt.XWindowPeer;
+import com.sun.star.awt.XTextComponent;
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.beans.PropertyVetoException;
 import com.sun.star.beans.UnknownPropertyException;
@@ -1853,6 +1855,10 @@ public class UNO
   public static XSpinField toXSpinField(Object object)
   {
     return UnoRuntime.queryInterface(XSpinField.class, object);
+  }
+  
+  public static XTextComponent XTextComponent(XControl xControl) {
+    return UnoRuntime.queryInterface(XTextComponent.class, xControl);
   }
 
   // ACHTUNG: Interface-Methoden fangen hier mit einem grossen X an!
