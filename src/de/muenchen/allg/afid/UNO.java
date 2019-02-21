@@ -190,6 +190,7 @@ import com.sun.star.awt.XWindow;
 import com.sun.star.awt.XWindow2;
 import com.sun.star.awt.XWindowPeer;
 import com.sun.star.awt.XTextComponent;
+import com.sun.star.awt.XComboBox;
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.beans.PropertyVetoException;
 import com.sun.star.beans.UnknownPropertyException;
@@ -1857,8 +1858,14 @@ public class UNO
     return UnoRuntime.queryInterface(XSpinField.class, object);
   }
   
-  public static XTextComponent XTextComponent(XControl xControl) {
-    return UnoRuntime.queryInterface(XTextComponent.class, xControl);
+  public static XTextComponent XTextComponent(Object o)
+  {
+    return UnoRuntime.queryInterface(XTextComponent.class, o);
+  }
+  
+  public static XComboBox XComboBox(Object o)
+  {
+    return UnoRuntime.queryInterface(XComboBox.class, o);
   }
 
   // ACHTUNG: Interface-Methoden fangen hier mit einem grossen X an!
