@@ -180,6 +180,8 @@ import com.sun.star.awt.XButton;
 import com.sun.star.awt.XCheckBox;
 import com.sun.star.awt.XControl;
 import com.sun.star.awt.XDevice;
+import com.sun.star.awt.XFixedText;
+import com.sun.star.awt.XListBox;
 import com.sun.star.awt.XNumericField;
 import com.sun.star.awt.XRadioButton;
 import com.sun.star.awt.XSpinField;
@@ -1833,27 +1835,42 @@ public class UNO
     return UnoRuntime.queryInterface(XRefreshable.class, o);
   }
   
-  public static XButton toXButton(Object object)
+  public static XControl XControl(Object object)
+  {
+    return UnoRuntime.queryInterface(XControl.class, object);
+  }
+  
+  public static XFixedText XFixedText(Object object)
+  {
+    return UnoRuntime.queryInterface(XFixedText.class, object);
+  }
+  
+  public static XListBox XListBox(Object object)
+  {
+    return UnoRuntime.queryInterface(XListBox.class, object);
+  }
+  
+  public static XButton XButton(Object object)
   {
     return UnoRuntime.queryInterface(XButton.class, object);
   }
 
-  public static XCheckBox toXCheckBox(Object object)
+  public static XCheckBox XCheckBox(Object object)
   {
     return UnoRuntime.queryInterface(XCheckBox.class, object);
   }
 
-  public static XRadioButton toXRadio(Object object)
+  public static XRadioButton XRadio(Object object)
   {
     return UnoRuntime.queryInterface(XRadioButton.class, object);
   }
 
-  public static XNumericField toXNumericField(Object object)
+  public static XNumericField XNumericField(Object object)
   {
     return UnoRuntime.queryInterface(XNumericField.class, object);
   }
 
-  public static XSpinField toXSpinField(Object object)
+  public static XSpinField XSpinField(Object object)
   {
     return UnoRuntime.queryInterface(XSpinField.class, object);
   }
