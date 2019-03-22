@@ -675,6 +675,13 @@ public class UNO
     {});
   }
 
+  public static XTextDocument getCurrentTextDocument()
+  {
+    XComponent xComponent = desktop.getCurrentComponent();
+
+    return UnoRuntime.queryInterface(com.sun.star.text.XTextDocument.class, xComponent);
+  }
+
   /**
    * Dispatcht url auf dem aktuellen Controll von doc mittels
    * {@link XNotifyingDispatch}, wartet auf die Benachrichtigung, dass der
