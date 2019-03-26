@@ -178,6 +178,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import com.sun.star.awt.XButton;
 import com.sun.star.awt.XCheckBox;
+import com.sun.star.awt.XComboBox;
 import com.sun.star.awt.XControl;
 import com.sun.star.awt.XDevice;
 import com.sun.star.awt.XFixedText;
@@ -185,14 +186,13 @@ import com.sun.star.awt.XListBox;
 import com.sun.star.awt.XNumericField;
 import com.sun.star.awt.XRadioButton;
 import com.sun.star.awt.XSpinField;
+import com.sun.star.awt.XTextComponent;
 import com.sun.star.awt.XToolkit;
 import com.sun.star.awt.XTopWindow;
 import com.sun.star.awt.XUserInputInterception;
 import com.sun.star.awt.XWindow;
 import com.sun.star.awt.XWindow2;
 import com.sun.star.awt.XWindowPeer;
-import com.sun.star.awt.XTextComponent;
-import com.sun.star.awt.XComboBox;
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.beans.PropertyVetoException;
 import com.sun.star.beans.UnknownPropertyException;
@@ -1061,6 +1061,23 @@ public class UNO
       throw new UnoHelperException("Property konnte nicht gelesen werden.", e);
     }
     return ret;
+  }
+
+  public static String getPropertyByPropertyValues(PropertyValue[] propertyValues,
+      String propertyName)
+  {
+    String value = null;
+
+    for (PropertyValue property : propertyValues)
+    {
+      if (property.Name.equals(propertyName))
+      {
+        value = (String) property.Value;
+        break;
+      }
+    }
+
+    return value;
   }
 
   /**
