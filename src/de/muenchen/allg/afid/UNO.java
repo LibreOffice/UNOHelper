@@ -3,7 +3,7 @@
 * Dateiname: UNO.java
 * Projekt  : n/a
 * Funktion : Hilfsklasse zur leichteren Verwendung der UNO API.
-* 
+*
  * Copyright (c) 2008 Landeshauptstadt München
  *
  * This program is free software: you can redistribute it and/or modify
@@ -411,9 +411,32 @@ public class UNO
   }
 
   /**
+   * Stellt die Verbindung mit OpenOffice her und verwendet die angegebenen
+   * Parameter.
+   *
+   * @param options
+   *          Die Parameter für den Verbindungsaufbau.
+   *
+   * @throws UnoHelperException
+   *           falls was schief geht.
+   */
+  public static void init(List<String> options) throws UnoHelperException
+  {
+    try
+    {
+      init(Bootstrap.bootstrap(options.toArray(new String[options.size()]))
+          .getServiceManager());
+    } catch (Exception e)
+    {
+      throw new UnoHelperException(
+          "Verbindung zu Office konnte nicht hergestellt werden.", e);
+    }
+  }
+
+  /**
    * Stellt die Verbindung mit OpenOffice her. Die Verbindungsparameter werden
    * automagisch ermittelt.
-   * 
+   *
    * @throws UnoHelperException
    *                     falls was schief geht.
    */
