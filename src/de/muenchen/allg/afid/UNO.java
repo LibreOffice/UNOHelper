@@ -932,6 +932,23 @@ public class UNO
   }
 
   /**
+   * Remove the part after last occurrence of ' -'.
+   *
+   * @param str
+   *          The string which may contain ' -'.
+   * @return A string without the last part.
+   */
+  public static String stripOpenOfficeFromWindowName(String str)
+  {
+    int idx = str.lastIndexOf(" -");
+    if (idx > 0)
+    {
+      str = str.substring(0, idx);
+    }
+    return str;
+  }
+
+  /**
    * Durchsucht einen {@link XBrowseNode} Baum nach einem Blatt vom Typ SCRIPT,
    * dessen Name nameToFind ist (kann durch "." abgetrennte Pfadangabe im
    * Skript-Baum enthalten). Siehe
