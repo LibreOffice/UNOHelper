@@ -2,15 +2,14 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.muenchen</groupId>
   <artifactId>unohelper</artifactId>
-  <version>3.0.4-SNAPSHOT</version>
+  <version>4.0.0-SNAPSHOT</version>
   <name>UNOHelper</name>
   <url>https://github.com/WollMux/UNOHelper</url>
 
   <properties>
-    <libreoffice.version>6.4.3</libreoffice.version>
+    <libreoffice.version>6.4.5-lhm1700</libreoffice.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.target>11</maven.compiler.target>
-    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.release>11</maven.compiler.release>
     <maven.javadoc.failOnWarnings>false</maven.javadoc.failOnWarnings>
   </properties>
 
@@ -146,33 +145,23 @@
   <dependencies>
     <dependency>
       <groupId>org.libreoffice</groupId>
-      <artifactId>ridl</artifactId>
+      <artifactId>libreoffice</artifactId>
       <version>${libreoffice.version}</version>
     </dependency>
     <dependency>
       <groupId>org.libreoffice</groupId>
-      <artifactId>juh</artifactId>
-      <version>${libreoffice.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.libreoffice</groupId>
-      <artifactId>jurt</artifactId>
-      <version>${libreoffice.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.libreoffice</groupId>
-      <artifactId>unoil</artifactId>
+      <artifactId>unoloader</artifactId>
       <version>${libreoffice.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.10</version>
+      <version>3.11</version>
     </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>28.2-jre</version>
+      <version>29.0-jre</version>
     </dependency>
   </dependencies>
 </project>
