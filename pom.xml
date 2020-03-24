@@ -34,6 +34,17 @@
     </snapshotRepository>
   </distributionManagement>
 
+  <repositories>
+    <repository>
+      <id>wollmux</id>
+      <name>wollmux-libs</name>
+      <url>https://dl.bintray.com/wollmux/WollMux</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
   <build>
     <plugins>
       <plugin>
