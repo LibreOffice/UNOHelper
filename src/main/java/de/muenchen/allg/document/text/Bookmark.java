@@ -167,7 +167,7 @@ public class Bookmark
     // this book mark has already the request name
     if (name.equals(newName))
     {
-      if (!bookmarks.hasKey(name))
+      if (!bookmarks.containsKey(name))
       {
         name = BROKEN;
       }
@@ -175,10 +175,10 @@ public class Bookmark
     }
 
     // add number if names is already remitted
-    if (bookmarks.hasKey(newName))
+    if (bookmarks.containsKey(newName))
     {
       int count = 1;
-      while (bookmarks.hasKey(newName + count))
+      while (bookmarks.containsKey(newName + count))
       {
         ++count;
       }

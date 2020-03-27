@@ -1,98 +1,111 @@
 package de.muenchen.allg.afid;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Dictionary;
-import java.util.Enumeration;
+import java.util.AbstractMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.sun.star.container.NoSuchElementException;
 import com.sun.star.container.XNameAccess;
 import com.sun.star.lang.WrappedTargetException;
 import com.sun.star.uno.Type;
+import com.sun.star.uno.UnoRuntime;
 
 /**
- * Wrappt ein UNO-XNameAcess als JAVA-Dictionary.
+ * Wrapper for {@link XNameAccess} so that it can be accessed like a dictionary.
  * 
  * @param <V>
- *            Typ des Values im Dictionary
+ *          Type of objects in the dictionary.
  */
-public class UnoDictionary<V> extends Dictionary<String, V>
+public class UnoDictionary<V> extends AbstractMap<String, V>
 {
-	private XNameAccess access;
+  private XNameAccess access;
 
-	public UnoDictionary(Object o)
-	{
-		access = UNO.XNameAccess(o);
-	}
+  private Set<Entry<String, V>> entries;
 
-	/**
-	 * Wird nicht unterstützt.
-	 */
-	@Override
-	public Enumeration<V> elements()
-	{
-		throw new UnsupportedOperationException();
-	}
+  /**
+   * Create a dictionary for the object.
+   *
+   * @param o
+   *          An object which implements {@link XNameAccess}.
+   */
+  @SuppressWarnings("unchecked")
+  public UnoDictionary(Object o)
+  {
+    access = UNO.XNameAccess(o);
+    entries = new HashSet<>();
+    for (String name : access.getElementNames())
+    {
+      entries.add(new Entry<String, V>()
+      {
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public V get(Object key)
-	{
-		try
-		{
-			return (V) access.getByName(key.toString());
-		} catch (NoSuchElementException | WrappedTargetException e)
-		{
-			return null;
-		}
-	}
+        @Override
+        public String getKey()
+        {
+          return name;
+        }
 
-	@Override
-	public boolean isEmpty()
-	{
-		return !access.hasElements();
-	}
+        @Override
+        public V getValue()
+        {
+          try
+          {
+            return (V) access.getByName(name);
+          } catch (NoSuchElementException | WrappedTargetException e)
+          {
+            return null;
+          }
+        }
 
-	@Override
-	public Enumeration<String> keys()
-	{
-		return Collections.enumeration(Arrays.asList(access.getElementNames()));
-	}
+        @Override
+        public V setValue(V arg0)
+        {
+          throw new UnsupportedOperationException();
+        }
+      });
+    }
+  }
 
-	/**
-	 * Wird nicht unterstützt.
-	 */
-	@Override
-	public V put(String arg0, V arg1)
-	{
-		throw new UnsupportedOperationException();
-	}
+  /**
+   * @see #containsKey(Object)
+   * @deprecated
+   */
+  @Deprecated(since = "3.0.0", forRemoval = true)
+  public boolean hasKey(String key)
+  {
+    return containsKey(key);
+  }
 
-	/**
-	 * Wird nicht unterstützt.
-	 */
-	@Override
-	public V remove(Object arg0)
-	{
-		throw new UnsupportedOperationException();
-	}
+  @Override
+  public Set<Entry<String, V>> entrySet()
+  {
+    return entries;
+  }
 
-	/**
-	 * Wird nicht unterstützt.
-	 */
-	@Override
-	public int size()
-	{
-		throw new UnsupportedOperationException();
-	}
+  @Override
+  public boolean equals(Object o)
+  {
+    boolean equal = super.equals(o);
+    if (equal && o instanceof UnoDictionary)
+    {
+      UnoDictionary<?> other = (UnoDictionary<?>) o;
+      return UnoRuntime.areSame(access, other.access);
+    }
+    return false;
+  }
 
-	public boolean hasKey(Object key)
-	{
-		return access.hasByName(key.toString());
-	}
+  @Override
+  public int hashCode()
+  {
+    return super.hashCode() + access.hashCode();
+  }
 
-	public Type getElementType()
-	{
-		return access.getElementType();
-	}
+  /**
+   * Get the type of objects.
+   *
+   * @return The type of objects in the dictionary.
+   */
+  public Type getElementType()
+  {
+    return access.getElementType();
+  }
 }
