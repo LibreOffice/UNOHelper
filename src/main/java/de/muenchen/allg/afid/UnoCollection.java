@@ -6,33 +6,47 @@ import com.sun.star.container.XEnumeration;
 import com.sun.star.container.XEnumerationAccess;
 
 /**
- * Wrapperklasse für {@link XEnumeration}. Kann mit for-each-loop iteriert
- * werden.
- * 
- * @author snoopy
+ * Wrapper for {@link XEnumeration}. Can be used in for-each-loops.
  *
  * @param <T>
+ *          The types in enumeration.
  */
 public class UnoCollection<T> implements Iterable<T>
 {
+  /**
+   * The enumeration.
+   */
   private XEnumerationAccess enuAccess;
+
+  /**
+   * The type of objects in the enumeration.
+   */
   private Class<T> c;
 
-  protected UnoCollection(XEnumerationAccess enuAccess, Class<T> c)
+  /**
+   * Create an UnoCollection.
+   *
+   * @param enuAccess
+   *          The enumeration.
+   * @param c
+   *          The type of objects in the enumeration.
+   */
+  private UnoCollection(XEnumerationAccess enuAccess, Class<T> c)
   {
     this.enuAccess = enuAccess;
     this.c = c;
-
   }
 
   /**
-   * Erzeugt eine UnoCollection aus einem XEnumerationAccess-Objekt.
+   * Create an UnoCollection for the provided enumeration.
    * 
+   * @param <T>
+   *          The type of the objects in the enumeration.
    * @param enuAccess
-   *          Das XEnumerationAccess Object.
+   *          The enumeration.
    * @param c
-   *          darf nur ein Interface aus der UNO-Api oder Object sein.
-   * @return Eine UnoCollection.
+   *          The class of the type.
+   * @return An UnoCollection.
    */
   public static <T> UnoCollection<T> getCollection(XEnumerationAccess enuAccess, Class<T> c)
   {
@@ -40,13 +54,16 @@ public class UnoCollection<T> implements Iterable<T>
   }
 
   /**
-   * Erzeugt eine UnoCollection aus einem Uno-Object.
+   * Create an UnoCollection for the provided object. The object must implement
+   * {@link XEnumerationAccess}.
    * 
+   * @param <T>
+   *          The type of the objects in the enumeration.
    * @param o
-   *          UNO-Object, dass XEnumerationAccess implementiert
+   *          The enumeration.
    * @param c
-   *          darf nur ein Interface aus der UNO-Api oder Object sein.
-   * @return Die UnoCollection.
+   *          The class of the type.
+   * @return An UnoCollection.
    */
   public static <T> UnoCollection<T> getCollection(Object o, Class<T> c)
   {
