@@ -8,16 +8,31 @@ import com.sun.star.container.XEnumerationAccess;
 import com.sun.star.uno.UnoRuntime;
 
 /**
- * Wrappt eine UNO-Enumeration als JAVA-Iterator.
- * 
+ * Makes an enumeration iterable.
+ *
  * @param <T>
- *          Typ des Objekts in der Enumeration.
+ *          type of the objects in the enumeration.
  */
 public class UnoIterator<T> implements Iterator<T>
 {
+  /**
+   * The enumeration.
+   */
   private XEnumeration enu;
+
+  /**
+   * The type of objects in the enumeration.
+   */
   private Class<T> c;
 
+  /**
+   * Create an UnoIterator.
+   *
+   * @param enuAccess
+   *          The enumeration.
+   * @param c
+   *          The type of objects in the enumeration.
+   */
   public UnoIterator(XEnumerationAccess enuAccess, Class<T> c)
   {
     this.c = c;
@@ -53,7 +68,7 @@ public class UnoIterator<T> implements Iterator<T>
   }
 
   /**
-   * Wird nicht unterstützt.
+   * Unsupported operation.
    */
   @Override
   public void remove()
