@@ -321,6 +321,7 @@ import com.sun.star.view.XViewSettingsSupplier;
 import de.muenchen.allg.afid.Utils.FindNode;
 import de.muenchen.allg.util.UnoComponent;
 import de.muenchen.allg.util.UnoProperty;
+import de.muenchen.allg.util.UnoService;
 
 /**
  * Hilfsklasse zur leichteren Verwendung der UNO API. * @author BNK
@@ -911,26 +912,6 @@ public class UNO
   }
 
   /**
-   * Diese Methode prüft, ob es sich bei dem übergebenen Objekt service um ein
-   * UNO-Service mit dem Namen serviceName handelt und liefert true zurück, wenn
-   * das Objekt das XServiceInfo-Interface und den gesuchten Service
-   * implementiert, ansonsten wird false zurückgegeben.
-   * 
-   * @param service
-   *                      Das zu prüfende Service-Objekt
-   * @param serviceName
-   *                      der voll-qualifizierte Service-Name des services.
-   * @return true, wenn das Objekt das XServiceInfo-Interface und den gesuchten
-   *         Service implementiert, ansonsten false.
-   */
-  public static boolean supportsService(Object service, String serviceName)
-  {
-    if (UNO.XServiceInfo(service) != null)
-      return UNO.XServiceInfo(service).supportsService(serviceName);
-    return false;
-  }
-
-  /**
    * Remove the part after last occurrence of ' -'.
    *
    * @param str
@@ -1127,6 +1108,16 @@ public class UNO
     {
       return null;
     }
+  }
+
+  /**
+   * @see UnoService#supportsService(Object, String)
+   * @deprecated
+   */
+  @Deprecated(since = "3.0.0", forRemoval = true)
+  public static boolean supportsService(Object service, String serviceName)
+  {
+    return UnoService.supportsService(service, serviceName);
   }
 
   /**
