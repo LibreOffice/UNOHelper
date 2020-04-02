@@ -321,6 +321,7 @@ import com.sun.star.view.XSelectionSupplier;
 import com.sun.star.view.XViewSettingsSupplier;
 
 import de.muenchen.allg.afid.Utils.FindNode;
+import de.muenchen.allg.util.UnoComponent;
 
 /**
  * Hilfsklasse zur leichteren Verwendung der UNO API. * @author BNK
@@ -398,9 +399,8 @@ public class UNO
       XComponentContext xLocalContext = Bootstrap
           .createInitialComponentContext(null);
       XMultiComponentFactory xLocalFactory = xLocalContext.getServiceManager();
-      XUnoUrlResolver xUrlResolver = UNO
-          .XUnoUrlResolver(xLocalFactory.createInstanceWithContext(
-              "com.sun.star.bridge.UnoUrlResolver", xLocalContext));
+      XUnoUrlResolver xUrlResolver = UNO.XUnoUrlResolver(
+          UnoComponent.createComponentWithContext(UnoComponent.CSS_BRIDGE_UNO_URL_RESOLVER, xLocalFactory, xLocalContext));
       init(xUrlResolver.resolve(connectionString));
     }
     catch (Exception e)
@@ -492,11 +492,11 @@ public class UNO
           .createScriptProvider(defaultContext);
 
       dbContext = UNO.XNamingService(
-          UNO.createUNOService("com.sun.star.sdb.DatabaseContext"));
+          UnoComponent.createComponentWithContext(UnoComponent.CSS_SDB_DATABASE_CONTEXT));
       urlTransformer = UNO.XURLTransformer(
-          UNO.createUNOService("com.sun.star.util.URLTransformer"));
+          UnoComponent.createComponentWithContext(UnoComponent.CSS_UTIL_URL_TRANSFORMER));
       dispatchHelper = UNO.XDispatchHelper(
-          UNO.createUNOService("com.sun.star.frame.DispatchHelper"));
+          UnoComponent.createComponentWithContext(UnoComponent.CSS_FRAME_DISPATCH_HELPER));
     }
     catch (IllegalArgumentException | com.sun.star.uno.Exception e)
     {
@@ -1209,24 +1209,13 @@ public class UNO
   }
 
   /**
-   * Erzeugt einen Dienst im Haupt-Servicemanager mit dem DefaultContext.
-   * 
-   * @param serviceName
-   *                      Name des zu erzeugenden Dienstes
-   * @return ein Objekt, das den Dienst anbietet, oder null falls Fehler.
-   * @throws UnoHelperRuntimeException 
+   * @see UnoComponent#createComponentWithContext(String)
+   * @deprecated
    */
+  @Deprecated(since = "3.0.0", forRemoval = true)
   public static Object createUNOService(String serviceName)
   {
-    try
-    {
-      return xMCF.createInstanceWithContext(serviceName, defaultContext);
-    }
-    catch (com.sun.star.uno.Exception e)
-    {
-      throw new UnoHelperRuntimeException(
-          "UNO-Service konnte nicht erstellt werden.", e);
-    }
+    return UnoComponent.createComponentWithContext(serviceName);
   }
 
   /** Holt {@link XSingleServiceFactory} Interface von o. */
@@ -2046,7 +2035,10 @@ public class UNO
   private static Object getConfigurationProvider()
   {
     if (configurationProvider == null)
-      configurationProvider = createUNOService("com.sun.star.configuration.ConfigurationProvider");
+    {
+      configurationProvider = UnoComponent
+          .createComponentWithContext(UnoComponent.CSS_UI_MODULE_UI_CONFIGURATION_MANAGER_SUPPLIER);
+    }
     return configurationProvider;
   }
 
@@ -2066,7 +2058,7 @@ public class UNO
   {
     // XModuleUIConfigurationManagerSupplier moduleUICfgMgrSupplier
     XModuleUIConfigurationManagerSupplier moduleUICfgMgrSupplier = UNO.XModuleUIConfigurationManagerSupplier(
-        UNO.createUNOService("com.sun.star.ui.ModuleUIConfigurationManagerSupplier"));
+        UnoComponent.createComponentWithContext(UnoComponent.CSS_UI_MODULE_UI_CONFIGURATION_MANAGER_SUPPLIER));
 
     if (moduleUICfgMgrSupplier == null)
     {

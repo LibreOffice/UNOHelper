@@ -76,6 +76,7 @@ import de.muenchen.allg.afid.UNO;
 import de.muenchen.allg.afid.UnoHelperException;
 import de.muenchen.allg.afid.UnoHelperRuntimeException;
 import de.muenchen.allg.afid.UnoIterator;
+import de.muenchen.allg.util.UnoComponent;
 
 /**
  * Hilfsfunktionen für die Arbeit mit OOo TextDokumenten
@@ -234,7 +235,7 @@ public class TextDocument
       throws Exception
   {
     XAutoTextContainer autoTextContainer = UNO.XAutoTextContainer(
-        UNO.createUNOService("com.sun.star.text.AutoTextContainer"));
+        UnoComponent.createComponentWithContext(UnoComponent.CSS_TEXT_AUTO_TEXT_CONTAINER));
     int rand;
 
     String groupName = null;
