@@ -77,6 +77,7 @@ import de.muenchen.allg.afid.UnoHelperException;
 import de.muenchen.allg.afid.UnoHelperRuntimeException;
 import de.muenchen.allg.afid.UnoIterator;
 import de.muenchen.allg.util.UnoComponent;
+import de.muenchen.allg.util.UnoProperty;
 
 /**
  * Hilfsfunktionen für die Arbeit mit OOo TextDokumenten
@@ -546,14 +547,14 @@ public class TextDocument
     UNO.forEachTextPortionInRange(range, o -> {
       try
       {
-        XNamed bookmark = UNO.XNamed(UNO.getProperty(o, "Bookmark"));
+        XNamed bookmark = UNO.XNamed(UnoProperty.getProperty(o, UnoProperty.BOOKMARK));
         String name = (bookmark != null) ? bookmark.getName() : "";
 
         if (regex.matcher(name).matches())
         {
-          if (Boolean.TRUE.equals(UNO.getProperty(o, "IsStart")))
+          if (Boolean.TRUE.equals(UnoProperty.getProperty(o, UnoProperty.IS_START)))
           {
-            if (Boolean.TRUE.equals(UNO.getProperty(o, "IsCollapsed")))
+            if (Boolean.TRUE.equals(UnoProperty.getProperty(o, UnoProperty.IS_COLLAPSED)))
             {
               found.add(name);
             }
@@ -604,7 +605,7 @@ public class TextDocument
     {
     	try
       {
-        bookmarks.add(UNO.XNamed(UNO.getProperty(o, "Bookmark")));
+        bookmarks.add(UNO.XNamed(UnoProperty.getProperty(o, UnoProperty.BOOKMARK)));
       }
       catch (UnoHelperException e)
       {

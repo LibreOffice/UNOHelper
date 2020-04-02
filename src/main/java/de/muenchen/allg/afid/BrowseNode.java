@@ -42,6 +42,8 @@ import java.util.NoSuchElementException;
 import com.sun.star.script.browse.XBrowseNode;
 import com.sun.star.uno.UnoRuntime;
 
+import de.muenchen.allg.util.UnoProperty;
+
 /**
  * Diese Klasse vereinfacht die Arbeit mit Objekten, die den Dienst BrowseNode
  * unterstützen. Diese sind vor allem nützlich beim Durchsuchen des Baumes aller
@@ -66,7 +68,7 @@ public class BrowseNode
    */
   public String getURL() throws UnoHelperException
   {
-    return (String) UNO.getProperty(node, "URI");
+    return (String) UnoProperty.getProperty(node, UnoProperty.URI);
   }
   
   /**

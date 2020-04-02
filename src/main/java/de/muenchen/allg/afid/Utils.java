@@ -10,6 +10,8 @@ import com.sun.star.script.provider.XScript;
 import com.sun.star.script.provider.XScriptProvider;
 import com.sun.star.uno.RuntimeException;
 
+import de.muenchen.allg.util.UnoProperty;
+
 /**
  * Interne Funktionen
  */
@@ -303,7 +305,7 @@ class Utils
     XScript script;
     try
     {
-      String uri = (String) UNO.getProperty(o.getXBrowseNode(), "URI");
+      String uri = (String) UnoProperty.getProperty(o.getXBrowseNode(), UnoProperty.URI);
       script = provider.getScript(uri);
     } catch (Exception x)
     {
