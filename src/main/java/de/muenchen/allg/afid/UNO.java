@@ -194,8 +194,6 @@ import com.sun.star.awt.XWindow;
 import com.sun.star.awt.XWindow2;
 import com.sun.star.awt.XWindowPeer;
 import com.sun.star.beans.PropertyValue;
-import com.sun.star.beans.PropertyVetoException;
-import com.sun.star.beans.UnknownPropertyException;
 import com.sun.star.beans.XMultiPropertySet;
 import com.sun.star.beans.XPropertySet;
 import com.sun.star.beans.XPropertyState;
@@ -322,6 +320,7 @@ import com.sun.star.view.XViewSettingsSupplier;
 
 import de.muenchen.allg.afid.Utils.FindNode;
 import de.muenchen.allg.util.UnoComponent;
+import de.muenchen.allg.util.UnoProperty;
 
 /**
  * Hilfsklasse zur leichteren Verwendung der UNO API. * @author BNK
@@ -1082,130 +1081,52 @@ public class UNO
   }
 
   /**
-   * Liefert den Wert von Property propName des Objekts o zurück.
-   * 
-   * @return den Wert des Propertys oder <code>null</code>, falls o entweder nicht
-   *         das XPropertySet Interface implementiert, oder kein Property names
-   *         propName hat oder ein sonstiger Fehler aufgetreten ist.
-   * @throws UnoHelperException 
+   * @see UnoProperty#getProperty(Object, String)
+   * @deprecated
    */
+  @Deprecated(since = "3.0.0", forRemoval = true)
   public static Object getProperty(Object o, String propName)
       throws UnoHelperException
   {
-    Object ret = null;
-    try
-    {
-      XPropertySet props = UNO.XPropertySet(o);
-      if (props == null)
-      {
-        throw new UnoHelperException(
-            "Object doesn't support XPropertySet.");
-      }
-      ret = props.getPropertyValue(propName);
-    }
-    catch (UnknownPropertyException | WrappedTargetException e)
-    {
-      throw new UnoHelperException("Property konnte nicht gelesen werden.", e);
-    }
-    return ret;
+    return UnoProperty.getProperty(o, propName);
   }
 
+  /**
+   * @see UnoProperty#getPropertyByPropertyValues(PropertyValue[], String)
+   * @deprecated
+   */
+  @Deprecated(since = "3.0.0", forRemoval = true)
   public static String getPropertyByPropertyValues(PropertyValue[] propertyValues,
       String propertyName)
   {
-    String value = null;
-
-    for (PropertyValue property : propertyValues)
-    {
-      if (property.Name.equals(propertyName))
-      {
-        value = (String) property.Value;
-        break;
-      }
-    }
-
-    return value;
+    return UnoProperty.getPropertyByPropertyValues(propertyValues, propertyName);
   }
 
   /**
-   * Setzt das Property propName des Objekts o auf den Wert propVal und liefert
-   * den neuen Wert zurück. Falls o kein XPropertySet implementiert, oder das
-   * Property propName nicht gelesen werden kann (z.B. weil o diese Property nicht
-   * besitzt), so wird null zurückgeliefert. Zu beachten ist, dass es möglich ist,
-   * dass der zurückgelieferte Wert nicht propVal und auch nicht null ist. Dies
-   * geschieht insbesondere, wenn ein Event Handler sein Veto gegen die Änderung
-   * eingelegt hat.
-   * 
-   * @param o
-   *                   das Objekt, dessen Property zu ändern ist.
-   * @param propName
-   *                   der Name des zu ändernden Properties.
-   * @param propVal
-   *                   der neue Wert.
-   * @return der Wert des Propertys nach der (versuchten) Änderung oder null,
-   *         falls der Wert des Propertys nicht mal lesbar ist.
-   * @throws UnoHelperException 
+   * @see UnoProperty#setProperty(Object, String, Object)
+   * @deprecated
    */
+  @Deprecated(since = "3.0.0", forRemoval = true)
   public static Object setProperty(Object o, String propName, Object propVal)
       throws UnoHelperException
   {
-    Object ret = null;
-    XPropertySet props = UNO.XPropertySet(o);
-    if (props == null)
-    {
-      throw new UnoHelperException(
-          "Object doesn't support XPropertySet.");
-    }
-    try
-    {
-      props.setPropertyValue(propName, propVal);
-      ret = props.getPropertyValue(propName);
-    }
-    catch (UnknownPropertyException | IllegalArgumentException
-        | PropertyVetoException | WrappedTargetException e)
-    {
-      throw new UnoHelperException("Property konnte nicht geschrieben werden.",
-          e);
-    }
-
-    return ret;
+    return UnoProperty.setProperty(o, propName, propVal);
   }
 
   /**
-   * Setzt das Property propName auf den ursprünglichen Wert zurück, der als
-   * Voreinstellung für das Objekt o hinterlegt ist und liefert den neuen Wert
-   * zurück. Falls o kein XPropertyState implementiert, oder das Property propName
-   * nicht gelesen werden kann (z.B. weil o diese Property nicht besitzt), so wird
-   * null zurückgeliefert. Zu beachten ist, dass es möglich ist, dass das Property
-   * nicht zurück gesetzt wird, wenn ein Event Handler sein Veto gegen die
-   * Änderung einlegt.
-   * 
-   * @param o
-   *                   das Objekt, dessen Property zu ändern ist.
-   * @param propName
-   *                   der Name des zu ändernden Properties.
-   * @return der Wert des Propertys nach der (versuchten) Änderung oder null,
-   *         falls der Wert des Propertys nicht mal lesbar ist.
+   * @see UnoProperty#setPropertyToDefault(Object, String)
+   * @deprecated
    */
+  @Deprecated(since = "3.0.0", forRemoval = true)
   public static Object setPropertyToDefault(Object o, String propName)
   {
-    Object ret = null;
     try
     {
-      XPropertyState props = UNO.XPropertyState(o);
-      if (props == null)
-        return null;
-      try
-      {
-        props.setPropertyToDefault(propName);
-      } catch (Exception x)
-      {
-      }
-      ret = getProperty(props, propName);
-    } catch (Exception e)
+      return UnoProperty.setPropertyToDefault(o, propName);
+    } catch (UnoHelperException e)
     {
+      return null;
     }
-    return ret;
   }
 
   /**
@@ -2110,11 +2031,11 @@ public class UNO
     String propName = "CharHidden";
     if (hide)
     {
-      UNO.setProperty(range, propName, Boolean.TRUE);
+      UnoProperty.setProperty(range, propName, Boolean.TRUE);
       // Workaround für update Bug
       // http://qa.openoffice.org/issues/show_bug.cgi?id=78896
-      UNO.setProperty(range, propName, Boolean.FALSE);
-      UNO.setProperty(range, propName, Boolean.TRUE);
+      UnoProperty.setProperty(range, propName, Boolean.FALSE);
+      UnoProperty.setProperty(range, propName, Boolean.TRUE);
     } else
     {
       // Workaround für (den anderen) update Bug
@@ -2122,8 +2043,8 @@ public class UNO
       // Nur das Rücksetzen auf den Standardwert reicht nicht aus. Daher erfolgt
       // vor
       // dem Rücksetzen auf den Standardwert eine explizite Einblendung.
-      UNO.setProperty(range, propName, Boolean.FALSE);
-      UNO.setPropertyToDefault(range, propName);
+      UnoProperty.setProperty(range, propName, Boolean.FALSE);
+      UnoProperty.setPropertyToDefault(range, propName);
     }
   }
 
