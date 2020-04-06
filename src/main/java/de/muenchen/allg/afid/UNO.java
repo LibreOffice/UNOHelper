@@ -1930,8 +1930,8 @@ public class UNO
     Object confProv = getConfigurationProvider();
     try
     {
-      return UNO.XChangesBatch(UNO.XMultiServiceFactory(confProv)
-          .createInstanceWithArguments("com.sun.star.configuration.ConfigurationUpdateAccess", props));
+      return UNO.XChangesBatch(UnoService.createServiceWithArguments(
+          UnoService.CSS_CONFIGURATION_CONFIGURATION_UPDATE_ACCESS, props, confProv));
     } catch (Exception e)
     {
       throw new UnoHelperException(e);
@@ -1949,7 +1949,7 @@ public class UNO
     if (configurationProvider == null)
     {
       configurationProvider = UnoComponent
-          .createComponentWithContext(UnoComponent.CSS_UI_MODULE_UI_CONFIGURATION_MANAGER_SUPPLIER);
+          .createComponentWithContext(UnoComponent.CSS_CONFIGURATION_CONFIGURATION_PROVIDER);
     }
     return configurationProvider;
   }
