@@ -320,6 +320,7 @@ import com.sun.star.view.XViewSettingsSupplier;
 
 import de.muenchen.allg.afid.Utils.FindNode;
 import de.muenchen.allg.util.UnoComponent;
+import de.muenchen.allg.util.UnoConfiguration;
 import de.muenchen.allg.util.UnoProperty;
 import de.muenchen.allg.util.UnoService;
 
@@ -929,14 +930,32 @@ public class UNO
   }
 
   /**
-   * Durchsucht einen {@link XBrowseNode} Baum nach einem Blatt vom Typ SCRIPT,
-   * dessen Name nameToFind ist (kann durch "." abgetrennte Pfadangabe im
-   * Skript-Baum enthalten). Siehe
+   * Get the version of LibreOffice.
+   *
+   * @return The concatenation of the values {@link UnoProperty#OO_SETUP_VERSION_ABOUT_BOX} and
+   *         {@link UnoProperty#OO_SETUP_EXTENSION or null if configuration can't be accessed.
+   */
+  public static String getOOoVersion()
+  {
+    try
+    {
+      return ""
+          + UnoConfiguration.getConfiguration("/org.openoffice.Setup/Product", UnoProperty.OO_SETUP_VERSION_ABOUT_BOX)
+          + UnoConfiguration.getConfiguration("/org.openoffice.Setup/Product", UnoProperty.OO_SETUP_EXTENSION);
+    } catch (UnoHelperException e)
+    {
+      return null;
+    }
+  }
+
+  /**
+   * Durchsucht einen {@link XBrowseNode} Baum nach einem Blatt vom Typ SCRIPT, dessen Name
+   * nameToFind ist (kann durch "." abgetrennte Pfadangabe im Skript-Baum enthalten). Siehe
    * {@link #findBrowseNodeTreeLeafAndScriptProvider(XBrowseNode, String, String, boolean, String[])}
    * .
    * 
    * @return den gefundenen Knoten oder null falls keiner gefunden.
-   * @throws UnoHelperException 
+   * @throws UnoHelperException
    */
   public static XBrowseNode findBrowseNodeTreeLeaf(XBrowseNode xBrowseNode, String prefix, String nameToFind,
       boolean caseSensitive) throws UnoHelperException
