@@ -8,12 +8,14 @@ import de.muenchen.allg.afid.UnoHelperRuntimeException;
 /**
  * Helper for creating UNO services.
  */
+@SuppressWarnings("java:S103")
 public class UnoService
 {
 
   public static final String CSS_AWT_TREE_MUTABLE_TREE_DATAM_ODEL = "com.sun.star.awt.tree.MutableTreeDataModel";
   public static final String CSS_BEANS_INTROSPECTIONS = "com.sun.star.beans.Introspections";
   public static final String CSS_CONFIGURATION_CONFIGURATION_ACCESS = "com.sun.star.configuration.ConfigurationAccess";
+  public static final String CSS_CONFIGURATION_CONFIGURATION_UPDATE_ACCESS = "com.sun.star.configuration.ConfigurationUpdateAccess";
   public static final String CSS_DOCUMENT_SETTINGS = "com.sun.star.document.Settings";
   public static final String CSS_STYLE_CHARACTER_STYLE = "com.sun.star.style.CharacterStyle";
   public static final String CSS_STYLE_PARAGRAPH_STYLE = "com.sun.star.style.ParagraphStyle";
