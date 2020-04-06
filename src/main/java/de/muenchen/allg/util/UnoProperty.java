@@ -14,6 +14,7 @@ import de.muenchen.allg.afid.UnoHelperException;
 /**
  * Helper for accessing and modifying properties of UNO objects.
  */
+@SuppressWarnings("java:S1845")
 public final class UnoProperty
 {
 
@@ -37,10 +38,13 @@ public final class UnoProperty
   public static final String CHAR_STYLE_NAME = "CharStyleName";
   public static final String CHAR_UNDERLINE = "CharUnderline";
   public static final String CHAR_WEIGHT = "CharWeight";
+  public static final String COLLATE = "Collate";
   public static final String COMMAND = "Command";
   public static final String COMMAND_TYPE = "CommandType";
+  public static final String COMMAND_URL = "CommandURL";
   public static final String CONDITION = "Condition";
   public static final String CONTENT = "Content";
+  public static final String COPY_COUNT = "CopyCount";
   public static final String CURRENT_PRESENTAITON = "CurrentPresentation";
   public static final String DATA_BASE_NAME = "DataBaseName";
   public static final String DATA_COLUMN_NAME = "DataColumnName";
@@ -71,21 +75,34 @@ public final class UnoProperty
   public static final String HORI_ORIENT_POSITION = "HoriOrientPosition";
   public static final String HORI_ORIENT_RELATION = "HoriOrientRelation";
   public static final String IMAGE_URL = "ImageURL";
+  public static final String INFO = "Info";
+  public static final String INPUT_STREAM = "InputStream";
   public static final String IS_COLLAPSED = "IsCollapsed";
   public static final String IS_START = "IsStart";
   public static final String IS_VISIBLE = "IsVisible";
+  public static final String ITEM_DESCRIPTOR_CONTAINER = "ItemDescriptorContainer";
   public static final String ITEMS = "Items";
   public static final String LABEL = "Label";
   public static final String LAYOUT_MANAGER = "LayoutManager";
   public static final String LEFT_BORDER = "LeftBorder";
+  public static final String LOAD_CELL_STYLES = "LoadCellStyles";
+  public static final String LOAD_FRAME_STYLES = "LoadFrameStyles";
+  public static final String LOAD_NUMBERING_STYLES = "LoadNumberingStyles";
+  public static final String LOAD_PAGE_STYLES = "LoadPageStyles";
   public static final String LOAD_PRINTER = "LoadPrinter";
+  public static final String LOAD_TEXT_STYLES = "LoadTextStyles";
   public static final String MAX_VALUE = "MaxValue";
   public static final String MIN_VALUE = "MinValue";
   public static final String NAME = "Name";
+  public static final String NODEPATH = "nodepath";
+  public static final String OO_SETUP_EXTENSION = "ooSetupExtension";
   public static final String OO_SETUP_FACTORY_WINDOW_ATTRIBUTES = "ooSetupFactoryWindowAttributes";
+  public static final String OO_SETUP_VERSION_ABOUT_BOX = "ooSetupVersionAboutBox";
   public static final String OUTPUT_TYPE = "OutputType";
   public static final String OUTPUT_URL = "OutputURL";
+  public static final String OVERWRITE_STYLES = "OverwriteStyles";
   public static final String PAGE_COUNT = "PageCount";
+  public static final String PAGES = "Pages";
   public static final String PARA_FIRST_LINE_INDENT = "ParaFirstLineIndent";
   public static final String PARA_STYLE_NAME = "ParaStyleName";
   public static final String PARA_TOP_MARGIN = "ParaTopMargin";
@@ -110,12 +127,14 @@ public final class UnoProperty
   public static final String TITLE = "Title";
   public static final String TOGGLE = "Toggle";
   public static final String TOP_BORDER = "TopBorder";
+  public static final String TYPE = "Type";
   public static final String URI = "URI";
   public static final String URL = "URL";
   public static final String VALUE = "Value";
   public static final String VERT_ORIENT = "VertOrient";
   public static final String VERT_ORIENT_POSITION = "VertOrientPosition";
   public static final String VERT_ORIENT_RELATION = "VertOrientRelation";
+  public static final String WAIT = "Wait";
   public static final String WORK = "Work";
   public static final String ZOOM_TYPE = "ZoomType";
   public static final String ZOOM_VALUE = "ZoomValue";
