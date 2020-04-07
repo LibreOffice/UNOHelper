@@ -162,7 +162,9 @@ public class Bookmark
    */
   public String rename(String newName)
   {
-    UnoDictionary<XTextContent> bookmarks = new UnoDictionary<>(UNO.XBookmarksSupplier(document).getBookmarks());
+    UnoDictionary<XTextContent> bookmarks = UnoDictionary
+        .create(UNO.XBookmarksSupplier(document).getBookmarks(),
+        XTextContent.class);
 
     // this book mark has already the request name
     if (name.equals(newName))

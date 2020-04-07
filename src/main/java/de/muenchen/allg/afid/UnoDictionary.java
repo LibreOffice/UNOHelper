@@ -12,57 +12,78 @@ import com.sun.star.uno.UnoRuntime;
 
 /**
  * Wrapper for {@link XNameAccess} so that it can be accessed like a dictionary.
- * 
+ *
  * @param <V>
  *          Type of objects in the dictionary.
  */
 public class UnoDictionary<V> extends AbstractMap<String, V>
 {
+  /**
+   * The dictionary.
+   */
   private XNameAccess access;
 
+  /**
+   * Contains all entries. Initialized in {@link #entrySet()}.
+   */
   private Set<Entry<String, V>> entries;
+
+  /**
+   * The type of objects in the enumeration.
+   */
+  private Class<V> c;
 
   /**
    * Create a dictionary for the object.
    *
    * @param o
    *          An object which implements {@link XNameAccess}.
+   * @param c
+   *          The type of objects in the enumeration.
    */
-  @SuppressWarnings("unchecked")
-  public UnoDictionary(Object o)
+  private UnoDictionary(XNameAccess access, Class<V> c)
   {
-    access = UNO.XNameAccess(o);
+    this.access = access;
+    this.c = c;
     entries = new HashSet<>();
-    for (String name : access.getElementNames())
+  }
+
+  /**
+   * Create an UnoDictionary for the provided mapping.
+   *
+   * @param <T>
+   *          The type of the objects in the mapping.
+   * @param access
+   *          The mapping.
+   * @param c
+   *          The class of the type.
+   * @return An UnoDictionary.
+   */
+  public static <T> UnoDictionary<T> create(XNameAccess access, Class<T> c)
+  {
+    return new UnoDictionary<>(access, c);
+  }
+
+  /**
+   * Create an UnoDictionary for the provided object. The object must implement {@link XNameAccess}.
+   *
+   * @param <T>
+   *          The type of the objects in the enumeration.
+   * @param o
+   *          The mapping.
+   * @param c
+   *          The class of the type.
+   * @return An UnoDictionary or null if object doesn't implement {@link XNameAccess}.
+   */
+  public static <T> UnoDictionary<T> create(Object o, Class<T> c)
+  {
+    XNameAccess access = UNO.XNameAccess(o);
+    if (access != null)
     {
-      entries.add(new Entry<String, V>()
-      {
-
-        @Override
-        public String getKey()
-        {
-          return name;
-        }
-
-        @Override
-        public V getValue()
-        {
-          try
-          {
-            return (V) access.getByName(name);
-          } catch (NoSuchElementException | WrappedTargetException e)
-          {
-            return null;
-          }
-        }
-
-        @Override
-        public V setValue(V arg0)
-        {
-          throw new UnsupportedOperationException();
-        }
-      });
+      return new UnoDictionary<>(access, c);
     }
+
+    return null;
   }
 
   /**
@@ -76,8 +97,80 @@ public class UnoDictionary<V> extends AbstractMap<String, V>
   }
 
   @Override
+  public boolean containsKey(Object key)
+  {
+    return access.hasByName(key.toString());
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public V get(Object key)
+  {
+    String name = key.toString();
+    try
+    {
+      if (c != Object.class)
+      {
+        return UnoRuntime.queryInterface(c, access.getByName(name));
+      } else
+      {
+        return (V) access.getByName(name);
+      }
+    } catch (NoSuchElementException | WrappedTargetException e)
+    {
+      return null;
+    }
+  }
+
+  @Override
+  public Set<String> keySet()
+  {
+    return Set.of(access.getElementNames());
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
   public Set<Entry<String, V>> entrySet()
   {
+    if (entries.isEmpty())
+    {
+      for (String name : access.getElementNames())
+      {
+        entries.add(new Entry<String, V>()
+        {
+
+          @Override
+          public String getKey()
+          {
+            return name;
+          }
+
+          @Override
+          public V getValue()
+          {
+            try
+            {
+              if (c != Object.class)
+              {
+                return UnoRuntime.queryInterface(c, access.getByName(name));
+              } else
+              {
+                return (V) access.getByName(name);
+              }
+            } catch (NoSuchElementException | WrappedTargetException e)
+            {
+              return null;
+            }
+          }
+
+          @Override
+          public V setValue(V arg0)
+          {
+            throw new UnsupportedOperationException();
+          }
+        });
+      }
+    }
     return entries;
   }
 
