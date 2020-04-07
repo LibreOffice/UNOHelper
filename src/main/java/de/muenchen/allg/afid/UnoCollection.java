@@ -63,7 +63,7 @@ public class UnoCollection<T> implements Iterable<T>
    *          The enumeration.
    * @param c
    *          The class of the type.
-   * @return An UnoCollection.
+   * @return An UnoCollection or null if object doesn't implement {@link XEnumerationAccess}.
    */
   public static <T> UnoCollection<T> getCollection(Object o, Class<T> c)
   {
@@ -79,6 +79,6 @@ public class UnoCollection<T> implements Iterable<T>
   @Override
   public Iterator<T> iterator()
   {
-    return new UnoIterator<>(enuAccess, c);
+    return UnoIterator.create(enuAccess, c);
   }
 }

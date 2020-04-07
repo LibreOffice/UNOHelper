@@ -235,7 +235,6 @@ import com.sun.star.frame.XToolbarController;
 import com.sun.star.io.IOException;
 import com.sun.star.lang.EventObject;
 import com.sun.star.lang.IllegalArgumentException;
-import com.sun.star.lang.WrappedTargetException;
 import com.sun.star.lang.XComponent;
 import com.sun.star.lang.XMultiComponentFactory;
 import com.sun.star.lang.XMultiServiceFactory;
@@ -2106,22 +2105,18 @@ public class UNO
   }
 
   /**
-   * Liefert das erste Element eines UNO-Objekts zurück, das XEnumerationAccess
-   * implementiert.
+   * Get the first element of the UNO object which have to implement {@link XEnumerationAccess}.
    * 
    * @param o
-   *          Objekt, das eine Enumeration enthält.
-   * @return Das erste Element eines UNO-Objekts zurück, das XEnumerationAccess
-   *         implementiert.
-   * @throws NoSuchElementException
-   * @throws WrappedTargetException
+   *          The UNO object.
+   * @return The first element.
    */
-  public static Object getFirstElementInEnumeration(Object o) throws NoSuchElementException, WrappedTargetException
+  public static Object getFirstElementInEnumeration(Object o)
   {
-    XEnumerationAccess access = UNO.XEnumerationAccess(o);
-    if (access != null)
+    UnoIterator<Object> iter = UnoIterator.create(o, Object.class);
+    if (iter.hasNext())
     {
-      return access.createEnumeration().nextElement();
+      return iter.next();
     }
 
     return null;

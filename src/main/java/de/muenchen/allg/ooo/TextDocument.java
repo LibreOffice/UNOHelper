@@ -7,7 +7,6 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import com.sun.star.container.NoSuchElementException;
-import com.sun.star.container.XEnumerationAccess;
 import com.sun.star.container.XNamed;
 import com.sun.star.text.XTextContent;
 import com.sun.star.text.XTextDocument;
@@ -39,11 +38,11 @@ public class TextDocument
    */
   public static void deleteParagraph(XTextRange range)
   {
-    XEnumerationAccess access = UNO.XEnumerationAccess(range);
-    if (access != null)
+    UnoIterator<XTextContent> contentIter = UnoIterator.create(range, XTextContent.class);
+    if (contentIter.hasNext())
     {
       // get first paragraph
-      XTextContent paragraph = new UnoIterator<XTextContent>(access, XTextContent.class).next();
+      XTextContent paragraph = contentIter.next();
 
       if (paragraph != null)
       {
