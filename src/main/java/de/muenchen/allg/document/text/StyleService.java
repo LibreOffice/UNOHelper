@@ -7,6 +7,7 @@ import com.sun.star.style.XStyle;
 import com.sun.star.text.XTextDocument;
 
 import de.muenchen.allg.afid.UNO;
+import de.muenchen.allg.afid.UnoDictionary;
 import de.muenchen.allg.afid.UnoHelperException;
 import de.muenchen.allg.util.UnoService;
 
@@ -16,9 +17,11 @@ import de.muenchen.allg.util.UnoService;
 public class StyleService
 {
 
-  private static final String PARAGRAPH_STYLES = "ParagraphStyles";
+  public static final String PARAGRAPH_STYLES = "ParagraphStyles";
 
-  private static final String CHARACTER_STYLES = "CharacterStyles";
+  public static final String CHARACTER_STYLES = "CharacterStyles";
+
+  public static final String PAGE_STYLES = "PageStyles";
 
   private StyleService()
   {
@@ -202,17 +205,17 @@ public class StyleService
    *          The document.
    * @param containerName
    *          The type of styles ({@link #CHARACTER_STYLES}, {@link #PARAGRAPH_STYLES})
-   * @return The container of the styles.
+   * @return The container of the styles or null.
    * @throws UnoHelperException
    *           A style container with this name doesn't exist.
    */
-  private static XNameContainer getStyleContainer(XTextDocument doc, String containerName) throws UnoHelperException
+  public static XNameContainer getStyleContainer(XTextDocument doc, String containerName) throws UnoHelperException
   {
     try
     {
-      return UNO
-          .XNameContainer(UNO.XNameAccess(UNO.XStyleFamiliesSupplier(doc).getStyleFamilies()).getByName(containerName));
-    } catch (NullPointerException | NoSuchElementException | WrappedTargetException e)
+      return UnoDictionary.create(UNO.XStyleFamiliesSupplier(doc).getStyleFamilies(), XNameContainer.class)
+          .get(containerName);
+    } catch (NullPointerException e)
     {
       throw new UnoHelperException("No such style container", e);
     }
