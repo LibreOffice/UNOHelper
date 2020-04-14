@@ -17,6 +17,7 @@ public class UnoService
   public static final String CSS_CONFIGURATION_CONFIGURATION_ACCESS = "com.sun.star.configuration.ConfigurationAccess";
   public static final String CSS_CONFIGURATION_CONFIGURATION_UPDATE_ACCESS = "com.sun.star.configuration.ConfigurationUpdateAccess";
   public static final String CSS_DOCUMENT_SETTINGS = "com.sun.star.document.Settings";
+  public static final String CSS_FORM_COMPONENT_CHECK_BOX = "com.sun.star.form.component.CheckBox";
   public static final String CSS_STYLE_CHARACTER_STYLE = "com.sun.star.style.CharacterStyle";
   public static final String CSS_STYLE_PARAGRAPH_STYLE = "com.sun.star.style.ParagraphStyle";
   public static final String CSS_TEXT_BOOKMARK = "com.sun.star.text.Bookmark";
@@ -25,6 +26,7 @@ public class UnoService
   public static final String CSS_TEXT_TEXT_FIELD_ANNOTATION = "com.sun.star.text.TextField.Annotation";
   public static final String CSS_TEXT_TEXT_FIELD_DATA_BASE = "com.sun.star.text.TextField.DataBase";
   public static final String CSS_TEXT_TEXT_FIELD_DATA_BASE_NEXT_SET = "com.sun.star.text.TextField.DataBaseNextSet";
+  public static final String CSS_TEXT_TEXT_FIELD_DROP_DOWN = "com.sun.star.text.TextField.DropDown";
   public static final String CSS_TEXT_TEXT_FIELD_INPUT = "com.sun.star.text.TextField.Input";
   public static final String CSS_TEXT_TEXT_FIELD_INPUT_USER = "com.sun.star.text.TextField.InputUser";
   public static final String CSS_TEXT_TEXT_FIELD_JUMP_EDIT = "com.sun.star.text.TextField.JumpEdit";
