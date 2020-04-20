@@ -176,10 +176,13 @@ import java.util.function.Consumer;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import com.sun.star.accessibility.XAccessible;
 import com.sun.star.awt.XButton;
 import com.sun.star.awt.XCheckBox;
 import com.sun.star.awt.XComboBox;
 import com.sun.star.awt.XControl;
+import com.sun.star.awt.XControlContainer;
+import com.sun.star.awt.XControlModel;
 import com.sun.star.awt.XDevice;
 import com.sun.star.awt.XFixedText;
 import com.sun.star.awt.XListBox;
@@ -193,6 +196,9 @@ import com.sun.star.awt.XUserInputInterception;
 import com.sun.star.awt.XWindow;
 import com.sun.star.awt.XWindow2;
 import com.sun.star.awt.XWindowPeer;
+import com.sun.star.awt.tab.XTabPage;
+import com.sun.star.awt.tab.XTabPageContainer;
+import com.sun.star.awt.tab.XTabPageContainerModel;
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.beans.XMultiPropertySet;
 import com.sun.star.beans.XPropertySet;
@@ -220,6 +226,7 @@ import com.sun.star.frame.DispatchResultEvent;
 import com.sun.star.frame.FrameSearchFlag;
 import com.sun.star.frame.XComponentLoader;
 import com.sun.star.frame.XController;
+import com.sun.star.frame.XController2;
 import com.sun.star.frame.XDesktop;
 import com.sun.star.frame.XDispatchHelper;
 import com.sun.star.frame.XDispatchProvider;
@@ -292,6 +299,7 @@ import com.sun.star.text.XTextTable;
 import com.sun.star.text.XTextViewCursorSupplier;
 import com.sun.star.ucb.XFileIdentifierConverter;
 import com.sun.star.ui.XAcceleratorConfiguration;
+import com.sun.star.ui.XDeck;
 import com.sun.star.ui.XModuleUIConfigurationManager;
 import com.sun.star.ui.XModuleUIConfigurationManagerSupplier;
 import com.sun.star.ui.XUIConfigurationManager;
@@ -330,34 +338,47 @@ import de.muenchen.allg.util.UnoService;
 @SuppressWarnings("squid:S00100")
 public class UNO
 {
+
+  private UNO()
+  {
+
+  }
+
   /**
    * Der Haupt-ServiceManager.
    */
   public static XMultiComponentFactory xMCF;
+
   /**
    * Der Haupt-ServiceManager.
    */
   public static XMultiServiceFactory xMSF;
+
   /**
    * Das "DefaultContext" Property des Haupt-ServiceManagers.
    */
   public static XComponentContext defaultContext;
+
   /**
    * Der globale com.sun.star.sdb.DatabaseContext.
    */
   public static XNamingService dbContext;
+
   /**
    * Ein com.sun.star.util.URLTransformer.
    */
   public static XURLTransformer urlTransformer;
+
   /**
    * Ein com.sun.star.frame.XDispatchHelper.
    */
   public static XDispatchHelper dispatchHelper;
+
   /**
    * Der Desktop.
    */
   public static XDesktop desktop;
+
   /**
    * Komponenten-spezifische Methoden arbeiten defaultmässig mit dieser
    * Komponente. Wird von manchen Methoden geändert, ist aber ansonsten der
@@ -466,14 +487,15 @@ public class UNO
   {
     try
     {
-      xMCF = UnoRuntime.queryInterface(XMultiComponentFactory.class,
-          remoteServiceManager);
+      xMCF = UnoRuntime.queryInterface(XMultiComponentFactory.class, remoteServiceManager);
       xMSF = UnoRuntime.queryInterface(XMultiServiceFactory.class, xMCF);
-      defaultContext = UnoRuntime.queryInterface(XComponentContext.class,
+      defaultContext = UnoRuntime.queryInterface(
+          XComponentContext.class,
           (UnoRuntime.queryInterface(XPropertySet.class, xMCF))
               .getPropertyValue("DefaultContext"));
 
-      desktop = UnoRuntime.queryInterface(XDesktop.class,
+      desktop = UnoRuntime.queryInterface(
+          XDesktop.class,
           xMCF.createInstanceWithContext("com.sun.star.frame.Desktop",
               defaultContext));
 
@@ -481,22 +503,19 @@ public class UNO
           XBrowseNodeFactory.class,
           defaultContext.getValueByName(
               "/singletons/com.sun.star.script.browse.theBrowseNodeFactory"));
-      scriptRoot = new BrowseNode(masterBrowseNodeFac
-          .createView(BrowseNodeFactoryViewTypes.MACROORGANIZER));
+      scriptRoot = new BrowseNode(masterBrowseNodeFac.createView(BrowseNodeFactoryViewTypes.MACROORGANIZER));
 
       XScriptProviderFactory masterProviderFac = UnoRuntime.queryInterface(
           XScriptProviderFactory.class,
           defaultContext.getValueByName(
               "/singletons/com.sun.star.script.provider.theMasterScriptProviderFactory"));
-      masterScriptProvider = masterProviderFac
-          .createScriptProvider(defaultContext);
+      masterScriptProvider = masterProviderFac.createScriptProvider(defaultContext);
 
-      dbContext = UNO.XNamingService(
-          UnoComponent.createComponentWithContext(UnoComponent.CSS_SDB_DATABASE_CONTEXT));
-      urlTransformer = UNO.XURLTransformer(
-          UnoComponent.createComponentWithContext(UnoComponent.CSS_UTIL_URL_TRANSFORMER));
-      dispatchHelper = UNO.XDispatchHelper(
-          UnoComponent.createComponentWithContext(UnoComponent.CSS_FRAME_DISPATCH_HELPER));
+      dbContext = UNO.XNamingService(UnoComponent.createComponentWithContext(UnoComponent.CSS_SDB_DATABASE_CONTEXT));
+      urlTransformer = UNO
+          .XURLTransformer(UnoComponent.createComponentWithContext(UnoComponent.CSS_UTIL_URL_TRANSFORMER));
+      dispatchHelper = UNO
+          .XDispatchHelper(UnoComponent.createComponentWithContext(UnoComponent.CSS_FRAME_DISPATCH_HELPER));
     }
     catch (IllegalArgumentException | com.sun.star.uno.Exception e)
     {
@@ -1292,10 +1311,46 @@ public class UNO
     return UnoRuntime.queryInterface(XColumnRowRange.class, o);
   }
 
+  /**
+   * Get {@link XDeck} Interface from Object.
+   * 
+   * @param o
+   *          Object.
+   * @return Returns XDeck Interface.
+   */
+  public static XDeck XDeck(Object o)
+  {
+    return UnoRuntime.queryInterface(XDeck.class, o);
+  }
+
   /** Holt {@link XIndexAccess} Interface von o. */
   public static XIndexAccess XIndexAccess(Object o)
   {
     return UnoRuntime.queryInterface(XIndexAccess.class, o);
+  }
+
+  /**
+   * Get {@link XControlContainer} Interface from Object.
+   * 
+   * @param o
+   *          Object.
+   * @return Returns {@link XControlContainer} Interface.
+   */
+  public static XControlContainer XControlContainer(Object o)
+  {
+    return UnoRuntime.queryInterface(XControlContainer.class, o);
+  }
+
+  /**
+   * Get {@link XControlModel} Interface from Object.
+   * 
+   * @param o
+   *          Object.
+   * @return Returns {@link XControlModel} Interface.
+   */
+  public static XControlModel XControlModel(Object o)
+  {
+    return UnoRuntime.queryInterface(XControlModel.class, o);
   }
 
   /** Holt {@link XCellRange} Interface von o. */
@@ -1394,6 +1449,18 @@ public class UNO
     return UnoRuntime.queryInterface(XController.class, o);
   }
 
+  /**
+   * Get {@link XController2} Interface from Object.
+   * 
+   * @param o
+   *          Object.
+   * @return Returns {@link XController2} Interfaae.
+   */
+  public static XController2 XController2(Object o)
+  {
+    return UnoRuntime.queryInterface(XController2.class, o);
+  }
+
   /** Holt {@link XTextField} Interface von o. */
   public static XTextField XTextField(Object o)
   {
@@ -1478,6 +1545,42 @@ public class UNO
     return UnoRuntime.queryInterface(XPrintable.class, o);
   }
 
+  /**
+   * Get {@link XTabPage} Interface from Object.
+   * 
+   * @param o
+   *          Object.
+   * @return Returns {@link XTabPage} Interface.
+   */
+  public static XTabPage XTabPage(Object o)
+  {
+    return UnoRuntime.queryInterface(XTabPage.class, o);
+  }
+
+  /**
+   * Get {@link XTabPageContainer} Interface from Object.
+   * 
+   * @param o
+   *          Object.
+   * @return Returns {@link XTabPageContainer} Interface.
+   */
+  public static XTabPageContainer XTabPageContainer(Object o)
+  {
+    return UnoRuntime.queryInterface(XTabPageContainer.class, o);
+  }
+
+  /**
+   * Get {@link XTabPageContainerModel} Interface from Object.
+   * 
+   * @param o
+   *          Object.
+   * @return Returns {@link XTabPageContainerModel} Interface.
+   */
+  public static XTabPageContainerModel XTabPageContainerModel(Object o)
+  {
+    return UnoRuntime.queryInterface(XTabPageContainerModel.class, o);
+  }
+
   /** Holt {@link XTextDocument} Interface von o. */
   public static XTextDocument XTextDocument(Object o)
   {
@@ -1548,6 +1651,18 @@ public class UNO
   public static XNameContainer XNameContainer(Object o)
   {
     return UnoRuntime.queryInterface(XNameContainer.class, o);
+  }
+
+  /**
+   * Get {@link XMultiComponentFactory} Interface from Object.
+   * 
+   * @param o
+   *          Object.
+   * @return Returns XMultiComponentFactory Interface.
+   */
+  public static XMultiComponentFactory XMultiComponentFactory(Object o)
+  {
+    return UnoRuntime.queryInterface(XMultiComponentFactory.class, o);
   }
 
   /** Holt {@link XMultiServiceFactory} Interface von o. */
@@ -1740,6 +1855,18 @@ public class UNO
   public static XAcceleratorConfiguration XAcceleratorConfiguration(Object o)
   {
     return UnoRuntime.queryInterface(XAcceleratorConfiguration.class, o);
+  }
+
+  /**
+   * Get {@link XAccessible} Interface from Object.
+   * 
+   * @param o
+   *          Object.
+   * @return Returns XAccessible Interface.
+   */
+  public static XAccessible XAccessible(Object o)
+  {
+    return UnoRuntime.queryInterface(XAccessible.class, o);
   }
 
   /**
