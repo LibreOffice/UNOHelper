@@ -54,6 +54,7 @@ public final class UnoProperty
   public static final String DATA_TABLE_NAME = "DataTableName";
   public static final String DECIMAL_ACCURACY = "DecimalAccuracy";
   public static final String DECIMAL_DELIMITER = "DecimalDelimiter";
+  public static final String DEFAULT_CONTROL = "DefaultControl";
   public static final String DOCUMENT_URL = "DocumentURL";
   public static final String DROPDOWN = "Dropdown";
   public static final String EMPTY_PAGES = "EmptyPages";
@@ -68,6 +69,7 @@ public final class UnoProperty
   public static final String FOLLOW_STYLE = "FollowStyle";
   public static final String FRAME_IS_AUTOMATIC_HEIGHT = "FrameIsAutomaticHeight";
   public static final String HEADER_LINE = "HeaderLine";
+  public static final String HEIGHT = "Height";
   public static final String HELP_TEXT = "HelpText";
   public static final String HIDE_INACTIVE_SELECTION = "HideInactiveSelection";
   public static final String HINT = "Hint";
@@ -93,6 +95,7 @@ public final class UnoProperty
   public static final String LOAD_TEXT_STYLES = "LoadTextStyles";
   public static final String MAX_VALUE = "MaxValue";
   public static final String MIN_VALUE = "MinValue";
+  public static final String MULTILINE = "MultiLine";
   public static final String NAME = "Name";
   public static final String NODEPATH = "nodepath";
   public static final String OO_SETUP_EXTENSION = "ooSetupExtension";
@@ -106,6 +109,8 @@ public final class UnoProperty
   public static final String PARA_FIRST_LINE_INDENT = "ParaFirstLineIndent";
   public static final String PARA_STYLE_NAME = "ParaStyleName";
   public static final String PARA_TOP_MARGIN = "ParaTopMargin";
+  public static final String POSITION_X = "PositionX";
+  public static final String POSITION_Y = "PositionY";
   public static final String PRINT_EMPTY_PAGES = "PrintEmptypages";
   public static final String RECORD_CHANGES = "RecordChanges";
   public static final String RIGHT_BORDER = "RightBorder";
@@ -119,6 +124,7 @@ public final class UnoProperty
   public static final String STATE = "State";
   public static final String STRING_DELIMITER = "StringDelimiter";
   public static final String TABINDEX = "TabIndex";
+  public static final String TEXT = "Text";
   public static final String TEXT_COLOR = "TextColor";
   public static final String TEXT_FIELD = "TextField";
   public static final String TEXT_PROTION_TYPE = "TextPortionType";
@@ -135,6 +141,7 @@ public final class UnoProperty
   public static final String VERT_ORIENT_POSITION = "VertOrientPosition";
   public static final String VERT_ORIENT_RELATION = "VertOrientRelation";
   public static final String WAIT = "Wait";
+  public static final String WIDTH = "Width";
   public static final String WORK = "Work";
   public static final String ZOOM_TYPE = "ZoomType";
   public static final String ZOOM_VALUE = "ZoomValue";
