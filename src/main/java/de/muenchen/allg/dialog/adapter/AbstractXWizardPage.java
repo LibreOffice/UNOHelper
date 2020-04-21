@@ -6,9 +6,9 @@ import com.sun.star.awt.XWindowPeer;
 import com.sun.star.lang.XEventListener;
 import com.sun.star.ui.dialogs.XWizardPage;
 import com.sun.star.uno.Exception;
-import com.sun.star.uno.UnoRuntime;
 
 import de.muenchen.allg.afid.UNO;
+import de.muenchen.allg.util.UnoComponent;
 
 /**
  * Provides default implementations of standard methods for the {@link XWizardPage}.
@@ -45,8 +45,8 @@ public abstract class AbstractXWizardPage implements XWizardPage
     XWindowPeer peer = UNO.XWindowPeer(parentWindow);
     XContainerWindowProvider provider;
 
-    provider = UnoRuntime.queryInterface(XContainerWindowProvider.class, UNO.xMCF
-        .createInstanceWithContext("com.sun.star.awt.ContainerWindowProvider", UNO.defaultContext));
+    provider = UNO.XContainerWindowProvider(
+        UnoComponent.createComponentWithContext(UnoComponent.CSS_AWT_CONTAINER_WINDOW_PROVIDER));
     window = provider.createContainerWindow(dialogDescritpion, "", peer, null);
   }
 

@@ -13,6 +13,7 @@ import de.muenchen.allg.afid.UnoHelperRuntimeException;
 public final class UnoComponent
 {
 
+  public static final String CSS_AWT_CONTAINER_WINDOW_PROVIDER = "com.sun.star.awt.ContainerWindowProvider";
   public static final String CSS_AWT_TAB_UNO_CONTROL_TAB_PAGE = "com.sun.star.awt.tab.UnoControlTabPage";
   public static final String CSS_AWT_TAB_UNO_CONTROL_TAB_PAGE_CONTAINER = "com.sun.star.awt.tab.UnoControlTabPageContainer";
   public static final String CSS_AWT_TAB_UNO_CONTROL_TAB_PAGE_CONTAINER_MODEL = "com.sun.star.awt.tab.UnoControlTabPageContainerModel";
@@ -32,6 +33,7 @@ public final class UnoComponent
   public static final String CSS_AWT_UNO_CONTROL_NUMERIC_FIELD = "com.sun.star.awt.UnoControlNumericField";
   public static final String CSS_BRIDGE_UNO_URL_RESOLVER = "com.sun.star.bridge.UnoUrlResolver";
   public static final String CSS_CONFIGURATION_CONFIGURATION_PROVIDER = "com.sun.star.configuration.ConfigurationProvider";
+  public static final String CSS_FRAME_DESKTOP = "com.sun.star.frame.Desktop";
   public static final String CSS_FRAME_DISPATCH_HELPER = "com.sun.star.frame.DispatchHelper";
   public static final String CSS_SDB_DATABASE_CONTEXT = "com.sun.star.sdb.DatabaseContext";
   public static final String CSS_SDB_ROW_SET = "com.sun.star.sdb.RowSet";
