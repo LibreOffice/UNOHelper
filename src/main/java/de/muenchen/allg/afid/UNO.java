@@ -347,183 +347,160 @@ import de.muenchen.allg.util.UnoProperty;
 import de.muenchen.allg.util.UnoService;
 
 /**
- * Hilfsklasse zur leichteren Verwendung der UNO API. * @author BNK
- *
+ * Helper for querying Interfaces.
  */
 @SuppressWarnings("squid:S00100")
 public class UNO
 {
 
-  private UNO()
-  {
-
-  }
+  private static final String CANT_CONNECT_TO_OFFICE = "Can't connect to Office.";
 
   /**
-   * Der Haupt-ServiceManager.
+   * Main component factory.
    */
   public static XMultiComponentFactory xMCF;
 
   /**
-   * Der Haupt-ServiceManager.
+   * Main service factory.
    */
   public static XMultiServiceFactory xMSF;
 
   /**
-   * Das "DefaultContext" Property des Haupt-ServiceManagers.
+   * Context of {@link #xMCF}.
    */
   public static XComponentContext defaultContext;
 
   /**
-   * Der globale com.sun.star.sdb.DatabaseContext.
+   * The global {@link DatabaseContext}.
    */
   public static XNamingService dbContext;
 
   /**
-   * Ein com.sun.star.util.URLTransformer.
+   * A transformer for URLs.
    */
   public static XURLTransformer urlTransformer;
 
   /**
-   * Ein com.sun.star.frame.XDispatchHelper.
+   * A dispatcher.
    */
   public static XDispatchHelper dispatchHelper;
 
   /**
-   * Der Desktop.
+   * The main application.
    */
   public static XDesktop desktop;
 
   /**
-   * Komponenten-spezifische Methoden arbeiten defaultmässig mit dieser
-   * Komponente. Wird von manchen Methoden geändert, ist aber ansonsten der
-   * Kontroller des Programmierers überlassen.
+   * Component based methods use this instance. Should be controlled by the user.
    */
   public static XComponent compo;
 
   /**
-   * Der {@link BrowseNode}, der die Wurzel des gesamten Skript-Baumes bildet.
+   * The root of all scripts.
    */
   public static BrowseNode scriptRoot;
 
   /**
-   * Der Haupt-ScriptProvider.
+   * The provider of scripts.
    */
   public static XScriptProvider masterScriptProvider;
 
   /**
-   * Enthält den configurationProvider, falls er bereits mit
-   * getConfigurationProvider erzeugt wurde.
+   * Provides access to the configuration.
    */
   private static Object configurationProvider;
 
+  private UNO()
+  {
+    // hide constructor
+  }
+
   /**
-   * Stellt die Verbindung mit OpenOffice her unter expliziter Angabe der
-   * Verbindungsparameter. Einfacher geht's mit {@link #init()}.
-   * 
+   * Initialize connection to Office.
+   *
    * @param connectionString
-   *                           z.B.
-   *                           "uno:socket,host=localhost,port=8100;urp;StarOffice.ServiceManager"
+   *          The connection parameters (eg
+   *          "uno:socket,host=localhost,port=8100;urp;StarOffice.ServiceManager")
    * @throws UnoHelperException
-   *                     falls was schief geht.
-   * @see #init()
+   *           Can't connect to Office.
    */
   public static void init(String connectionString) throws UnoHelperException
   {
     try
     {
-      XComponentContext xLocalContext = Bootstrap
-          .createInitialComponentContext(null);
+      XComponentContext xLocalContext = Bootstrap.createInitialComponentContext(null);
       XMultiComponentFactory xLocalFactory = xLocalContext.getServiceManager();
-      XUnoUrlResolver xUrlResolver = UNO.XUnoUrlResolver(
-          UnoComponent.createComponentWithContext(UnoComponent.CSS_BRIDGE_UNO_URL_RESOLVER, xLocalFactory, xLocalContext));
+      XUnoUrlResolver xUrlResolver = UNO.XUnoUrlResolver(UnoComponent
+          .createComponentWithContext(UnoComponent.CSS_BRIDGE_UNO_URL_RESOLVER, xLocalFactory, xLocalContext));
       init(xUrlResolver.resolve(connectionString));
-    }
-    catch (Exception e)
+    } catch (Exception e)
     {
-      throw new UnoHelperException(
-          "Verbindung zu Office konnte nicht hergestellt werden.", e);
+      throw new UnoHelperException(CANT_CONNECT_TO_OFFICE, e);
     }
   }
 
   /**
-   * Stellt die Verbindung mit OpenOffice her und verwendet die angegebenen
-   * Parameter.
+   * Initialize connection to Office.
    *
    * @param options
-   *          Die Parameter für den Verbindungsaufbau.
-   *
+   *          The connection parameters (see <a href=
+   *          "https://help.libreoffice.org/4.0/Common/Starting_the_Software_With_Parameters">
+   *          Starting_the_Software_With_Parameters</a>)
    * @throws UnoHelperException
-   *           falls was schief geht.
+   *           Can't connect to Office.
    */
   public static void init(List<String> options) throws UnoHelperException
   {
     try
     {
-      init(Bootstrap.bootstrap(options.toArray(new String[options.size()]))
-          .getServiceManager());
+      init(Bootstrap.bootstrap(options.toArray(new String[options.size()])).getServiceManager());
     } catch (Exception e)
     {
-      throw new UnoHelperException(
-          "Verbindung zu Office konnte nicht hergestellt werden.", e);
+      throw new UnoHelperException(CANT_CONNECT_TO_OFFICE, e);
     }
   }
 
   /**
-   * Stellt die Verbindung mit OpenOffice her. Die Verbindungsparameter werden
-   * automagisch ermittelt.
+   * Initialize connection to Office with default parameters.
    *
    * @throws UnoHelperException
-   *                     falls was schief geht.
+   *           Can't connect to Office.
    */
   public static void init() throws UnoHelperException
   {
     try
     {
       init(Bootstrap.bootstrap().getServiceManager());
-    }
-    catch (Exception e)
+    } catch (Exception e)
     {
-      throw new UnoHelperException(
-          "Verbindung zu Office konnte nicht hergestellt werden.", e);
+      throw new UnoHelperException(CANT_CONNECT_TO_OFFICE, e);
     }
   }
 
   /**
-   * Initialisiert die statischen Felder dieser Klasse ausgehend für eine
-   * existierende Verbindung.
-   * 
+   * Initialize connection to Office.
+   *
    * @param remoteServiceManager
-   *                               der Haupt-ServiceManager.
+   *          Running Office instance.
    * @throws UnoHelperException
-   *                     falls was schief geht.
+   *           Can't connect to Office.
    */
   public static void init(Object remoteServiceManager) throws UnoHelperException
   {
     try
     {
-      xMCF = UnoRuntime.queryInterface(XMultiComponentFactory.class, remoteServiceManager);
-      xMSF = UnoRuntime.queryInterface(XMultiServiceFactory.class, xMCF);
-      defaultContext = UnoRuntime.queryInterface(
-          XComponentContext.class,
-          (UnoRuntime.queryInterface(XPropertySet.class, xMCF))
-              .getPropertyValue("DefaultContext"));
+      xMCF = UNO.XMultiComponentFactory(remoteServiceManager);
+      xMSF = UNO.XMultiServiceFactory(xMCF);
+      defaultContext = UNO.XComponentContext(UnoProperty.getProperty(xMCF, UnoProperty.DEFAULT_CONTEXT));
 
-      desktop = UnoRuntime.queryInterface(
-          XDesktop.class,
-          xMCF.createInstanceWithContext("com.sun.star.frame.Desktop",
-              defaultContext));
+      desktop = UNO.XDesktop(UnoComponent.createComponentWithContext(UnoComponent.CSS_FRAME_DESKTOP));
 
-      XBrowseNodeFactory masterBrowseNodeFac = UnoRuntime.queryInterface(
-          XBrowseNodeFactory.class,
-          defaultContext.getValueByName(
-              "/singletons/com.sun.star.script.browse.theBrowseNodeFactory"));
+      XBrowseNodeFactory masterBrowseNodeFac = UnoRuntime.queryInterface(XBrowseNodeFactory.class,
+          defaultContext.getValueByName("/singletons/com.sun.star.script.browse.theBrowseNodeFactory"));
       scriptRoot = new BrowseNode(masterBrowseNodeFac.createView(BrowseNodeFactoryViewTypes.MACROORGANIZER));
 
-      XScriptProviderFactory masterProviderFac = UnoRuntime.queryInterface(
-          XScriptProviderFactory.class,
-          defaultContext.getValueByName(
-              "/singletons/com.sun.star.script.provider.theMasterScriptProviderFactory"));
+      XScriptProviderFactory masterProviderFac = UnoRuntime.queryInterface(XScriptProviderFactory.class,
+          defaultContext.getValueByName("/singletons/com.sun.star.script.provider.theMasterScriptProviderFactory"));
       masterScriptProvider = masterProviderFac.createScriptProvider(defaultContext);
 
       dbContext = UNO.XNamingService(UnoComponent.createComponentWithContext(UnoComponent.CSS_SDB_DATABASE_CONTEXT));
@@ -531,11 +508,9 @@ public class UNO
           .XURLTransformer(UnoComponent.createComponentWithContext(UnoComponent.CSS_UTIL_URL_TRANSFORMER));
       dispatchHelper = UNO
           .XDispatchHelper(UnoComponent.createComponentWithContext(UnoComponent.CSS_FRAME_DISPATCH_HELPER));
-    }
-    catch (IllegalArgumentException | com.sun.star.uno.Exception e)
+    } catch (IllegalArgumentException e)
     {
-      throw new UnoHelperException(
-          "Verbindung zu Office konnte nicht hergestellt werden.", e);
+      throw new UnoHelperException(CANT_CONNECT_TO_OFFICE, e);
     }
   }
 
@@ -711,8 +686,10 @@ public class UNO
     
     try
     {
-      Object fileContentProvider = UNO.xMCF.createInstanceWithContext("com.sun.star.ucb.FileContentProvider", UNO.defaultContext);
-      XFileIdentifierConverter xFileConverter = UnoRuntime.queryInterface(XFileIdentifierConverter.class, fileContentProvider);
+      Object fileContentProvider = UNO.xMCF.createInstanceWithContext("com.sun.star.ucb.FileContentProvider",
+          UNO.defaultContext);
+      XFileIdentifierConverter xFileConverter = UnoRuntime.queryInterface(XFileIdentifierConverter.class,
+          fileContentProvider);
       resultURL = xFileConverter.getFileURLFromSystemPath("", filePath);
     } catch (Exception e)
     {
@@ -1182,145 +1159,301 @@ public class UNO
     return UnoComponent.createComponentWithContext(serviceName);
   }
 
-  /** Holt {@link XSingleServiceFactory} Interface von o. */
+  /**
+   * Get {@link XComponentContext} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XComponentContext Interface.
+   */
+  public static XComponentContext XComponentContext(Object o)
+  {
+    return UnoRuntime.queryInterface(XComponentContext.class, o);
+  }
+
+  /**
+   * Get {@link XSingleServiceFactory} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XSingleServiceFactory Interface.
+   */
   public static XSingleServiceFactory XSingleServiceFactory(Object o)
   {
     return UnoRuntime.queryInterface(XSingleServiceFactory.class, o);
   }
 
-  /** Holt {@link XViewSettingsSupplier} Interface von o. */
+  /**
+   * Get {@link XViewSettingsSupplier} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XViewSettingsSupplier Interface.
+   */
   public static XViewSettingsSupplier XViewSettingsSupplier(Object o)
   {
     return UnoRuntime.queryInterface(XViewSettingsSupplier.class, o);
   }
 
-  /** Holt {@link XStorable} Interface von o. */
+  /**
+   * Get {@link XStorable} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XStorable Interface.
+   */
   public static XStorable XStorable(Object o)
   {
     return UnoRuntime.queryInterface(XStorable.class, o);
   }
 
-  /** Holt {@link XAutoTextContainer} Interface von o. */
+  /**
+   * Get {@link XAutoTextContainer} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XAutoTextContainer Interface.
+   */
   public static XAutoTextContainer XAutoTextContainer(Object o)
   {
     return UnoRuntime.queryInterface(XAutoTextContainer.class, o);
   }
 
-  /** Holt {@link XAutoTextGroup} Interface von o. */
+  /**
+   * Get {@link XAutoTextGroup} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XAutoTextGroup Interface.
+   */
   public static XAutoTextGroup XAutoTextGroup(Object o)
   {
     return UnoRuntime.queryInterface(XAutoTextGroup.class, o);
   }
 
-  /** Holt {@link XAutoTextEntry} Interface von o. */
+  /**
+   * Get {@link XAutoTextEntry} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XAutoTextEntry Interface.
+   */
   public static XAutoTextEntry XAutoTextEntry(Object o)
   {
     return UnoRuntime.queryInterface(XAutoTextEntry.class, o);
   }
 
-  /** Holt {@link XShape} Interface von o. */
+  /**
+   * Get {@link XShape} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XShape Interface.
+   */
   public static XShape XShape(Object o)
   {
     return UnoRuntime.queryInterface(XShape.class, o);
   }
 
-  /** Holt {@link XTopWindow} Interface von o. */
+  /**
+   * Get {@link XTopWindow} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XTopWindow Interface.
+   */
   public static XTopWindow XTopWindow(Object o)
   {
     return UnoRuntime.queryInterface(XTopWindow.class, o);
   }
 
-  /** Holt {@link XCloseable} Interface von o. */
+  /**
+   * Get {@link XCloseable} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XCloseable Interface.
+   */
   public static XCloseable XCloseable(Object o)
   {
     return UnoRuntime.queryInterface(XCloseable.class, o);
   }
 
-  /** Holt {@link XCloseBroadcaster} Interface von o. */
+  /**
+   * Get {@link XCloseBroadcaster} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XCloseBroadcaster Interface.
+   */
   public static XCloseBroadcaster XCloseBroadcaster(Object o)
   {
     return UnoRuntime.queryInterface(XCloseBroadcaster.class, o);
   }
 
-  /** Holt {@link XStorageBasedDocument} Interface von o. */
+  /**
+   * Get {@link XStorageBasedDocument} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XStorageBasedDocument Interface.
+   */
   public static XStorageBasedDocument XStorageBasedDocument(Object o)
   {
     return UnoRuntime.queryInterface(XStorageBasedDocument.class, o);
   }
 
-  /** Holt {@link XWindow2} Interface von o. */
+  /**
+   * Get {@link XWindow2} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XWindow2 Interface.
+   */
   public static XWindow2 XWindow2(Object o)
   {
     return UnoRuntime.queryInterface(XWindow2.class, o);
   }
 
-  /** Holt {@link XTextFramesSupplier} Interface von o. */
+  /**
+   * Get {@link XTextFramesSupplier} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XTextFramesSupplier Interface.
+   */
   public static XTextFramesSupplier XTextFramesSupplier(Object o)
   {
     return UnoRuntime.queryInterface(XTextFramesSupplier.class, o);
   }
 
-  /** Holt {@link XTextGraphicObjectsSupplier} Interface von o. */
+  /**
+   * Get {@link XTextGraphicObjectsSupplier} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XTextGraphicObjectsSupplier Interface.
+   */
   public static XTextGraphicObjectsSupplier XTextGraphicObjectsSupplier(Object o)
   {
     return UnoRuntime.queryInterface(XTextGraphicObjectsSupplier.class, o);
   }
 
-  /** Holt {@link XTextFrame} Interface von o. */
+  /**
+   * Get {@link XTextFrame} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XTextFrame Interface.
+   */
   public static XTextFrame XTextFrame(Object o)
   {
     return UnoRuntime.queryInterface(XTextFrame.class, o);
   }
 
-  /** Holt {@link XTextFieldsSupplier} Interface von o. */
+  /**
+   * Get {@link XTextFieldsSupplier} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XTextFieldsSupplier Interface.
+   */
   public static XTextFieldsSupplier XTextFieldsSupplier(Object o)
   {
     return UnoRuntime.queryInterface(XTextFieldsSupplier.class, o);
   }
 
-  /** Holt {@link XComponent} Interface von o. */
+  /**
+   * Get {@link XComponent} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XComponent Interface.
+   */
   public static XComponent XComponent(Object o)
   {
     return UnoRuntime.queryInterface(XComponent.class, o);
   }
 
-  /** Holt {@link XEventBroadcaster} Interface von o. */
+  /**
+   * Get {@link XEventBroadcaster} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XEventBroadcaster Interface.
+   */
   public static XEventBroadcaster XEventBroadcaster(Object o)
   {
     return UnoRuntime.queryInterface(XEventBroadcaster.class, o);
   }
 
-  /** Holt {@link XBrowseNode} Interface von o. */
+  /**
+   * Get {@link XBrowseNode} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XBrowseNode Interface.
+   */
   public static XBrowseNode XBrowseNode(Object o)
   {
     return UnoRuntime.queryInterface(XBrowseNode.class, o);
   }
 
-  /** Holt {@link XCellRangeData} Interface von o. */
+  /**
+   * Get {@link XCellRangeData} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XCellRangeData Interface.
+   */
   public static XCellRangeData XCellRangeData(Object o)
   {
     return UnoRuntime.queryInterface(XCellRangeData.class, o);
   }
 
-  /** Holt {@link XCell} Interface von o. */
+  /**
+   * Get {@link XCell} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XCell Interface.
+   */
   public static XCell XCell(Object o)
   {
     return UnoRuntime.queryInterface(XCell.class, o);
   }
 
-  /** Holt {@link XColumnsSupplier} Interface von o. */
+  /**
+   * Get {@link XColumnsSupplier} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XColumnsSupplier Interface.
+   */
   public static XColumnsSupplier XColumnsSupplier(Object o)
   {
     return UnoRuntime.queryInterface(XColumnsSupplier.class, o);
   }
 
-  /** Holt {@link XTableColumns} Interface von o. */
+  /**
+   * Get {@link XTableColumns} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XTableColumns Interface.
+   */
   public static XTableColumns XTableColumns(Object o)
   {
     return UnoRuntime.queryInterface(XTableColumns.class, o);
   }
 
-  /** Holt {@link XColumnRowRange} Interface von o. */
+  /**
+   * Get {@link XColumnRowRange} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XColumnRowRange Interface.
+   */
   public static XColumnRowRange XColumnRowRange(Object o)
   {
     return UnoRuntime.queryInterface(XColumnRowRange.class, o);
@@ -1328,7 +1461,7 @@ public class UNO
 
   /**
    * Get {@link XDeck} Interface from Object.
-   * 
+   *
    * @param o
    *          Object.
    * @return Returns XDeck Interface.
@@ -1338,7 +1471,13 @@ public class UNO
     return UnoRuntime.queryInterface(XDeck.class, o);
   }
 
-  /** Holt {@link XIndexAccess} Interface von o. */
+  /**
+   * Get {@link XIndexAccess} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns {@link XIndexAccess} Interface.
+   */
   public static XIndexAccess XIndexAccess(Object o)
   {
     return UnoRuntime.queryInterface(XIndexAccess.class, o);
@@ -1346,7 +1485,7 @@ public class UNO
 
   /**
    * Get {@link XControlContainer} Interface from Object.
-   * 
+   *
    * @param o
    *          Object.
    * @return Returns {@link XControlContainer} Interface.
@@ -1358,7 +1497,7 @@ public class UNO
 
   /**
    * Get {@link XControlModel} Interface from Object.
-   * 
+   *
    * @param o
    *          Object.
    * @return Returns {@link XControlModel} Interface.
@@ -1368,97 +1507,193 @@ public class UNO
     return UnoRuntime.queryInterface(XControlModel.class, o);
   }
 
-  /** Holt {@link XCellRange} Interface von o. */
+  /**
+   * Get {@link XCellRange} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns {@link XCellRange} Interfaae.
+   */
   public static XCellRange XCellRange(Object o)
   {
     return UnoRuntime.queryInterface(XCellRange.class, o);
   }
 
-  /** Holt {@link XUserInputInterception} Interface von o. */
+  /**
+   * Get {@link XUserInputInterception} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns {@link XUserInputInterception} Interfaae.
+   */
   public static XUserInputInterception XUserInputInterception(Object o)
   {
     return UnoRuntime.queryInterface(XUserInputInterception.class, o);
   }
 
-  /** Holt {@link XModifiable} Interface von o. */
+  /**
+   * Get {@link XModifiable} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns {@link XModifiable} Interfaae.
+   */
   public static XModifiable XModifiable(Object o)
   {
     return UnoRuntime.queryInterface(XModifiable.class, o);
   }
 
-  /** Holt {@link XRow} Interface von o. */
+  /**
+   * Get {@link XRow} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns {@link XRow} Interfaae.
+   */
   public static XRow XRow(Object o)
   {
     return UnoRuntime.queryInterface(XRow.class, o);
   }
 
-  /** Holt {@link XCellRangesQuery} Interface von o. */
+  /**
+   * Get {@link XCellRangesQuery} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns {@link XCellRangesQuery} Interfaae.
+   */
   public static XCellRangesQuery XCellRangesQuery(Object o)
   {
     return UnoRuntime.queryInterface(XCellRangesQuery.class, o);
   }
 
-  /** Holt {@link XDocumentDataSource} Interface von o. */
+  /**
+   * Get {@link XDocumentDataSource} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns {@link XDocumentDataSource} Interfaae.
+   */
   public static XDocumentDataSource XDocumentDataSource(Object o)
   {
     return UnoRuntime.queryInterface(XDocumentDataSource.class, o);
   }
 
-  /** Holt {@link XDataSource} Interface von o. */
+  /**
+   * Get {@link XDataSource} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns {@link XDataSource} Interfaae.
+   */
   public static XDataSource XDataSource(Object o)
   {
     return UnoRuntime.queryInterface(XDataSource.class, o);
   }
 
-  /** Holt {@link XTablesSupplier} Interface von o. */
+  /**
+   * Get {@link XTablesSupplier} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns {@link XTablesSupplier} Interfaae.
+   */
   public static XTablesSupplier XTablesSupplier(Object o)
   {
     return UnoRuntime.queryInterface(XTablesSupplier.class, o);
   }
 
-  /** Holt {@link XQueriesSupplier} Interface von o. */
+  /**
+   * Get {@link XQueriesSupplier} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns {@link XQueriesSupplier} Interfaae.
+   */
   public static XQueriesSupplier XQueriesSupplier(Object o)
   {
     return UnoRuntime.queryInterface(XQueriesSupplier.class, o);
   }
 
-  /** Holt {@link XNamingService} Interface von o. */
+  /**
+   * Get {@link XNamingService} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns {@link XNamingService} Interfaae.
+   */
   public static XNamingService XNamingService(Object o)
   {
     return UnoRuntime.queryInterface(XNamingService.class, o);
   }
 
-  /** Holt {@link XNamed} Interface von o. */
+  /**
+   * Get {@link XNamed} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns {@link XNamed} Interfaae.
+   */
   public static XNamed XNamed(Object o)
   {
     return UnoRuntime.queryInterface(XNamed.class, o);
   }
 
-  /** Holt {@link XUnoUrlResolver} Interface von o. */
+  /**
+   * Get {@link XUnoUrlResolver} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns {@link XUnoUrlResolver} Interfaae.
+   */
   public static XUnoUrlResolver XUnoUrlResolver(Object o)
   {
     return UnoRuntime.queryInterface(XUnoUrlResolver.class, o);
   }
 
-  /** Holt {@link XMultiPropertySet} Interface von o. */
+  /**
+   * Get {@link XMultiPropertySet} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns {@link XMultiPropertySet} Interfaae.
+   */
   public static XMultiPropertySet XMultiPropertySet(Object o)
   {
     return UnoRuntime.queryInterface(XMultiPropertySet.class, o);
   }
 
-  /** Holt {@link XPropertySet} Interface von o. */
+  /**
+   * Get {@link XPropertySet} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns {@link XPropertySet} Interfaae.
+   */
   public static XPropertySet XPropertySet(Object o)
   {
     return UnoRuntime.queryInterface(XPropertySet.class, o);
   }
 
-  /** Holt {@link XModel} Interface von o. */
+  /**
+   * Get {@link XModel} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns {@link XModel} Interfaae.
+   */
   public static XModel XModel(Object o)
   {
     return UnoRuntime.queryInterface(XModel.class, o);
   }
 
-  /** Holt {@link XController} Interface von o. */
+  /**
+   * Get {@link XController} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns {@link XController} Interfaae.
+   */
   public static XController XController(Object o)
   {
     return UnoRuntime.queryInterface(XController.class, o);
@@ -1466,7 +1701,7 @@ public class UNO
 
   /**
    * Get {@link XController2} Interface from Object.
-   * 
+   *
    * @param o
    *          Object.
    * @return Returns {@link XController2} Interfaae.
@@ -1476,85 +1711,169 @@ public class UNO
     return UnoRuntime.queryInterface(XController2.class, o);
   }
 
-  /** Holt {@link XTextField} Interface von o. */
+  /**
+   * Get {@link XTextField} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns {@link XTextField} Interface.
+   */
   public static XTextField XTextField(Object o)
   {
     return UnoRuntime.queryInterface(XTextField.class, o);
   }
 
-  /** Holt {@link XDocumentInsertable} Interface von o. */
+  /**
+   * Get {@link XDocumentInsertable} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns {@link XDocumentInsertable} Interface.
+   */
   public static XDocumentInsertable XDocumentInsertable(Object o)
   {
     return UnoRuntime.queryInterface(XDocumentInsertable.class, o);
   }
 
-  /** Holt {@link XModifyBroadcaster} Interface von o. */
+  /**
+   * Get {@link XModifyBroadcaster} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns {@link XModifyBroadcaster} Interface.
+   */
   public static XModifyBroadcaster XModifyBroadcaster(Object o)
   {
     return UnoRuntime.queryInterface(XModifyBroadcaster.class, o);
   }
 
-  /** Holt {@link XScriptProvider} Interface von o. */
+  /**
+   * Get {@link XScriptProvider} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns {@link XScriptProvider} Interface.
+   */
   public static XScriptProvider XScriptProvider(Object o)
   {
     return UnoRuntime.queryInterface(XScriptProvider.class, o);
   }
 
-  /** Holt {@link XSpreadsheet} Interface von o. */
+  /**
+   * Get {@link XSpreadsheet} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns {@link XSpreadsheet} Interface.
+   */
   public static XSpreadsheet XSpreadsheet(Object o)
   {
     return UnoRuntime.queryInterface(XSpreadsheet.class, o);
   }
 
-  /** Holt {@link XModuleUIConfigurationManagerSupplier} Interface von o. */
+  /**
+   * Get {@link XModuleUIConfigurationManagerSupplier} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns {@link XModuleUIConfigurationManagerSupplier} Interface.
+   */
   public static XModuleUIConfigurationManagerSupplier XModuleUIConfigurationManagerSupplier(Object o)
   {
     return UnoRuntime.queryInterface(XModuleUIConfigurationManagerSupplier.class, o);
   }
 
-  /** Holt {@link XText} Interface von o. */
+  /**
+   * Get {@link XText} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns {@link XText} Interface.
+   */
   public static XText XText(Object o)
   {
     return UnoRuntime.queryInterface(XText.class, o);
   }
 
-  /** Holt {@link XTextTable} Interface von o. */
+  /**
+   * Get {@link XTextTable} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns {@link XTextTable} Interface.
+   */
   public static XTextTable XTextTable(Object o)
   {
     return UnoRuntime.queryInterface(XTextTable.class, o);
   }
 
-  /** Holt {@link XDependentTextField} Interface von o. */
+  /**
+   * Get {@link XDependentTextField} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns {@link XDependentTextField} Interface.
+   */
   public static XDependentTextField XDependentTextField(Object o)
   {
     return UnoRuntime.queryInterface(XDependentTextField.class, o);
   }
 
-  /** Holt {@link XLayoutManager} Interface von o. */
+  /**
+   * Get {@link XLayoutManager} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns {@link XLayoutManager} Interface.
+   */
   public static XLayoutManager XLayoutManager(Object o)
   {
     return UnoRuntime.queryInterface(XLayoutManager.class, o);
   }
 
-  /** Holt {@link XColumnLocate} Interface von o. */
+  /**
+   * Get {@link XColumnLocate} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns {@link XColumnLocate} Interface.
+   */
   public static XColumnLocate XColumnLocate(Object o)
   {
     return UnoRuntime.queryInterface(XColumnLocate.class, o);
   }
 
-  /** Holt {@link XEnumerationAccess} Interface von o. */
+  /**
+   * Get {@link XEnumerationAccess} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns {@link XEnumerationAccess} Interface.
+   */
   public static XEnumerationAccess XEnumerationAccess(Object o)
   {
     return UnoRuntime.queryInterface(XEnumerationAccess.class, o);
   }
 
-  /** Holt {@link XSpreadsheetDocument} Interface von o. */
+  /**
+   * Get {@link XSpreadsheetDocument} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns {@link XSpreadsheetDocument} Interface.
+   */
   public static XSpreadsheetDocument XSpreadsheetDocument(Object o)
   {
     return UnoRuntime.queryInterface(XSpreadsheetDocument.class, o);
   }
 
-  /** Holt {@link XPrintable} Interface von o. */
+  /**
+   * Get {@link XPrintable} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns {@link XPrintable} Interface.
+   */
   public static XPrintable XPrintable(Object o)
   {
     return UnoRuntime.queryInterface(XPrintable.class, o);
@@ -1562,7 +1881,7 @@ public class UNO
 
   /**
    * Get {@link XTabPage} Interface from Object.
-   * 
+   *
    * @param o
    *          Object.
    * @return Returns {@link XTabPage} Interface.
@@ -1574,7 +1893,7 @@ public class UNO
 
   /**
    * Get {@link XTabPageContainer} Interface from Object.
-   * 
+   *
    * @param o
    *          Object.
    * @return Returns {@link XTabPageContainer} Interface.
@@ -1586,7 +1905,7 @@ public class UNO
 
   /**
    * Get {@link XTabPageContainerModel} Interface from Object.
-   * 
+   *
    * @param o
    *          Object.
    * @return Returns {@link XTabPageContainerModel} Interface.
@@ -1596,73 +1915,145 @@ public class UNO
     return UnoRuntime.queryInterface(XTabPageContainerModel.class, o);
   }
 
-  /** Holt {@link XTextDocument} Interface von o. */
+  /**
+   * Get {@link XTextDocument} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XTextDocument Interface.
+   */
   public static XTextDocument XTextDocument(Object o)
   {
     return UnoRuntime.queryInterface(XTextDocument.class, o);
   }
 
-  /** Holt {@link XTextContent} Interface von o. */
+  /**
+   * Get {@link XTextContent} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XTextContent Interface.
+   */
   public static XTextContent XTextContent(Object o)
   {
     return UnoRuntime.queryInterface(XTextContent.class, o);
   }
 
-  /** Holt {@link XDispatchProvider} Interface von o. */
+  /**
+   * Get {@link XDispatchProvider} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XDispatchProvider Interface.
+   */
   public static XDispatchProvider XDispatchProvider(Object o)
   {
     return UnoRuntime.queryInterface(XDispatchProvider.class, o);
   }
 
-  /** Holt {@link XDispatchHelper} Interface von o. */
+  /**
+   * Get {@link XDispatchHelper} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XDispatchHelper Interface.
+   */
   public static XDispatchHelper XDispatchHelper(Object o)
   {
     return UnoRuntime.queryInterface(XDispatchHelper.class, o);
   }
 
-  /** Holt {@link XURLTransformer} Interface von o. */
+  /**
+   * Get {@link XURLTransformer} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XURLTransformer Interface.
+   */
   public static XURLTransformer XURLTransformer(Object o)
   {
     return UnoRuntime.queryInterface(XURLTransformer.class, o);
   }
 
-  /** Holt {@link XSelectionSupplier} Interface von o. */
+  /**
+   * Get {@link XSelectionSupplier} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XSelectionSupplier Interface.
+   */
   public static XSelectionSupplier XSelectionSupplier(Object o)
   {
     return UnoRuntime.queryInterface(XSelectionSupplier.class, o);
   }
 
-  /** Holt {@link XInterface} Interface von o. */
+  /**
+   * Get {@link XInterface} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XInterface Interface.
+   */
   public static XInterface XInterface(Object o)
   {
     return UnoRuntime.queryInterface(XInterface.class, o);
   }
 
-  /** Holt {@link XKeysSupplier} Interface von o. */
+  /**
+   * Get {@link XKeysSupplier} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XKeysSupplier Interface.
+   */
   public static XKeysSupplier XKeysSupplier(Object o)
   {
     return UnoRuntime.queryInterface(XKeysSupplier.class, o);
   }
 
-  /** Holt {@link XComponentLoader} Interface von o. */
+  /**
+   * Get {@link XComponentLoader} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XComponentLoader Interface.
+   */
   public static XComponentLoader XComponentLoader(Object o)
   {
     return UnoRuntime.queryInterface(XComponentLoader.class, o);
   }
 
-  /** Holt {@link XBrowseNodeFactory} Interface von o. */
+  /**
+   * Get {@link XBrowseNodeFactory} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XBrowseNodeFactory Interface.
+   */
   public static XBrowseNodeFactory XBrowseNodeFactory(Object o)
   {
     return UnoRuntime.queryInterface(XBrowseNodeFactory.class, o);
   }
 
-  /** Holt {@link XBookmarksSupplier} Interface von o. */
+  /**
+   * Get {@link XBookmarksSupplier} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XBookmarksSupplier Interface.
+   */
   public static XBookmarksSupplier XBookmarksSupplier(Object o)
   {
     return UnoRuntime.queryInterface(XBookmarksSupplier.class, o);
   }
 
-  /** Holt {@link XNameContainer} Interface von o. */
+  /**
+   * Get {@link XNameContainer} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XNameContainer Interface.
+   */
   public static XNameContainer XNameContainer(Object o)
   {
     return UnoRuntime.queryInterface(XNameContainer.class, o);
@@ -1670,7 +2061,7 @@ public class UNO
 
   /**
    * Get {@link XMultiComponentFactory} Interface from Object.
-   * 
+   *
    * @param o
    *          Object.
    * @return Returns XMultiComponentFactory Interface.
@@ -1680,193 +2071,385 @@ public class UNO
     return UnoRuntime.queryInterface(XMultiComponentFactory.class, o);
   }
 
-  /** Holt {@link XMultiServiceFactory} Interface von o. */
+  /**
+   * Get {@link XMultiServiceFactory} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XMultiServiceFactory Interface.
+   */
   public static XMultiServiceFactory XMultiServiceFactory(Object o)
   {
     return UnoRuntime.queryInterface(XMultiServiceFactory.class, o);
   }
 
-  /** Holt {@link XDesktop} Interface von o. */
+  /**
+   * Get {@link XDesktop} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XDesktop Interface.
+   */
   public static XDesktop XDesktop(Object o)
   {
     return UnoRuntime.queryInterface(XDesktop.class, o);
   }
 
-  /** Holt {@link XChangesBatch} Interface von o. */
+  /**
+   * Get {@link XChangesBatch} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XChangesBatch Interface.
+   */
   public static XChangesBatch XChangesBatch(Object o)
   {
     return UnoRuntime.queryInterface(XChangesBatch.class, o);
   }
 
-  /** Holt {@link XNameAccess} Interface von o. */
+  /**
+   * Get {@link XNameAccess} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XNameAccess Interface.
+   */
   public static XNameAccess XNameAccess(Object o)
   {
     return UnoRuntime.queryInterface(XNameAccess.class, o);
   }
 
-  /** Holt {@link XFilePicker} Interface von o. */
+  /**
+   * Get {@link XFilePicker} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XFilePicker Interface.
+   */
   public static XFilePicker XFilePicker(Object o)
   {
     return UnoRuntime.queryInterface(XFilePicker.class, o);
   }
 
-  /** Holt {@link XFolderPicker} Interface von o. */
+  /**
+   * Get {@link XFolderPicker} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XFolderPicker Interface.
+   */
   public static XFolderPicker XFolderPicker(Object o)
   {
     return UnoRuntime.queryInterface(XFolderPicker.class, o);
   }
 
-  /** Holt {@link XToolkit} Interface von o. */
+  /**
+   * Get {@link XToolkit} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XToolkit Interface.
+   */
   public static XToolkit XToolkit(Object o)
   {
     return UnoRuntime.queryInterface(XToolkit.class, o);
   }
 
-  /** Holt {@link XWindow} Interface von o. */
+  /**
+   * Get {@link XWindow} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XWindow Interface.
+   */
   public static XWindow XWindow(Object o)
   {
     return UnoRuntime.queryInterface(XWindow.class, o);
   }
 
-  /** Holt {@link XToolkit} Interface von o. */
+  /**
+   * Get {@link XWindowPeer} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XWindowPeer Interface.
+   */
   public static XWindowPeer XWindowPeer(Object o)
   {
     return UnoRuntime.queryInterface(XWindowPeer.class, o);
   }
 
-  /** Holt {@link XToolbarController} Interface von o. */
+  /**
+   * Get {@link XToolbarController} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XToolbarController Interface.
+   */
   public static XToolbarController XToolbarController(Object o)
   {
     return UnoRuntime.queryInterface(XToolbarController.class, o);
   }
 
-  /** Holt {@link com.sun.star.text.XParagraphCursor} Interface von o. */
+  /**
+   * Get {@link XParagraphCursor} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XParagraphCursor Interface.
+   */
   public static XParagraphCursor XParagraphCursor(Object o)
   {
     return UnoRuntime.queryInterface(XParagraphCursor.class, o);
   }
 
-  /** Holt {@link XServiceInfo} Interface von o. */
+  /**
+   * Get {@link XServiceInfo} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XServiceInfo Interface.
+   */
   public static XServiceInfo XServiceInfo(Object o)
   {
     return UnoRuntime.queryInterface(XServiceInfo.class, o);
   }
 
-  /** Holt {@link XUpdatable} Interface von o. */
+  /**
+   * Get {@link XUpdatable} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XUpdatable Interface.
+   */
   public static XUpdatable XUpdatable(Object o)
   {
     return UnoRuntime.queryInterface(XUpdatable.class, o);
   }
 
-  /** Holt {@link XTextViewCursorSupplier} Interface von o. */
+  /**
+   * Get {@link XTextViewCursorSupplier} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XTextViewCursorSupplier Interface.
+   */
   public static XTextViewCursorSupplier XTextViewCursorSupplier(Object o)
   {
     return UnoRuntime.queryInterface(XTextViewCursorSupplier.class, o);
   }
 
-  /** Holt {@link XDrawPageSupplier} Interface von o. */
+  /**
+   * Get {@link XDrawPageSupplier} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XDrawPageSupplier Interface.
+   */
   public static XDrawPageSupplier XDrawPageSupplier(Object o)
   {
     return UnoRuntime.queryInterface(XDrawPageSupplier.class, o);
   }
 
-  /** Holt {@link XContentEnumerationAccess} Interface von o. */
+  /**
+   * Get {@link XContentEnumerationAccess} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XContentEnumerationAccess Interface.
+   */
   public static XContentEnumerationAccess XContentEnumerationAccess(Object o)
   {
     return UnoRuntime.queryInterface(XContentEnumerationAccess.class, o);
   }
 
-  /** Holt {@link XControlShape} Interface von o. */
+  /**
+   * Get {@link XControlShape} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XControlShape Interface.
+   */
   public static XControlShape XControlShape(Object o)
   {
     return UnoRuntime.queryInterface(XControlShape.class, o);
   }
 
-  /** Holt {@link XTextRange} Interface von o. */
+  /**
+   * Get {@link XTextRange} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XTextRange Interface.
+   */
   public static XTextRange XTextRange(Object o)
   {
     return UnoRuntime.queryInterface(XTextRange.class, o);
   }
 
-  /** Holt {@link XDevice} Interface von o. */
+  /**
+   * Get {@link XDevice} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XDevice Interface.
+   */
   public static XDevice XDevice(Object o)
   {
     return UnoRuntime.queryInterface(XDevice.class, o);
   }
 
-  /** Holt {@link com.sun.star.frame.XFramesSupplier} Interface von o. */
+  /**
+   * Get {@link XFramesSupplier} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XFramesSupplier Interface.
+   */
   public static XFramesSupplier XFramesSupplier(Object o)
   {
     return UnoRuntime.queryInterface(XFramesSupplier.class, o);
   }
 
-  /** Holt {@link XDocumentPropertiesSupplier} Interface von o. */
+  /**
+   * Get {@link XDocumentPropertiesSupplier} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XDocumentPropertiesSupplier Interface.
+   */
   public static XDocumentPropertiesSupplier XDocumentPropertiesSupplier(Object o)
   {
     return UnoRuntime.queryInterface(XDocumentPropertiesSupplier.class, o);
   }
 
-  /** Holt {@link com.sun.star.document.XDocumentProperties} Interface von o. */
+  /**
+   * Get {@link XDocumentProperties} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XDocumentProperties Interface.
+   */
   public static XDocumentProperties XDocumentProperties(Object o)
   {
     return UnoRuntime.queryInterface(XDocumentProperties.class, o);
   }
 
-  /** Holt {@link XDispatchProviderInterception} Interface von o. */
+  /**
+   * Get {@link XDispatchProviderInterception} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XDispatchProviderInterception Interface.
+   */
   public static XDispatchProviderInterception XDispatchProviderInterception(Object o)
   {
     return UnoRuntime.queryInterface(XDispatchProviderInterception.class, o);
   }
 
-  /** Holt {@link XTextCursor} Interface von o. */
+  /**
+   * Get {@link XTextCursor} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XTextCursor Interface.
+   */
   public static XTextCursor XTextCursor(Object o)
   {
     return UnoRuntime.queryInterface(XTextCursor.class, o);
   }
 
-  /** Holt {@link com.sun.star.text.XPageCursor} Interface von o. */
+  /**
+   * Get {@link XPageCursor} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XPageCursor Interface.
+   */
   public static XPageCursor XPageCursor(Object o)
   {
     return UnoRuntime.queryInterface(XPageCursor.class, o);
   }
 
-  /** Holt {@link XNotifyingDispatch} Interface von o. */
+  /**
+   * Get {@link XNotifyingDispatch} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XNotifyingDispatch Interface.
+   */
   public static XNotifyingDispatch XNotifyingDispatch(Object o)
   {
     return UnoRuntime.queryInterface(XNotifyingDispatch.class, o);
   }
 
-  /** Holt {@link com.sun.star.style.XStyleFamiliesSupplier} Interface von o. */
+  /**
+   * Get {@link XStyleFamiliesSupplier} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XStyleFamiliesSupplier Interface.
+   */
   public static XStyleFamiliesSupplier XStyleFamiliesSupplier(Object o)
   {
     return UnoRuntime.queryInterface(XStyleFamiliesSupplier.class, o);
   }
 
-  /** Holt {@link com.sun.star.style.XStyle} Interface von o. */
+  /**
+   * Get {@link XStyle} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XStyle Interface.
+   */
   public static XStyle XStyle(Object o)
   {
     return UnoRuntime.queryInterface(XStyle.class, o);
   }
 
-  /** Holt {@link XTextRangeCompare} Interface von o. */
+  /**
+   * Get {@link XTextRangeCompare} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XTextRangeCompare Interface.
+   */
   public static XTextRangeCompare XTextRangeCompare(Object o)
   {
     return UnoRuntime.queryInterface(XTextRangeCompare.class, o);
   }
 
-  /** Holt {@link com.sun.star.text.XTextSection} Interface von o. */
+  /**
+   * Get {@link XTextSection} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XTextSection Interface.
+   */
   public static XTextSection XTextSection(Object o)
   {
     return UnoRuntime.queryInterface(XTextSection.class, o);
   }
 
-  /** Holt {@link XTextSectionsSupplier} Interface von o. */
+  /**
+   * Get {@link XTextSectionsSupplier} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XTextSectionsSupplier Interface.
+   */
   public static XTextSectionsSupplier XTextSectionsSupplier(Object o)
   {
     return UnoRuntime.queryInterface(XTextSectionsSupplier.class, o);
   }
 
-  /** Holt {@link com.sun.star.ui.XAcceleratorConfiguration} Interface von o. */
+  /**
+   * Get {@link XAcceleratorConfiguration} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XAcceleratorConfiguration Interface.
+   */
   public static XAcceleratorConfiguration XAcceleratorConfiguration(Object o)
   {
     return UnoRuntime.queryInterface(XAcceleratorConfiguration.class, o);
@@ -1874,7 +2457,7 @@ public class UNO
 
   /**
    * Get {@link XAccessible} Interface from Object.
-   * 
+   *
    * @param o
    *          Object.
    * @return Returns XAccessible Interface.
@@ -1885,7 +2468,11 @@ public class UNO
   }
 
   /**
-   * Holt {@link com.sun.star.ui.XUIConfigurationPersistence} Interface von o.
+   * Get {@link XUIConfigurationPersistence} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XUIConfigurationPersistence Interface.
    */
   public static XUIConfigurationPersistence XUIConfigurationPersistence(Object o)
   {
@@ -1893,118 +2480,252 @@ public class UNO
   }
 
   /**
-   * Holt {@link com.sun.star.ui.XModuleUIConfigurationManager} Interface von o.
+   * Get {@link XModuleUIConfigurationManager} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XModuleUIConfigurationManager Interface.
    */
   public static XModuleUIConfigurationManager XModuleUIConfigurationManager(Object o)
   {
     return UnoRuntime.queryInterface(XModuleUIConfigurationManager.class, o);
   }
 
-  /** Holt {@link com.sun.star.ui.XUIConfigurationManager} Interface von o. */
+  /**
+   * Get {@link XUIConfigurationManager} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XUIConfigurationManager Interface.
+   */
   public static XUIConfigurationManager XUIConfigurationManager(Object o)
   {
     return UnoRuntime.queryInterface(XUIConfigurationManager.class, o);
   }
 
-  /** Holt {@link XIndexContainer} Interface von o. */
+  /**
+   * Get {@link XIndexContainer} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XIndexContainer Interface.
+   */
   public static XIndexContainer XIndexContainer(Object o)
   {
     return UnoRuntime.queryInterface(XIndexContainer.class, o);
   }
 
-  /** Holt {@link com.sun.star.frame.XFrame} Interface von o. */
+  /**
+   * Get {@link XFrame} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XFrame Interface.
+   */
   public static XFrame XFrame(Object o)
   {
     return UnoRuntime.queryInterface(XFrame.class, o);
   }
 
-  /** Holt {@link XTextColumns} Interface von o. */
+  /**
+   * Get {@link XTextColumns} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XTextColumns Interface.
+   */
   public static XTextColumns XTextColumns(Object o)
   {
     return UnoRuntime.queryInterface(XTextColumns.class, o);
   }
 
-  /** Holt {@link com.sun.star.style.XStyleLoader} Interface von o. */
+  /**
+   * Get {@link XStyleLoader} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XStyleLoader Interface.
+   */
   public static XStyleLoader XStyleLoader(Object o)
   {
     return UnoRuntime.queryInterface(XStyleLoader.class, o);
   }
 
-  /** Holt {@link XPropertyState} Interface von o. */
+  /**
+   * Get {@link XPropertyState} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XPropertyState Interface.
+   */
   public static XPropertyState XPropertyState(Object o)
   {
     return UnoRuntime.queryInterface(XPropertyState.class, o);
   }
 
-  /** Holt {@link XStringSubstitution} Interface von o. */
+  /**
+   * Get {@link XStringSubstitution} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XStringSubstitution Interface.
+   */
   public static XStringSubstitution XStringSubstitution(Object o)
   {
     return UnoRuntime.queryInterface(XStringSubstitution.class, o);
   }
 
-  /** Holt {@link XRowSet} Interface von o. */
+  /**
+   * Get {@link XRowSet} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XRowSet Interface.
+   */
   public static XRowSet XRowSet(Object o)
   {
     return UnoRuntime.queryInterface(XRowSet.class, o);
   }
 
-  /** Holt {@link XDocumentMetadataAccess} Interface von o. */
+  /**
+   * Get {@link XDocumentMetadataAccess} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XDocumentMetadataAccess Interface.
+   */
   public static XDocumentMetadataAccess XDocumentMetadataAccess(Object o)
   {
     return UnoRuntime.queryInterface(XDocumentMetadataAccess.class, o);
   }
 
-  /** Holt {@link XRefreshable} Interface von o. */
+  /**
+   * Get {@link XRefreshable} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XRefreshable Interface.
+   */
   public static XRefreshable XRefreshable(Object o)
   {
     return UnoRuntime.queryInterface(XRefreshable.class, o);
   }
   
+  /**
+   * Get {@link XControl} Interface from Object.
+   *
+   * @param object
+   *          Object.
+   * @return Returns XControl Interface.
+   */
   public static XControl XControl(Object object)
   {
     return UnoRuntime.queryInterface(XControl.class, object);
   }
   
+  /**
+   * Get {@link XFixedText} Interface from Object.
+   *
+   * @param object
+   *          Object.
+   * @return Returns XFixedText Interface.
+   */
   public static XFixedText XFixedText(Object object)
   {
     return UnoRuntime.queryInterface(XFixedText.class, object);
   }
   
+  /**
+   * Get {@link XListBox} Interface from Object.
+   *
+   * @param object
+   *          Object.
+   * @return Returns XListBox Interface.
+   */
   public static XListBox XListBox(Object object)
   {
     return UnoRuntime.queryInterface(XListBox.class, object);
   }
   
+  /**
+   * Get {@link XButton} Interface from Object.
+   *
+   * @param object
+   *          Object.
+   * @return Returns XButton Interface.
+   */
   public static XButton XButton(Object object)
   {
     return UnoRuntime.queryInterface(XButton.class, object);
   }
 
+  /**
+   * Get {@link XCheckBox} Interface from Object.
+   *
+   * @param object
+   *          Object.
+   * @return Returns XCheckBox Interface.
+   */
   public static XCheckBox XCheckBox(Object object)
   {
     return UnoRuntime.queryInterface(XCheckBox.class, object);
   }
 
+  /**
+   * Get {@link XRadioButton} Interface from Object.
+   *
+   * @param object
+   *          Object.
+   * @return Returns XRadioButton Interface.
+   */
   public static XRadioButton XRadio(Object object)
   {
     return UnoRuntime.queryInterface(XRadioButton.class, object);
   }
 
+  /**
+   * Get {@link XNumericField} Interface from Object.
+   *
+   * @param object
+   *          Object.
+   * @return Returns XNumericField Interface.
+   */
   public static XNumericField XNumericField(Object object)
   {
     return UnoRuntime.queryInterface(XNumericField.class, object);
   }
 
+  /**
+   * Get {@link XSpinField} Interface from Object.
+   *
+   * @param object
+   *          Object.
+   * @return Returns XSpinField Interface.
+   */
   public static XSpinField XSpinField(Object object)
   {
     return UnoRuntime.queryInterface(XSpinField.class, object);
   }
   
+  /**
+   * Get {@link XTextComponent} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XTextComponent Interface.
+   */
   public static XTextComponent XTextComponent(Object o)
   {
     return UnoRuntime.queryInterface(XTextComponent.class, o);
   }
   
+  /**
+   * Get {@link XComboBox} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XComboBox Interface.
+   */
   public static XComboBox XComboBox(Object o)
   {
     return UnoRuntime.queryInterface(XComboBox.class, o);

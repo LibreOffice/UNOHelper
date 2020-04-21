@@ -54,6 +54,7 @@ public final class UnoProperty
   public static final String DATA_TABLE_NAME = "DataTableName";
   public static final String DECIMAL_ACCURACY = "DecimalAccuracy";
   public static final String DECIMAL_DELIMITER = "DecimalDelimiter";
+  public static final String DEFAULT_CONTEXT = "DefaultContext";
   public static final String DEFAULT_CONTROL = "DefaultControl";
   public static final String DOCUMENT_URL = "DocumentURL";
   public static final String DROPDOWN = "Dropdown";
