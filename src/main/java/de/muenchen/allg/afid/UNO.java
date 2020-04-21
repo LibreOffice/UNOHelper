@@ -180,17 +180,25 @@ import com.sun.star.accessibility.XAccessible;
 import com.sun.star.awt.XButton;
 import com.sun.star.awt.XCheckBox;
 import com.sun.star.awt.XComboBox;
+import com.sun.star.awt.XContainerWindowProvider;
 import com.sun.star.awt.XControl;
 import com.sun.star.awt.XControlContainer;
 import com.sun.star.awt.XControlModel;
 import com.sun.star.awt.XDevice;
+import com.sun.star.awt.XDialog;
+import com.sun.star.awt.XExtendedToolkit;
 import com.sun.star.awt.XFixedText;
+import com.sun.star.awt.XItemList;
 import com.sun.star.awt.XListBox;
+import com.sun.star.awt.XMenu;
 import com.sun.star.awt.XNumericField;
+import com.sun.star.awt.XPopupMenu;
+import com.sun.star.awt.XProgressBar;
 import com.sun.star.awt.XRadioButton;
 import com.sun.star.awt.XSpinField;
 import com.sun.star.awt.XTextComponent;
 import com.sun.star.awt.XToolkit;
+import com.sun.star.awt.XToolkit2;
 import com.sun.star.awt.XTopWindow;
 import com.sun.star.awt.XUserInputInterception;
 import com.sun.star.awt.XWindow;
@@ -199,7 +207,10 @@ import com.sun.star.awt.XWindowPeer;
 import com.sun.star.awt.tab.XTabPage;
 import com.sun.star.awt.tab.XTabPageContainer;
 import com.sun.star.awt.tab.XTabPageContainerModel;
+import com.sun.star.awt.tree.XMutableTreeNode;
+import com.sun.star.awt.tree.XTreeControl;
 import com.sun.star.beans.PropertyValue;
+import com.sun.star.beans.XIntrospection;
 import com.sun.star.beans.XMultiPropertySet;
 import com.sun.star.beans.XPropertySet;
 import com.sun.star.beans.XPropertyState;
@@ -213,6 +224,7 @@ import com.sun.star.container.XIndexContainer;
 import com.sun.star.container.XNameAccess;
 import com.sun.star.container.XNameContainer;
 import com.sun.star.container.XNamed;
+import com.sun.star.container.XSet;
 import com.sun.star.document.MacroExecMode;
 import com.sun.star.document.XDocumentInsertable;
 import com.sun.star.document.XDocumentProperties;
@@ -254,6 +266,7 @@ import com.sun.star.script.browse.XBrowseNodeFactory;
 import com.sun.star.script.provider.XScriptProvider;
 import com.sun.star.script.provider.XScriptProviderFactory;
 import com.sun.star.script.provider.XScriptProviderSupplier;
+import com.sun.star.sdb.DatabaseContext;
 import com.sun.star.sdb.XDocumentDataSource;
 import com.sun.star.sdb.XQueriesSupplier;
 import com.sun.star.sdbc.XColumnLocate;
@@ -312,10 +325,12 @@ import com.sun.star.uno.XComponentContext;
 import com.sun.star.uno.XInterface;
 import com.sun.star.uno.XNamingService;
 import com.sun.star.util.URL;
+import com.sun.star.util.XCancellable;
 import com.sun.star.util.XChangesBatch;
 import com.sun.star.util.XCloseBroadcaster;
 import com.sun.star.util.XCloseable;
 import com.sun.star.util.XModifiable;
+import com.sun.star.util.XModifiable2;
 import com.sun.star.util.XModifyBroadcaster;
 import com.sun.star.util.XRefreshable;
 import com.sun.star.util.XStringSubstitution;
@@ -1995,7 +2010,173 @@ public class UNO
     return UnoRuntime.queryInterface(XComboBox.class, o);
   }
 
-  // ACHTUNG: Interface-Methoden fangen hier mit einem grossen X an!
+  /**
+   * Get {@link XContainerWindowProvider} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XContainerWindowProvider Interface.
+   */
+  public static XContainerWindowProvider XContainerWindowProvider(Object o)
+  {
+    return UnoRuntime.queryInterface(XContainerWindowProvider.class, o);
+  }
+
+  /**
+   * Get {@link XDialog} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XDialog Interface.
+   */
+  public static XDialog XDialog(Object o)
+  {
+    return UnoRuntime.queryInterface(XDialog.class, o);
+  }
+
+  /**
+   * Get {@link XCancellable} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XCancellable Interface.
+   */
+  public static XCancellable XCancellable(Object o)
+  {
+    return UnoRuntime.queryInterface(XCancellable.class, o);
+  }
+
+  /**
+   * Get {@link XExtendedToolkit} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XExtendedToolkit Interface.
+   */
+  public static XExtendedToolkit XExtendedToolkit(Object o)
+  {
+    return UnoRuntime.queryInterface(XExtendedToolkit.class, o);
+  }
+
+  /**
+   * Get {@link XIntrospection} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XIntrospection Interface.
+   */
+  public static XIntrospection XIntrospection(Object o)
+  {
+    return UnoRuntime.queryInterface(XIntrospection.class, o);
+  }
+
+  /**
+   * Get {@link XMenu} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XMenu Interface.
+   */
+  public static XMenu XMenu(Object o)
+  {
+    return UnoRuntime.queryInterface(XMenu.class, o);
+  }
+
+  /**
+   * Get {@link XItemList} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XItemList Interface.
+   */
+  public static XItemList XItemList(Object o)
+  {
+    return UnoRuntime.queryInterface(XItemList.class, o);
+  }
+
+  /**
+   * Get {@link XPopupMenu} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XPopupMenu Interface.
+   */
+  public static XPopupMenu XPopupMenu(Object o)
+  {
+    return UnoRuntime.queryInterface(XPopupMenu.class, o);
+  }
+
+  /**
+   * Get {@link XMutableTreeNode} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XMutableTreeNode Interface.
+   */
+  public static XMutableTreeNode XMutableTreeNode(Object o)
+  {
+    return UnoRuntime.queryInterface(XMutableTreeNode.class, o);
+  }
+
+  /**
+   * Get {@link XModifiable2} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XModifiable2 Interface.
+   */
+  public static XModifiable2 XModifiable2(Object o)
+  {
+    return UnoRuntime.queryInterface(XModifiable2.class, o);
+  }
+
+  /**
+   * Get {@link XSet} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XSet Interface.
+   */
+  public static XSet XSet(Object o)
+  {
+    return UnoRuntime.queryInterface(XSet.class, o);
+  }
+
+  /**
+   * Get {@link XToolkit2} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XToolkit2 Interface.
+   */
+  public static XToolkit2 XToolkit2(Object o)
+  {
+    return UnoRuntime.queryInterface(XToolkit2.class, o);
+  }
+
+  /**
+   * Get {@link XTreeControl} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XTreeControl Interface.
+   */
+  public static XTreeControl XTreeControl(Object o)
+  {
+    return UnoRuntime.queryInterface(XTreeControl.class, o);
+  }
+
+  /**
+   * Get {@link XProgressBar} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XProgressBar Interface.
+   */
+  public static XProgressBar XProgressBar(Object o)
+  {
+    return UnoRuntime.queryInterface(XProgressBar.class, o);
+  }
 
   /**
    * Liefert eine vorgeparste UNO-URL von urlStr.
