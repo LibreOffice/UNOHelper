@@ -167,8 +167,6 @@
 */
 package de.muenchen.allg.afid;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -515,18 +513,19 @@ public class UNO
   }
 
   /**
-   * Lädt ein Dokument und setzt im Erfolgsfall {@link #compo} auf das geöffnete
-   * Dokument.
-   * 
-   * @param url         die URL des zu ladenden Dokuments, z.B.
-   *                    "file:///C:/temp/footest.odt" oder
-   *                    "private:factory/swriter" (für ein leeres).
-   * @param asTemplate  falls true wird das Dokument als Vorlage behandelt und
-   *                    ein neues unbenanntes Dokument erzeugt.
-   * @param allowMacros falls true wird die Ausführung von Makros
-   *                    freigeschaltet.
-   * @return das geöffnete Dokument
+   * Load a document and initialize {@link #compo}.
+   *
+   * @param url
+   *          The URL of the docment (e.g. "file:///C:/temp/footest.odt" or
+   *          "private:factory/swriter").
+   * @param asTemplate
+   *          If true the document is treated as a template and a new unnamed document is created
+   *          based on the template.
+   * @param allowMacros
+   *          If true macros can be executed.
+   * @return The document.
    * @throws UnoHelperException
+   *           Can't load the document.
    */
   public static XComponent loadComponentFromURL(String url, boolean asTemplate, boolean allowMacros)
       throws UnoHelperException
@@ -535,19 +534,21 @@ public class UNO
   }
 
   /**
-   * Lädt ein Dokument abhängig von hidden sichtbar oder unsichtbar und setzt im
-   * Erfolgsfall {@link #compo} auf das geöffnete Dokument.
-   * 
-   * @param url         die URL des zu ladenden Dokuments, z.B.
-   *                    "file:///C:/temp/footest.odt" oder
-   *                    "private:factory/swriter" (für ein leeres).
-   * @param asTemplate  falls true wird das Dokument als Vorlage behandelt und
-   *                    ein neues unbenanntes Dokument erzeugt.
-   * @param allowMacros falls true wird die Ausführung von Makros
-   *                    freigeschaltet.
-   * @param hidden      falls true wird das Dokument unsichtbar geöffnet
-   * @return das geöffnete Dokument
+   * Load a document and initialize {@link #compo}.
+   *
+   * @param url
+   *          The URL of the docment (e.g. "file:///C:/temp/footest.odt" or
+   *          "private:factory/swriter").
+   * @param asTemplate
+   *          If true the document is treated as a template and a new unnamed document is created
+   *          based on the template.
+   * @param allowMacros
+   *          If true macros can be executed.
+   * @param hidden
+   *          If true they document is opened invisible.
+   * @return The document.
    * @throws UnoHelperException
+   *           Can't load the document.
    */
   public static XComponent loadComponentFromURL(String url, boolean asTemplate, boolean allowMacros, boolean hidden)
       throws UnoHelperException
@@ -561,17 +562,19 @@ public class UNO
   }
 
   /**
-   * Lädt ein Dokument und setzt im Erfolgsfall {@link #compo} auf das geöffnete
-   * Dokument.
-   * 
-   * @param url         die URL des zu ladenden Dokuments, z.B.
-   *                    "file:///C:/temp/footest.odt" oder
-   *                    "private:factory/swriter" (für ein leeres).
-   * @param asTemplate  falls true wird das Dokument als Vorlage behandelt und
-   *                    ein neues unbenanntes Dokument erzeugt.
-   * @param allowMacros eine der Konstanten aus {@link MacroExecMode}.
-   * @return das geöffnete Dokument
+   * Load a document and initialize {@link #compo}.
+   *
+   * @param url
+   *          The URL of the docment (e.g. "file:///C:/temp/footest.odt" or
+   *          "private:factory/swriter").
+   * @param asTemplate
+   *          If true the document is treated as a template and a new unnamed document is created
+   *          based on the template.
+   * @param allowMacros
+   *          The macro execution mode (@link {@link MacroExecMode}).
+   * @return The document.
    * @throws UnoHelperException
+   *           Can't load the document.
    */
   public static XComponent loadComponentFromURL(String url, boolean asTemplate, short allowMacros)
       throws UnoHelperException
@@ -580,172 +583,183 @@ public class UNO
   }
 
   /**
-   * Lädt ein Dokument abhängig von hidden sichtbar oder unsichtbar und setzt im
-   * Erfolgsfall {@link #compo} auf das geöffnete Dokument.
-   * 
-   * @param url         die URL des zu ladenden Dokuments, z.B.
-   *                    "file:///C:/temp/footest.odt" oder
-   *                    "private:factory/swriter" (für ein leeres).
-   * @param asTemplate  falls true wird das Dokument als Vorlage behandelt und
-   *                    ein neues unbenanntes Dokument erzeugt.
-   * @param allowMacros eine der Konstanten aus {@link MacroExecMode}.
-   * @return das geöffnete Dokument
+   * Load a document and initialize {@link #compo}.
+   *
+   * @param url
+   *          The URL of the docment (e.g. "file:///C:/temp/footest.odt" or
+   *          "private:factory/swriter").
+   * @param asTemplate
+   *          If true the document is treated as a template and a new unnamed document is created
+   *          based on the template.
+   * @param allowMacros
+   *          The macro execution mode (@link {@link MacroExecMode}).
+   * @param hidden
+   *          If true they document is opened invisible.
+   * @return The document.
    * @throws UnoHelperException
+   *           Can't load the document.
    */
-  public static XComponent loadComponentFromURL(String url, boolean asTemplate,
-    short allowMacros, boolean hidden)
-      throws UnoHelperException
+  public static XComponent loadComponentFromURL(String url, boolean asTemplate, short allowMacros,
+      boolean hidden) throws UnoHelperException
   {
-    return loadComponentFromURL(url, asTemplate, allowMacros, hidden,
-        new PropertyValue[] {});
+    return loadComponentFromURL(url, asTemplate, allowMacros, hidden, new PropertyValue[0]);
   }
 
   /**
-   * Lädt ein Dokument abhängig von hidden sichtbar oder unsichtbar und setzt im
-   * Erfolgsfall {@link #compo} auf das geöffnete Dokument.
-   * 
-   * @param url         die URL des zu ladenden Dokuments, z.B.
-   *                    "file:///C:/temp/footest.odt" oder
-   *                    "private:factory/swriter" (für ein leeres).
-   * @param asTemplate  falls true wird das Dokument als Vorlage behandelt und
-   *                    ein neues unbenanntes Dokument erzeugt.
-   * @param allowMacros falls true wird die Ausführung von Makros
-   *                    freigeschaltet.
-   * @param args        zusätzliche Parameter für
-   *                    XComponentLoader.loadComponentFromUrl
-   * @return das geöffnete Dokument
+   * Load a document and initialize {@link #compo}.
+   *
+   * @param url
+   *          The URL of the docment (e.g. "file:///C:/temp/footest.odt" or
+   *          "private:factory/swriter").
+   * @param asTemplate
+   *          If true the document is treated as a template and a new unnamed document is created
+   *          based on the template.
+   * @param allowMacros
+   *          The macro execution mode (@link {@link MacroExecMode}).
+   * @param args
+   *          Additional arguments for loading the document.
+   * @return The document.
    * @throws UnoHelperException
+   *           Can't load the document.
    */
-  public static XComponent loadComponentFromURL(String url, boolean asTemplate,
-    boolean allowMacros, PropertyValue... args)
-      throws UnoHelperException
+  public static XComponent loadComponentFromURL(String url, boolean asTemplate, boolean allowMacros,
+      PropertyValue... args) throws UnoHelperException
   {
     return loadComponentFromURL(url, asTemplate,
-      (allowMacros) ? MacroExecMode.ALWAYS_EXECUTE_NO_WARN
-        : MacroExecMode.NEVER_EXECUTE,
-      false, args);
+        (allowMacros) ? MacroExecMode.ALWAYS_EXECUTE_NO_WARN : MacroExecMode.NEVER_EXECUTE, false, args);
   }
 
   /**
-   * Lädt ein Dokument abhängig von hidden sichtbar oder unsichtbar und setzt im
-   * Erfolgsfall {@link #compo} auf das geöffnete Dokument.
-   * 
-   * @param url         die URL des zu ladenden Dokuments, z.B.
-   *                    "file:///C:/temp/footest.odt" oder
-   *                    "private:factory/swriter" (für ein leeres).
-   * @param asTemplate  falls true wird das Dokument als Vorlage behandelt und
-   *                    ein neues unbenanntes Dokument erzeugt.
-   * @param allowMacros eine der Konstanten aus {@link MacroExecMode}.
-   * @param args        zusätzliche Parameter für
-   *                    XComponentLoader.loadComponentFromUrl
-   * @return das geöffnete Dokument
+   * Load a document and initialize {@link #compo}.
+   *
+   * @param url
+   *          The URL of the docment (e.g. "file:///C:/temp/footest.odt" or
+   *          "private:factory/swriter").
+   * @param asTemplate
+   *          If true the document is treated as a template and a new unnamed document is created
+   *          based on the template.
+   * @param allowMacros
+   *          The macro execution mode (@link {@link MacroExecMode}).
+   * @param hidden
+   *          If true they document is opened invisible.
+   * @param args
+   *          Additional arguments for loading the document.
+   * @return The document.
    * @throws UnoHelperException
+   *           Can't load the document.
    */
-  public static XComponent loadComponentFromURL(String url, boolean asTemplate,
-    short allowMacros, boolean hidden, PropertyValue... args)
-      throws UnoHelperException
+  public static XComponent loadComponentFromURL(String url, boolean asTemplate, short allowMacros, boolean hidden,
+      PropertyValue... args) throws UnoHelperException
   {
     try
     {
       XComponentLoader loader = UNO.XComponentLoader(desktop);
-      PropertyValue[] arguments = new PropertyValue[3];
-      arguments[0] = new PropertyValue();
-      arguments[0].Name = "MacroExecutionMode";
-      arguments[0].Value = Short.valueOf(allowMacros);
-      arguments[1] = new PropertyValue();
-      arguments[1].Name = "AsTemplate";
-      arguments[1].Value = Boolean.valueOf(asTemplate);
-      arguments[2] = new PropertyValue();
-      arguments[2].Name = "Hidden";
-      arguments[2].Value = Boolean.valueOf(hidden);
-
+      UnoProps props = new UnoProps(args);
+      props.setPropertyValue(UnoProperty.MACRO_EXECUTION_MODE, allowMacros);
+      props.setPropertyValue(UnoProperty.AS_TEMPLATE, asTemplate);
+      props.setPropertyValue(UnoProperty.HIDDEN, hidden);
+      PropertyValue[] arguments = props.getProps();
       arguments = ArrayUtils.addAll(arguments, args);
 
-      XComponent lc = loader.loadComponentFromURL(url, "_blank",
-          FrameSearchFlag.CREATE, arguments);
+      XComponent lc = loader.loadComponentFromURL(url, "_blank", FrameSearchFlag.CREATE, arguments);
       if (lc != null)
+      {
         compo = lc;
+      }
       return lc;
     }
     catch (IllegalArgumentException | IOException e)
     {
-      throw new UnoHelperException(
-          "Dokument konnte nicht geladen werden.", e);
+      throw new UnoHelperException("Can't load the document", e);
     }
   }
   
   /**
-   * Konvertiert Dateipfad in eine systemspezifische URL.
-   * 
+   * Convert file path in a system specific URL.
+   *
    * @param filePath
-   * @return eine für LO valide URL oder ein leerer String falls der Dateipfad nicht durch XFileIdentifierConverter konvertiert werden konnte.
+   *          The path to convert.
+   * @return A valid URL for Office an empty String with this isn't possible.
    * @throws UnoHelperException
+   *           Can't convert the path.
    */
-  public static String convertFilePathToURL(String filePath) throws UnoHelperException {
+  public static String convertFilePathToURL(String filePath) throws UnoHelperException
+  {
     String resultURL = null;
-    
+
     try
     {
-      Object fileContentProvider = UNO.xMCF.createInstanceWithContext("com.sun.star.ucb.FileContentProvider",
-          UNO.defaultContext);
-      XFileIdentifierConverter xFileConverter = UnoRuntime.queryInterface(XFileIdentifierConverter.class,
-          fileContentProvider);
+      XFileIdentifierConverter xFileConverter = UNO.XFileIdentifierConverter(
+          UnoComponent.createComponentWithContext(UnoComponent.CSS_UCB_FILE_CONTENT_PROVIDER));
       resultURL = xFileConverter.getFileURLFromSystemPath("", filePath);
     } catch (Exception e)
     {
       throw new UnoHelperException("", e);
-    } 
-    
+    }
+
     return resultURL;
   }
 
   /**
-   * Dispatcht url auf dem aktuellen Controll von doc.
+   * Get the the document which has the focus.
+   *
+   * @return The text document which has the focus or null if it isn't a text document.
    */
-  public static void dispatch(XModel doc, String url)
-  {
-    XDispatchProvider prov = UNO.XDispatchProvider(doc.getCurrentController().getFrame());
-    dispatchHelper.executeDispatch(prov, url, "", FrameSearchFlag.SELF, new PropertyValue[]
-    {});
-  }
-
   public static XTextDocument getCurrentTextDocument()
   {
     XComponent xComponent = desktop.getCurrentComponent();
 
-    return UnoRuntime.queryInterface(com.sun.star.text.XTextDocument.class, xComponent);
+    return UNO.XTextDocument(xComponent);
   }
 
   /**
-   * Dispatcht url auf dem aktuellen Controll von doc mittels
-   * {@link XNotifyingDispatch}, wartet auf die Benachrichtigung, dass der
-   * Dispatch vollständig abgearbeitet ist, und liefert das
-   * {@link DispatchResultEvent} dieser Benachrichtigung zurück oder null, wenn zu
-   * url kein XNotifyingDispatch definiert ist oder der Dispatch mit disposing
-   * abgebrochen wurde.
+   * Dispatch a command on a model.
+   *
+   * @param doc
+   *          The model.
+   * @param url
+   *          The command as URL.
+   */
+  public static void dispatch(XModel doc, String url)
+  {
+    XDispatchProvider prov = UNO.XDispatchProvider(doc.getCurrentController().getFrame());
+    dispatchHelper.executeDispatch(prov, url, "", FrameSearchFlag.SELF, new PropertyValue[] {});
+  }
+
+  /**
+   * Dispatch a command on a text document and wait until execution finished.
+   *
+   * @param doc
+   *          The text document.
+   * @param url
+   *          The command URL.
+   * @return The dispatch result or null if no command exists or the dispatch is aborted.
    */
   public static DispatchResultEvent dispatchAndWait(XTextDocument doc, String url)
   {
     if (doc == null)
+    {
       return null;
+    }
 
     URL unoUrl = getParsedUNOUrl(url);
 
     XDispatchProvider prov = UNO.XDispatchProvider(doc.getCurrentController().getFrame());
     if (prov == null)
+    {
       return null;
+    }
 
     XNotifyingDispatch disp = UNO.XNotifyingDispatch(prov.queryDispatch(unoUrl, "", FrameSearchFlag.SELF));
     if (disp == null)
+    {
       return null;
+    }
 
-    final boolean[] lock = new boolean[]
-    { true };
-    final DispatchResultEvent[] resultEvent = new DispatchResultEvent[]
-    { null };
+    final boolean[] lock = new boolean[] { true };
+    final DispatchResultEvent[] resultEvent = new DispatchResultEvent[] { null };
 
-    disp.dispatchWithNotification(unoUrl, new PropertyValue[]
-    {}, new XDispatchResultListener()
+    disp.dispatchWithNotification(unoUrl, new PropertyValue[] {}, new XDispatchResultListener()
     {
       @Override
       public void disposing(EventObject arg0)
@@ -777,147 +791,87 @@ public class UNO
           lock.wait();
         } catch (InterruptedException e)
         {
+          Thread.currentThread().interrupt();
         }
     }
     return resultEvent[0];
   }
 
   /**
-   * Ruft ein Makro auf unter expliziter Angabe der Komponente, die es zur
-   * Verfügung stellt.
-   * 
+   * Call a macro.
+   *
    * @param scriptProviderOrSupplier
-   *                                   ist ein Objekt, das entweder
-   *                                   {@link XScriptProvider} oder
-   *                                   {@link XScriptProviderSupplier}
-   *                                   implementiert. Dies kann z.B. ein
-   *                                   TextDocument sein. Soll einfach nur ein
-   *                                   Skript aus dem gesamten Skript-Baum
-   *                                   ausgeführt werden, kann die Funktion
-   *                                   {@link #executeGlobalMacro(String, Object[])}
-   *                                   verwendet werden, die diesen Parameter
-   *                                   nicht erfordert. ACHTUNG! Es wird nicht
-   *                                   zwangsweise der übergebene
-   *                                   scriptProviderOrSupplier verwendet um das
-   *                                   Skript auszuführen. Er stellt nur den
-   *                                   Einstieg in den Skript-Baum dar.
+   *          The provider of the macro (e.g. a text document).
    * @param macroName
-   *                                   ist der Name des Makros. Der Name kann
-   *                                   optional durch "." abgetrennte Bezeichner
-   *                                   für Bibliotheken/Module vorangestellt
-   *                                   haben. Es sind also sowohl "Foo" als auch
-   *                                   "Module1.Foo" und "Standard.Module1.Foo"
-   *                                   erlaubt. Wenn kein passendes Makro gefunden
-   *                                   wird, wird zuerst versucht,
-   *                                   case-insensitive danach zu suchen. Falls
-   *                                   dabei ebenfalls kein Makro gefunden wird,
-   *                                   wird eine {@link RuntimeException}
-   *                                   geworfen.
+   *          The name of the macro. Library and module are separate by a dot (e.g.
+   *          "Standard.Module1.Foo"). But "Foo" is also valid.
    * @param args
-   *                                   die Argumente, die dem Makro übergeben
-   *                                   werden sollen.
+   *          The arguments for the macro.
    * @param location
-   *                                   eine Liste aller erlaubten locations
-   *                                   ("application", "share", "document") für
-   *                                   das Makro. Bei der Suche wird zuerst ein
-   *                                   case-sensitive Match in allen gelisteten
-   *                                   locations gesucht, bevor die
-   *                                   case-insensitive Suche versucht wird. Durch
-   *                                   Verwendung der exakten
-   *                                   Gross-/Kleinschreibung des Makros und
-   *                                   korrekte Ordnung der location Liste lässt
-   *                                   sich also immer das richtige Makro
-   *                                   selektieren.
+   *          List of possible locations (e.g. "application", "share", "document"). The order is
+   *          important if there are more macros with the same name but in different locations.
    * @throws RuntimeException
-   *                            wenn entweder kein passendes Makro gefunden wurde,
-   *                            oder scriptProviderOrSupplier weder
-   *                            {@link XScriptProvider} noch
-   *                            {@link XScriptProviderSupplier} implementiert.
-   * @return den Rückgabewert des Makros.
-   * @throws UnoHelperException 
+   *           If a macro with this name can't be found.
+   * @return The return value of the macro.
+   * @throws UnoHelperException
+   *           Can't access the macros.
    */
-  public static Object executeMacro(Object scriptProviderOrSupplier,
-      String macroName, Object[] args, String[] location)
-      throws UnoHelperException
+  public static Object executeMacro(Object scriptProviderOrSupplier, String macroName, Object[] args,
+      String[] location) throws UnoHelperException
   {
-    XScriptProvider provider = UnoRuntime.queryInterface(XScriptProvider.class, scriptProviderOrSupplier);
+    XScriptProvider provider = UNO.XScriptProvider(scriptProviderOrSupplier);
     if (provider == null)
     {
-      XScriptProviderSupplier supp = UnoRuntime.queryInterface(XScriptProviderSupplier.class, scriptProviderOrSupplier);
+      XScriptProviderSupplier supp = UNO.XScriptProviderSupplier(scriptProviderOrSupplier);
       if (supp == null)
-        throw new RuntimeException("Übergebenes Objekt ist weder XScriptProvider noch XScriptProviderSupplier");
+      {
+        throw new RuntimeException("No script provider or supplier given.");
+      }
       provider = supp.getScriptProvider();
     }
 
-    XBrowseNode root = UnoRuntime.queryInterface(XBrowseNode.class, provider);
-    /*
-     * Wir übergeben NICHT provider als drittes Argument, sondern lassen
-     * Internal.executeMacroInternal den provider selbst bestimmen. Das hat keinen
-     * besonderen Grund. Es erscheint einfach nur etwas robuster, den
-     * "nächstgelegenen" ScriptProvider zu verwenden.
-     */
+    XBrowseNode root = UNO.XBrowseNode(provider);
     return Utils.executeMacroInternal(macroName, args, null, root, location);
   }
 
   /**
-   * Ruft ein globales Makro auf (d,h, eines, das nicht in einem Dokument
-   * gespeichert ist). Im Falle gleichnamiger Makros hat ein Makro mit
-   * location=application Vorrang vor einem mit location=share.
-   * 
+   * Call a macro not stored in a document. Macros in location "application" have priority.
+   *
    * @param macroName
-   *                    ist der Name des Makros. Der Name kann optional durch "."
-   *                    abgetrennte Bezeichner für Bibliotheken/Module
-   *                    vorangestellt haben. Es sind also sowohl "Foo" als auch
-   *                    "Module1.Foo" und "Standard.Module1.Foo" erlaubt. Wenn
-   *                    kein passendes Makro gefunden wird, wird zuerst versucht,
-   *                    case-insensitive danach zu suchen. Falls dabei ebenfalls
-   *                    kein Makro gefunden wird, wird eine
-   *                    {@link RuntimeException} geworfen.
+   *          The name of the macro. Library and module are separate by a dot (e.g.
+   *          "Standard.Module1.Foo"). But "Foo" is also valid.
    * @param args
-   *                    die Argumente, die dem Makro übergeben werden sollen.
+   *          The arguments for the macro.
    * @throws RuntimeException
-   *                            wenn kein passendes Makro gefunden wurde.
-   * @return den Rückgabewert des Makros.
-   * @throws UnoHelperException 
+   *           If a macro with this name can't be found.
+   * @return The return value of the macro.
+   * @throws UnoHelperException
+   *           Can't access the macros.
    */
-  public static Object executeGlobalMacro(String macroName, Object[] args)
-      throws UnoHelperException
+  public static Object executeGlobalMacro(String macroName, Object[] args) throws UnoHelperException
   {
-    final String[] userAndShare = new String[]
-    { "application", "share" };
+    final String[] userAndShare = new String[] { "application", "share" };
     return Utils.executeMacroInternal(macroName, args, null, scriptRoot.unwrap(), userAndShare);
   }
 
   /**
-   * Ruft ein Makro aus dem gesamten Makro-Baum auf.
-   * 
+   * Call a macro.
+   *
    * @param macroName
-   *                    ist der Name des Makros. Der Name kann optional durch "."
-   *                    abgetrennte Bezeichner für Bibliotheken/Module
-   *                    vorangestellt haben. Es sind also sowohl "Foo" als auch
-   *                    "Module1.Foo" und "Standard.Module1.Foo" erlaubt. Wenn
-   *                    kein passendes Makro gefunden wird, wird zuerst versucht,
-   *                    case-insensitive danach zu suchen. Falls dabei ebenfalls
-   *                    kein Makro gefunden wird, wird eine
-   *                    {@link RuntimeException} geworfen.
+   *          The name of the macro. Library and module are separate by a dot (e.g.
+   *          "Standard.Module1.Foo"). But "Foo" is also valid.
    * @param args
-   *                    die Argumente, die dem Makro übergeben werden sollen.
+   *          The arguments for the macro.
    * @param location
-   *                    eine Liste aller erlaubten locations ("application",
-   *                    "share", "document") für das Makro. Bei der Suche wird
-   *                    zuerst ein case-sensitive Match in allen gelisteten
-   *                    locations gesucht, bevor die case-insenstive Suche
-   *                    versucht wird. Durch Verwendung der exakten
-   *                    Gross-/Kleinschreibung des Makros und korrekte Ordnung der
-   *                    location Liste lässt sich also immer das richtige Makro
-   *                    selektieren.
+   *          List of possible locations (e.g. "application", "share", "document"). The order is
+   *          important if there are more macros with the same name but in different locations.
    * @throws RuntimeException
-   *                            wenn kein passendes Makro gefunden wurde.
-   * @return den Rückgabewert des Makros.
-   * @throws UnoHelperException 
+   *           If a macro with this name can't be found.
+   * @return The return value of the macro.
+   * @throws UnoHelperException
+   *           Can't access the macros.
    */
-  public static Object executeMacro(String macroName, Object[] args,
-      String[] location) throws UnoHelperException
+  public static Object executeMacro(String macroName, Object[] args, String[] location) throws UnoHelperException
   {
     return Utils.executeMacroInternal(macroName, args, null, scriptRoot.unwrap(), location);
   }
@@ -959,13 +913,19 @@ public class UNO
   }
 
   /**
-   * Durchsucht einen {@link XBrowseNode} Baum nach einem Blatt vom Typ SCRIPT, dessen Name
-   * nameToFind ist (kann durch "." abgetrennte Pfadangabe im Skript-Baum enthalten). Siehe
-   * {@link #findBrowseNodeTreeLeafAndScriptProvider(XBrowseNode, String, String, boolean, String[])}
-   * .
-   * 
-   * @return den gefundenen Knoten oder null falls keiner gefunden.
+   * Search for a script in locations document, application, share.
+   *
+   * @param xBrowseNode
+   *          Root of the tree to scan.
+   * @param prefix
+   *          Prefix of the script to find.
+   * @param nameToFind
+   *          Script to find. Path can be separated by dots.
+   * @param caseSensitive
+   *          If true search is case sensitive.
+   * @return The node of the script or null if the script can't be found.
    * @throws UnoHelperException
+   *           Can't find the script.
    */
   public static XBrowseNode findBrowseNodeTreeLeaf(XBrowseNode xBrowseNode, String prefix, String nameToFind,
       boolean caseSensitive) throws UnoHelperException
@@ -976,64 +936,54 @@ public class UNO
   }
 
   /**
-   * Durchsucht einen {@link XBrowseNode} Baum nach einem Blatt vom Typ SCRIPT,
-   * dessen Name nameToFind ist (kann durch "." abgetrennte Pfadangabe im
-   * Skript-Baum enthalten). Siehe
-   * {@link #findBrowseNodeTreeLeafAndScriptProvider(XBrowseNode, String, String, boolean, String[])}
-   * .
-   * 
-   * @return den gefundenen Knoten, sowie den nächsten Vorfahren, der
-   *         XScriptProvider implementiert (oder den Knoten selbst, falls dieser
-   *         XScriptProvider implementiert). Falls kein entsprechender Knoten oder
-   *         Vorfahre gefunden wurde, wird der entsprechende Wert als null
-   *         geliefert.
-   * @throws UnoHelperException 
+   * Search for a script in locations document, application, share.
+   *
+   * @param xBrowseNode
+   *          Root of the tree to scan.
+   * @param prefix
+   *          Prefix of the script to find.
+   * @param nameToFind
+   *          Script to find. Path can be separated by dots.
+   * @param caseSensitive
+   *          If true search is case sensitive.
+   * @return The node of the script and the first parent which implements {@link XScriptProvider}.
+   *         If one of them isn't found its value is <code>null</code>.
+   * @throws UnoHelperException
+   *           Can't find the script.
    */
   public static XBrowseNodeAndXScriptProvider findBrowseNodeTreeLeafAndScriptProvider(XBrowseNode xBrowseNode,
-      String prefix, String nameToFind, boolean caseSensitive)
-      throws UnoHelperException
+      String prefix, String nameToFind, boolean caseSensitive) throws UnoHelperException
   {
     return findBrowseNodeTreeLeafAndScriptProvider(xBrowseNode, prefix, nameToFind, caseSensitive, null);
   }
 
   /**
-   * Durchsucht einen {@link XBrowseNode} Baum nach einem Blatt vom Typ SCRIPT,
-   * dessen Name nameToFind ist (kann durch "." abgetrennte Pfadangabe im
-   * Skript-Baum enthalten).
-   * .
-   * 
+   * Search for a script.
+   *
    * @param xBrowseNode
-   *                        Wurzel des zu durchsuchenden Baums.
+   *          Root of the tree to scan.
    * @param prefix
-   *                        wird dem Namen jedes Knoten vorangestellt. Dies wird
-   *                        verwendet, wenn xBrowseNode nicht die Wurzel ist.
+   *          Prefix of the script to find.
    * @param nameToFind
-   *                        der zu suchende Name.
+   *          Script to find. Path can be separated by dots.
    * @param caseSensitive
-   *                        falls true, so wird Gross-/Kleinschreibung
-   *                        berücksichtigt bei der Suche.
+   *          If true search is case sensitive.
    * @param location
-   *                        Es gelten nur Knoten als Treffer, die ein "URI"
-   *                        Property haben, das eine location enthält die einem
-   *                        String in der <code>location</code> Liste entspricht.
-   *                        Mögliche locations sind "document", "application" und
-   *                        "share". Falls <code>location==null</code>, so wird
-   *                        {"document", "application", "share"} angenommen.
-   * @return den gefundenen Knoten, sowie den nächsten Vorfahren, der
-   *         XScriptProvider implementiert. Falls kein entsprechender Knoten oder
-   *         Vorfahre gefunden wurde, wird der entsprechende Wert als null
-   *         geliefert.
-   * @throws UnoHelperException 
+   *          List of possible locations (e.g. "application", "share", "document"). The order is
+   *          important if there are more macros with the same name but in different locations. If
+   *          <code>location==null</code> <code>{"document", "application", "share"}</code> is used.
+   * @return The node of the script and the first parent which implements {@link XScriptProvider}.
+   *         If one of them isn't found its value is <code>null</code>.
+   * @throws UnoHelperException
+   *           Can't find the script.
    */
   public static XBrowseNodeAndXScriptProvider findBrowseNodeTreeLeafAndScriptProvider(XBrowseNode xBrowseNode,
-      String prefix, String nameToFind, boolean caseSensitive,
-      String[] location) throws UnoHelperException
+      String prefix, String nameToFind, boolean caseSensitive, String[] location) throws UnoHelperException
   {
     String[] loc;
     if (location == null)
     {
-      loc = new String[]
-      { "document", "application", "share" };
+      loc = new String[] { "document", "application", "share" };
     } else
     {
       loc = location;
@@ -1757,6 +1707,18 @@ public class UNO
   public static XScriptProvider XScriptProvider(Object o)
   {
     return UnoRuntime.queryInterface(XScriptProvider.class, o);
+  }
+
+  /**
+   * Get {@link XScriptProviderSupplier} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns {@link XScriptProviderSupplier} Interface.
+   */
+  public static XScriptProviderSupplier XScriptProviderSupplier(Object o)
+  {
+    return UnoRuntime.queryInterface(XScriptProviderSupplier.class, o);
   }
 
   /**
@@ -2900,15 +2862,27 @@ public class UNO
   }
 
   /**
-   * Liefert eine vorgeparste UNO-URL von urlStr.
+   * Get {@link XFileIdentifierConverter} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XFileIdentifierConverter Interface.
+   */
+  public static XFileIdentifierConverter XFileIdentifierConverter(Object o)
+  {
+    return UnoRuntime.queryInterface(XFileIdentifierConverter.class, o);
+  }
+
+  /**
+   * Parse an UNO-URL.
    * 
    * @param urlStr
-   * @return vorgeparste UNO-URL von urlStr.
+   *          The UNO-URL.
+   * @return parsed UNO-URL.
    */
   public static com.sun.star.util.URL getParsedUNOUrl(String urlStr)
   {
-    com.sun.star.util.URL[] unoURL = new com.sun.star.util.URL[]
-    { new com.sun.star.util.URL() };
+    com.sun.star.util.URL[] unoURL = new com.sun.star.util.URL[] { new com.sun.star.util.URL() };
     unoURL[0].Complete = urlStr;
     if (urlTransformer != null)
     {
@@ -2919,66 +2893,41 @@ public class UNO
   }
 
   /**
-   * Liefert ein Service ConfigurationAccess mit dem der lesende Zugriff auf die
-   * OOo-Configuration ab dem Knoten nodepath ermöglicht wird oder null, wenn der
-   * Service nicht erzeugt werden kann.
-   * 
+   * Get access a part of the configuration so that it can be read.
+   *
    * @param nodepath
-   *                   Beschreibung des Knotens des Konfigurationsbaumes, der als
-   *                   neue Wurzel zurückgeliefert werden soll. Ein nodepath ist
-   *                   z.B.
-   *                   "/org.openoffice.Office.Writer/AutoFunction/Format/ByInput/ApplyNumbering"
-   * @return ein ConfigurationUpdateAccess mit der Wurzel an dem Knoten nodepath
-   *         oder null, falls der Service nicht erzeugt werden kann (wenn z.B. der
-   *         Knoten nodepath nicht existiert).
+   *          The part of the configuration (e.g.
+   *          "/org.openoffice.Office.Writer/AutoFunction/Format/ByInput/ApplyNumbering")
+   * @return The updatable configuration part or null if the part doesn't exist.
    */
   public static XNameAccess getConfigurationAccess(String nodepath)
-      throws UnoHelperException
   {
-    PropertyValue[] props = new PropertyValue[]
-    { new PropertyValue() };
-    props[0].Name = "nodepath";
-    props[0].Value = nodepath;
+    UnoProps props = new UnoProps(UnoProperty.NODEPATH, nodepath);
     Object confProv = getConfigurationProvider();
-    try
-    {
-      return UNO.XNameAccess(UNO.XMultiServiceFactory(confProv)
-          .createInstanceWithArguments(
-              "com.sun.star.configuration.ConfigurationAccess", props));
-    }
-    catch (com.sun.star.uno.Exception e)
-    {
-      throw new UnoHelperException(e);
-    }
+    return UNO.XNameAccess(UnoService.createServiceWithArguments(UnoService.CSS_CONFIGURATION_CONFIGURATION_ACCESS,
+        props.getProps(), confProv));
   }
 
   /**
-   * Liefert ein Service ConfigurationUpdateAccess mit dem der lesende und
-   * schreibende Zugriff auf die OOo-Configuration ab dem Knoten nodepath
-   * ermöglicht wird oder null wenn der Service nicht erzeugt werden kann.
-   * 
+   * Get access a part of the configuration so that it can be read and written.
+   *
    * @param nodepath
-   *                   Beschreibung des Knotens des Konfigurationsbaumes, der als
-   *                   neue Wurzel zurückgeliefert werden soll. Ein nodepath ist
-   *                   z.B.
-   *                   "/org.openoffice.Office.Writer/AutoFunction/Format/ByInput/ApplyNumbering"
-   * @return ein ConfigurationUpdateAccess mit der Wurzel an dem Knoten nodepath
-   *         oder null, falls der Service nicht erzeugt werden kann (wenn z.B. der
-   *         Knoten nodepath nicht existiert).
-   * @throws UnoHelperException 
+   *          The part of the configuration (e.g.
+   *          "/org.openoffice.Office.Writer/AutoFunction/Format/ByInput/ApplyNumbering")
+   * @return The updatable configuration part or null if the part doesn't exist.
+   * @throws UnoHelperException
+   *           Can't get access to a updatable configuration.
    */
-  public static XChangesBatch getConfigurationUpdateAccess(String nodepath)
-      throws UnoHelperException
+  public static XChangesBatch getConfigurationUpdateAccess(String nodepath) throws UnoHelperException
   {
-    PropertyValue[] props = new PropertyValue[]
-    { new PropertyValue() };
+    PropertyValue[] props = new PropertyValue[] { new PropertyValue() };
     props[0].Name = "nodepath";
     props[0].Value = nodepath;
     Object confProv = getConfigurationProvider();
     try
     {
-      return UNO.XChangesBatch(UnoService.createServiceWithArguments(
-          UnoService.CSS_CONFIGURATION_CONFIGURATION_UPDATE_ACCESS, props, confProv));
+      return UNO.XChangesBatch(UnoService
+          .createServiceWithArguments(UnoService.CSS_CONFIGURATION_CONFIGURATION_UPDATE_ACCESS, props, confProv));
     } catch (Exception e)
     {
       throw new UnoHelperException(e);
@@ -2986,10 +2935,9 @@ public class UNO
   }
 
   /**
-   * Liefert den configurationProvider, mit dem der Zugriff auf die Konfiguration
-   * von OOo ermöglicht wird.
-   * 
-   * @return ein neuer configurationProvider
+   * Get access to the configuration of Office.
+   *
+   * @return A configuration provider.
    */
   private static Object getConfigurationProvider()
   {
@@ -3002,20 +2950,17 @@ public class UNO
   }
 
   /**
-   * Liefert den shortcutManager zu der OOo Komponente component zurück.
-   * 
+   * Get the accelerator configuration.
+   *
    * @param component
-   *                    die OOo Komponente zu der der ShortcutManager geliefert
-   *                    werden soll z.B "com.sun.star.text.TextDocument"
-   * @return der shortcutManager zur OOo Komponente component oder null falls kein
-   *         shortcutManager erzeugt werden kann.
-   * @throws UnoHelperException 
-   * 
+   *          The FQDN of the component for which the accelerator configuration is requested (e.g.
+   *          "com.sun.star.text.TextDocument")
+   * @return The accelerator configuration or null if there isn't a accelerator configuration.
+   * @throws UnoHelperException
+   *           Can't access the accelerator configuration.
    */
-  public static XAcceleratorConfiguration getShortcutManager(String component)
-      throws UnoHelperException
+  public static XAcceleratorConfiguration getShortcutManager(String component) throws UnoHelperException
   {
-    // XModuleUIConfigurationManagerSupplier moduleUICfgMgrSupplier
     XModuleUIConfigurationManagerSupplier moduleUICfgMgrSupplier = UNO.XModuleUIConfigurationManagerSupplier(
         UnoComponent.createComponentWithContext(UnoComponent.CSS_UI_MODULE_UI_CONFIGURATION_MANAGER_SUPPLIER));
 
@@ -3026,108 +2971,80 @@ public class UNO
 
     try
     {
-      // XCUIConfigurationManager moduleUICfgMgr
-      XUIConfigurationManager moduleUICfgMgr = null;
-
-      moduleUICfgMgr = moduleUICfgMgrSupplier.getUIConfigurationManager(component);
-
-      // XAcceleratorConfiguration xAcceleratorConfiguration
-      Method m = moduleUICfgMgr.getClass().getMethod("getShortCutManager", (Class[]) null);
-      return UNO.XAcceleratorConfiguration(m.invoke(moduleUICfgMgr, (Object[]) null));
-    }
-    catch (NoSuchElementException | NoSuchMethodException | SecurityException
-        | IllegalAccessException | java.lang.IllegalArgumentException
-        | InvocationTargetException e)
+      XUIConfigurationManager moduleUICfgMgr = moduleUICfgMgrSupplier.getUIConfigurationManager(component);
+      return moduleUICfgMgr.getShortCutManager();
+    } catch (NoSuchElementException | SecurityException | java.lang.IllegalArgumentException e)
     {
-      throw new UnoHelperException("Kein Zugriff auf den ShrotcutManager.", e);
+      throw new UnoHelperException("No shortcut manager", e);
     }
   }
 
   /**
-   * Wenn hide=true ist, so wird die Eigenschaft CharHidden für range auf true
-   * gesetzt und andernfalls der Standardwert (=false) für die Property CharHidden
-   * wieder hergestellt. Dadurch lässt sich der Text in range unsichtbar schalten
-   * bzw. wieder sichtbar schalten. Die Repräsentation von unsichtbar geschaltenen
-   * Stellen erfolgt in der Art, dass OOo für den unsichtbaren Textbereich ein
-   * neuen automatisch generierten Character-Style anlegt, der die Eigenschaften
-   * der bisher gesetzten Styles erbt und lediglich die Eigenschaft "Sichtbarkeit"
-   * auf unsichtbar setzt. Beim Aufheben einer unsichtbaren Stelle sorgt das
-   * Zurücksetzen auf den Standardwert dafür, dass der vorher angelegte
-   * automatische-Style wieder zurück genommen wird - so ist sichergestellt, dass
-   * das Aus- und Wiedereinblenden von Textbereichen keine Änderungen der bisher
-   * gesetzten Styles hervorruft.
-   * 
+   * Hide or show a text range.
+   *
    * @param range
-   *                Der Textbereich, der aus- bzw. eingeblendet werden soll.
+   *          The text range to hide or show.
    * @param hide
-   *                hide=true blendet aus, hide=false blendet ein.
-   * @throws UnoHelperException 
+   *          True if the text range should be invisible, false if visible.
+   * @throws UnoHelperException
+   *           Can't modify the property.
    */
-  public static void hideTextRange(XTextRange range, boolean hide)
-      throws UnoHelperException
+  public static void hideTextRange(XTextRange range, boolean hide) throws UnoHelperException
   {
-    String propName = "CharHidden";
     if (hide)
     {
-      UnoProperty.setProperty(range, propName, Boolean.TRUE);
-      // Workaround für update Bug
-      // http://qa.openoffice.org/issues/show_bug.cgi?id=78896
-      UnoProperty.setProperty(range, propName, Boolean.FALSE);
-      UnoProperty.setProperty(range, propName, Boolean.TRUE);
+      UnoProperty.setProperty(range, UnoProperty.CHAR_HIDDEN, Boolean.TRUE);
+      // Workaround for http://qa.openoffice.org/issues/show_bug.cgi?id=78896
+      UnoProperty.setProperty(range, UnoProperty.CHAR_HIDDEN, Boolean.FALSE);
+      UnoProperty.setProperty(range, UnoProperty.CHAR_HIDDEN, Boolean.TRUE);
     } else
     {
-      // Workaround für (den anderen) update Bug
-      // http://qa.openoffice.org/issues/show_bug.cgi?id=103101
-      // Nur das Rücksetzen auf den Standardwert reicht nicht aus. Daher erfolgt
-      // vor
-      // dem Rücksetzen auf den Standardwert eine explizite Einblendung.
-      UnoProperty.setProperty(range, propName, Boolean.FALSE);
-      UnoProperty.setPropertyToDefault(range, propName);
+      // Workaround for http://qa.openoffice.org/issues/show_bug.cgi?id=103101
+      UnoProperty.setProperty(range, UnoProperty.CHAR_HIDDEN, Boolean.FALSE);
+      UnoProperty.setPropertyToDefault(range, UnoProperty.CHAR_HIDDEN);
     }
   }
 
   /**
-   * Iteriert über alle Paragraphen in einer XTextRange.
-   * 
+   * Perform an action on all paragraphs in a text range.
+   *
    * @param range
-   * @param c
-   *                Lambda-Funktion, die den aktuellen Paragraphen als Parameter
-   *                erhält.
+   *          The text range.
+   * @param consumer
+   *          The action to perform on the paragraphs.
    */
-  public static void forEachParagraphInRange(XTextRange range, Consumer<Object> c)
+  public static void forEachParagraphInRange(XTextRange range, Consumer<Object> consumer)
   {
     XTextCursor cursor = range.getText().createTextCursorByRange(range);
 
-    for (XEnumerationAccess par : UnoCollection.getCollection(cursor,
-        XEnumerationAccess.class))
+    for (XEnumerationAccess par : UnoCollection.getCollection(cursor, XEnumerationAccess.class))
     {
       if (par != null)
       {
-        c.accept(par);
+        consumer.accept(par);
       }
     }
   }
 
   /**
-   * Iteriert über alle Text-Objekte in einer XTextRange.
-   * 
+   * Perform an action on all text objects in a text range.
+   *
    * @param range
-   * @param c
-   *                Lambda-Funktion, die das aktuelle Text-Objekt als Parameter
-   *                erhält.
+   *          The text range.
+   * @param consumer
+   *          The action to perform on the text objects.
    */
-  public static void forEachTextPortionInRange(XTextRange range, Consumer<Object> c)
+  public static void forEachTextPortionInRange(XTextRange range, Consumer<Object> consumer)
   {
     XTextCursor cursor = range.getText().createTextCursorByRange(range);
 
-    for (XEnumerationAccess parEnum : UnoCollection.getCollection(cursor,
-        XEnumerationAccess.class))
+    for (XEnumerationAccess parEnum : UnoCollection.getCollection(cursor, XEnumerationAccess.class))
     {
       if (parEnum != null)
       {
         for (Object o : UnoCollection.getCollection(parEnum, Object.class))
         {
-          c.accept(o);
+          consumer.accept(o);
         }
       }
     }

@@ -38,6 +38,7 @@ public final class UnoComponent
   public static final String CSS_SDB_DATABASE_CONTEXT = "com.sun.star.sdb.DatabaseContext";
   public static final String CSS_SDB_ROW_SET = "com.sun.star.sdb.RowSet";
   public static final String CSS_TEXT_AUTO_TEXT_CONTAINER = "com.sun.star.text.AutoTextContainer";
+  public static final String CSS_UCB_FILE_CONTENT_PROVIDER = "com.sun.star.ucb.FileContentProvider";
   public static final String CSS_UI_MODULE_UI_CONFIGURATION_MANAGER_SUPPLIER = "com.sun.star.ui.ModuleUIConfigurationManagerSupplier";
   public static final String CSS_UI_UI_ELEMENT_FACTORY_MANAGER = "com.sun.star.ui.UIElementFactoryManager";
   public static final String CSS_UTIL_PATH_SETTINGS = "com.sun.star.util.PathSettings";
