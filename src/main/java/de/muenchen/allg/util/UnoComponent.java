@@ -13,14 +13,19 @@ import de.muenchen.allg.afid.UnoHelperRuntimeException;
 public final class UnoComponent
 {
 
+  public static final String CSS_AWT_TAB_UNO_CONTROL_TAB_PAGE = "com.sun.star.awt.tab.UnoControlTabPage";
+  public static final String CSS_AWT_TAB_UNO_CONTROL_TAB_PAGE_CONTAINER = "com.sun.star.awt.tab.UnoControlTabPageContainer";
+  public static final String CSS_AWT_TAB_UNO_CONTROL_TAB_PAGE_CONTAINER_MODEL = "com.sun.star.awt.tab.UnoControlTabPageContainerModel";
   public static final String CSS_AWT_TOOLKIT = "com.sun.star.awt.Toolkit";
   public static final String CSS_AWT_TREE_MUTABLE_TREE_DATA_MODEL = "com.sun.star.awt.tree.MutableTreeDataModel";
   public static final String CSS_AWT_TREE_TREE_CONTROL = "com.sun.star.awt.tree.TreeControl";
   public static final String CSS_AWT_UNO_CONTROL_BUTTON = "com.sun.star.awt.UnoControlButton";
+  public static final String CSS_AWT_UNO_CONTROL_CHECK_BOX = "com.sun.star.awt.UnoControlCheckBox";
   public static final String CSS_AWT_UNO_CONTROL_COMBO_BOX = "com.sun.star.awt.UnoControlComboBox";
   public static final String CSS_AWT_UNO_CONTROL_CONTAINER = "com.sun.star.awt.UnoControlContainer";
   public static final String CSS_AWT_UNO_CONTROL_CONTAINER_MODEL = "com.sun.star.awt.UnoControlContainerModel";
   public static final String CSS_AWT_UNO_CONTROL_EDIT = "com.sun.star.awt.UnoControlEdit";
+  public static final String CSS_AWT_UNO_CONTROL_FIXED_HYPER_LINK = "com.sun.star.awt.UnoControlFixedHyperlink";
   public static final String CSS_AWT_UNO_CONTROL_FIXED_LINE = "com.sun.star.awt.UnoControlFixedLine";
   public static final String CSS_AWT_UNO_CONTROL_FIXED_TEXT = "com.sun.star.awt.UnoControlFixedText";
   public static final String CSS_AWT_UNO_CONTROL_LIST_BOX = "com.sun.star.awt.UnoControlListBox";
