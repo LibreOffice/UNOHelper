@@ -112,6 +112,7 @@ public final class UnoProperty
   public static final String POSITION_X = "PositionX";
   public static final String POSITION_Y = "PositionY";
   public static final String PRINT_EMPTY_PAGES = "PrintEmptypages";
+  public static final String READ_ONLY = "ReadOnly";
   public static final String RECORD_CHANGES = "RecordChanges";
   public static final String RIGHT_BORDER = "RightBorder";
   public static final String ROOT_DISPLAYED = "RootDisplayed";
