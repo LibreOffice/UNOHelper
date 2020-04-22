@@ -21,6 +21,7 @@ public final class UnoProperty
   public static final String ACTION_COMMAND = "ActionCommand";
   public static final String ACTIVE_CONNECTION = "ActiveConnection";
   public static final String ANCHOR_TYPE = "AnchorType";
+  public static final String AS_TEMPLATE = "AsTemplate";
   public static final String AUTHOR = "Author";
   public static final String BACK_TRANSPARENT = "BackTransparent";
   public static final String BOOKMARK = "Bookmark";
@@ -72,6 +73,7 @@ public final class UnoProperty
   public static final String HEADER_LINE = "HeaderLine";
   public static final String HEIGHT = "Height";
   public static final String HELP_TEXT = "HelpText";
+  public static final String HIDDEN = "Hidden";
   public static final String HIDE_INACTIVE_SELECTION = "HideInactiveSelection";
   public static final String HINT = "Hint";
   public static final String HORI_ORIENT = "HoriOrient";
@@ -94,6 +96,7 @@ public final class UnoProperty
   public static final String LOAD_PAGE_STYLES = "LoadPageStyles";
   public static final String LOAD_PRINTER = "LoadPrinter";
   public static final String LOAD_TEXT_STYLES = "LoadTextStyles";
+  public static final String MACRO_EXECUTION_MODE = "MacroExecutionMode";
   public static final String MAX_VALUE = "MaxValue";
   public static final String MIN_VALUE = "MinValue";
   public static final String MULTILINE = "MultiLine";
