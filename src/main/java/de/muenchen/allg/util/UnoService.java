@@ -24,8 +24,8 @@ public class UnoService
   public static final String CSS_TEXT_FIELD_MASTER_DATABASE = "com.sun.star.text.FieldMaster.Database";
   public static final String CSS_TEXT_FIELD_MASTER_USER = "com.sun.star.text.FieldMaster.User";
   public static final String CSS_TEXT_TEXT_FIELD_ANNOTATION = "com.sun.star.text.TextField.Annotation";
-  public static final String CSS_TEXT_TEXT_FIELD_DATA_BASE = "com.sun.star.text.TextField.DataBase";
-  public static final String CSS_TEXT_TEXT_FIELD_DATA_BASE_NEXT_SET = "com.sun.star.text.TextField.DataBaseNextSet";
+  public static final String CSS_TEXT_TEXT_FIELD_DATABASE = "com.sun.star.text.TextField.Database";
+  public static final String CSS_TEXT_TEXT_FIELD_DATABASE_NEXT_SET = "com.sun.star.text.TextField.DatabaseNextSet";
   public static final String CSS_TEXT_TEXT_FIELD_DROP_DOWN = "com.sun.star.text.TextField.DropDown";
   public static final String CSS_TEXT_TEXT_FIELD_INPUT = "com.sun.star.text.TextField.Input";
   public static final String CSS_TEXT_TEXT_FIELD_INPUT_USER = "com.sun.star.text.TextField.InputUser";
