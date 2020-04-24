@@ -67,6 +67,7 @@ public final class UnoProperty
   public static final String FIELD_DELIMITER = "FieldDelimiter";
   public static final String FILE_NAME_FROM_COLUMN = "FileNameFromColumn";
   public static final String FILE_NAME_PREFIX = "FileNamePrefix";
+  public static final String FILTER_NAME = "FilterName";
   public static final String FIXED_LENGTH = "FixedLength";
   public static final String FOLLOW_STYLE = "FollowStyle";
   public static final String FRAME_IS_AUTOMATIC_HEIGHT = "FrameIsAutomaticHeight";
@@ -122,6 +123,7 @@ public final class UnoProperty
   public static final String ROOT_DISPLAYED = "RootDisplayed";
   public static final String ROW_HEIGHT = "RowHeight";
   public static final String SAVE_AS_SINGLE_FILE = "SaveAsSingleFile";
+  public static final String SAVE_FILTER = "SaveFilter";
   public static final String SELECTED_ITEM = "SelectedItem";
   public static final String SHOW_THOUSANDS_SEPERATOR = "ShowThousandsSeperator";
   public static final String SINGLE_PRINT_JOBS = "SinglePrintJobs";
