@@ -187,6 +187,7 @@ import com.sun.star.awt.XDialog;
 import com.sun.star.awt.XExtendedToolkit;
 import com.sun.star.awt.XFixedText;
 import com.sun.star.awt.XItemList;
+import com.sun.star.awt.XLayoutConstrains;
 import com.sun.star.awt.XListBox;
 import com.sun.star.awt.XMenu;
 import com.sun.star.awt.XNumericField;
@@ -2871,6 +2872,18 @@ public class UNO
   public static XFileIdentifierConverter XFileIdentifierConverter(Object o)
   {
     return UnoRuntime.queryInterface(XFileIdentifierConverter.class, o);
+  }
+
+  /**
+   * Get {@link XLayoutConstrains} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XLayoutConstrains Interface.
+   */
+  public static XLayoutConstrains XLayoutContrains(Object o)
+  {
+    return UnoRuntime.queryInterface(XLayoutConstrains.class, o);
   }
 
   /**
