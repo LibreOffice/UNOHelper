@@ -206,6 +206,7 @@ import com.sun.star.awt.XWindowPeer;
 import com.sun.star.awt.tab.XTabPage;
 import com.sun.star.awt.tab.XTabPageContainer;
 import com.sun.star.awt.tab.XTabPageContainerModel;
+import com.sun.star.awt.tab.XTabPageModel;
 import com.sun.star.awt.tree.XMutableTreeNode;
 import com.sun.star.awt.tree.XTreeControl;
 import com.sun.star.beans.PropertyValue;
@@ -1855,6 +1856,18 @@ public class UNO
   }
 
   /**
+   * Get {@link XTabPageModel} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns {@link XTabPageModel} Interface.
+   */
+  public static XTabPageModel XTabPageModel(Object o)
+  {
+    return UnoRuntime.queryInterface(XTabPageModel.class, o);
+  }
+
+  /**
    * Get {@link XTabPageContainer} Interface from Object.
    *
    * @param o
@@ -2881,7 +2894,7 @@ public class UNO
    *          Object.
    * @return Returns XLayoutConstrains Interface.
    */
-  public static XLayoutConstrains XLayoutContrains(Object o)
+  public static XLayoutConstrains XLayoutConstrains(Object o)
   {
     return UnoRuntime.queryInterface(XLayoutConstrains.class, o);
   }
