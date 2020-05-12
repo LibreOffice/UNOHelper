@@ -61,8 +61,7 @@ public abstract class AbstractSidebarPanel extends ComponentBase implements XUIE
   @Override
   public void dispose()
   {
-    XComponent xPanelComponent = UnoRuntime.queryInterface(XComponent.class,
-        panel);
+    XComponent xPanelComponent = UnoRuntime.queryInterface(XComponent.class, panel);
     xPanelComponent.dispose();
   }
 }

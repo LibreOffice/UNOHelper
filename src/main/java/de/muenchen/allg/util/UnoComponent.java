@@ -25,6 +25,7 @@ public final class UnoComponent
   public static final String CSS_AWT_UNO_CONTROL_COMBO_BOX = "com.sun.star.awt.UnoControlComboBox";
   public static final String CSS_AWT_UNO_CONTROL_CONTAINER = "com.sun.star.awt.UnoControlContainer";
   public static final String CSS_AWT_UNO_CONTROL_CONTAINER_MODEL = "com.sun.star.awt.UnoControlContainerModel";
+  public static final String CSS_AWT_UNO_CONTROL_DIALOG = "com.sun.star.awt.UnoControlDialog";
   public static final String CSS_AWT_UNO_CONTROL_EDIT = "com.sun.star.awt.UnoControlEdit";
   public static final String CSS_AWT_UNO_CONTROL_FIXED_HYPER_LINK = "com.sun.star.awt.UnoControlFixedHyperlink";
   public static final String CSS_AWT_UNO_CONTROL_FIXED_LINE = "com.sun.star.awt.UnoControlFixedLine";
