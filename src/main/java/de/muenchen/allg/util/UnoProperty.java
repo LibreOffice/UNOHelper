@@ -71,6 +71,7 @@ public final class UnoProperty
   public static final String FILTER_NAME = "FilterName";
   public static final String FIXED_LENGTH = "FixedLength";
   public static final String FOLLOW_STYLE = "FollowStyle";
+  public static final String FONT_DESCRIPTOR = "FontDescriptor";
   public static final String FRAME_IS_AUTOMATIC_HEIGHT = "FrameIsAutomaticHeight";
   public static final String HEADER_LINE = "HeaderLine";
   public static final String HEIGHT = "Height";
