@@ -32,6 +32,7 @@ public final class UnoComponent
   public static final String CSS_AWT_UNO_CONTROL_FIXED_TEXT = "com.sun.star.awt.UnoControlFixedText";
   public static final String CSS_AWT_UNO_CONTROL_LIST_BOX = "com.sun.star.awt.UnoControlListBox";
   public static final String CSS_AWT_UNO_CONTROL_NUMERIC_FIELD = "com.sun.star.awt.UnoControlNumericField";
+  public static final String CSS_AWT_UNO_CONTROL_SCROLL_BAR = "com.sun.star.awt.UnoControlScrollBar";
   public static final String CSS_BRIDGE_UNO_URL_RESOLVER = "com.sun.star.bridge.UnoUrlResolver";
   public static final String CSS_CONFIGURATION_CONFIGURATION_PROVIDER = "com.sun.star.configuration.ConfigurationProvider";
   public static final String CSS_FRAME_DESKTOP = "com.sun.star.frame.Desktop";

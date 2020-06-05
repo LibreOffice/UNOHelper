@@ -194,6 +194,7 @@ import com.sun.star.awt.XNumericField;
 import com.sun.star.awt.XPopupMenu;
 import com.sun.star.awt.XProgressBar;
 import com.sun.star.awt.XRadioButton;
+import com.sun.star.awt.XScrollBar;
 import com.sun.star.awt.XSpinField;
 import com.sun.star.awt.XTextComponent;
 import com.sun.star.awt.XToolkit;
@@ -2683,6 +2684,18 @@ public class UNO
     return UnoRuntime.queryInterface(XSpinField.class, object);
   }
   
+  /**
+   * Get {@link XScrollBar} Interface from Object.
+   *
+   * @param object
+   *          Object.
+   * @return Returns XScrollBar Interface.
+   */
+  public static XScrollBar XScrollBar(Object object)
+  {
+    return UnoRuntime.queryInterface(XScrollBar.class, object);
+  }
+
   /**
    * Get {@link XTextComponent} Interface from Object.
    *
