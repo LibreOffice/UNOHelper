@@ -208,6 +208,7 @@ import com.sun.star.awt.tab.XTabPage;
 import com.sun.star.awt.tab.XTabPageContainer;
 import com.sun.star.awt.tab.XTabPageContainerModel;
 import com.sun.star.awt.tab.XTabPageModel;
+import com.sun.star.awt.tree.XMutableTreeDataModel;
 import com.sun.star.awt.tree.XMutableTreeNode;
 import com.sun.star.awt.tree.XTreeControl;
 import com.sun.star.beans.PropertyValue;
@@ -2826,6 +2827,18 @@ public class UNO
   public static XMutableTreeNode XMutableTreeNode(Object o)
   {
     return UnoRuntime.queryInterface(XMutableTreeNode.class, o);
+  }
+
+  /**
+   * Get {@link XMutableTreeDataModel} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XMutableTreeDataModel Interface.
+   */
+  public static XMutableTreeDataModel XMutableTreeDataModel(Object o)
+  {
+    return UnoRuntime.queryInterface(XMutableTreeDataModel.class, o);
   }
 
   /**
