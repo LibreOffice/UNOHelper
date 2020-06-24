@@ -21,7 +21,7 @@ pipeline {
           mavenLocalRepo: '.repo',
           mavenSettingsConfig: 'org.jenkinsci.plugins.configfiles.maven.MavenSettingsConfig1441715654272',
           publisherStrategy: 'EXPLICIT') {
-          sh "mvn clean package"
+          sh "mvn -DdryRun clean package"
         }
       }
     }

@@ -3,7 +3,7 @@
 UNOHelper offers helper functions for working with the OpenOffice/LibreOffice 
 UNO API. It wraps commonly used functions from the UNO API for easier use.
 
-## Kompilieren
+## Compile
 
 The following applications have to be installed to compile WollMux:
 * [JAVA JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
