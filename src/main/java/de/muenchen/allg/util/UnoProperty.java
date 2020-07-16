@@ -48,6 +48,8 @@ public final class UnoProperty
   public static final String BACK_TRANSPARENT = "BackTransparent";
   public static final String BACKGROUND_COLOR = "BackgroundColor";
   public static final String BOOKMARK = "Bookmark";
+  public static final String BOOKMARK_HIDDEN = "BookmarkHidden";
+  public static final String BOOKMARK_CONDITION = "BookmarkCondition";
   public static final String BORDER = "Border";
   public static final String BORDER_COLOR = "BorderColor";
   public static final String BORDER_DISTANCE = "BorderDistance";
