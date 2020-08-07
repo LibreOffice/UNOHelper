@@ -39,6 +39,7 @@ import com.sun.star.awt.XControlContainer;
 import com.sun.star.awt.XControlModel;
 import com.sun.star.awt.XDevice;
 import com.sun.star.awt.XDialog;
+import com.sun.star.awt.XDialog2;
 import com.sun.star.awt.XExtendedToolkit;
 import com.sun.star.awt.XFixedText;
 import com.sun.star.awt.XItemList;
@@ -2598,6 +2599,18 @@ public class UNO
   public static XDialog XDialog(Object o)
   {
     return UnoRuntime.queryInterface(XDialog.class, o);
+  }
+
+  /**
+   * Get {@link XDialog2} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XDialog Interface.
+   */
+  public static XDialog2 XDialog2(Object o)
+  {
+    return UnoRuntime.queryInterface(XDialog2.class, o);
   }
 
   /**
