@@ -97,6 +97,7 @@ public final class UnoProperty
   public static final String FOLLOW_STYLE = "FollowStyle";
   public static final String FONT_DESCRIPTOR = "FontDescriptor";
   public static final String FRAME_IS_AUTOMATIC_HEIGHT = "FrameIsAutomaticHeight";
+  public static final String H_SCROLL = "HScroll";
   public static final String HEADER_LINE = "HeaderLine";
   public static final String HEIGHT = "Height";
   public static final String HELP_TEXT = "HelpText";
@@ -150,6 +151,8 @@ public final class UnoProperty
   public static final String ROW_HEIGHT = "RowHeight";
   public static final String SAVE_AS_SINGLE_FILE = "SaveAsSingleFile";
   public static final String SAVE_FILTER = "SaveFilter";
+  public static final String SCROLL_HEIGHT = "ScrollHeight";
+  public static final String SCROLL_WIDTH = "ScrollWidth";
   public static final String SELECTED_ITEM = "SelectedItem";
   public static final String SHOW_THOUSANDS_SEPERATOR = "ShowThousandsSeperator";
   public static final String SINGLE_PRINT_JOBS = "SinglePrintJobs";
@@ -173,6 +176,7 @@ public final class UnoProperty
   public static final String VERT_ORIENT = "VertOrient";
   public static final String VERT_ORIENT_POSITION = "VertOrientPosition";
   public static final String VERT_ORIENT_RELATION = "VertOrientRelation";
+  public static final String V_SCROLL = "VScroll";
   public static final String WAIT = "Wait";
   public static final String WIDTH = "Width";
   public static final String WORK = "Work";
