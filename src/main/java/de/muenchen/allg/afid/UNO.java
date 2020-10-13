@@ -2801,7 +2801,7 @@ public class UNO
    *          Object.
    * @return Returns XUnitConversion Interface.
    */
-  public static XUnitConversion adsg(Object o)
+  public static XUnitConversion XUnitConversion(Object o)
   {
     return UnoRuntime.queryInterface(XUnitConversion.class, o);
   }
