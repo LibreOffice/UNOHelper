@@ -56,6 +56,7 @@ import com.sun.star.awt.XTextComponent;
 import com.sun.star.awt.XToolkit;
 import com.sun.star.awt.XToolkit2;
 import com.sun.star.awt.XTopWindow;
+import com.sun.star.awt.XUnitConversion;
 import com.sun.star.awt.XUserInputInterception;
 import com.sun.star.awt.XWindow;
 import com.sun.star.awt.XWindow2;
@@ -2791,6 +2792,18 @@ public class UNO
   public static XLayoutConstrains XLayoutConstrains(Object o)
   {
     return UnoRuntime.queryInterface(XLayoutConstrains.class, o);
+  }
+
+  /**
+   * Get {@link XUnitConversion} Interface from Object.
+   *
+   * @param o
+   *          Object.
+   * @return Returns XUnitConversion Interface.
+   */
+  public static XUnitConversion adsg(Object o)
+  {
+    return UnoRuntime.queryInterface(XUnitConversion.class, o);
   }
 
   /**
