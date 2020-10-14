@@ -152,6 +152,8 @@ public final class UnoProperty
   public static final String SAVE_AS_SINGLE_FILE = "SaveAsSingleFile";
   public static final String SAVE_FILTER = "SaveFilter";
   public static final String SCROLL_HEIGHT = "ScrollHeight";
+  public static final String SCROLL_LEFT = "ScrollLeft";
+  public static final String SCROLL_TOP = "ScrollTop";
   public static final String SCROLL_WIDTH = "ScrollWidth";
   public static final String SELECTED_ITEM = "SelectedItem";
   public static final String SHOW_THOUSANDS_SEPERATOR = "ShowThousandsSeperator";
