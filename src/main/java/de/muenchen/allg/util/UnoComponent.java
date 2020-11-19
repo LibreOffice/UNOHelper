@@ -36,6 +36,7 @@ public final class UnoComponent
 {
 
   public static final String CSS_AWT_CONTAINER_WINDOW_PROVIDER = "com.sun.star.awt.ContainerWindowProvider";
+  public static final String CSS_AWT_POPUP_MENU = "com.sun.star.awt.PopupMenu";
   public static final String CSS_AWT_TAB_UNO_CONTROL_TAB_PAGE = "com.sun.star.awt.tab.UnoControlTabPage";
   public static final String CSS_AWT_TAB_UNO_CONTROL_TAB_PAGE_CONTAINER = "com.sun.star.awt.tab.UnoControlTabPageContainer";
   public static final String CSS_AWT_TAB_UNO_CONTROL_TAB_PAGE_CONTAINER_MODEL = "com.sun.star.awt.tab.UnoControlTabPageContainerModel";
