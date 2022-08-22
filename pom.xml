@@ -7,7 +7,7 @@
   <url>https://github.com/WollMux/UNOHelper</url>
 
   <properties>
-    <libreoffice.version>6.4.5-lhm1700</libreoffice.version>
+    <libreoffice.version>7.4.0</libreoffice.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.release>11</maven.compiler.release>
     <maven.javadoc.failOnWarnings>false</maven.javadoc.failOnWarnings>
@@ -30,17 +30,6 @@
       <url>http://kvm-javabuild.tvc.muenchen.de/artifactory/libs-snapshot-local</url>
     </snapshotRepository>
   </distributionManagement>
-
-  <repositories>
-    <repository>
-      <id>wollmux</id>
-      <name>wollmux-libs</name>
-      <url>https://dl.bintray.com/wollmux/WollMux</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
 
   <build>
     <plugins>
