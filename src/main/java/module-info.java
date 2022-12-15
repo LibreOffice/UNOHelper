@@ -25,6 +25,8 @@ module unohelper {
   exports de.muenchen.allg.dialog.adapter;
   exports de.muenchen.allg.document.text;
   exports de.muenchen.allg.ooo;
+  exports de.muenchen.allg.ui;
+  exports de.muenchen.allg.ui.layout;
   exports de.muenchen.allg.util;
 
   requires transitive org.libreoffice.uno;
@@ -35,4 +37,5 @@ module unohelper {
 
   requires org.apache.commons.lang3;
   requires com.google.common;
+  requires org.jsoup;
 }
