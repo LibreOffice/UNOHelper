@@ -25,9 +25,6 @@ package de.muenchen.allg.ui;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.sun.star.awt.PosSize;
 import com.sun.star.awt.Rectangle;
 import com.sun.star.awt.XButton;
@@ -57,7 +54,7 @@ import de.muenchen.allg.afid.UnoHelperException;
 import de.muenchen.allg.dialog.adapter.AbstractActionListener;
 import de.muenchen.allg.dialog.adapter.AbstractItemListener;
 import de.muenchen.allg.dialog.adapter.AbstractTextListener;
-import de.muenchen.allg.itd51.wollmux.ui.GuiFactory;
+import de.muenchen.allg.ui.GuiFactory;
 import de.muenchen.allg.util.UnoComponent;
 import de.muenchen.allg.util.UnoProperty;
 
@@ -66,9 +63,6 @@ import de.muenchen.allg.util.UnoProperty;
  */
 public class GuiFactory
 {
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(GuiFactory.class);
-
   private GuiFactory()
   {
     // nothing to initialize.
@@ -366,7 +360,7 @@ public class GuiFactory
         UnoProperty.setProperty(tabPageModel, UnoProperty.V_SCROLL, true);
       } catch (UnoHelperException e)
       {
-        LOGGER.error("", e);
+        // TODO: Error handling
       }
     }
 
@@ -379,7 +373,7 @@ public class GuiFactory
       model.insertByIndex(model.getCount(), tabPageModel);
     } catch (IllegalArgumentException | IndexOutOfBoundsException | WrappedTargetException e)
     {
-      LOGGER.error("", e);
+      // TODO: Error handling
     }
   }
 
@@ -527,7 +521,7 @@ public class GuiFactory
       return control;
     } catch (com.sun.star.uno.Exception ex)
     {
-      LOGGER.debug("", ex);
+      //TODO: Error handling
       return null;
     }
   }

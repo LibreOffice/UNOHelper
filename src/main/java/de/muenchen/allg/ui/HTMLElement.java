@@ -32,21 +32,16 @@ import javax.swing.text.html.StyleSheet;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.sun.star.awt.FontDescriptor;
 
-import de.muenchen.allg.itd51.wollmux.ui.HTMLElement;
+import de.muenchen.allg.ui.HTMLElement;
 
 /**
  * Represents the model of an HTML Element.
  */
 public class HTMLElement
 {
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(HTMLElement.class);
-
   private Document doc;
 
   /**
@@ -83,9 +78,9 @@ public class HTMLElement
           fontDescriptor.Height = (short) (Integer.valueOf(o.toString().replaceAll("pt", "").replaceAll(" ", ""))*2/3);
         } catch (NumberFormatException ex)
         {
-          LOGGER.info("parsing font height failed due number format exception, trying to parse string %s", o.toString());
+          //TODO: Error handling: LOGGER.info("parsing font height failed due number format exception, trying to parse string %s", o.toString());
           short fontSize = (short) (parseFontSizeString(o.toString())*2/3);
-          LOGGER.info("parsed %s to %i pt", o.toString(), fontSize);
+          //TODO: Error handling: LOGGER.info("parsed %s to %i pt", o.toString(), fontSize);
           fontDescriptor.Height = fontSize;
         }
       }
@@ -155,7 +150,7 @@ public class HTMLElement
         return uri.toString();
       } catch (URISyntaxException e)
       {
-        LOGGER.error("Invalide URL {}", href, e);
+        //TODO: Error handling: LOGGER.error("Invalide URL {}", href, e);
       }
     }
     return "";

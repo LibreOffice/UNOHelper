@@ -128,7 +128,7 @@ public class TabLayout implements Layout
           scrollableSize.Height);
     } catch (UnoHelperException e)
     {
-      LOGGER.error("", e);
+      //TODO: Error handling
     }
     return Pair.of(rect.Height, rect.Width);
   }
