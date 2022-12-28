@@ -262,7 +262,7 @@ public class UNO
   /**
    * The provider of scripts.
    */
-  public static XScriptProvider masterScriptProvider;
+  public static XScriptProvider mainScriptProvider;
 
   /**
    * Provides access to the configuration.
@@ -354,13 +354,13 @@ public class UNO
 
       desktop = UNO.XDesktop(UnoComponent.createComponentWithContext(UnoComponent.CSS_FRAME_DESKTOP));
 
-      XBrowseNodeFactory masterBrowseNodeFac = UnoRuntime.queryInterface(XBrowseNodeFactory.class,
+      XBrowseNodeFactory mainBrowseNodeFac = UnoRuntime.queryInterface(XBrowseNodeFactory.class,
           defaultContext.getValueByName("/singletons/com.sun.star.script.browse.theBrowseNodeFactory"));
-      scriptRoot = new BrowseNode(masterBrowseNodeFac.createView(BrowseNodeFactoryViewTypes.MACROORGANIZER));
+      scriptRoot = new BrowseNode(mainBrowseNodeFac.createView(BrowseNodeFactoryViewTypes.MACROORGANIZER));
 
-      XScriptProviderFactory masterProviderFac = UnoRuntime.queryInterface(XScriptProviderFactory.class,
+      XScriptProviderFactory mainProviderFac = UnoRuntime.queryInterface(XScriptProviderFactory.class,
           defaultContext.getValueByName("/singletons/com.sun.star.script.provider.theMasterScriptProviderFactory"));
-      masterScriptProvider = masterProviderFac.createScriptProvider(defaultContext);
+      mainScriptProvider = mainProviderFac.createScriptProvider(defaultContext);
 
       dbContext = UNO.XNamingService(UnoComponent.createComponentWithContext(UnoComponent.CSS_SDB_DATABASE_CONTEXT));
       urlTransformer = UNO

@@ -28,7 +28,7 @@ pipeline {
     stage('Quality Gate') {
       steps {
         script {
-          if (GIT_BRANCH == 'master') {
+          if (GIT_BRANCH == 'main') {
             withMaven(
               maven: 'mvn',
               mavenLocalRepo: '.repo',
@@ -63,7 +63,7 @@ pipeline {
     }
     stage('Artifactory Deploy') {
       when {
-        branch "master"
+        branch "main"
       }
       steps {
         withMaven(
