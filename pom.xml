@@ -14,20 +14,20 @@
   </properties>
 
   <scm>
-    <developerConnection>scm:git:https://github.com/WollMux/UNOHelper.git</developerConnection>
+    <developerConnection>scm:git:https://github.com/LibreOffice/UNOHelper.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
 
   <distributionManagement>
     <repository>
-      <id>release</id>
-      <name>kvm-javabuild-release</name>
-      <url>http://kvm-javabuild.tvc.muenchen.de/artifactory/libs-release-local</url>
+      <id>ossrh-repository</id>
+      <name>maven-central-release</name>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
     </repository>
     <snapshotRepository>
-      <id>snapshots</id>
-      <name>kvm-javabuild-snapshots</name>
-      <url>http://kvm-javabuild.tvc.muenchen.de/artifactory/libs-snapshot-local</url>
+      <id>ossrh-repository</id>
+      <name>maven-central-snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
     </snapshotRepository>
   </distributionManagement>
 
