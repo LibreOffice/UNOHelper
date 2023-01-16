@@ -90,7 +90,7 @@
           </roots>
           <extraExtensions><idl>java</idl></extraExtensions>
           <inceptionYear>2005</inceptionYear>
-          <organizationName>Landeshauptstadt München</organizationName>
+          <organizationName>The Document Foundation</organizationName>
           <trimHeaderLine>true</trimHeaderLine>
           <addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
           <canUpdateCopyright>true</canUpdateCopyright>
