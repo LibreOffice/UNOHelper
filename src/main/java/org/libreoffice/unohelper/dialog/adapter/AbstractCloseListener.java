@@ -20,21 +20,34 @@
  * limitations under the Licence.
  * #L%
  */
-module unohelper {
-  exports org.libreoffice.unohelper.common;
-  exports org.libreoffice.unohelper.dialog.adapter;
-  exports org.libreoffice.unohelper.document.text;
-  exports org.libreoffice.unohelper.ui;
-  exports org.libreoffice.unohelper.ui.layout;
-  exports org.libreoffice.unohelper.util;
+package org.libreoffice.unohelper.dialog.adapter;
 
-  requires transitive org.libreoffice.uno;
-  requires transitive org.libreoffice.unoloader;
+import com.sun.star.lang.EventObject;
+import com.sun.star.util.CloseVetoException;
+import com.sun.star.util.XCloseListener;
 
-  requires transitive java.xml;
-  requires java.desktop;
+/**
+ * Provides default implementations of standard methods for the {@link XCloseListener}.
+ */
+public abstract class AbstractCloseListener implements XCloseListener
+{
 
-  requires org.apache.commons.lang3;
-  requires com.google.common;
-  requires org.jsoup;
+  @Override
+  public void disposing(EventObject arg0)
+  {
+    // default implementation
+  }
+
+  @Override
+  public void notifyClosing(EventObject arg0)
+  {
+    // default implementation
+  }
+
+  @Override
+  public void queryClosing(EventObject arg0, boolean arg1) throws CloseVetoException
+  {
+    // default implementation
+  }
+
 }
