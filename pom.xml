@@ -4,7 +4,7 @@
   <artifactId>unohelper</artifactId>
   <version>4.1.0-SNAPSHOT</version>
   <name>UNOHelper</name>
-  <url>https://github.com/WollMux/UNOHelper</url>
+  <url>https://github.com/LibreOffice/UNOHelper</url>
 
   <properties>
     <libreoffice.version>7.4.0</libreoffice.version>

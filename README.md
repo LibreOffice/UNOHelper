@@ -14,7 +14,7 @@ The following applications have to be installed to compile UNOHelper:
 First fetch the sources:
 
 ```
-git clone https://github.com/WollMux/UNOHelper.git
+git clone https://github.com/LibreOffice/UNOHelper.git
 ```
 
 Then build the package:
