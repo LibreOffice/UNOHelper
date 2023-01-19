@@ -20,10 +20,10 @@
  * limitations under the Licence.
  * #L%
  */
-package org.libreoffice.unohelper.util;
+package org.libreoffice.ext.unohelper.util;
 
-import org.libreoffice.unohelper.common.UNO;
-import org.libreoffice.unohelper.common.UnoHelperRuntimeException;
+import org.libreoffice.ext.unohelper.common.UNO;
+import org.libreoffice.ext.unohelper.common.UnoHelperRuntimeException;
 
 import com.sun.star.lang.XMultiComponentFactory;
 import com.sun.star.uno.XComponentContext;
@@ -73,7 +73,7 @@ public final class UnoComponent
   /**
    * Calls {@link #createComponentWithContext(String, XMultiComponentFactory, XComponentContext)
    * with {@link UNO#xMCF} and {@link UNO#defaultContext}.
-   * 
+   *
    * @param componentName
    *          The name of the component.
    * @return The component.
@@ -86,7 +86,7 @@ public final class UnoComponent
   }
   /**
    * Create a component.
-   * 
+   *
    * @param componentName
    *          The name of the component.
    * @param factory

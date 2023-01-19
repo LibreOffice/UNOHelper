@@ -20,13 +20,13 @@
  * limitations under the Licence.
  * #L%
  */
-package org.libreoffice.unohelper.common;
+package org.libreoffice.ext.unohelper.common;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
-import org.libreoffice.unohelper.util.UnoProperty;
+import org.libreoffice.ext.unohelper.util.UnoProperty;
 
 import com.sun.star.script.browse.XBrowseNode;
 import com.sun.star.uno.UnoRuntime;
@@ -35,7 +35,7 @@ import com.sun.star.uno.UnoRuntime;
  * Diese Klasse vereinfacht die Arbeit mit Objekten, die den Dienst BrowseNode
  * unterstützen. Diese sind vor allem nützlich beim Durchsuchen des Baumes aller
  * installierten Skripts.
- * 
+ *
  */
 public class BrowseNode
 {
@@ -51,13 +51,13 @@ public class BrowseNode
    * Skripting-Framework benötigt wird. Nicht zu verwechseln mit "macro:" URLs!
    * Falls dieses Property nicht existiert, wird null geliefert.
    *
-   * @throws UnoHelperException 
+   * @throws UnoHelperException
    */
   public String getURL() throws UnoHelperException
   {
     return (String) UnoProperty.getProperty(node, UnoProperty.URI);
   }
-  
+
   /**
    * Liefert das ungewrappte Objekt für die direkte Übergabe an UNO-Funktionen.
    */

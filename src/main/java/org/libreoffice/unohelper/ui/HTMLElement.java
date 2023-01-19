@@ -20,7 +20,7 @@
  * limitations under the Licence.
  * #L%
  */
-package org.libreoffice.unohelper.ui;
+package org.libreoffice.ext.unohelper.ui;
 
 import java.awt.Color;
 import java.net.URI;
@@ -32,7 +32,7 @@ import javax.swing.text.html.StyleSheet;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.libreoffice.unohelper.ui.HTMLElement;
+import org.libreoffice.ext.unohelper.ui.HTMLElement;
 
 import com.sun.star.awt.FontDescriptor;
 

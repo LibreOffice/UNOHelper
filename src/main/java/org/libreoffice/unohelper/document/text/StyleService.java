@@ -20,12 +20,12 @@
  * limitations under the Licence.
  * #L%
  */
-package org.libreoffice.unohelper.document.text;
+package org.libreoffice.ext.unohelper.document.text;
 
-import org.libreoffice.unohelper.common.UNO;
-import org.libreoffice.unohelper.common.UnoDictionary;
-import org.libreoffice.unohelper.common.UnoHelperException;
-import org.libreoffice.unohelper.util.UnoService;
+import org.libreoffice.ext.unohelper.common.UNO;
+import org.libreoffice.ext.unohelper.common.UnoDictionary;
+import org.libreoffice.ext.unohelper.common.UnoHelperException;
+import org.libreoffice.ext.unohelper.util.UnoService;
 
 import com.sun.star.container.NoSuchElementException;
 import com.sun.star.container.XNameContainer;
@@ -186,7 +186,7 @@ public class StyleService
 
   /**
    * Create a new style.
-   * 
+   *
    * @param doc
    *          The document.
    * @param styles

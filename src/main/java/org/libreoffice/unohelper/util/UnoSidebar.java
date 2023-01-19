@@ -20,10 +20,10 @@
  * limitations under the Licence.
  * #L%
  */
-package org.libreoffice.unohelper.util;
+package org.libreoffice.ext.unohelper.util;
 
-import org.libreoffice.unohelper.common.UnoDictionary;
-import org.libreoffice.unohelper.common.UnoHelperException;
+import org.libreoffice.ext.unohelper.common.UnoDictionary;
+import org.libreoffice.ext.unohelper.common.UnoHelperException;
 
 import com.sun.star.frame.XController2;
 import com.sun.star.ui.XDeck;

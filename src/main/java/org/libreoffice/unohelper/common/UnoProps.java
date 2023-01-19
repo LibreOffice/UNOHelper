@@ -20,7 +20,7 @@
  * limitations under the Licence.
  * #L%
  */
-package org.libreoffice.unohelper.common;
+package org.libreoffice.ext.unohelper.common;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -92,7 +92,7 @@ public class UnoProps
 
   /**
    * Get the properties as sorted array.
-   * 
+   *
    * @return The {@link PropertyValue}-array.
    */
   public PropertyValue[] getProps()
@@ -103,7 +103,7 @@ public class UnoProps
 
   /**
    * Add or overwrite a property.
-   * 
+   *
    * @param name
    *          The name of the property.
    * @param value
@@ -132,7 +132,7 @@ public class UnoProps
 
   /**
    * Get the value of a property.
-   * 
+   *
    * @param name
    *          The name of the property.
    * @return The value of the property.
@@ -151,7 +151,7 @@ public class UnoProps
 
   /**
    * Get the value of a property as string.
-   * 
+   *
    * @param name
    *          The name of the property.
    * @return The value of the property as string ({@link Object#toString()}).

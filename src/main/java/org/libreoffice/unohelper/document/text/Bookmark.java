@@ -20,14 +20,14 @@
  * limitations under the Licence.
  * #L%
  */
-package org.libreoffice.unohelper.document.text;
+package org.libreoffice.ext.unohelper.document.text;
 
-import org.libreoffice.unohelper.common.UNO;
-import org.libreoffice.unohelper.common.UnoCollection;
-import org.libreoffice.unohelper.common.UnoDictionary;
-import org.libreoffice.unohelper.common.UnoHelperException;
-import org.libreoffice.unohelper.util.UnoProperty;
-import org.libreoffice.unohelper.util.UnoService;
+import org.libreoffice.ext.unohelper.common.UNO;
+import org.libreoffice.ext.unohelper.common.UnoCollection;
+import org.libreoffice.ext.unohelper.common.UnoDictionary;
+import org.libreoffice.ext.unohelper.common.UnoHelperException;
+import org.libreoffice.ext.unohelper.util.UnoProperty;
+import org.libreoffice.ext.unohelper.util.UnoService;
 
 import com.sun.star.container.NoSuchElementException;
 import com.sun.star.container.XNamed;
@@ -160,7 +160,7 @@ public class Bookmark
 
   /**
    * Select the text under the book mark.
-   * 
+   *
    * @throws UnoHelperException
    *           Can't access the book mark.
    */
@@ -292,7 +292,7 @@ public class Bookmark
 
   /**
    * Delete this book mark.
-   * 
+   *
    * @throws UnoHelperException
    *           Can't delete the book mark.
    */
@@ -351,7 +351,7 @@ public class Bookmark
 
   /**
    * Expand a book mark. It has no dimension.
-   * 
+   *
    * @throws UnoHelperException
    *           Can't decollapse the book mark.
    */
@@ -382,7 +382,7 @@ public class Bookmark
   /**
    * Collapse a book mark. Its content isn't deleted. The new book mark is right in front of the
    * content.
-   * 
+   *
    * @throws UnoHelperException
    *           Can't collapse the book mark.
    */

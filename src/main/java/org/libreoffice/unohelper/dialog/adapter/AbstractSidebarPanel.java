@@ -20,7 +20,7 @@
  * limitations under the Licence.
  * #L%
  */
-package org.libreoffice.unohelper.dialog.adapter;
+package org.libreoffice.ext.unohelper.dialog.adapter;
 
 import com.sun.star.frame.XFrame;
 import com.sun.star.lang.XComponent;
@@ -47,7 +47,7 @@ public abstract class AbstractSidebarPanel extends ComponentBase implements XUIE
 
   /**
    * A default panel. {@link #panel} has to be set manually.
-   * 
+   *
    * @param resourceUrl
    *          The resource description.
    */

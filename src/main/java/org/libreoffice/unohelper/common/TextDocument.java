@@ -20,7 +20,7 @@
  * limitations under the Licence.
  * #L%
  */
-package org.libreoffice.unohelper.common;
+package org.libreoffice.ext.unohelper.common;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.libreoffice.unohelper.util.UnoProperty;
+import org.libreoffice.ext.unohelper.util.UnoProperty;
 
 import com.sun.star.container.NoSuchElementException;
 import com.sun.star.container.XNamed;
@@ -83,7 +83,7 @@ public class TextDocument
    * collapsed book marks are returned. Only book marks which are fully in the range are included.
    *
    * In some special cases like tables this method may return more names than in the text range.
-   * 
+   *
    * @param regex
    *          A regular expression for the names of the book marks.
    * @param range

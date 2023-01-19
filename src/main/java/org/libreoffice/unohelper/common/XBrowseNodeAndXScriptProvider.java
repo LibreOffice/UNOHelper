@@ -20,7 +20,7 @@
  * limitations under the Licence.
  * #L%
  */
-package org.libreoffice.unohelper.common;
+package org.libreoffice.ext.unohelper.common;
 
 import com.sun.star.script.browse.XBrowseNode;
 import com.sun.star.script.provider.XScriptProvider;

@@ -20,7 +20,7 @@
  * limitations under the Licence.
  * #L%
  */
-package org.libreoffice.unohelper.dialog.adapter;
+package org.libreoffice.ext.unohelper.dialog.adapter;
 
 import com.sun.star.awt.XActionListener;
 import com.sun.star.lang.EventObject;

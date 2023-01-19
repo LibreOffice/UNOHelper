@@ -20,7 +20,7 @@
  * limitations under the Licence.
  * #L%
  */
-package org.libreoffice.unohelper.common;
+package org.libreoffice.ext.unohelper.common;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -68,7 +68,7 @@ import com.sun.star.uno.Type;
  * {@link #createXStorage(de.muenchen.allg.ooo.MemoryStorage.ByteArrayStorage)}
  * wird ein entsprechender UNO-Service erzeugt, der für storeToStorage(...)
  * geeignet ist.
- * 
+ *
  * @author Christoph Lutz (D-III-ITD-D101)
  */
 public class MemoryStorage
@@ -92,7 +92,7 @@ public class MemoryStorage
    * Erzeugt eine Implementierung des Service com::sun::star::embed::Storage,
    * bei dem die Daten eines Dokuments in einem ByteArrayStorage abgelegt
    * werden.
-   * 
+   *
    * Achtung: Der UNO-Service definiert viele Methoden, die jedoch in der Praxis
    * nicht alle relevant sind. Um toten Code zu vermeiden, und da die
    * Spezifikation dieser Methoden in der UNO-API nicht aussagekräftig genug
@@ -120,7 +120,7 @@ public class MemoryStorage
 
   /**
    * Setzt den Logger auf den Meldungen dieser Klasse ausgegeben werden.
-   * 
+   *
    * @param newLogger
    */
   public static void setLogger(Logger newLogger)
@@ -195,7 +195,7 @@ public class MemoryStorage
      * Liefert einen InputStream des Elements elementName zurück. Ist
      * elementName nicht definiert, so wird eine
      * java.util.NoSuchElementException geworfen.
-     * 
+     *
      * @throws java.util.NoSuchElementException
      */
     public InputStream getInputStream(String elementName)
@@ -222,7 +222,7 @@ public class MemoryStorage
      * Diese Methode erlaubt das Setzen des MediaTypes dieses Storages. Ist der
      * mediaType != null, so wird er beim Erzeugen des Manifests mittels
      * {@link #createManifest()} auch im Manifest manifestiert.
-     * 
+     *
      * @param mediaType
      *          Der mediaType für Textdokumente ist z.B.
      *          application/vnd.oasis.opendocument.text
@@ -274,7 +274,7 @@ public class MemoryStorage
    * sollte dies keine Probleme bereiten. Sollte es damit doch einmal Probleme
    * geben, kann mit Hilfe des Loggers erkannt werden, ob eine nicht
    * implementierte Methode verwendet wurde und diese implementiert werden.
-   * 
+   *
    * @author Christoph Lutz (D-III-ITD-D101)
    */
   private static class StorageImpl extends SimplePropertySet
@@ -538,7 +538,7 @@ public class MemoryStorage
    * Probleme bereiten. Sollte es damit doch einmal Probleme geben, kann mit
    * Hilfe des Loggers erkannt werden, ob eine nicht implementierte Methode
    * verwendet wurde und diese implementiert werden.
-   * 
+   *
    * @author Christoph Lutz (D-III-ITD-D101)
    */
   private static class StreamElementImpl extends SimplePropertySet implements
@@ -594,7 +594,7 @@ public class MemoryStorage
           throw new IOException(e.toString());
         }
       }
-      
+
       private String getMediaType()
       {
         Object o = props.get("MediaType");
@@ -728,7 +728,7 @@ public class MemoryStorage
    * Diese Klasse implementiert ein einfaches PropertySet basierend auf einer
    * HashMap. Auch hier sind viele in der Praxis nicht benötigte Methoden nicht
    * implementiert, können aber bei Bedarf implementiert werden.
-   * 
+   *
    * @author Christoph Lutz (D-III-ITD-D101)
    */
   private static class SimplePropertySet implements XPropertySet

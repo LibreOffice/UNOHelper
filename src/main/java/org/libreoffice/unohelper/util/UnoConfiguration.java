@@ -20,11 +20,11 @@
  * limitations under the Licence.
  * #L%
  */
-package org.libreoffice.unohelper.util;
+package org.libreoffice.ext.unohelper.util;
 
-import org.libreoffice.unohelper.common.UNO;
-import org.libreoffice.unohelper.common.UnoHelperException;
-import org.libreoffice.unohelper.common.UnoProps;
+import org.libreoffice.ext.unohelper.common.UNO;
+import org.libreoffice.ext.unohelper.common.UnoHelperException;
+import org.libreoffice.ext.unohelper.common.UnoProps;
 
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.lang.WrappedTargetException;
@@ -36,7 +36,7 @@ public class UnoConfiguration
 {
   /**
    * Modify the LibreOffice configuration.
-   * 
+   *
    * @param nodepath
    *          The path, which is modified.
    * @param props
@@ -64,7 +64,7 @@ public class UnoConfiguration
 
   /**
    * Get a configuration value.
-   * 
+   *
    * @param nodepath
    *          The path to read from.
    * @param property

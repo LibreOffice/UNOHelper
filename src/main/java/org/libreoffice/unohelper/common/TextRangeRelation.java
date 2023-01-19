@@ -20,7 +20,7 @@
  * limitations under the Licence.
  * #L%
  */
-package org.libreoffice.unohelper.common;
+package org.libreoffice.ext.unohelper.common;
 
 import com.google.common.collect.ImmutableSet;
 import com.sun.star.lang.IllegalArgumentException;
@@ -179,7 +179,7 @@ public enum TextRangeRelation
 
   /**
    * Compares two {@link XTextRange}s.
-   * 
+   *
    * @param a
    *          The first text range.
    * @param b

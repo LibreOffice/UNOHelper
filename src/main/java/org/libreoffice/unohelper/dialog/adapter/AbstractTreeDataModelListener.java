@@ -20,7 +20,7 @@
  * limitations under the Licence.
  * #L%
  */
-package org.libreoffice.unohelper.dialog.adapter;
+package org.libreoffice.ext.unohelper.dialog.adapter;
 
 import com.sun.star.awt.tree.TreeDataModelEvent;
 import com.sun.star.awt.tree.XTreeDataModelListener;

@@ -20,19 +20,19 @@
  * limitations under the Licence.
  * #L%
  */
-package org.libreoffice.unohelper.ui;
+package org.libreoffice.ext.unohelper.ui;
 
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.libreoffice.unohelper.common.UNO;
-import org.libreoffice.unohelper.common.UnoHelperException;
-import org.libreoffice.unohelper.dialog.adapter.AbstractActionListener;
-import org.libreoffice.unohelper.dialog.adapter.AbstractItemListener;
-import org.libreoffice.unohelper.dialog.adapter.AbstractTextListener;
-import org.libreoffice.unohelper.ui.GuiFactory;
-import org.libreoffice.unohelper.util.UnoComponent;
-import org.libreoffice.unohelper.util.UnoProperty;
+import org.libreoffice.ext.unohelper.common.UNO;
+import org.libreoffice.ext.unohelper.common.UnoHelperException;
+import org.libreoffice.ext.unohelper.dialog.adapter.AbstractActionListener;
+import org.libreoffice.ext.unohelper.dialog.adapter.AbstractItemListener;
+import org.libreoffice.ext.unohelper.dialog.adapter.AbstractTextListener;
+import org.libreoffice.ext.unohelper.ui.GuiFactory;
+import org.libreoffice.ext.unohelper.util.UnoComponent;
+import org.libreoffice.ext.unohelper.util.UnoProperty;
 
 import com.sun.star.awt.PosSize;
 import com.sun.star.awt.Rectangle;

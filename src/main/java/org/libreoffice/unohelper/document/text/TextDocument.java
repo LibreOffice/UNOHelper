@@ -20,16 +20,16 @@
  * limitations under the Licence.
  * #L%
  */
-package org.libreoffice.unohelper.document.text;
+package org.libreoffice.ext.unohelper.document.text;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-import org.libreoffice.unohelper.common.UNO;
-import org.libreoffice.unohelper.common.UnoHelperException;
-import org.libreoffice.unohelper.common.UnoProps;
-import org.libreoffice.unohelper.util.UnoProperty;
+import org.libreoffice.ext.unohelper.common.UNO;
+import org.libreoffice.ext.unohelper.common.UnoHelperException;
+import org.libreoffice.ext.unohelper.common.UnoProps;
+import org.libreoffice.ext.unohelper.util.UnoProperty;
 
 import com.sun.star.text.XTextDocument;
 

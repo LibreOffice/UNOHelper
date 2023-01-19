@@ -20,7 +20,7 @@
  * limitations under the Licence.
  * #L%
  */
-package org.libreoffice.unohelper.dialog.adapter;
+package org.libreoffice.ext.unohelper.dialog.adapter;
 
 import com.sun.star.lang.XServiceInfo;
 import com.sun.star.lib.uno.helper.WeakBase;
@@ -43,7 +43,7 @@ public abstract class AbstractSidebarFactory extends WeakBase implements XUIElem
 
   /**
    * Create a new factory.
-   * 
+   *
    * @param serviceName
    *          The service this factory can create.
    * @param context

@@ -20,7 +20,7 @@
  * limitations under the Licence.
  * #L%
  */
-package org.libreoffice.unohelper.ui.layout;
+package org.libreoffice.ext.unohelper.ui.layout;
 
 import java.util.ArrayList;
 import java.util.List;

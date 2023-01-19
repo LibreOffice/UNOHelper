@@ -20,10 +20,10 @@
  * limitations under the Licence.
  * #L%
  */
-package org.libreoffice.unohelper.ui.layout;
+package org.libreoffice.ext.unohelper.ui.layout;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.libreoffice.unohelper.common.UNO;
+import org.libreoffice.ext.unohelper.common.UNO;
 
 import com.sun.star.awt.PosSize;
 import com.sun.star.awt.Rectangle;

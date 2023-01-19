@@ -20,13 +20,13 @@
  * limitations under the Licence.
  * #L%
  */
-package org.libreoffice.unohelper.common;
+package org.libreoffice.ext.unohelper.common;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.libreoffice.unohelper.util.UnoProperty;
+import org.libreoffice.ext.unohelper.util.UnoProperty;
 
 import com.sun.star.script.browse.BrowseNodeTypes;
 import com.sun.star.script.browse.XBrowseNode;
@@ -83,7 +83,7 @@ class Utils
   /**
    * siehe {@link UNO#findBrowseNodeTreeLeafAndScriptProvider(XBrowseNode,
    * String, String, boolean, String[]))}
-   * 
+   *
    * @param xScriptProvider
    *          der zuletzt gesehene xScriptProvider
    * @param nameToFind
@@ -106,7 +106,7 @@ class Utils
    * @return die Anzahl der Rekursionsstufen, die beendet werden sollen. Zum
    *         Beispiel heisst ein Rückgabewert von 1, dass die aufrufende
    *         Funktion ein <code>return 0</code> machen soll.
-   * 
+   *
    * @throws UnoHelperException
    */
   public static int findBrowseNodeTreeLeavesAndScriptProviders(BrowseNode node,
@@ -260,7 +260,7 @@ class Utils
 
   /**
    * Returns true iff array contains a String that is equals to str
-   * 
+   *
    * @author bnk
    */
   private static boolean stringInArray(String str, String[] array)
@@ -275,7 +275,7 @@ class Utils
    * Falls <code>node.URL() == null</code> oder die URL keinen "location=" Teil
    * enthält, so wird "" geliefert, ansonsten der "location=" Teil ohne das
    * führende "location=".
-   * 
+   *
    * @author bnk
    * @throws UnoHelperException
    */
@@ -310,7 +310,7 @@ class Utils
   /**
    * Wenn <code>provider = null</code>, so wird versucht, einen passenden
    * Provider zu finden.
-   * 
+   *
    * @author bnk
    * @throws UnoHelperException
    */

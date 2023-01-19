@@ -20,7 +20,7 @@
  * limitations under the Licence.
  * #L%
  */
-package org.libreoffice.unohelper.common;
+package org.libreoffice.ext.unohelper.common;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -61,7 +61,7 @@ import org.w3c.dom.NodeList;
  * beliebige unterschiedliche Dokumente geeignet, sollte aber z.B. für die
  * Erzeugung von Gesamtdokumenten in Rahmen eines WollMux-Komfortdrucks alle
  * notwendigen Elemente übernehmen und ggf. mit Fixup-Methoden anpassen.
- * 
+ *
  * @author Christoph Lutz (D-III-ITD-D101)
  */
 public class ODFMerger
@@ -92,7 +92,7 @@ public class ODFMerger
 
   /**
    * Definiert ein Storage für ein ODF-Dokument.
-   * 
+   *
    * @author Christoph Lutz (D-III-ITD-D101)
    */
   public interface Storage
@@ -213,7 +213,7 @@ public class ODFMerger
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see de.muenchen.allg.itd51.test.DOMBasedODFMerger.Merger#getResultData()
      */
     @Override
@@ -238,7 +238,7 @@ public class ODFMerger
   /**
    * Merged die Daten der styles.xml-Dateien, die in den mit add hinzugefügten
    * Storages vorhanden sind.
-   * 
+   *
    * @author Christoph Lutz (D-III-ITD-D101)
    */
   public static class StylesMerger extends Merger
@@ -299,7 +299,7 @@ public class ODFMerger
   /**
    * Merged die Daten der content.xml-Dateien, die in den mit add hinzugefügten
    * Storages vorhanden sind.
-   * 
+   *
    * @author Christoph Lutz (D-III-ITD-D101)
    */
   public static class ContentMerger extends Merger
@@ -418,10 +418,10 @@ public class ODFMerger
      * Knoten autoStyles als Übergabeparameter erwartet wird; Ist keine
      * MasterPage für einen dieser Styles definiert oder ist der gesuchte Style
      * selbst nicht definiert, so wird "Standard" zurück geliefert.
-     * 
+     *
      * @param autoStyles
      * @param styleName
-     * 
+     *
      * @author Christoph Lutz (D-III-ITD-D101)
      */
     private String getMasterPageName(Node autoStyles, String styleName)
@@ -459,7 +459,7 @@ public class ODFMerger
      * style:parent-style-name="$oldParStyleName" style:master-page-name=
      * "$oldMasterStyleName"><style:paragraph-properties style:page-number="1"/>
      * </style:style>
-     * 
+     *
      * @param doc
      *          Das Dokument in das die Style-Definition später eingepflegt
      *          werden soll.
@@ -553,7 +553,7 @@ public class ODFMerger
      * handelt). Diese Methode liefert den Knoten des letzten Objekts, das an
      * der Seite verankert ist, zurück oder null, wenn kein an der Seite
      * verankertes Objekt im Dokument gefunden wurde.
-     * 
+     *
      * @param officeTextNode
      *          Der Knoten des Elements office:text unterhalb dessen die an der
      *          Seite verankerten Objekte aufgelistet sind.
@@ -580,7 +580,7 @@ public class ODFMerger
      * müssen z.B. Paragraphen in TextFrames, die an der Seite verankert sind,
      * ignoriert werden. Dies wird erreicht, in dem alle an der Seite
      * verankerten Objekte gleich zu Beginn ignoriert werden.
-     * 
+     *
      * @param node
      *          Hier kann der Hauptknoten des Dokument angegeben werden - es
      *          wird rekursiv gesucht.
@@ -610,7 +610,7 @@ public class ODFMerger
      * Diese Fixup-Methode korrigiert rekursiv alle an der Seite verankeren
      * Objekte in dem der neue Seiten-Offset innerhalb des gemergten Dokuments
      * offset zu der bereits gesetzten Startseite hinzugefügt wird.
-     * 
+     *
      * @param node
      *          Den Knoten eines Objekts. Ist dieses Objekt an der Seite
      *          verankert, so wird der Offset offset zu dem bereits gesetzten
@@ -655,7 +655,7 @@ public class ODFMerger
 
   /**
    * Enthält gemeinsame Eigenschaften aller Merger.
-   * 
+   *
    * @author Christoph Lutz (D-III-ITD-D101)
    */
   public static class Merger
@@ -717,7 +717,7 @@ public class ODFMerger
      * Erzeugt den Namen eines neuen, garantiert unbenutzen Paragraph-Styles,
      * der bisher nicht in names vorhanden ist. Der Name von Paragraph-Styles
      * ist übelicherweise wie "P<zahl>" aufgebaut.
-     * 
+     *
      * @param names
      *          Die Menge der bereits bekannten Paragraph-Styles
      * @return einen neuen unbenutzen Stylenamen nach dem Schame "P<zahl>".
@@ -737,7 +737,7 @@ public class ODFMerger
      * alle Elemente beschreibt, die komplett (mitsamt Kinder) gelöscht werden
      * sollen und toReplace alle Knoten beschreibt, die durch ihre Kinder
      * ersetzt werden sollen.
-     * 
+     *
      * @param node
      *          Der Knoten, ab dem rekursiv ersetzt werden soll.
      * @param toDelete
@@ -779,7 +779,7 @@ public class ODFMerger
      * anpasst; Dabei beschreibt stylesChangeMap die Zuordnung von alten Namen
      * auf neue Namen und attributesToAdjust die Liste der Attribute, die
      * angepasst werden sollen, wenn sie in einem Element gesetzt sine.
-     * 
+     *
      * @param node
      *          Ausgangsknoten für die rekursive Anpassung.
      * @param stylesChangeMap
@@ -818,7 +818,7 @@ public class ODFMerger
 
     /**
      * Intergrierte die Styles aus doc im resultDoc.
-     * 
+     *
      * @param doc
      *          Das ausgangs Dokument.
      * @param style
@@ -899,7 +899,7 @@ public class ODFMerger
 
   /**
    * Repräsentiert ein Storage für ein normales gezipptes ODF-Dokument.
-   * 
+   *
    * @author Christoph Lutz (D-III-ITD-D101)
    */
   private static class ZipedODFFileStorage implements Storage
@@ -942,7 +942,7 @@ public class ODFMerger
    * Repräsentiert ein Storage, das Ressourcen von einem anderen Storage
    * übernimmt, in dem jedoch einzelne Ressourcen verändert bzw. überschrieben
    * werden können.
-   * 
+   *
    * @author Christoph Lutz (D-III-ITD-D101)
    */
   private static class OverrideStorage implements Storage
@@ -983,7 +983,7 @@ public class ODFMerger
   /**
    * Erweitert ein Storage um die Fähigkeit, die enthaltenen Daten in ein
    * gezipptes odf-File zu schreiben.
-   * 
+   *
    * @author Christoph Lutz (D-III-ITD-D101)
    */
   public static class StorageZipOutput
@@ -1003,15 +1003,15 @@ public class ODFMerger
         for (String name : storage.getElementNames())
         {
           ZipEntry entry = new ZipEntry(name);
-  
+
           os.putNextEntry(entry);
-  
+
           InputStream is = storage.getInputStream(name);
           for (int read = 0; (read = is.read(buffy)) > 0;)
           {
             os.write(buffy, 0, read);
           }
-  
+
           os.closeEntry();
         }
       }

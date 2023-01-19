@@ -20,7 +20,7 @@
  * limitations under the Licence.
  * #L%
  */
-package org.libreoffice.unohelper.common;
+package org.libreoffice.ext.unohelper.common;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -28,11 +28,11 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.libreoffice.unohelper.common.Utils.FindNode;
-import org.libreoffice.unohelper.util.UnoComponent;
-import org.libreoffice.unohelper.util.UnoConfiguration;
-import org.libreoffice.unohelper.util.UnoProperty;
-import org.libreoffice.unohelper.util.UnoService;
+import org.libreoffice.ext.unohelper.common.Utils.FindNode;
+import org.libreoffice.ext.unohelper.util.UnoComponent;
+import org.libreoffice.ext.unohelper.util.UnoConfiguration;
+import org.libreoffice.ext.unohelper.util.UnoProperty;
+import org.libreoffice.ext.unohelper.util.UnoService;
 
 import com.sun.star.accessibility.XAccessible;
 import com.sun.star.awt.XButton;

@@ -20,17 +20,17 @@
  * limitations under the Licence.
  * #L%
  */
-package org.libreoffice.unohelper.ui.layout;
+package org.libreoffice.ext.unohelper.ui.layout;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.tuple.Pair;
-import org.libreoffice.unohelper.common.UNO;
-import org.libreoffice.unohelper.common.UnoHelperException;
-import org.libreoffice.unohelper.ui.GuiFactory;
-import org.libreoffice.unohelper.util.UnoProperty;
+import org.libreoffice.ext.unohelper.common.UNO;
+import org.libreoffice.ext.unohelper.common.UnoHelperException;
+import org.libreoffice.ext.unohelper.ui.GuiFactory;
+import org.libreoffice.ext.unohelper.util.UnoProperty;
 
 import com.sun.star.awt.PosSize;
 import com.sun.star.awt.Rectangle;

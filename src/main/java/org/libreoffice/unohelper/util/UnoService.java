@@ -20,10 +20,10 @@
  * limitations under the Licence.
  * #L%
  */
-package org.libreoffice.unohelper.util;
+package org.libreoffice.ext.unohelper.util;
 
-import org.libreoffice.unohelper.common.UNO;
-import org.libreoffice.unohelper.common.UnoHelperRuntimeException;
+import org.libreoffice.ext.unohelper.common.UNO;
+import org.libreoffice.ext.unohelper.common.UnoHelperRuntimeException;
 
 import com.sun.star.lang.XMultiServiceFactory;
 

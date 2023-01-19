@@ -20,7 +20,7 @@
  * limitations under the Licence.
  * #L%
  */
-package org.libreoffice.unohelper.ui.layout;
+package org.libreoffice.ext.unohelper.ui.layout;
 
 import org.apache.commons.lang3.tuple.Pair;
 

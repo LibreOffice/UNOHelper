@@ -20,7 +20,7 @@
  * limitations under the Licence.
  * #L%
  */
-package org.libreoffice.unohelper.common;
+package org.libreoffice.ext.unohelper.common;
 
 import java.util.Iterator;
 
@@ -61,7 +61,7 @@ public class UnoCollection<T> implements Iterable<T>
 
   /**
    * Create an UnoCollection for the provided enumeration.
-   * 
+   *
    * @param <T>
    *          The type of the objects in the enumeration.
    * @param enuAccess
@@ -78,7 +78,7 @@ public class UnoCollection<T> implements Iterable<T>
   /**
    * Create an UnoCollection for the provided object. The object must implement
    * {@link XEnumerationAccess}.
-   * 
+   *
    * @param <T>
    *          The type of the objects in the enumeration.
    * @param o
