@@ -46,6 +46,7 @@ import com.sun.star.awt.XDevice;
 import com.sun.star.awt.XDialog;
 import com.sun.star.awt.XDialog2;
 import com.sun.star.awt.XExtendedToolkit;
+import com.sun.star.awt.XFixedHyperlink;
 import com.sun.star.awt.XFixedText;
 import com.sun.star.awt.XItemList;
 import com.sun.star.awt.XLayoutConstrains;
@@ -2468,7 +2469,19 @@ public class UNO
   {
     return UnoRuntime.queryInterface(XFixedText.class, object);
   }
-  
+
+  /**
+   * Get {@link XFixedText} Interface from Object.
+   *
+   * @param object
+   *          Object.
+   * @return Returns XFixedText Interface.
+   */
+  public static XFixedHyperlink XFixedHyperlink(Object object)
+  {
+    return UnoRuntime.queryInterface(XFixedHyperlink.class, object);
+  }
+
   /**
    * Get {@link XListBox} Interface from Object.
    *
