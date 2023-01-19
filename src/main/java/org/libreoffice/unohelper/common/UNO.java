@@ -534,7 +534,7 @@ public class UNO
       throw new UnoHelperException("Can't load the document", e);
     }
   }
-  
+
   /**
    * Convert file path in a system specific URL.
    *
@@ -2445,7 +2445,7 @@ public class UNO
   {
     return UnoRuntime.queryInterface(XRefreshable.class, o);
   }
-  
+
   /**
    * Get {@link XControl} Interface from Object.
    *
@@ -2457,7 +2457,7 @@ public class UNO
   {
     return UnoRuntime.queryInterface(XControl.class, object);
   }
-  
+
   /**
    * Get {@link XFixedText} Interface from Object.
    *
@@ -2493,7 +2493,7 @@ public class UNO
   {
     return UnoRuntime.queryInterface(XListBox.class, object);
   }
-  
+
   /**
    * Get {@link XButton} Interface from Object.
    *
@@ -2553,7 +2553,7 @@ public class UNO
   {
     return UnoRuntime.queryInterface(XSpinField.class, object);
   }
-  
+
   /**
    * Get {@link XScrollBar} Interface from Object.
    *
@@ -2577,7 +2577,7 @@ public class UNO
   {
     return UnoRuntime.queryInterface(XTextComponent.class, o);
   }
-  
+
   /**
    * Get {@link XComboBox} Interface from Object.
    *
@@ -2820,7 +2820,7 @@ public class UNO
 
   /**
    * Parse an UNO-URL.
-   * 
+   *
    * @param urlStr
    *          The UNO-URL.
    * @return parsed UNO-URL.
@@ -2997,7 +2997,7 @@ public class UNO
 
   /**
    * Get the first element of the UNO object which have to implement {@link XEnumerationAccess}.
-   * 
+   *
    * @param o
    *          The UNO object.
    * @return The first element.
