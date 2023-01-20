@@ -34,8 +34,10 @@ pipeline {
               mavenLocalRepo: '.repo',
               mavenSettingsConfig: 'org.jenkinsci.plugins.configfiles.maven.MavenSettingsConfig1441715654272',
               publisherStrategy: 'EXPLICIT') {
-              withSonarQubeEnv('SonarQube') {
+              withSonarQubeEnv('sonarcloud') {
                 sh "mvn $SONAR_MAVEN_GOAL \
+                -Dsonar.organization=libreoffice-sonarcloud \
+                -Dsonar.projectKey=LibreOffice_UNOHelper \
                 -Dsonar.host.url=$SONAR_HOST_URL \
                 -Dsonar.java.source=11 \
                 -Dsonar.java.target=11 \
@@ -48,8 +50,10 @@ pipeline {
               mavenLocalRepo: '.repo',
               mavenSettingsConfig: 'org.jenkinsci.plugins.configfiles.maven.MavenSettingsConfig1441715654272',
               publisherStrategy: 'EXPLICIT') {
-              withSonarQubeEnv('SonarQube') {
+              withSonarQubeEnv('sonarcloud') {
                 sh "mvn $SONAR_MAVEN_GOAL \
+                  -Dsonar.organization=libreoffice-sonarcloud \
+                  -Dsonar.projectKey=LibreOffice_UNOHelper \
                   -Dsonar.host.url=$SONAR_HOST_URL \
                   -Dsonar.java.source=11 \
                   -Dsonar.java.target=11 \
