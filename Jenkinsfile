@@ -68,6 +68,7 @@ pipeline {
     stage('Artifactory Deploy') {
       when {
         branch "main"
+        expression { false }
       }
       steps {
         withMaven(
