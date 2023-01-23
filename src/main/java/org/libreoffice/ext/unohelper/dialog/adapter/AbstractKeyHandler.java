@@ -20,21 +20,36 @@
  * limitations under the Licence.
  * #L%
  */
-module org.libreoffice.ext.unohelper {
-  exports org.libreoffice.ext.unohelper.common;
-  exports org.libreoffice.ext.unohelper.dialog.adapter;
-  exports org.libreoffice.ext.unohelper.document.text;
-  exports org.libreoffice.ext.unohelper.ui;
-  exports org.libreoffice.ext.unohelper.ui.layout;
-  exports org.libreoffice.ext.unohelper.util;
+package org.libreoffice.ext.unohelper.dialog.adapter;
 
-  requires transitive org.libreoffice.uno;
-  requires transitive org.libreoffice.unoloader;
+import com.sun.star.awt.KeyEvent;
+import com.sun.star.awt.XKeyHandler;
+import com.sun.star.lang.EventObject;
 
-  requires transitive java.xml;
-  requires java.desktop;
+/**
+ * Provides default implementations of standard methods for the {@link XKeyHandler}.
+ */
+public abstract class AbstractKeyHandler implements XKeyHandler
+{
 
-  requires org.apache.commons.lang3;
-  requires com.google.common;
-  requires org.jsoup;
+  @Override
+  public void disposing(EventObject arg0)
+  {
+    // default implementation
+  }
+
+  @Override
+  public boolean keyPressed(KeyEvent arg0)
+  {
+    // default implementation
+    return false;
+  }
+
+  @Override
+  public boolean keyReleased(KeyEvent arg0)
+  {
+    // default implementation
+    return false;
+  }
+
 }

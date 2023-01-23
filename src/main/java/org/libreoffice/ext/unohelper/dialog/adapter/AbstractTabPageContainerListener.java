@@ -20,21 +20,21 @@
  * limitations under the Licence.
  * #L%
  */
-module org.libreoffice.ext.unohelper {
-  exports org.libreoffice.ext.unohelper.common;
-  exports org.libreoffice.ext.unohelper.dialog.adapter;
-  exports org.libreoffice.ext.unohelper.document.text;
-  exports org.libreoffice.ext.unohelper.ui;
-  exports org.libreoffice.ext.unohelper.ui.layout;
-  exports org.libreoffice.ext.unohelper.util;
+package org.libreoffice.ext.unohelper.dialog.adapter;
 
-  requires transitive org.libreoffice.uno;
-  requires transitive org.libreoffice.unoloader;
+import com.sun.star.awt.tab.XTabPageContainerListener;
+import com.sun.star.lang.EventObject;
 
-  requires transitive java.xml;
-  requires java.desktop;
+/**
+ * Provides default implementations of standard methods for the {@link XTabPageContainerListener}.
+ */
+@FunctionalInterface
+public interface AbstractTabPageContainerListener extends XTabPageContainerListener
+{
 
-  requires org.apache.commons.lang3;
-  requires com.google.common;
-  requires org.jsoup;
+  @Override
+  public default void disposing(EventObject event)
+  {
+    // default implementation
+  }
 }

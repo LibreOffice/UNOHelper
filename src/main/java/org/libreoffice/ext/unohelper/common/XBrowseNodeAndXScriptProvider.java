@@ -20,21 +20,34 @@
  * limitations under the Licence.
  * #L%
  */
-module org.libreoffice.ext.unohelper {
-  exports org.libreoffice.ext.unohelper.common;
-  exports org.libreoffice.ext.unohelper.dialog.adapter;
-  exports org.libreoffice.ext.unohelper.document.text;
-  exports org.libreoffice.ext.unohelper.ui;
-  exports org.libreoffice.ext.unohelper.ui.layout;
-  exports org.libreoffice.ext.unohelper.util;
+package org.libreoffice.ext.unohelper.common;
 
-  requires transitive org.libreoffice.uno;
-  requires transitive org.libreoffice.unoloader;
+import com.sun.star.script.browse.XBrowseNode;
+import com.sun.star.script.provider.XScriptProvider;
 
-  requires transitive java.xml;
-  requires java.desktop;
+public class XBrowseNodeAndXScriptProvider
+  {
+    private XBrowseNode xBrowseNode = null;
+    private XScriptProvider xScriptProvider = null;
 
-  requires org.apache.commons.lang3;
-  requires com.google.common;
-  requires org.jsoup;
-}
+    public XBrowseNodeAndXScriptProvider()
+    {
+    }
+
+    public XBrowseNodeAndXScriptProvider(XBrowseNode xBrowseNode,
+        XScriptProvider xScriptProvider)
+    {
+      this.xBrowseNode = xBrowseNode;
+      this.xScriptProvider = xScriptProvider;
+    }
+
+    public XBrowseNode getXBrowseNode()
+    {
+      return xBrowseNode;
+    }
+
+    public XScriptProvider getXScriptProvider()
+    {
+      return xScriptProvider;
+    }
+  }

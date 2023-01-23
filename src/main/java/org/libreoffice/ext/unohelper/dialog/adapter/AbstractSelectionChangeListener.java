@@ -20,21 +20,22 @@
  * limitations under the Licence.
  * #L%
  */
-module org.libreoffice.ext.unohelper {
-  exports org.libreoffice.ext.unohelper.common;
-  exports org.libreoffice.ext.unohelper.dialog.adapter;
-  exports org.libreoffice.ext.unohelper.document.text;
-  exports org.libreoffice.ext.unohelper.ui;
-  exports org.libreoffice.ext.unohelper.ui.layout;
-  exports org.libreoffice.ext.unohelper.util;
+package org.libreoffice.ext.unohelper.dialog.adapter;
 
-  requires transitive org.libreoffice.uno;
-  requires transitive org.libreoffice.unoloader;
+import com.sun.star.lang.EventObject;
+import com.sun.star.view.XSelectionChangeListener;
 
-  requires transitive java.xml;
-  requires java.desktop;
+/**
+ * Provides default implementations of standard methods for the {@link XSelectionChangeListener}.
+ */
+@FunctionalInterface
+public interface AbstractSelectionChangeListener extends XSelectionChangeListener
+{
 
-  requires org.apache.commons.lang3;
-  requires com.google.common;
-  requires org.jsoup;
+  @Override
+  public default void disposing(EventObject arg0)
+  {
+    // default implementation
+  }
+
 }
