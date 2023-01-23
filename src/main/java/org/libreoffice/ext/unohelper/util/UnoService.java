@@ -56,7 +56,7 @@ public class UnoService
   public static final String CSS_TEXT_TEXT_SECTION = "com.sun.star.text.TextSection";
 
   /**
-   * Calls {@link #createService(String, XMultiServiceFactory) with {@link UNO#xMSF} .
+   * Calls {@link #createService(String, XMultiServiceFactory)} with {@link UNO#xMSF} .
    *
    * @param serviceName
    *          The name of the service.
@@ -108,7 +108,7 @@ public class UnoService
   }
 
   /**
-   * Calls {@link #createServiceWithArguments(String, Object[], XMultiServiceFactory) with
+   * Calls {@link #createServiceWithArguments(String, Object[], XMultiServiceFactory)} with
    * {@link UNO#xMSF}.
    *
    * @param serviceName

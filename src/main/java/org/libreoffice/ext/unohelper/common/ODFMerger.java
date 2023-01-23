@@ -711,11 +711,11 @@ public class ODFMerger
     /**
      * Erzeugt den Namen eines neuen, garantiert unbenutzen Paragraph-Styles,
      * der bisher nicht in names vorhanden ist. Der Name von Paragraph-Styles
-     * ist übelicherweise wie "P<zahl>" aufgebaut.
+     * ist übelicherweise wie "P&lt;zahl&gt;" aufgebaut.
      *
      * @param names
      *          Die Menge der bereits bekannten Paragraph-Styles
-     * @return einen neuen unbenutzen Stylenamen nach dem Schame "P<zahl>".
+     * @return einen neuen unbenutzen Stylenamen nach dem Schame "P&lt;zahl&gt;".
      */
     protected static String createUnusedParStyleName(HashSet<String> names)
     {

@@ -758,7 +758,7 @@ public class UNO
    * Get the version of LibreOffice.
    *
    * @return The concatenation of the values {@link UnoProperty#OO_SETUP_VERSION_ABOUT_BOX} and
-   *         {@link UnoProperty#OO_SETUP_EXTENSION or null if configuration can't be accessed.
+   *         {@link UnoProperty#OO_SETUP_EXTENSION} or null if configuration can't be accessed.
    */
   public static String getOOoVersion()
   {

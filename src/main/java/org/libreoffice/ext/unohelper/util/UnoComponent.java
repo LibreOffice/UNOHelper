@@ -71,7 +71,7 @@ public final class UnoComponent
   public static final String CSS_UTIL_URL_TRANSFORMER = "com.sun.star.util.URLTransformer";
 
   /**
-   * Calls {@link #createComponentWithContext(String, XMultiComponentFactory, XComponentContext)
+   * Calls {@link #createComponentWithContext(String, XMultiComponentFactory, XComponentContext)}
    * with {@link UNO#xMCF} and {@link UNO#defaultContext}.
    *
    * @param componentName
