@@ -65,7 +65,7 @@ import com.sun.star.uno.Type;
  * Hauptspeicher zu speichern. Dazu wird mit {@link #createByteArrayStorage()}
  * ein Objekt erzeugt, das die Daten im Hauptspeicher verwaltet und aus
  * Java-Sicht besonders leicht weiter verarbeitet werden kann. Mit
- * {@link #createXStorage(de.muenchen.allg.ooo.MemoryStorage.ByteArrayStorage)}
+ * {@link #createXStorage(org.libreoffice.ext.unohelper.common.MemoryStorage.ByteArrayStorage)}
  * wird ein entsprechender UNO-Service erzeugt, der für storeToStorage(...)
  * geeignet ist.
  *

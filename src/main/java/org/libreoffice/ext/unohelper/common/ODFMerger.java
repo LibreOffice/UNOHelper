@@ -211,11 +211,6 @@ public class ODFMerger
       }
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see de.muenchen.allg.itd51.test.DOMBasedODFMerger.Merger#getResultData()
-     */
     @Override
     public byte[] getResultData()
     {
