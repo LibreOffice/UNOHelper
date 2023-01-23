@@ -4,7 +4,7 @@ UNOHelper offers helper functions for working with the LibreOffice UNO API.
 
 It wraps commonly used functions from the UNO API for easier use.
 
-## Compile
+## Build
 
 The following applications have to be installed to compile UNOHelper:
 * [JAVA JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
