@@ -14,7 +14,7 @@
   </properties>
 
   <scm>
-    <developerConnection>scm:git:https://github.com/LibreOffice/UNOHelper.git</developerConnection>
+    <developerConnection>scm:git:git@github.com:LibreOffice/UNOHelper.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
 
