@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.libreoffice.ext</groupId>
   <artifactId>unohelper</artifactId>
-  <version>5.0.1</version>
+  <version>5.0.2-SNAPSHOT</version>
   <name>UNOHelper</name>
   <url>https://github.com/LibreOffice/UNOHelper</url>
 
@@ -15,7 +15,7 @@
 
   <scm>
     <developerConnection>scm:git:git@github.com:LibreOffice/UNOHelper.git</developerConnection>
-    <tag>unohelper-5.0.1</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <distributionManagement>
