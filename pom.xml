@@ -4,19 +4,41 @@
   <artifactId>unohelper</artifactId>
   <version>5.0.2-SNAPSHOT</version>
   <name>UNOHelper</name>
+  <description>Simple, no overhead Java wrapper for the LibreOffice UNO API</description>
   <url>https://github.com/LibreOffice/UNOHelper</url>
 
   <properties>
-    <libreoffice.version>7.4.0</libreoffice.version>
+    <libreoffice.version>7.4.7</libreoffice.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.release>11</maven.compiler.release>
     <maven.javadoc.failOnWarnings>false</maven.javadoc.failOnWarnings>
   </properties>
 
+  <licenses>
+    <license>
+      <name>EUPL-1.1</name>
+      <url>http://ec.europa.eu/idabc/eupl5</url>
+      <distribution>repo</distribution>
+      <comments>European Union Public License 1.1</comments>
+    </license>
+  </licenses>
+
   <scm>
     <developerConnection>scm:git:git@github.com:LibreOffice/UNOHelper.git</developerConnection>
+    <url>https://github.com/LibreOffice/UNOHelper</url>
     <tag>HEAD</tag>
   </scm>
+
+  <issueManagement>
+    <url>https://github.com/LibreOffice/UNOHelper/issues</url>
+    <system>UNOHelper Issue Tracker</system>
+  </issueManagement>
+
+  <developers>
+    <developer>
+      <name>The Document Foundation</name>
+    </developer>
+  </developers>
 
   <distributionManagement>
     <repository>
