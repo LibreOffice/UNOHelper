@@ -48,9 +48,3 @@ Now do the release. **Caution**: This creates two commits & a tag and pushes the
 ```bash
 mvn -Dresume=false release:prepare release:perform
 ```
-
-And lastly, submit the release to Maven:
-
-```bash
-mvn -Dresume=false release:perform
-```
