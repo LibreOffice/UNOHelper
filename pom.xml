@@ -8,7 +8,7 @@
   <url>https://github.com/LibreOffice/UNOHelper</url>
 
   <properties>
-    <libreoffice.version>7.4.7</libreoffice.version>
+    <libreoffice.version>7.5.3</libreoffice.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.release>11</maven.compiler.release>
     <maven.javadoc.failOnWarnings>false</maven.javadoc.failOnWarnings>
